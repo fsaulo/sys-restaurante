@@ -1,0 +1,11 @@
+# Ignore binaries folder
+\out
+
+# Ignore configuration files
+*.iml
+
+# Ignore temporary files
+*.swp
+*.un~
+*.~
+*.tmp

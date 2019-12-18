@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<VBox alignment="CENTER" prefWidth="379.0" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginController">
+   <children>
+      <Label fx:id="textLabel" text="This is a Label">
+         <font>
+            <Font name="Century" size="43.0" />
+         </font>
+      </Label>
+      <Button fx:id="button1" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="25.0" prefWidth="183.0" text="OK" />
+   </children>
+   <padding>
+      <Insets bottom="5.0" />
+   </padding>
+</VBox>
