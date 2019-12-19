@@ -9,3 +9,6 @@
 *.un~
 *.~
 *.tmp
+
+# Ignore binaries
+*.class
