@@ -1,0 +1,25 @@
+## Sys Restaurante
+
+#### Compile & Build
+
+###### 1. Linux (**BASH**)
+
+```$bash
+$ find src/ -type f -name *.java > out/dev/class
+```
+
+```
+$ find src/ -type f -name *.fxml -exec cp {} out/dev/bin/sysRestaurante/gui \;
+```
+
+```$bash
+$ javac --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml @out/dev/class -d out/dev/bin
+```
+
+```$bash
+$ java -cp .:$SQLITE:out/dev/bin --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml sysRestaurante.gui.MainGUI
+```
+
+------
+
+###### 2. Windows (**PowerShell**)

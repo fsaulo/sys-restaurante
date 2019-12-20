@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="307.0" prefWidth="417.0" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sysRestaurante.gui.LoginController">
+   <children>
+      <Label fx:id="dbStatusLabel" text="This is a Label">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Button fx:id="button1" mnemonicParsing="false" prefHeight="25.0" prefWidth="183.0" text="OK" />
+      <Label fx:id="userNameLabel" text="Label">
+         <font>
+            <Font name="Monospaced Regular" size="19.0" />
+         </font></Label>
+   </children>
+   <padding>
+      <Insets bottom="5.0" />
+   </padding>
+</VBox>
