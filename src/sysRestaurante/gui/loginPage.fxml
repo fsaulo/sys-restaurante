@@ -5,20 +5,31 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="307.0" prefWidth="417.0" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sysRestaurante.gui.LoginController">
-   <children>
-      <Label fx:id="dbStatusLabel" text="This is a Label">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Label>
-      <Button fx:id="button1" mnemonicParsing="false" prefHeight="25.0" prefWidth="183.0" text="OK" />
-      <Label fx:id="userNameLabel" text="Label">
-         <font>
-            <Font name="Monospaced Regular" size="19.0" />
-         </font></Label>
-   </children>
+<VBox alignment="CENTER" prefHeight="264.0" prefWidth="323.0" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sysRestaurante.gui.LoginController">
    <padding>
       <Insets bottom="5.0" />
    </padding>
+   <children>
+      <Label text="Login">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <TextField />
+      <PasswordField />
+      <HBox alignment="CENTER" fillHeight="false" spacing="100.0">
+         <children>
+            <Button mnemonicParsing="false" text="Button" />
+            <ToggleButton mnemonicParsing="false" text="ADMIN" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+      <Label fx:id="dbStatusLabel" text="db">
+         <font>
+            <Font name="Monospaced Regular" size="15.0" />
+         </font>
+      </Label>
+   </children>
 </VBox>
