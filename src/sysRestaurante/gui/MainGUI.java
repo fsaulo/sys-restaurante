@@ -6,8 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import sysRestaurante.model.Authentication;
-import sysRestaurante.model.Registration;
 import sysRestaurante.util.Encryption;
 import sysRestaurante.util.ExceptionHandler;
 import sysRestaurante.util.LoggerHandler;
@@ -15,8 +13,7 @@ import sysRestaurante.util.LoggerHandler;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-public class
-MainGUI extends Application {
+public class MainGUI extends Application {
 
     private static final Logger LOGGER = new LoggerHandler().getGenericConsoleHandler(MainGUI.class.getName());
 

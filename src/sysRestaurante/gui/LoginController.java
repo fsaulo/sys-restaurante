@@ -8,21 +8,21 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.control.Label;
+import javafx.fxml.FXML;
 import javafx.util.Duration;
 import org.controlsfx.control.ToggleSwitch;
 import sysRestaurante.model.Authentication;
+import sysRestaurante.util.ExceptionHandler;
 import sysRestaurante.util.LoggerHandler;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import sysRestaurante.util.SystemClock;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +33,9 @@ public class LoginController {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     private static final DateFormat CLOCK_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
+    private static final String SIGNATURE_IMAGE = "resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
+    private static final String LOGINTEXT_IMAGE = "resources/images/login-text.png";
+
     private Authentication certs;
 
     @FXML
@@ -40,6 +43,12 @@ public class LoginController {
 
     @FXML
     private Label statusAccessLabel;
+
+    @FXML
+    private Label lastSessionLabel;
+
+    @FXML
+    private Label clockLabel;
 
     @FXML
     private AnchorPane loginPane;
@@ -57,11 +66,7 @@ public class LoginController {
     private ImageView signatureImage;
 
     @FXML
-    private Label lastSessionLabel;
-
-    @FXML
-    private Label clockLabel;
-
+    private ImageView loginTextImage;
 
     public void initialize() {
          certs = new Authentication();
@@ -81,11 +86,39 @@ public class LoginController {
         statusAccessLabel.setText("");
 
         startClock();
-        setSignatureImage();
+
+        try {
+            setSignatureImage();
+            setLoginTextImage();
+        } catch (FileNotFoundException e) {
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            LOGGER.severe("Invalid path to image files");
+            e.printStackTrace();
+        }
+
         setLastSessionMessage();
 
         LOGGER.setLevel(Level.ALL);
         LOGGER.info("Login pane initialized.");
+    }
+
+    public void startClock() {
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            Date clockDate = new Date();
+            String clockDateFormatted = CLOCK_FORMAT.format(clockDate);
+            clockLabel.setText(clockDateFormatted);
+        }), new KeyFrame(Duration.millis(1000)));
+
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+    }
+
+    public void setSignatureImage() throws FileNotFoundException {
+        signatureImage.setImage(new Image(new FileInputStream(SIGNATURE_IMAGE)));
+    }
+
+    public void setLoginTextImage() throws  FileNotFoundException {
+        loginTextImage.setImage(new Image(new FileInputStream(LOGINTEXT_IMAGE)));
     }
 
     public void setLastSessionMessage() {
@@ -98,23 +131,6 @@ public class LoginController {
         }
 
         lastSessionLabel.setText(sessionMessage);
-    }
-
-    public void setSignatureImage() {
-        signatureImage.setImage(new Image("file: @../../resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png"));
-    }
-
-    public void startClock() {
-        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            LocalTime currentTime = LocalTime.now();
-            Date clockDate = new Date();
-            String clockDateFormatted = CLOCK_FORMAT.format(clockDate);
-            clockLabel.setText(clockDateFormatted.toString());
-        }),
-                new KeyFrame(Duration.millis(1000)));
-
-        clock.setCycleCount(Animation.INDEFINITE);
-        clock.play();
     }
 
     public void loginRequested() throws SQLException {

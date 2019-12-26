@@ -29,16 +29,7 @@
                      <children>
                         <HBox alignment="BOTTOM_LEFT" prefHeight="82.0" prefWidth="462.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <Label opacity="0.5" prefHeight="48.0" prefWidth="35.0" text="sys">
-                                 <font>
-                                    <Font name="FontAwesome" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label alignment="TOP_LEFT" prefHeight="35.0" prefWidth="120.0" text="LOGIN">
-                                 <font>
-                                    <Font name="FontAwesome" size="41.0" />
-                                 </font>
-                              </Label>
+                              <ImageView fx:id="loginTextImage" fitHeight="72.0" fitWidth="314.0" pickOnBounds="true" preserveRatio="true" />
                            </children>
                         </HBox>
                         <TextField fx:id="usernameField" promptText="Usuário" />

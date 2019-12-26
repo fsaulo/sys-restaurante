@@ -9,7 +9,7 @@ public class DBConnection {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DBConnection.class.getName());
 
-    private static final String DB_LOCAL_CONNECTION = "jdbc:sqlite:resources/db/sys_restaurante.db";
+    private static final String DB_LOCAL_CONNECTION = "jdbc:sqlite:resources/external/sys_restaurante.db";
 
     private static Connection con = null;
 
