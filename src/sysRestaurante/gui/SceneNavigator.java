@@ -12,9 +12,9 @@ public class SceneNavigator {
     public static final String MAIN = "mainGUI.fxml";
     public static final String LOGIN = "loginPage.fxml";
 
-    public static MainGUIController mainController;
-
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUIController.class.getName());
+
+    public static MainGUIController mainController;
 
     public static void setMainGUIController(MainGUIController mainController) {
         SceneNavigator.mainController = mainController;

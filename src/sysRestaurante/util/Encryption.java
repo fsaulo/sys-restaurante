@@ -14,7 +14,7 @@ public class Encryption {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Encryption.class.getName());
     private static SecretKeySpec secretKey;
 
-    public  static void setKey(String pkey) {
+    public static void setKey(String pkey) {
         MessageDigest sha = null;
 
         try {
@@ -23,6 +23,9 @@ public class Encryption {
             key = sha.digest(key);
             key = Arrays.copyOf(key, 16);
             secretKey = new SecretKeySpec(key, "AES");
+
+            LOGGER.info("Encryption hash set.");
+
         } catch (NoSuchAlgorithmException ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
@@ -30,12 +33,15 @@ public class Encryption {
         }
     }
 
-    public static String encrypt(String word, String key) {
+    public static SecretKeySpec getKey() {
+        return secretKey;
+    }
+
+    public static String encrypt(String word) {
 
         try {
-            setKey(key);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            cipher.init(Cipher.ENCRYPT_MODE, Encryption.getKey());
             return Base64.getEncoder().encodeToString(cipher.doFinal(word.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();
@@ -50,7 +56,7 @@ public class Encryption {
         try {
             setKey(key);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            cipher.init(Cipher.DECRYPT_MODE, Encryption.getKey());
             return new String(cipher.doFinal(Base64.getDecoder().decode(word)));
         } catch (Exception ex) {
             LOGGER.warning("Couldn't decrypt due to something that might be an error: " + ex.toString());

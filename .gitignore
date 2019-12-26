@@ -9,3 +9,6 @@
 
 # Ignore binaries
 *.class
+
+# Ignore configure files
+SysRestaurante.iml
