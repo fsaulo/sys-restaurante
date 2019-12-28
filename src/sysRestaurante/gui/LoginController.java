@@ -1,5 +1,6 @@
 package sysRestaurante.gui;
 
+import com.sun.tools.javac.Main;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -122,6 +123,11 @@ public class LoginController {
         lastSessionLabel.setText(sessionMessage);
     }
 
+    public void onAuthenticationAccepted() {
+        MainGUI.getMainController().setMainPanePadding(0, 0, 0, 0);
+        SceneNavigator.loadScene(SceneNavigator.MENU);
+    }
+
     public void loginRequested() throws SQLException {
         int typeAuthentication = certs.systemAuthentication(usernameField.getText(), passwordField.getText(),
                 isAdminToggle.isSelected());
@@ -133,6 +139,7 @@ public class LoginController {
                 statusAccessLabel.setTextFill(Color.web("Green"));
                 statusAccessLabel.setText("Acesso garantido");
                 setLastSessionMessage();
+                onAuthenticationAccepted();
                 break;
             case 1:
                 statusAccessLabel.setTextFill(Color.web("Green"));
@@ -140,6 +147,7 @@ public class LoginController {
                 setLastSessionMessage();
                 if (!isAdminToggle.isSelected())
                     isAdminToggle.fire();
+                onAuthenticationAccepted();
                 break;
             case 2:
                 statusAccessLabel.setTextFill(Color.web("Red"));

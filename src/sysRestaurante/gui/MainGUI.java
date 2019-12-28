@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 public class MainGUI extends Application {
 
     private static final Logger LOGGER = new LoggerHandler().getGenericConsoleHandler(MainGUI.class.getName());
+    private static MainGUIController mainController;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -35,13 +36,18 @@ public class MainGUI extends Application {
 
         Pane wrapperPane = loader.load(getClass().getResourceAsStream(SceneNavigator.MAIN));
 
-        MainGUIController mainController = loader.getController();
+        mainController = loader.getController();
         LOGGER.info("Wrapper pane successfully loaded.");
 
+        mainController.setMainPanePadding(300, 120, 300, 120);
         SceneNavigator.setMainGUIController(mainController);
         SceneNavigator.loadScene(SceneNavigator.LOGIN);
 
         return wrapperPane;
+    }
+
+    public static MainGUIController getMainController() {
+        return mainController;
     }
 
     private Scene createScene(Pane mainPane) {

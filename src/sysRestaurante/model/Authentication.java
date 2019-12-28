@@ -103,7 +103,6 @@ public class Authentication {
     }
 
     public LocalDateTime getLastSessionDate() {
-
         PreparedStatement ps;
         ResultSet rs;
         String query = "SELECT * FROM sessao";
