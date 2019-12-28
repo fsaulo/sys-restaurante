@@ -16,7 +16,6 @@ public class Encryption {
 
     public static void setKey(String pkey) {
         MessageDigest sha = null;
-
         try {
             byte[] key = pkey.getBytes(StandardCharsets.UTF_8);
             sha = MessageDigest.getInstance("SHA-1");
@@ -38,7 +37,6 @@ public class Encryption {
     }
 
     public static String encrypt(String word) {
-
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, Encryption.getKey());
@@ -51,8 +49,7 @@ public class Encryption {
         return null;
     }
 
-    public static String decrypt(String word, String key)
-    {
+    public static String decrypt(String word, String key) {
         try {
             setKey(key);
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");

@@ -33,7 +33,7 @@
                            </children>
                         </HBox>
                         <TextField fx:id="usernameField" promptText="Usuário" />
-                        <PasswordField fx:id="passwordField" promptText="Senha" />
+                        <PasswordField fx:id="passwordField" onInputMethodTextChanged="#loginRequested" promptText="Senha" />
                         <HBox alignment="TOP_RIGHT" prefHeight="105.0" prefWidth="462.0" spacing="5.0" VBox.vgrow="ALWAYS">
                            <children>
                               <VBox prefHeight="91.0" prefWidth="387.0" HBox.hgrow="ALWAYS">
@@ -78,7 +78,7 @@
                            </font>
                         </Label>
                         <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <Label fx:id="dbStatusLabel" alignment="CENTER_RIGHT" prefWidth="150.0" text="Conectado" textFill="#468d13">
+                        <Label fx:id="dbStatusLabel" alignment="CENTER_RIGHT" text="Conectado" textFill="#468d13">
                            <font>
                               <Font name="Liberation Mono" size="13.0" />
                            </font>
@@ -115,15 +115,15 @@
                      </font>
                   </Label>
                </children>
-               <padding>
+               <HBox.margin>
                   <Insets bottom="5.0" left="10.0" />
-               </padding>
+               </HBox.margin>
             </VBox>
             <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="124.0">
                <children>
                   <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Desenvolvido por">
+                        <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="  Desenvolvido por">
                            <font>
                               <Font name="Lucida Console" size="12.0" />
                            </font>
@@ -132,19 +132,19 @@
                   </HBox>
                   <HBox alignment="BASELINE_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="191.0">
                      <children>
-                        <ImageView fx:id="signatureImage" fitHeight="28.0" fitWidth="194.0" opacity="0.6" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="signatureImage" fitHeight="28.0" fitWidth="194.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="24.0" prefWidth="188.0">
                            <children>
-                              <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="meetfelixkjellberg@gmail.com">
+                              <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0">
                                  <font>
                                     <Font name="Lucida Console" size="12.0" />
                                  </font>
                               </Text>
-                              <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="(79) 9 9945-0465">
+                              <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0">
                                  <font>
                                     <Font name="Lucida Console" size="12.0" />
                                  </font>
@@ -157,9 +157,9 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
-               <padding>
+               <HBox.margin>
                   <Insets bottom="5.0" right="10.0" />
-               </padding>
+               </HBox.margin>
             </VBox>
          </children>
       </HBox>

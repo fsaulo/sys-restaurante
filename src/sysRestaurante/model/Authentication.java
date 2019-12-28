@@ -115,7 +115,7 @@ public class Authentication {
             while (rs.next()) {
                 dates.add(rs.getDate("dataSessao").getTime()
                         + rs.getTime("tempoSessao").getTime()
-                        - 3 * 1000 * 60 * 60);
+                        - 10800000L);
             }
 
             if (dates.isEmpty()) {
