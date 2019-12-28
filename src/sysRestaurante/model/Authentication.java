@@ -28,7 +28,8 @@ public class Authentication {
     public Authentication() {
         try {
             con = DBConnection.getConnection();
-            LOGGER.info("Successful connection to the database.");
+            if (con != null)
+                LOGGER.info("Successful connection to the database.");
 
         } catch (SQLException ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();
@@ -127,7 +128,7 @@ public class Authentication {
                         .toLocalDateTime();
                 return mostRecentSession;
             }
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             LOGGER.severe("Error while getting last session.");
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();

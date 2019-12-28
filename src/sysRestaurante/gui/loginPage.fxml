@@ -49,7 +49,7 @@
                                              </graphic>
                                           </Label>
                                           <Pane prefHeight="40.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
-                                          <Button fx:id="loginButton" mnemonicParsing="false" onAction="#loginRequested" prefHeight="46.0" prefWidth="106.0" text="Entrar" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                                          <Button mnemonicParsing="false" onAction="#loginRequested" prefHeight="46.0" prefWidth="106.0" text="Entrar" textOverrun="WORD_ELLIPSIS" wrapText="true">
                                              <font>
                                                 <Font size="16.0" />
                                              </font>
@@ -99,17 +99,17 @@
          <children>
             <VBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="383.0" spacing="5.0" HBox.hgrow="ALWAYS">
                <children>
-                  <Label fx:id="clockLabel" prefHeight="20.0" prefWidth="373.0" text="18/05/2018 07:01:03">
+                  <Label fx:id="clockLabel" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="383.0" text="18/05/2018 07:01:03">
                      <font>
                         <Font name="Liberation Mono Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lastSessionLabel" prefHeight="16.0" prefWidth="367.0" text="Última sessão: 17/05/2018 17:55:56">
+                  <Label fx:id="lastSessionLabel" prefHeight="0.0" prefWidth="383.0" text="Última sessão: 17/05/2018 17:55:56">
                      <font>
                         <Font name="Liberation Mono" size="12.0" />
                      </font>
                   </Label>
-                  <Label fx:id="systemTime" prefHeight="16.0" prefWidth="374.0" text="GNU SysRestaurante v0.1">
+                  <Label prefHeight="0.0" prefWidth="383.0" text="GNU SysRestaurante v0.1">
                      <font>
                         <Font name="Liberation Mono" size="12.0" />
                      </font>
@@ -121,7 +121,7 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="124.0">
                <children>
-                  <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <children>
                         <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="  Desenvolvido por">
                            <font>

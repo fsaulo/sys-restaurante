@@ -3,7 +3,6 @@ package sysRestaurante.gui;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.css.CssParser;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,45 +36,31 @@ public class LoginController {
     private static final String SIGNATURE_IMAGE = "resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
     private static final String LOGINTEXT_IMAGE = "resources/images/login-text.png";
 
-    private static Authentication certs;
+    private Authentication certs;
 
     @FXML
     private Label dbStatusLabel;
-
     @FXML
     private Label statusAccessLabel;
-
     @FXML
     private Label lastSessionLabel;
-
     @FXML
     private Label clockLabel;
-
     @FXML
     private AnchorPane loginPane;
-
     @FXML
     private TextField usernameField;
-
     @FXML
     private TextField passwordField;
-
     @FXML
     private ToggleSwitch isAdminToggle;
-
     @FXML
     private ImageView signatureImage;
-
     @FXML
     private ImageView loginTextImage;
 
     public void initialize() {
-        try {
          certs = new Authentication();
-
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
-        }
 
         if (certs.isDatabaseConnected()) {
             dbStatusLabel.setTextFill(Color.web("Green"));
@@ -103,7 +88,6 @@ public class LoginController {
         }
 
         setLastSessionMessage();
-
         LOGGER.setLevel(Level.ALL);
         LOGGER.info("Login pane initialized.");
     }
@@ -135,13 +119,12 @@ public class LoginController {
             String lastSessionDate = DATE_FORMAT.format(certs.getLastSessionDate());
             sessionMessage = "Última sessão em: " + lastSessionDate;
         }
-
         lastSessionLabel.setText(sessionMessage);
     }
 
     public void loginRequested() throws SQLException {
         int typeAuthentication = certs.systemAuthentication(usernameField.getText(), passwordField.getText(),
-                    isAdminToggle.isSelected());
+                isAdminToggle.isSelected());
 
         LOGGER.config("Type of authentication: " + typeAuthentication);
 
