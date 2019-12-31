@@ -1,0 +1,9 @@
+.menus:hover {
+    -fx-background-color: #A6BED6;
+}
+
+.menus:selected {
+    -fx-background-color: #81a1c1;
+    -fx-text-fill: #3b3b3b;
+    -fx-border-radius: 5px;
+}
