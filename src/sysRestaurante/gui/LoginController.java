@@ -1,6 +1,5 @@
 package sysRestaurante.gui;
 
-import com.sun.tools.javac.Main;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

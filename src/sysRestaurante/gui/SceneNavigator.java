@@ -12,6 +12,7 @@ public class SceneNavigator {
     public static final String MAIN = "mainGUI.fxml";
     public static final String LOGIN = "loginPage.fxml";
     public static final String MENU = "menuPage.fxml";
+    public static final String MENU_TOOL_BAR = "menuToolBar.fxml";
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUIController.class.getName());
 

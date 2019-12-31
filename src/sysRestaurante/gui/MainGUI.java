@@ -41,7 +41,8 @@ public class MainGUI extends Application {
 
         mainController.setMainPanePadding(300, 120, 300, 120);
         SceneNavigator.setMainGUIController(mainController);
-        SceneNavigator.loadScene(SceneNavigator.LOGIN);
+//        SceneNavigator.loadScene(SceneNavigator.LOGIN);
+        SceneNavigator.loadScene(SceneNavigator.MENU_TOOL_BAR);
 
         return wrapperPane;
     }
