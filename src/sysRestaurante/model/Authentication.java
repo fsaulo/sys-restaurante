@@ -42,7 +42,7 @@ public class Authentication {
         return con != null;
     }
 
-    public int systemAuthentication(String user, String pass, boolean isAdmin) throws SQLException {
+    public int systemAuthentication(String user, String pass) throws SQLException {
 
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -61,16 +61,13 @@ public class Authentication {
             if (rs.next()) {
                 int userId = rs.getInt("IdUsuario");
 
-                if (!rs.getBoolean("isAdmin") && !isAdmin) {
+                if (!rs.getBoolean("isAdmin")) {
                     updateSessionTable(userId);
                     return 0;
                 }
                 else if (rs.getBoolean("isAdmin")) {
                     updateSessionTable(userId);
                     return 1;
-                }
-                else if (!rs.getBoolean("isAdmin") && isAdmin) {
-                    return 3;
                 }
             } else return 2;
 

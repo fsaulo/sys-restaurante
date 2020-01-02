@@ -53,14 +53,13 @@ public class LoginController {
     @FXML
     private TextField passwordField;
     @FXML
-    private ToggleSwitch isAdminToggle;
-    @FXML
     private ImageView signatureImage;
     @FXML
     private ImageView loginTextImage;
 
     public void initialize() {
-         certs = new Authentication();
+        certs = new Authentication();
+        usernameField.setFocusTraversable(true);
 
         if (certs.isDatabaseConnected()) {
             dbStatusLabel.setTextFill(Color.web("Green"));
@@ -124,12 +123,11 @@ public class LoginController {
 
     public void onAuthenticationAccepted() {
         MainGUI.getMainController().setMainPanePadding(0, 0, 0, 0);
-        SceneNavigator.loadScene(SceneNavigator.MENU);
+        SceneNavigator.loadScene(SceneNavigator.APPLICATION_STAGE);
     }
 
     public void loginRequested() throws SQLException {
-        int typeAuthentication = certs.systemAuthentication(usernameField.getText(), passwordField.getText(),
-                isAdminToggle.isSelected());
+        int typeAuthentication = certs.systemAuthentication(usernameField.getText(), passwordField.getText());
 
         LOGGER.config("Type of authentication: " + typeAuthentication);
 
@@ -139,14 +137,12 @@ public class LoginController {
                 statusAccessLabel.setText("Acesso garantido");
                 setLastSessionMessage();
                 onAuthenticationAccepted();
-                break;
             case 1:
                 statusAccessLabel.setTextFill(Color.web("Green"));
                 statusAccessLabel.setText("Acesso garantido");
                 setLastSessionMessage();
-                if (!isAdminToggle.isSelected())
-                    isAdminToggle.fire();
                 onAuthenticationAccepted();
+                LOGGER.info("Admin login");
                 break;
             case 2:
                 statusAccessLabel.setTextFill(Color.web("Red"));

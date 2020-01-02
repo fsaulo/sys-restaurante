@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="vboxHolder" alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sysRestaurante.gui.MenuToolBarController">
+   <children>
+      <HBox alignment="CENTER_LEFT">
+         <children>
+            <Label alignment="CENTER" styleClass="label-title" text="SysGerência | Bar &amp; Restaurante " textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Carlito Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true" styleClass="scroll" VBox.vgrow="ALWAYS">
+         <content>
+            <HBox alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER_LEFT" style="-fx-border-radius: 5px;" styleClass="box">
+                     <children>
+                        <ToggleButton fx:id="toggleMenuPrincipal" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#menuPrincipal" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Principal">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="menuGroup" />
+                           </toggleGroup>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </ToggleButton>
+                        <VBox fx:id="vBoxMenuPrincipal">
+                           <children>
+                              <ToggleButton fx:id="toggleGerenciarBalcao" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Gerenciar balcão">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="submenuGroup" />
+                                 </toggleGroup>
+                              </ToggleButton>
+                              <ToggleButton fx:id="toggleComandas" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Mesas/Comandas" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="togglePedidos" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Pedidos" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="toggleHistoricoCaixa" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Histórico do caixa" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="togglePainelCardapio" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Painel de cardápio" toggleGroup="$submenuGroup" />
+                           </children>
+                        </VBox>
+                        <ToggleButton fx:id="g2" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" onAction="#menuG2" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Ferramentas" toggleGroup="$menuGroup">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </ToggleButton>
+                        <VBox fx:id="vboxG2">
+                           <children>
+                              <ToggleButton fx:id="g2a" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Controle de estoque" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g2b" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Produtos/Serviços" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g2c" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Backup &amp; Atualizações" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g2d" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Impressoras" toggleGroup="$submenuGroup">
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </ToggleButton>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                        <ToggleButton fx:id="g3" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" onAction="#menuG3" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Financeiro" toggleGroup="$menuGroup">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </ToggleButton>
+                        <VBox fx:id="vboxG3">
+                           <children>
+                              <ToggleButton fx:id="g3a" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Gerenciar despesas" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g3b" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Fluxo de caixa" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g3c" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Relatórios financeiros" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g3d" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Contas a receber" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g3d1" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Gerenciar cartões de crédito">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="submenuGroup1" />
+                                 </toggleGroup>
+                              </ToggleButton>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                        <ToggleButton fx:id="g61" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Preferênciais do Usuário" toggleGroup="$menuGroup">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </ToggleButton>
+                        <VBox fx:id="vboxG41">
+                           <children>
+                              <ToggleButton fx:id="g4a1" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Gerenciar perfil" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g4b1" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Informações do estabelecimento" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g4c1" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Alterar senha" toggleGroup="$submenuGroup" />
+                           </children>
+                        </VBox>
+                        <ToggleButton fx:id="g4" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" onAction="#menuG4" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Administrativo" toggleGroup="$menuGroup">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </ToggleButton>
+                        <VBox fx:id="vboxG4">
+                           <children>
+                              <ToggleButton fx:id="g4a" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Quadro de funcinários" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g4b" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Painel do cliente" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="g4c" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Histórico de movimentações" toggleGroup="$submenuGroup" />
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                        <ToggleButton fx:id="g5" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Programa de Fidelidade" toggleGroup="$menuGroup">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </ToggleButton>
+                        <ToggleButton fx:id="g6" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Configurações do Sistema" toggleGroup="$menuGroup">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </ToggleButton>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+         </content>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </ScrollPane>
+      <HBox alignment="BOTTOM_CENTER" prefHeight="32.0" prefWidth="300.0" styleClass="box-footer">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <children>
+            <Label fx:id="userLabel" prefHeight="23.0" prefWidth="90.0" text="Hello, Admin">
+               <font>
+                  <Font name="Cantarell Bold" size="14.0" />
+               </font></Label>
+            <Pane prefHeight="26.0" prefWidth="102.0" />
+            <Button mnemonicParsing="false" onAction="#onLogoutRequest" prefHeight="26.0" prefWidth="53.0" text="Sair" />
+         </children>
+         <padding>
+            <Insets top="5.0" />
+         </padding>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@styles/menu.css" />
+   </stylesheets>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>

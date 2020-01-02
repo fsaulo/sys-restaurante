@@ -11,7 +11,7 @@ $ find src/ -type f -name *.java > out/dev/class
 
 - Compile using the reference file
 ```$bash
-$ javac --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml,org.controlsfx.controls @out/dev/class -d out/dev/bin
+$ javac --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml @out/dev/class -d out/dev/bin
 ```
 
 - Copy all fxml files to output directory
@@ -21,7 +21,7 @@ $ find src/ -type f -name *.fxml -exec cp {} out/dev/bin/sysRestaurante/gui \;
 
 - Run
 ```$bash
-$ java -cp .:$SQLITE:out/dev/bin --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml,org.controlsfx.controls sysRestaurante.gui.MainGUI
+$ java -cp .:$SQLITE:out/dev/bin --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml sysRestaurante.gui.MainGUI
 ```
 
 ------

@@ -1,6 +1,7 @@
 package sysRestaurante.gui;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import sysRestaurante.util.ExceptionHandler;
 import sysRestaurante.util.LoggerHandler;
 
@@ -9,10 +10,11 @@ import java.util.logging.Logger;
 
 public class SceneNavigator {
 
-    public static final String MAIN = "mainGUI.fxml";
-    public static final String LOGIN = "loginPage.fxml";
-    public static final String MENU = "menuPage.fxml";
-    public static final String MENU_TOOL_BAR = "menuToolBar.fxml";
+    public static final String MAIN = "MainGUI.fxml";
+    public static final String LOGIN = "LoginPage.fxml";
+    public static final String MENU_TOOL_BAR = "MenuToolBar.fxml";
+    public static final String DASHBOARD = "DashboardPane.fxml";
+    public static final String APPLICATION_STAGE = "AppStage.fxml";
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUIController.class.getName());
 
@@ -30,5 +32,9 @@ public class SceneNavigator {
             LOGGER.severe("Scene couldn't be loaded.");
             e.printStackTrace();
         }
+    }
+
+    public static void loadScene(Node node) {
+        mainController.setScene(node);
     }
 }

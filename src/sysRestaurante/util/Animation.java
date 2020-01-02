@@ -11,7 +11,8 @@ public class Animation {
     private static FadeTransition fadeTransition;
 
     public static void fade(Node node) {
-        fadeTransition = new FadeTransition(Duration.millis(500), node);
+        if (fadeTransition != null) fadeTransition.stop();
+        fadeTransition = new FadeTransition(Duration.millis(2000), node);
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
         fadeTransition.setCycleCount(1);
@@ -19,7 +20,7 @@ public class Animation {
         fadeTransition.play();
     }
 
-    public static void stopFade() {
+    public static void close() {
         fadeTransition.stop();
     }
 }

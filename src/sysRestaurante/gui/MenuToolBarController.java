@@ -3,19 +3,37 @@ package sysRestaurante.gui;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import sysRestaurante.util.Animation;
+import sysRestaurante.util.ExceptionHandler;
+import sysRestaurante.util.LoggerHandler;
+
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public class MenuToolBarController {
 
     public MenuToolBarController() { }
 
     @FXML
-    private ToggleButton g1;
+    private VBox vBoxMenuPrincipal;
+    @FXML
+    private ToggleButton toggleMenuPrincipal;
+    @FXML
+    private ToggleButton toggleGerenciarBalcao;
+    @FXML
+    private ToggleButton toggleComandas;
+    @FXML
+    private ToggleButton togglePedidos;
+    @FXML
+    private ToggleButton toggleHistoricoCaixa;
+    @FXML
+    private ToggleButton togglePainelCardapio;
     @FXML
     private ToggleButton g2;
     @FXML
@@ -30,14 +48,6 @@ public class MenuToolBarController {
     private ToggleGroup menuGroup;
     @FXML
     private ToggleGroup submenuGroup;
-    @FXML
-    private ToggleButton g1a;
-    @FXML
-    private ToggleButton g1b;
-    @FXML
-    private ToggleButton g1c;
-    @FXML
-    private ToggleButton g1d;
     @FXML
     private ToggleButton g2a;
     @FXML
@@ -61,25 +71,40 @@ public class MenuToolBarController {
     @FXML
     private ToggleButton g4c;
     @FXML
-    private VBox vboxG1;
-    @FXML
     private VBox vboxG2;
     @FXML
     private VBox vboxG3;
     @FXML
     private VBox vboxG4;
+    @FXML
+    private VBox vboxHolder;
+    @FXML
+    private Label userLabel;
+
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MenuToolBarController.class.getName());
 
     public void initialize() {
-        hideSubmenus(vboxG1, vboxG2, vboxG3, vboxG4);
         this.clearToggleGroup(menuGroup, submenuGroup);
+        userLabel.setText("Olá, Saulo");
     }
 
-    public void unfoldSubmenus(ToggleButton menu, VBox box, ToggleButton... submenus) {
+    public void unfoldSubmenus(ToggleButton menu, VBox box, ToggleButton... toggleSubmenus) {
         if (box.getChildren().isEmpty()) {
-            box.getChildren().addAll(submenus);
+            box.getChildren().addAll(toggleSubmenus);
             Animation.fade(box);
         } else {
             hideSubmenus(box);
+        }
+    }
+
+    public void onLogoutRequest(ActionEvent event) {
+        try {
+            MainGUI.restartProgram(new Stage());
+            LOGGER.info("User logged out");
+        } catch (IOException e) {
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            LOGGER.severe("Couldn't log out due to IOException.");
+            e.printStackTrace();
         }
     }
 
@@ -89,8 +114,16 @@ public class MenuToolBarController {
         }
     }
 
-    public void menuG1(ActionEvent event) {
-        unfoldSubmenus(g1, vboxG1, g1a, g1b, g1c, g1d);
+    public void menuPrincipal(ActionEvent event) {
+        unfoldSubmenus(
+                toggleMenuPrincipal,
+                vBoxMenuPrincipal,
+                toggleGerenciarBalcao,
+                toggleComandas,
+                toggleHistoricoCaixa,
+                togglePainelCardapio,
+                togglePedidos
+        );
     }
 
     public void menuG2(ActionEvent event) {
