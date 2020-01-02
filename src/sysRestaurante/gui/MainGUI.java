@@ -46,14 +46,13 @@ public class MainGUI extends Application {
     public static void clear() {
         Stage stage = (Stage) mainController.getScene().getWindow();
         stage.close();
-        Animation.close();
     }
 
     public static void startProgram(Stage stage) throws IOException {
         stage.setTitle("SysRestaurante");
         stage.setScene(createScene(loadMainPane()));
-        stage.setMinHeight(400);
-        stage.setMinWidth(460);
+        stage.setMinHeight(390);
+        stage.setMinWidth(465);
         stage.show();
 
         stage.setOnCloseRequest(e -> {
@@ -63,9 +62,9 @@ public class MainGUI extends Application {
         });
     }
 
-    public static void restartProgram(Stage stage) throws IOException {
+    public static void restartProgram() throws IOException {
         clear();
-        startProgram(stage);
+        startProgram(new Stage());
     }
 
     public static MainGUIController getMainController() {

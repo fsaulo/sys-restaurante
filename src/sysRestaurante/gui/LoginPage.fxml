@@ -15,7 +15,7 @@
 
 <VBox prefHeight="347.0" prefWidth="557.0" spacing="25.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sysRestaurante.gui.LoginController">
    <children>
-      <AnchorPane fx:id="loginPane" prefHeight="248.0" prefWidth="594.0" style="-fx-border-insets: 10 0 0 0; -fx-border-color: #D2D2D2; -fx-border-radius: 5; -fx-background-color: #F4F4F4; -fx-border-width: 2;">
+      <AnchorPane fx:id="loginPane" style="-fx-border-insets: 10 0 0 0; -fx-border-color: #D2D2D2; -fx-border-radius: 5; -fx-background-color: #F4F4F4; -fx-border-width: 2;">
           <children>
               <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Autenticação no Sistema" textFill="#807d7d">
                <font>
@@ -45,7 +45,7 @@
                                        </font></PasswordField>
                                  </children>
                               </VBox>
-                              <Button mnemonicParsing="false" onAction="#loginRequested" prefHeight="60.0" prefWidth="160.0" text="Entrar" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                              <Button mnemonicParsing="false" onAction="#loginRequested" prefHeight="60.0" prefWidth="160.0" style="-fx-cursor: hand;" text="Entrar" textOverrun="WORD_ELLIPSIS" wrapText="true">
                                  <font>
                                     <Font name="Carlito Bold" size="20.0" />
                                  </font>
@@ -126,9 +126,9 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="60.0" prefWidth="124.0">
                <children>
-                  <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="  Desenvolvido por" wrappingWidth="115.46401977539062">
+                  <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="  Desenvolvido por" wrappingWidth="129.46401977539062">
                      <font>
-                        <Font name="Cantarell Regular" size="14.0" />
+                        <Font size="14.0" />
                      </font>
                   </Text>
                   <ImageView fx:id="signatureImage" fitHeight="28.0" fitWidth="194.0" pickOnBounds="true" preserveRatio="true" />

@@ -71,11 +71,19 @@ public class MenuToolBarController {
     @FXML
     private ToggleButton g4c;
     @FXML
+    private ToggleButton g5a;
+    @FXML
+    private ToggleButton g5b;
+    @FXML
+    private ToggleButton g5c;
+    @FXML
     private VBox vboxG2;
     @FXML
     private VBox vboxG3;
     @FXML
     private VBox vboxG4;
+    @FXML
+    private VBox vboxG5;
     @FXML
     private VBox vboxHolder;
     @FXML
@@ -99,7 +107,7 @@ public class MenuToolBarController {
 
     public void onLogoutRequest(ActionEvent event) {
         try {
-            MainGUI.restartProgram(new Stage());
+            MainGUI.restartProgram();
             LOGGER.info("User logged out");
         } catch (IOException e) {
             ExceptionHandler.incrementGlobalExceptionsCount();
@@ -136,6 +144,10 @@ public class MenuToolBarController {
 
     public void menuG4(ActionEvent event) {
         unfoldSubmenus(g4, vboxG4, g4a, g4b, g4c);
+    }
+
+    public void menuG5(ActionEvent event) {
+        unfoldSubmenus(g5, vboxG5, g5a, g5b, g5c);
     }
 
     public void clearToggleGroup(ToggleGroup... grupoMenu) {

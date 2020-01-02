@@ -12,7 +12,7 @@ public class Animation {
 
     public static void fade(Node node) {
         if (fadeTransition != null) fadeTransition.stop();
-        fadeTransition = new FadeTransition(Duration.millis(2000), node);
+        fadeTransition = new FadeTransition(Duration.millis(250), node);
         fadeTransition.setFromValue(0);
         fadeTransition.setToValue(1);
         fadeTransition.setCycleCount(1);
