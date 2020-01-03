@@ -8,7 +8,6 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import sysRestaurante.util.Animation;
 import sysRestaurante.util.ExceptionHandler;
 import sysRestaurante.util.LoggerHandler;
@@ -34,16 +33,6 @@ public class MenuToolBarController {
     private ToggleButton toggleHistoricoCaixa;
     @FXML
     private ToggleButton togglePainelCardapio;
-    @FXML
-    private ToggleButton g2;
-    @FXML
-    private ToggleButton g3;
-    @FXML
-    private ToggleButton g4;
-    @FXML
-    private ToggleButton g5;
-    @FXML
-    private ToggleButton g6;
     @FXML
     private ToggleGroup menuGroup;
     @FXML
@@ -85,8 +74,6 @@ public class MenuToolBarController {
     @FXML
     private VBox vboxG5;
     @FXML
-    private VBox vboxHolder;
-    @FXML
     private Label userLabel;
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MenuToolBarController.class.getName());
@@ -96,7 +83,7 @@ public class MenuToolBarController {
         userLabel.setText("Olá, Saulo");
     }
 
-    public void unfoldSubmenus(ToggleButton menu, VBox box, ToggleButton... toggleSubmenus) {
+    public void unfoldSubmenus(VBox box, ToggleButton... toggleSubmenus) {
         if (box.getChildren().isEmpty()) {
             box.getChildren().addAll(toggleSubmenus);
             Animation.fade(box);
@@ -107,6 +94,7 @@ public class MenuToolBarController {
 
     public void onLogoutRequest(ActionEvent event) {
         try {
+            event.consume();
             MainGUI.restartProgram();
             LOGGER.info("User logged out");
         } catch (IOException e) {
@@ -122,9 +110,13 @@ public class MenuToolBarController {
         }
     }
 
+    public void selectMenuPrincipal() {
+        this.toggleMenuPrincipal.setSelected(true);
+    }
+
     public void menuPrincipal(ActionEvent event) {
+        event.consume();
         unfoldSubmenus(
-                toggleMenuPrincipal,
                 vBoxMenuPrincipal,
                 toggleGerenciarBalcao,
                 toggleComandas,
@@ -134,20 +126,40 @@ public class MenuToolBarController {
         );
     }
 
+    public void submenuGerenciarBalcao() {
+        selectMenuPrincipal();
+    }
+
+    public void submenuComandas() {
+        selectMenuPrincipal();
+    }
+
+    public void submenuPedidos() {
+        selectMenuPrincipal();
+    }
+
+    public void submenuHistoricoCaixa() {
+        selectMenuPrincipal();
+    }
+
+    public void submenuPainelCardapio() {
+        selectMenuPrincipal();
+    }
+
     public void menuG2(ActionEvent event) {
-        unfoldSubmenus(g2, vboxG2, g2a, g2b, g2c, g2d);
+        unfoldSubmenus(vboxG2, g2a, g2b, g2c, g2d);
     }
 
     public void menuG3(ActionEvent event) {
-        unfoldSubmenus(g3, vboxG3, g3a, g3b, g3c, g3d);
+        unfoldSubmenus(vboxG3, g3a, g3b, g3c, g3d);
     }
 
     public void menuG4(ActionEvent event) {
-        unfoldSubmenus(g4, vboxG4, g4a, g4b, g4c);
+        unfoldSubmenus(vboxG4, g4a, g4b, g4c);
     }
 
     public void menuG5(ActionEvent event) {
-        unfoldSubmenus(g5, vboxG5, g5a, g5b, g5c);
+        unfoldSubmenus(vboxG5, g5a, g5b, g5c);
     }
 
     public void clearToggleGroup(ToggleGroup... grupoMenu) {

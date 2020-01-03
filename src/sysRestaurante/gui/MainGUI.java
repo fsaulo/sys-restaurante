@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import sysRestaurante.util.Animation;
 import sysRestaurante.util.Encryption;
 import sysRestaurante.util.ExceptionHandler;
 import sysRestaurante.util.LoggerHandler;
