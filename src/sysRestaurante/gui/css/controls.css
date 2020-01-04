@@ -1,0 +1,29 @@
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 1;
+}
+
+.tab-pane {
+    -fx-tab-min-width:90px;
+}
+
+.tab {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab:hover {
+    -fx-cursor: hand;
+}
+
+.tab-pane .tab:selected {
+    -fx-cursor: pointer
+}
+
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-font-size: 14px;
+}
+
+.tab:selected .tab-label {
+    -fx-alignment: CENTER;
+}
