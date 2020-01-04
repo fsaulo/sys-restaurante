@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<GridPane alignment="BASELINE_CENTER" prefHeight="104.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane xmlns="http://javafx.com/javafx/11.0.1">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -15,14 +23,148 @@
       <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <HBox alignment="CENTER">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" opacity="0.38" text="Dashboard" wrapText="true">
-               <font>
-                  <Font name="Cantarell Regular" size="81.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
+      <BorderPane prefHeight="720.0" prefWidth="900.0">
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="30.0" styleClass="box-footer" BorderPane.alignment="CENTER">
+               <children>
+                  <Label opacity="0.8" text="Logado às 17:00:12 27/05/2019 | Tempo da sessão 00:02:45:21">
+                     <font>
+                        <Font name="Cantarell Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Pane prefWidth="20.0" HBox.hgrow="ALWAYS" />
+                  <Label opacity="0.5" text="© 2020 Saulo Felix GNU SysRestaurante">
+                     <font>
+                        <Font name="Cantarell Bold" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="1.0" left="3.0" right="3.0" top="1.0" />
+               </padding></HBox>
+         </bottom>
+         <top>
+            <HBox styleClass="box-content" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets left="1.0" right="1.0" top="1.0" />
+               </BorderPane.margin>
+               <children>
+                  <Label text="Bem vindo, adminstrador">
+                     <font>
+                        <Font name="Cantarell Bold" size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </HBox>
+         </top>
+         <center>
+            <VBox spacing="10.0" styleClass="box-content" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+               <children>
+                  <VBox>
+                     <children>
+                        <Label text="Prato do dia">
+                           <font>
+                              <Font name="Cantarell Bold" size="39.0" />
+                           </font>
+                        </Label>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Lagosta com camarao">
+                           <font>
+                              <Font name="Cantarell Regular" size="24.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </VBox>
+                  <HBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <VBox style="-fx-background-radius: 5px; -fx-background-color: #CBCBCC;" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER_RIGHT" text="Cardápio">
+                                 <font>
+                                    <Font name="Cantarell Bold" size="40.0" />
+                                 </font>
+                              </Label>
+                              <ScrollPane hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+                                 <content>
+                                    <ListView prefHeight="467.0" prefWidth="654.0" />
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </center>
+         <left>
+            <VBox styleClass="box-content" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="1.0" top="5.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <children>
+                  <Label text="Label" />
+               </children>
+            </VBox>
+         </left>
+         <right>
+            <VBox spacing="5.0" styleClass="box-content" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" right="1.0" top="5.0" />
+               </BorderPane.margin>
+               <children>
+                  <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Observações">
+                           <font>
+                              <Font name="Cantarell Regular" size="23.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: green; -fx-background-radius: 5px;">
+                     <children>
+                        <Label text="CAIXA ABERTO" textFill="WHITE">
+                           <font>
+                              <Font name="Carlito" size="21.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </right>
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </BorderPane>
    </children>
+    <stylesheets>
+        <URL value="@css/menu.css" />
+    </stylesheets>
+   <padding>
+      <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+   </padding>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </GridPane>

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="vboxHolder" alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sysRestaurante.gui.MenuToolBarController">
+<VBox alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sysRestaurante.gui.MenuToolBarController">
    <children>
       <HBox alignment="CENTER" styleClass="box-header">
          <children>
@@ -63,7 +63,7 @@
                               <Insets />
                            </VBox.margin>
                         </VBox>
-                        <ToggleButton fx:id="g2" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#menuG2" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Ferramentas" toggleGroup="$menuGroup">
+                        <ToggleButton alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#menuG2" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Ferramentas" toggleGroup="$menuGroup">
                            <font>
                               <Font name="Carlito Bold" size="18.0" />
                            </font>
@@ -170,6 +170,9 @@
                      </padding>
                   </VBox>
                </children>
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
             </HBox>
          </content>
          <opaqueInsets>
@@ -183,12 +186,12 @@
             <String fx:value="scroll" />
          </styleClass>
       </ScrollPane>
-      <HBox alignment="TOP_CENTER" styleClass="box-footer">
+      <HBox alignment="TOP_CENTER" prefHeight="30.0" styleClass="box-footer">
          <VBox.margin>
             <Insets />
          </VBox.margin>
          <children>
-            <Label fx:id="userLabel" prefHeight="25.0" prefWidth="131.0" styleClass="menu-user" text="Hello, Admin">
+            <Label fx:id="userLabel" prefHeight="25.0" prefWidth="130.0" styleClass="menu-user" text="Hello, Admin">
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
@@ -196,7 +199,7 @@
                   <Font name="Cantarell Regular" size="14.0" />
                </font></Label>
             <Pane prefHeight="28.0" prefWidth="100.0" />
-            <Button mnemonicParsing="false" onAction="#onLogoutRequest" prefHeight="27.0" prefWidth="78.0" styleClass="menu-exit" text="Sair">
+            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onLogoutRequest" prefHeight="28.0" prefWidth="80.0" styleClass="menu-exit" text="Sair">
                <font>
                   <Font name="Cantarell Regular" size="14.0" />
                </font></Button>
