@@ -11,8 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.util.Duration;
-import org.controlsfx.control.ToggleSwitch;
 import sysRestaurante.model.Authentication;
+import sysRestaurante.util.DateFormatter;
 import sysRestaurante.util.ExceptionHandler;
 import sysRestaurante.util.LoggerHandler;
 
@@ -20,19 +20,12 @@ import sysRestaurante.util.LoggerHandler;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoginController {
-
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(LoginController.class.getName());
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-    private static final DateFormat CLOCK_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
-
     private static final String SIGNATURE_IMAGE = "resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
     private static final String LOGINTEXT_IMAGE = "resources/images/login-text.png";
 
@@ -94,7 +87,7 @@ public class LoginController {
     public void startClock() {
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             Date clockDate = new Date();
-            String clockDateFormatted = CLOCK_FORMAT.format(clockDate);
+            String clockDateFormatted = DateFormatter.CLOCK_FORMAT.format(clockDate);
             clockLabel.setText(clockDateFormatted);
         }), new KeyFrame(Duration.millis(1000)));
 
@@ -115,7 +108,7 @@ public class LoginController {
         if (certs.getLastSessionDate() == null) {
             sessionMessage = "Não há registro de sessões";
         } else {
-            String lastSessionDate = DATE_FORMAT.format(certs.getLastSessionDate());
+            String lastSessionDate = DateFormatter.DATE_FORMAT.format(certs.getLastSessionDate());
             sessionMessage = "Última sessão em: " + lastSessionDate;
         }
         lastSessionLabel.setText(sessionMessage);

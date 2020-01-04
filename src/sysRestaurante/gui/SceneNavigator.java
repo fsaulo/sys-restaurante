@@ -12,7 +12,7 @@ public class SceneNavigator {
 
     public static final String MAIN = "MainGUI.fxml";
     public static final String LOGIN = "LoginPage.fxml";
-    public static final String MENU_TOOL_BAR = "MenuToolBar.fxml";
+    public static final String MENU_TOOL_BAR = "ToolBar.fxml";
     public static final String DASHBOARD = "DashboardPane.fxml";
     public static final String APPLICATION_STAGE = "AppStage.fxml";
 

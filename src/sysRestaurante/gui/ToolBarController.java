@@ -15,9 +15,7 @@ import sysRestaurante.util.LoggerHandler;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-public class MenuToolBarController {
-
-    public MenuToolBarController() { }
+public class ToolBarController {
 
     @FXML
     private VBox vBoxMenuPrincipal;
@@ -76,7 +74,7 @@ public class MenuToolBarController {
     @FXML
     private Label userLabel;
 
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MenuToolBarController.class.getName());
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ToolBarController.class.getName());
 
     public void initialize() {
         this.clearToggleGroup(menuGroup, submenuGroup);
