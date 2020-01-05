@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="347.0" prefWidth="557.0" spacing="25.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sysRestaurante.gui.LoginController">
+<VBox prefHeight="347.0" prefWidth="557.0" spacing="25.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.LoginController">
    <children>
       <AnchorPane fx:id="loginPane" style="-fx-border-insets: 10 0 0 0; -fx-border-color: #D2D2D2; -fx-border-radius: 5; -fx-background-color: #F4F4F4; -fx-border-width: 2;">
           <children>

@@ -1,6 +1,6 @@
-package sysRestaurante.etc;
+package org.sysRestaurante.etc;
 
-public class LogData {
+public class Log {
     private int idLog;
     private int userId;
     private int dateLog;
@@ -21,7 +21,6 @@ public class LogData {
     public void setDateLog(int dateLog) {
         this.dateLog = dateLog;
     }
-
 
     public String getContent() {
         return content;

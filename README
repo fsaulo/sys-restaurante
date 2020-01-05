@@ -16,12 +16,12 @@ $ javac --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml @out
 
 - Copy all fxml files to output directory
 ```
-$ find src/ -type f -name *.fxml -exec cp {} out/dev/bin/sysRestaurante/gui \;
+$ find src/ -type f -name *.fxml -exec cp {} out/dev/bin/java.sysRestaurante/gui \;
 ```
 
 - Run
 ```$bash
-$ java -cp .:$SQLITE:out/dev/bin --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml sysRestaurante.gui.MainGUI
+$ java -cp .:$SQLITE:out/dev/bin --module-path $PATH_TO_FX --add-modules=javafx.controls,javafx.fxml org.sysRestaurante.MainGUI
 ```
 
 ------

@@ -1,4 +1,4 @@
-package sysRestaurante.gui;
+package org.sysRestaurante.gui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

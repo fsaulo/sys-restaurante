@@ -1,4 +1,4 @@
-package sysRestaurante.util;
+package org.sysRestaurante.util;
 
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;

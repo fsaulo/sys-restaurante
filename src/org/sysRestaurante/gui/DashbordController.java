@@ -1,4 +1,4 @@
-package sysRestaurante.gui;
+package org.sysRestaurante.gui;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -12,16 +12,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.util.Duration;
-import sysRestaurante.model.Authentication;
-import sysRestaurante.util.DateFormatter;
-import sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.etc.User;
+import org.sysRestaurante.model.Authentication;
+import org.sysRestaurante.util.DateFormatter;
+import org.sysRestaurante.util.LoggerHandler;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.logging.Logger;
 
-public class DashbordController {
+public class DashbordController implements DateFormatter {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DashbordController.class.getName());
     private static long timerInMillies;
 
@@ -29,12 +31,18 @@ public class DashbordController {
     private HBox hBoxFooter;
     @FXML
     private BorderPane borderPane;
+    @FXML
+    private Label userLabel;
 
     private Label sessionTimer = new Label();
 
     public void initialize() {
         setFooter();
+        User userData = AppFactory.getUser();
         borderPane.setBottom(hBoxFooter);
+        if (userData != null) {
+            userLabel.setText("Bem vindo, " + userData.getName());
+        }
     }
 
     public HBox getFooter() {
@@ -45,7 +53,7 @@ public class DashbordController {
         startChronometer();
 
         Authentication certs = new Authentication();
-        String lastSessionDate = DateFormatter.DATE_FORMAT.format(certs.getLastSessionDate());
+        String lastSessionDate = DATE_FORMAT.format(certs.getLastSessionDate());
         Label timeStatusLabel = new Label("Logado em " + lastSessionDate);
         Pane _growPane = new Pane();
         Label copyleftLabel = new Label("Copyleft (C) 2020 Saulo Felix GNU SysRestaurante");

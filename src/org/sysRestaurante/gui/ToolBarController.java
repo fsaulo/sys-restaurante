@@ -1,4 +1,4 @@
-package sysRestaurante.gui;
+package org.sysRestaurante.gui;
 
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -8,9 +8,9 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
-import sysRestaurante.util.Animation;
-import sysRestaurante.util.ExceptionHandler;
-import sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.util.Animation;
+import org.sysRestaurante.util.ExceptionHandler;
+import org.sysRestaurante.util.LoggerHandler;
 
 import java.io.IOException;
 import java.util.logging.Logger;

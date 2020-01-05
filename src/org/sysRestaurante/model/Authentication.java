@@ -1,19 +1,19 @@
-package sysRestaurante.model;
+package org.sysRestaurante.model;
 
-import sysRestaurante.util.DBConnection;
-import sysRestaurante.util.Encryption;
-import sysRestaurante.util.ExceptionHandler;
-import sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.etc.Employee;
+import org.sysRestaurante.etc.Manager;
+import org.sysRestaurante.util.DBConnection;
+import org.sysRestaurante.util.Encryption;
+import org.sysRestaurante.util.ExceptionHandler;
+import org.sysRestaurante.util.LoggerHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,7 +25,6 @@ public class Authentication {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Authentication.class.getName());
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-
     private static Connection con;
 
     public Authentication() {
@@ -45,7 +44,7 @@ public class Authentication {
         return con != null;
     }
 
-    public int systemAuthentication(String user, String pass) throws SQLException {
+    public int loginRequested(String user, String pass) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         String query = "SELECT * FROM usuario WHERE username = ? and senha = ?";
@@ -60,13 +59,26 @@ public class Authentication {
 
             if (rs.next()) {
                 int userId = rs.getInt("IdUsuario");
-
+                AppFactory appFactory = new AppFactory();
                 if (!rs.getBoolean("isAdmin")) {
+                    appFactory.setUser(new Employee(
+                            rs.getString("nome"),
+                            rs.getString("senha"),
+                            rs.getString("username"),
+                            rs.getString("email")
+                    ));
                     updateSessionTable(userId);
                     return 0;
                 }
                 else if (rs.getBoolean("isAdmin")) {
                     updateSessionTable(userId);
+                    appFactory.setUser(new Manager(
+                            rs.getString("nome"),
+                            rs.getString("senha"),
+                            rs.getString("username"),
+                            rs.getString("email"),
+                            rs.getBoolean("isAdmin")
+                    ));
                     return 1;
                 }
             } else return 2;
