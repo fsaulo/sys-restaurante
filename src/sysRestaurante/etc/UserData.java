@@ -8,6 +8,7 @@ public class UserData {
     private String pass;
     private boolean isAdmin;
     private int idUsuario;
+    private int idLastSession;
 
     public String getName() {
         return name;
@@ -55,5 +56,13 @@ public class UserData {
 
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public void setIdLastSession(int idLastSession) {
+        this.idLastSession = idLastSession;
+    }
+
+    public int getIdLastSession() {
+        return this.idLastSession;
     }
 }

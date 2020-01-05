@@ -23,8 +23,7 @@ import java.util.logging.Logger;
 
 public class DashbordController {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DashbordController.class.getName());
-    private long elapsedTimeInSeconds;
-    private String elapsedTime;
+    private static long timerInMillies;
 
     @FXML
     private HBox hBoxFooter;
@@ -62,10 +61,12 @@ public class DashbordController {
 
     private void startChronometer() {
         LocalDateTime initialTime = LocalDateTime.now();
+        timerInMillies = 0L;
         Timeline chronometer = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            elapsedTimeInSeconds = ChronoUnit.SECONDS.between(initialTime, LocalDateTime.now());
-            elapsedTime = LocalTime.ofSecondOfDay(elapsedTimeInSeconds).toString();
+            long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(initialTime, LocalDateTime.now());
+            String elapsedTime = LocalTime.ofSecondOfDay(elapsedTimeInSeconds).toString();
             this.sessionTimer.setText(" | Tempo da sessao " + elapsedTime);
+            timerInMillies += 1L;
         }), new KeyFrame(Duration.millis(1000)));
 
         chronometer.setCycleCount(Animation.INDEFINITE);
@@ -73,7 +74,7 @@ public class DashbordController {
         LOGGER.info("Chronometer initialized normally");
     }
 
-    public long getElapsedSessionTime() {
-        return elapsedTimeInSeconds;
+    public static long getElapsedSessionTime() {
+        return timerInMillies;
     }
 }

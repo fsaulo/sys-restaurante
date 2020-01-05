@@ -17,7 +17,7 @@
    <children>
       <HBox alignment="CENTER" styleClass="box-header">
          <children>
-            <Label alignment="CENTER" styleClass="label-title" text="SysAdmin | Bar &amp; Restaurante " textAlignment="CENTER" wrapText="true">
+            <Label fx:id="dashboardLinkLabel" alignment="CENTER" styleClass="label-title" text="SysAdmin | Bar &amp; Restaurante " textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="Carlito Bold" size="22.0" />
                </font>

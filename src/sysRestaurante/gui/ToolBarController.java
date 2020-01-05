@@ -73,6 +73,8 @@ public class ToolBarController {
     private VBox vboxG5;
     @FXML
     private Label userLabel;
+    @FXML
+    private Label dashboardLinkLabel;
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ToolBarController.class.getName());
 
@@ -93,8 +95,9 @@ public class ToolBarController {
     public void onLogoutRequest(ActionEvent event) {
         try {
             event.consume();
-            MainGUI.restartProgram();
             LOGGER.info("User logged out");
+            LoginController.registerSessionDuration();
+            MainGUI.restartProgram();
         } catch (IOException e) {
             ExceptionHandler.incrementGlobalExceptionsCount();
             LOGGER.severe("Couldn't log out due to IOException.");

@@ -14,7 +14,7 @@ public class Registration {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Registration.class.getName());
 
-    public void userRegister(String nome, String pass, String username, String email) throws SQLException {
+    public void insert(String nome, String pass, String username, String email) throws SQLException {
 
         PreparedStatement ps = null;
 

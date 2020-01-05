@@ -9,8 +9,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -43,12 +46,9 @@ public class Authentication {
     }
 
     public int systemAuthentication(String user, String pass) throws SQLException {
-
         PreparedStatement ps = null;
         ResultSet rs = null;
-
         String query = "SELECT * FROM usuario WHERE username = ? and senha = ?";
-
         String password = Encryption.encrypt(pass);
 
         try {
@@ -79,15 +79,16 @@ public class Authentication {
     }
 
     public void updateSessionTable(int userId) {
-
         LocalDateTime date = LocalDateTime.now();
-
         String query = "INSERT INTO sessao (idUsuario, dataSessao, tempoSessao) VALUES (?, ?, ?)";
+
         try (PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, userId);
             ps.setDate(2, java.sql.Date.valueOf(date.toLocalDate()));
             ps.setTime(3, java.sql.Time.valueOf(date.toLocalTime()));
+
             ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
 
             LOGGER.setLevel(Level.ALL);
             LOGGER.config("Session time: " + DATE_FORMAT.format(date));
@@ -96,6 +97,23 @@ public class Authentication {
             LOGGER.severe("Session couldn't be stored.");
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
+        }
+    }
+
+    public void setSessionDuration(int userId, int lastSessionID, long sessionTime) {
+        String query = "UPDATE sessao SET duracaoSessao = ? WHERE idUsuario = ? and idSessao = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, (int) sessionTime);
+            ps.setInt(2, userId);
+            ps.setInt(3, lastSessionID);
+            ps.executeUpdate();
+
+            LOGGER.info("Last session duration registered.");
+        } catch (SQLException e) {
+            LOGGER.severe("Couldn't register session duration.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            e.printStackTrace();
         }
     }
 

@@ -16,7 +16,6 @@ import sysRestaurante.util.DateFormatter;
 import sysRestaurante.util.ExceptionHandler;
 import sysRestaurante.util.LoggerHandler;
 
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
@@ -28,8 +27,7 @@ public class LoginController {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(LoginController.class.getName());
     private static final String SIGNATURE_IMAGE = "resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
     private static final String LOGINTEXT_IMAGE = "resources/images/login-text.png";
-
-    private Authentication certs;
+    private static Authentication certs;
 
     @FXML
     private Label dbStatusLabel;
@@ -101,6 +99,10 @@ public class LoginController {
 
     public void setLoginTextImage() throws  FileNotFoundException {
         loginTextImage.setImage(new Image(new FileInputStream(LOGINTEXT_IMAGE)));
+    }
+
+    public static void registerSessionDuration() {
+        certs.setSessionDuration(3, 405, DashbordController.getElapsedSessionTime());
     }
 
     public void setLastSessionMessage() {
