@@ -22,6 +22,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,7 +103,7 @@ public class LoginController implements DateFormatter {
         loginTextImage.setImage(new Image(new FileInputStream(LOGINTEXT_IMAGE)));
     }
 
-    public static void registerSessionDuration() {
+    public static void storeLastSessionDuration() {
         certs.setSessionDuration(3, 405, DashbordController.getElapsedSessionTime());
     }
 
@@ -118,8 +119,13 @@ public class LoginController implements DateFormatter {
     }
 
     public void onAuthenticationAccepted() {
-        MainGUI.getMainController().setMainPanePadding(0, 0, 0, 0);
+        MainGUIController mainController = MainGUI.getMainController();
+        mainController.setMainPanePadding(0, 0, 0, 0);
         SceneNavigator.loadScene(SceneNavigator.APPLICATION_STAGE);
+    }
+
+    public static Authentication getCertifications() {
+        return Objects.requireNonNullElseGet(certs, Authentication::new);
     }
 
     public void loginRequested() throws SQLException {

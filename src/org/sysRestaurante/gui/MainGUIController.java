@@ -11,8 +11,6 @@ public class MainGUIController {
     @FXML
     private StackPane sceneHolder;
 
-    private MainGUIController mainGUIController;
-
     public void setScene(Node node) {
         sceneHolder.getChildren().setAll(node);
     }
@@ -21,20 +19,12 @@ public class MainGUIController {
         return sceneHolder.getScene();
     }
 
-    public void setMainGUIController() {
-        mainGUIController = this;
-    }
-
-    public MainGUIController getMainGUIController() {
-        return mainGUIController;
-    }
-
     public void setMainPanePadding(int top, int right, int bottom, int left) {
         sceneHolder.setPadding(new Insets(top, right, bottom, left));
     }
 
-    public void setMainPaneSize(int height, int width) {
+    public void setPreferredSize(int height, int width) {
+        sceneHolder.setMinWidth(width);
         sceneHolder.setPrefHeight(height);
-        sceneHolder.setPrefWidth(width);
     }
 }

@@ -96,7 +96,7 @@ public class ToolBarController {
         try {
             event.consume();
             LOGGER.info("User logged out");
-            LoginController.registerSessionDuration();
+            LoginController.storeLastSessionDuration();
             MainGUI.restartProgram();
         } catch (IOException e) {
             ExceptionHandler.incrementGlobalExceptionsCount();

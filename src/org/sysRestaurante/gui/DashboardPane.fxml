@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<GridPane xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.DashbordController">
+<GridPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.DashbordController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -16,20 +26,20 @@
    <children>
       <BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="900.0">
          <top>
-            <HBox BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER_LEFT" prefWidth="898.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets left="1.0" right="1.0" top="1.0" />
                </BorderPane.margin>
-               <children>
-                  <Label fx:id="userLabel" opacity="0.7" text="Bem vindo, Adminstrador">
-                     <font>
-                        <Font name="Carlito Bold" size="24.0" />
-                     </font>
-                  </Label>
-               </children>
                <padding>
                   <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                </padding>
+               <children>
+                  <Label opacity="0.8" text="Bar &amp; Restaurante Frutos do Mar">
+                     <font>
+                        <Font name="Carlito Bold" size="30.0" />
+                     </font>
+                  </Label>
+               </children>
             </HBox>
          </top>
          <center>
@@ -74,36 +84,45 @@
                               <Font name="Cantarell Regular" size="23.0" />
                            </font>
                         </Label>
-                        <CheckBox indeterminate="true" mnemonicParsing="false" prefWidth="150.0" text="Saulo abriu o caixa no dia 01/01/2020" wrapText="true">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </CheckBox>
-                        <CheckBox mnemonicParsing="false" prefWidth="150.0" text="Caixa com saldo negativo" wrapText="true">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </CheckBox>
-                        <CheckBox mnemonicParsing="false" prefWidth="150.0" selected="true" text="Comprar suco de uva" wrapText="true">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </CheckBox>
-                        <CheckBox mnemonicParsing="false" prefWidth="150.0" text="Verificar estoque de refrigerante" wrapText="true">
-                           <font>
-                              <Font size="13.0" />
-                           </font>
-                        </CheckBox>
-                        <Pane VBox.vgrow="ALWAYS" />
+                        <ScrollPane styleClass="scroll" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox prefWidth="200.0" spacing="10.0">
+                                 <children>
+                                    <CheckBox indeterminate="true" mnemonicParsing="false" text="Saulo abriu o caixa no dia 01/01/2020" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox mnemonicParsing="false" text="Caixa com saldo negativo" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox mnemonicParsing="false" selected="true" text="Comprar suco de uva" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox mnemonicParsing="false" text="Verificar estoque de refrigerante" wrapText="true">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </CheckBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <Pane />
                         <HBox alignment="TOP_CENTER" spacing="5.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="80.0" text="Adicionar observação" wrapText="true" />
+                              <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="95.0" text="Adicionar observação" textAlignment="CENTER" wrapText="true" />
                               <Pane HBox.hgrow="ALWAYS" />
-                              <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="80.0" text="Limpar" />
+                              <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="95.0" text="Limpar" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
+                  <Separator opacity="0.8" prefHeight="20.0" prefWidth="200.0" />
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: green; -fx-background-radius: 5px;">
                      <children>
                         <Label text="CAIXA ABERTO" textFill="WHITE">
