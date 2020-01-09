@@ -9,21 +9,31 @@ public class DBConnection {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DBConnection.class.getName());
     private static final String DB_LOCAL_CONNECTION = "jdbc:sqlite:resources/external/sys_restaurante.db";
-    private static Connection con = null;
+    private static int globalDBRequestsCount = 0;
+
     public static Connection getConnection() throws SQLException {
         try {
             Class.forName("org.sqlite.JDBC");
-            if (con == null || con.isClosed()) {
-                LOGGER.info("Trying to acquire connection with database circuit...");
-                con = DriverManager.getConnection(DB_LOCAL_CONNECTION);
+            LOGGER.config("New request.");
+            Connection con = DriverManager.getConnection(DB_LOCAL_CONNECTION);
+            DBConnection.incrementGlobalDBRequestsCount();
+            if (con == null){
+                LOGGER.severe("Connection failed.");
             }
             return con;
-
         } catch (ClassNotFoundException ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();
             LOGGER.severe("Database driver not found");
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static int getGlobalDBRequestsCount() {
+        return DBConnection.globalDBRequestsCount;
+    }
+
+    public static void incrementGlobalDBRequestsCount() {
+        DBConnection.globalDBRequestsCount += 1;
     }
 }

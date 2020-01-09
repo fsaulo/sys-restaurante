@@ -26,23 +26,53 @@ public class Authentication {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Authentication.class.getName());
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-    private static Connection con;
-
-    public Authentication() {
-        try {
-            con = DBConnection.getConnection();
-            if (con != null)
-                LOGGER.info("Successful connection to the database.");
-
-        } catch (SQLException ex) {
-            ExceptionHandler.incrementGlobalExceptionsCount();
-            LOGGER.severe("Connection to database couldn't be established.");
-            ex.printStackTrace();
-        }
-    }
+    private Connection con;
 
     public boolean isDatabaseConnected() {
-        return con != null;
+        try {
+            con = DBConnection.getConnection();
+            if (con.isClosed()) {
+                return false;
+            } else {
+                con.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void updateSessionTable(int userId) throws SQLException {
+        LocalDateTime date = LocalDateTime.now();
+        boolean isConnectionNew = false;
+        PreparedStatement ps;
+        String query = "INSERT INTO sessao (idUsuario, dataSessao, tempoSessao) VALUES (?, ?, ?)";
+
+        if (con == null || con.isClosed()) {
+            con = DBConnection.getConnection();
+            isConnectionNew = true;
+        }
+
+        try {
+            ps = con.prepareStatement(query);
+            ps.setInt(1, userId);
+            ps.setDate(2, java.sql.Date.valueOf(date.toLocalDate()));
+            ps.setTime(3, java.sql.Time.valueOf(date.toLocalTime()));
+            ps.executeUpdate();
+            ps.close();
+
+            if (isConnectionNew) {
+                con.close();
+            }
+
+            LOGGER.setLevel(Level.ALL);
+            LOGGER.config("Session time: " + DATE_FORMAT.format(date));
+        } catch (SQLException ex) {
+            LOGGER.severe("Session couldn't be stored.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            ex.printStackTrace();
+        }
     }
 
     public int loginRequested(String user, String pass) throws SQLException {
@@ -56,7 +86,6 @@ public class Authentication {
             ps = con.prepareStatement(query);
             ps.setString(1, user);
             ps.setString(2, password);
-
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -84,10 +113,10 @@ public class Authentication {
                     return 1;
                 }
             } else return 2;
-
         } finally {
             if (ps != null) ps.close();
             if (rs != null) rs.close();
+            if (con != null) con.close();
         }
         return 1;
     }
@@ -103,6 +132,7 @@ public class Authentication {
             ps.setString(1, username);
             rs = ps.executeQuery();
             User user = new User();
+
             while (rs.next()) {
                 user.setIdUsuario(rs.getInt("idUsuario"));
                 user.setName(rs.getString("nome"));
@@ -110,10 +140,9 @@ public class Authentication {
                 user.setEmail(rs.getString("email"));
                 user.setAdmin(rs.getBoolean("isAdmin"));
             }
-
             ps.close();
             rs.close();
-
+            con.close();
             return user;
         } catch (SQLException e) {
             LOGGER.severe("Couldn't get user data.");
@@ -123,29 +152,7 @@ public class Authentication {
         return null;
     }
 
-    public void updateSessionTable(int userId) {
-        LocalDateTime date = LocalDateTime.now();
-        PreparedStatement ps;
-        String query = "INSERT INTO sessao (idUsuario, dataSessao, tempoSessao) VALUES (?, ?, ?)";
 
-        try {
-            con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, userId);
-            ps.setDate(2, java.sql.Date.valueOf(date.toLocalDate()));
-            ps.setTime(3, java.sql.Time.valueOf(date.toLocalTime()));
-
-            ps.executeUpdate();
-            ps.close();
-
-            LOGGER.setLevel(Level.ALL);
-            LOGGER.config("Session time: " + DATE_FORMAT.format(date));
-        } catch (SQLException ex) {
-            LOGGER.severe("Session couldn't be stored.");
-            ExceptionHandler.incrementGlobalExceptionsCount();
-            ex.printStackTrace();
-        }
-    }
 
     public void setSessionDuration(int userId, int lastSessionID, long sessionTime) {
         PreparedStatement ps;
@@ -158,8 +165,9 @@ public class Authentication {
             ps.setInt(2, userId);
             ps.setInt(3, lastSessionID);
             ps.executeUpdate();
-
             ps.close();
+            con.close();
+
             LOGGER.info("Last session duration registered.");
         } catch (SQLException e) {
             LOGGER.severe("Couldn't register session duration.");
@@ -184,6 +192,9 @@ public class Authentication {
                         + rs.getTime("tempoSessao").getTime()
                         - 10800000L);
             }
+            ps.close();
+            rs.close();
+            con.close();
 
             if (dates.isEmpty()) {
                 return null;
@@ -218,7 +229,7 @@ public class Authentication {
 
             ps.close();
             rs.close();
-
+            con.close();
             return id;
         } catch (SQLException ex) {
             ex.printStackTrace();

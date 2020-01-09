@@ -100,7 +100,7 @@ public class ToolBarController extends AppFactory {
             event.consume();
             AppFactory.setUser(null);
             LOGGER.info("User logged out");
-            LoginController.storeLastSessionDuration();
+            AppFactory.getLoginController().storeLastSessionDuration();
             MainGUI.restartProgram();
         } catch (IOException e) {
             ExceptionHandler.incrementGlobalExceptionsCount();

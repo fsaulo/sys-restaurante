@@ -6,6 +6,7 @@ import org.sysRestaurante.etc.User;
 import org.sysRestaurante.gui.AppController;
 import org.sysRestaurante.gui.DashbordController;
 import org.sysRestaurante.gui.LoginController;
+import org.sysRestaurante.model.Authentication;
 
 public class AppFactory {
     private static Manager manager;
@@ -14,6 +15,15 @@ public class AppFactory {
     private static AppController appController;
     private static DashbordController dashbordController;
     private static LoginController loginController;
+    private static Authentication authentication;
+
+    public static Authentication getAuthentication() {
+        return authentication;
+    }
+
+    public static void setAuthentication(Authentication authentication) {
+        AppFactory.authentication = authentication;
+    }
 
     public static LoginController getLoginController() {
         return loginController;

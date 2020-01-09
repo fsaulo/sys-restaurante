@@ -1,6 +1,5 @@
 package org.sysRestaurante.model;
 
-import org.sysRestaurante.etc.User;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -17,11 +16,12 @@ public class Registration {
 
     public void insert(String nome, String pass, String username, String email) throws SQLException {
         PreparedStatement ps = null;
+        Connection con = null;
         String query = "INSERT INTO usuario (nome, senha, username, email, isAdmin) VALUES (?, ?, ?, ?, ?)";
         String password = Encryption.encrypt(pass);
 
         try {
-            Connection con = DBConnection.getConnection();
+            con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
             ps.setString(1, nome);
             ps.setString(2, password);
@@ -37,6 +37,7 @@ public class Registration {
 
         } finally {
             if (ps != null) ps.close();
+            if (con != null) con.close();
         }
     }
 }

@@ -30,8 +30,8 @@ public class LoginController implements DateFormatter {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(LoginController.class.getName());
     private static final String SIGNATURE_IMAGE = "resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
     private static final String LOGINTEXT_IMAGE = "resources/images/login-text.png";
-    private static Authentication certs = new Authentication();
     private static User userData;
+    private Authentication certs = new Authentication();
 
     @FXML
     private Label dbStatusLabel;
@@ -53,8 +53,6 @@ public class LoginController implements DateFormatter {
     private ImageView loginTextImage;
 
     public void initialize() {
-        usernameField.setFocusTraversable(true);
-
         if (certs.isDatabaseConnected()) {
             dbStatusLabel.setTextFill(Color.web("Green"));
             dbStatusLabel.setText("Conectado");
@@ -67,6 +65,7 @@ public class LoginController implements DateFormatter {
         loginPane.setMinHeight(250);
         loginPane.setMinWidth(440);
         statusAccessLabel.setText("");
+        AppFactory.setLoginController(this);
         startClock();
 
         try {
@@ -102,7 +101,7 @@ public class LoginController implements DateFormatter {
         loginTextImage.setImage(new Image(new FileInputStream(LOGINTEXT_IMAGE)));
     }
 
-    public static void storeLastSessionDuration() {
+    public void storeLastSessionDuration() {
         certs.setSessionDuration(userData.getIdUsuario(),
                 new Authentication().getLastSessionId(),
                 AppFactory.getAppController().getElapsedSessionTime());
@@ -127,7 +126,7 @@ public class LoginController implements DateFormatter {
         SceneNavigator.loadScene(SceneNavigator.APPLICATION_STAGE);
     }
 
-    public static Authentication getCertifications() {
+    public Authentication getCertifications() {
         return Objects.requireNonNullElseGet(certs, Authentication::new);
     }
 

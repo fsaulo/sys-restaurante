@@ -29,12 +29,7 @@ public class NotePaneController {
             if (isPermanentNote.isSelected()) {
                 Annotation notesDB = new Annotation();
                 User userData = AppFactory.getUser();
-                try {
-                    notesDB.insert(userData.getIdUsuario(), textNote.getText(), LocalDate.now());
-                } catch (SQLException ex) {
-                    ExceptionHandler.incrementGlobalExceptionsCount();
-                    ex.printStackTrace();
-                }
+                notesDB.insert(userData.getIdUsuario(), textNote.getText(), LocalDate.now());
             }
             AppFactory.getDashbordController().addNoteToList(new Note(textNote.getText()));
             AppFactory.getDashbordController().reloadNotes();

@@ -14,10 +14,12 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Annotation {
+
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Registration.class.getName());
-    public void insert(int idUser, String content, LocalDate date) throws SQLException {
-        PreparedStatement ps = null;
-        Connection con = null;
+
+    public void insert(int idUser, String content, LocalDate date) {
+        PreparedStatement ps;
+        Connection con;
         String query = "INSERT INTO anotacoes (idUsuario, conteudo, data) VALUES (?, ?, ?)";
 
         try {
@@ -27,27 +29,27 @@ public class Annotation {
             ps.setString(2, content);
             ps.setDate(3, java.sql.Date.valueOf(date));
             ps.executeUpdate();
-
+            ps.close();
+            con.close();
         } catch (SQLException ex) {
             LOGGER.severe("Couldn't record annotation.");
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
-        } finally {
-            if (ps != null) ps.close();
-            if (con != null) con.close();
         }
     }
 
     public ArrayList<Note> getAllPermanentNotes() throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
+        Connection con = null;
         String query = "SELECT * FROM anotacoes";
 
         try {
-            Connection con = DBConnection.getConnection();
+            con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
             ArrayList<Note> notes = new ArrayList<>();
+
             while (rs.next()) {
                 Note note = new Note(rs.getString("conteudo"));
                 note.setIdUser(rs.getInt("idUsuario"));
@@ -63,38 +65,40 @@ public class Annotation {
         } finally {
             if (ps != null) ps.close();
             if (rs != null) rs.close();
+            if (con != null) con.close();
         }
         return null;
     }
 
     public void removeAll() throws SQLException {
         PreparedStatement ps = null;
+        Connection con = null;
         String query = "DELETE FROM anotacoes";
         try {
-            Connection con = DBConnection.getConnection();
+            con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
             ps.executeUpdate();
-            con.close();
-            ps.close();
         } catch (SQLException e) {
             ExceptionHandler.incrementGlobalExceptionsCount();
             e.printStackTrace();
         } finally {
             if (ps != null) ps.close();
+            if (con != null) con.close();
         }
     }
 
     public void check(int id) {
         PreparedStatement ps;
+        Connection con;
         String query = "UPDATE anotacoes SET isChecked = ? WHERE idAnotacao = ?";
         try {
-            Connection con = DBConnection.getConnection();
+            con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
             ps.setBoolean(1, true);
             ps.setInt(2, id);
             ps.executeUpdate();
-            con.close();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,15 +106,16 @@ public class Annotation {
 
     public void uncheck(int id) {
         PreparedStatement ps;
+        Connection con;
         String query = "UPDATE anotacoes SET isChecked = ? WHERE idAnotacao = ?";
         try {
-            Connection con = DBConnection.getConnection();
+            con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
             ps.setBoolean(1, false);
             ps.setInt(2, id);
             ps.executeUpdate();
-            con.close();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

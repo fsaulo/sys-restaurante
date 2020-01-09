@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.Encryption;
@@ -56,9 +57,10 @@ public class MainGUI extends Application {
             if (AppFactory.getUser() != null) {
                 AppFactory.getLoginController().storeLastSessionDuration();
             }
+            LOGGER.info(DBConnection.getGlobalDBRequestsCount() + " requests to database.");
             Platform.exit();
+            LOGGER.info("Program exited.");
             System.exit(0);
-            LOGGER.info("Program ended.");
         });
     }
 

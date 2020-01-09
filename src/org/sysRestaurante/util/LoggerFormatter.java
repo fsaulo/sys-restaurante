@@ -8,6 +8,7 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 public class LoggerFormatter extends Formatter {
+
     private static final DateFormat dataStyle = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
 
     public String format(LogRecord record) {

@@ -33,9 +33,8 @@ public class AppController implements DateFormatter {
 
     @FXML
     private BorderPane borderPaneHolder;
-    private AppController appController = this;
     private Label sessionTimer;
-    private static Authentication certs = LoginController.getCertifications();
+    private Authentication certs = new Authentication();
     private static long timerInMillies;
 
     public void initialize() throws IOException {
