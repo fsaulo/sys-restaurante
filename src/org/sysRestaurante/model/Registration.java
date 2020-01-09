@@ -16,9 +16,7 @@ public class Registration {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Registration.class.getName());
 
     public void insert(String nome, String pass, String username, String email) throws SQLException {
-
         PreparedStatement ps = null;
-
         String query = "INSERT INTO usuario (nome, senha, username, email, isAdmin) VALUES (?, ?, ?, ?, ?)";
         String password = Encryption.encrypt(pass);
 

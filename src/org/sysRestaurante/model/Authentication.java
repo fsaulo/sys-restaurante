@@ -3,6 +3,7 @@ package org.sysRestaurante.model;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.etc.Employee;
 import org.sysRestaurante.etc.Manager;
+import org.sysRestaurante.etc.User;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.Encryption;
 import org.sysRestaurante.util.ExceptionHandler;
@@ -51,6 +52,7 @@ public class Authentication {
         String password = Encryption.encrypt(pass);
 
         try {
+            con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
             ps.setString(1, user);
             ps.setString(2, password);
@@ -90,21 +92,54 @@ public class Authentication {
         return 1;
     }
 
+    public User getUserData(String username) {
+        PreparedStatement ps;
+        ResultSet rs;
+        String query = "SELECT * FROM usuario WHERE username = ?";
+
+        try {
+            con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            User user = new User();
+            while (rs.next()) {
+                user.setIdUsuario(rs.getInt("idUsuario"));
+                user.setName(rs.getString("nome"));
+                user.setUsername(username);
+                user.setEmail(rs.getString("email"));
+                user.setAdmin(rs.getBoolean("isAdmin"));
+            }
+
+            ps.close();
+            rs.close();
+
+            return user;
+        } catch (SQLException e) {
+            LOGGER.severe("Couldn't get user data.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void updateSessionTable(int userId) {
         LocalDateTime date = LocalDateTime.now();
+        PreparedStatement ps;
         String query = "INSERT INTO sessao (idUsuario, dataSessao, tempoSessao) VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try {
+            con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
             ps.setInt(1, userId);
             ps.setDate(2, java.sql.Date.valueOf(date.toLocalDate()));
             ps.setTime(3, java.sql.Time.valueOf(date.toLocalTime()));
 
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
+            ps.close();
 
             LOGGER.setLevel(Level.ALL);
             LOGGER.config("Session time: " + DATE_FORMAT.format(date));
-
         } catch (SQLException ex) {
             LOGGER.severe("Session couldn't be stored.");
             ExceptionHandler.incrementGlobalExceptionsCount();
@@ -113,14 +148,18 @@ public class Authentication {
     }
 
     public void setSessionDuration(int userId, int lastSessionID, long sessionTime) {
+        PreparedStatement ps;
         String query = "UPDATE sessao SET duracaoSessao = ? WHERE idUsuario = ? and idSessao = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try  {
+            con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
             ps.setInt(1, (int) sessionTime);
             ps.setInt(2, userId);
             ps.setInt(3, lastSessionID);
             ps.executeUpdate();
 
+            ps.close();
             LOGGER.info("Last session duration registered.");
         } catch (SQLException e) {
             LOGGER.severe("Couldn't register session duration.");
@@ -135,6 +174,7 @@ public class Authentication {
         String query = "SELECT * FROM sessao";
 
         try {
+            con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
             ArrayList<Long> dates = new ArrayList<>();
@@ -160,5 +200,29 @@ public class Authentication {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public int getLastSessionId() {
+        PreparedStatement ps;
+        String query = "SELECT idSessao FROM sessao ORDER BY idSessao DESC LIMIT 1";
+
+        try {
+            con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            int id = 0;
+
+            if (rs.next()) {
+                id = rs.getInt("idSessao");
+            }
+
+            ps.close();
+            rs.close();
+
+            return id;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
     }
 }

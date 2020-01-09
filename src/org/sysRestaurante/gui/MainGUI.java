@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.Encryption;
@@ -28,17 +29,14 @@ public class MainGUI extends Application {
 
     private static Pane loadMainPane() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-
         Pane wrapperPane = loader.load(MainGUI.class.getResourceAsStream(SceneNavigator.MAIN));
 
         mainController = loader.getController();
-
         LOGGER.info("Wrapper pane successfully loaded.");
-
         mainController.setMainPanePadding(300, 120, 300, 120);
+
         SceneNavigator.setMainGUIController(mainController);
         SceneNavigator.loadScene(SceneNavigator.LOGIN);
-
         return wrapperPane;
     }
 
@@ -55,6 +53,9 @@ public class MainGUI extends Application {
         stage.show();
 
         stage.setOnCloseRequest(e -> {
+            if (AppFactory.getUser() != null) {
+                AppFactory.getLoginController().storeLastSessionDuration();
+            }
             Platform.exit();
             System.exit(0);
             LOGGER.info("Program ended.");

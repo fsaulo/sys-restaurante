@@ -84,9 +84,9 @@
                               <Font name="Cantarell Regular" size="23.0" />
                            </font>
                         </Label>
-                        <ScrollPane styleClass="scroll" VBox.vgrow="ALWAYS">
+                        <ScrollPane hbarPolicy="NEVER" styleClass="scroll" VBox.vgrow="ALWAYS">
                            <content>
-                              <VBox prefWidth="200.0" spacing="10.0">
+                              <VBox fx:id="notesPane" prefWidth="200.0" spacing="10.0">
                                  <children>
                                     <CheckBox indeterminate="true" mnemonicParsing="false" text="Saulo abriu o caixa no dia 01/01/2020" wrapText="true">
                                        <font>
@@ -115,9 +115,9 @@
                         <Pane />
                         <HBox alignment="TOP_CENTER" spacing="5.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="95.0" text="Adicionar observação" textAlignment="CENTER" wrapText="true" />
+                              <Button fx:id="addNoteButton" mnemonicParsing="false" onAction="#showNotesWindow" prefHeight="45.0" prefWidth="95.0" text="Adicionar observação" textAlignment="CENTER" wrapText="true" />
                               <Pane HBox.hgrow="ALWAYS" />
-                              <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="95.0" text="Limpar" />
+                              <Button fx:id="clearNotesButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="95.0" text="Limpar" textAlignment="CENTER" wrapText="true" />
                            </children>
                         </HBox>
                      </children>

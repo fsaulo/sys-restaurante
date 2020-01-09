@@ -30,7 +30,7 @@ public class LoginController implements DateFormatter {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(LoginController.class.getName());
     private static final String SIGNATURE_IMAGE = "resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
     private static final String LOGINTEXT_IMAGE = "resources/images/login-text.png";
-    private static Authentication certs;
+    private static Authentication certs = new Authentication();
     private static User userData;
 
     @FXML
@@ -53,7 +53,6 @@ public class LoginController implements DateFormatter {
     private ImageView loginTextImage;
 
     public void initialize() {
-        certs = new Authentication();
         usernameField.setFocusTraversable(true);
 
         if (certs.isDatabaseConnected()) {
@@ -104,7 +103,9 @@ public class LoginController implements DateFormatter {
     }
 
     public static void storeLastSessionDuration() {
-        certs.setSessionDuration(3, 405, DashbordController.getElapsedSessionTime());
+        certs.setSessionDuration(userData.getIdUsuario(),
+                new Authentication().getLastSessionId(),
+                AppFactory.getAppController().getElapsedSessionTime());
     }
 
     public void setLastSessionMessage() {
@@ -119,6 +120,8 @@ public class LoginController implements DateFormatter {
     }
 
     public void onAuthenticationAccepted() {
+        userData = certs.getUserData(usernameField.getText());
+        AppFactory.setUser(userData);
         MainGUIController mainController = MainGUI.getMainController();
         mainController.setMainPanePadding(0, 0, 0, 0);
         SceneNavigator.loadScene(SceneNavigator.APPLICATION_STAGE);

@@ -15,9 +15,9 @@
 
 <VBox alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ToolBarController">
    <children>
-      <HBox alignment="CENTER" styleClass="box-header">
+      <HBox alignment="CENTER" onMouseClicked="#dashboard" styleClass="box-header">
          <children>
-            <Label fx:id="dashboardLinkLabel" alignment="CENTER" styleClass="label-title" text="SysAdmin | Bar &amp; Restaurante " textAlignment="CENTER" wrapText="true">
+            <Label fx:id="dashboardLinkLabel" alignment="CENTER" onMouseClicked="#dashboard" styleClass="label-title" text="SysAdmin | Bar &amp; Restaurante " textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="Carlito Bold" size="22.0" />
                </font>

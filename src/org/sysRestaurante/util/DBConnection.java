@@ -11,10 +11,9 @@ public class DBConnection {
     private static final String DB_LOCAL_CONNECTION = "jdbc:sqlite:resources/external/sys_restaurante.db";
     private static Connection con = null;
     public static Connection getConnection() throws SQLException {
-
         try {
             Class.forName("org.sqlite.JDBC");
-            if (con == null) {
+            if (con == null || con.isClosed()) {
                 LOGGER.info("Trying to acquire connection with database circuit...");
                 con = DriverManager.getConnection(DB_LOCAL_CONNECTION);
             }

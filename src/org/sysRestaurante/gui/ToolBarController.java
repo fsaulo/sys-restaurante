@@ -7,7 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.util.Animation;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -15,7 +17,7 @@ import org.sysRestaurante.util.LoggerHandler;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-public class ToolBarController {
+public class ToolBarController extends AppFactory {
 
     @FXML
     private VBox vBoxMenuPrincipal;
@@ -81,6 +83,7 @@ public class ToolBarController {
     public void initialize() {
         this.clearToggleGroup(menuGroup, submenuGroup);
         userLabel.setText("Olá, Saulo");
+        dashboardLinkLabel.setText("SysRestaurante | Adminstração");
     }
 
     public void unfoldSubmenus(VBox box, ToggleButton... toggleSubmenus) {
@@ -95,6 +98,7 @@ public class ToolBarController {
     public void onLogoutRequest(ActionEvent event) {
         try {
             event.consume();
+            AppFactory.setUser(null);
             LOGGER.info("User logged out");
             LoginController.storeLastSessionDuration();
             MainGUI.restartProgram();
@@ -125,6 +129,10 @@ public class ToolBarController {
                 togglePainelCardapio,
                 togglePedidos
         );
+    }
+
+    public void dashboard(MouseEvent event) {
+        AppFactory.getAppController().loadDashboardPage(event);
     }
 
     public void submenuGerenciarBalcao() {

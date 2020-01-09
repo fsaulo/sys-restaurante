@@ -15,6 +15,8 @@ public class SceneNavigator {
     public static final String MENU_TOOL_BAR = "ToolBar.fxml";
     public static final String DASHBOARD = "DashboardPane.fxml";
     public static final String APPLICATION_STAGE = "AppStage.fxml";
+    public static final String NOTE_PANE = "NotePane.fxml";
+    public static final String CLEAR_NOTES_ALERT = "ClearNotesAlert.fxml";
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUIController.class.getName());
 

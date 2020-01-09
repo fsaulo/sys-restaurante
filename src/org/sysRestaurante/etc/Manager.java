@@ -4,7 +4,7 @@ public class Manager extends User {
     private boolean isAdmin;
 
     public Manager(String name, String username, String email, String pass, boolean isAdmin) {
-        super(name, username, email, pass);
+        super();
         setAdmin(isAdmin);
     }
 

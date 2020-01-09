@@ -4,7 +4,7 @@ public class Employee extends User {
     private int idEmployee;
 
     public Employee(String name, String username, String email, String pass) {
-        super(name, username, email, pass);
+        super();
     }
 
     public int getIdEmployee() {
