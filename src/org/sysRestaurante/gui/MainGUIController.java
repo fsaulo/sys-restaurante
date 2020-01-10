@@ -22,9 +22,4 @@ public class MainGUIController {
     public void setMainPanePadding(int top, int right, int bottom, int left) {
         sceneHolder.setPadding(new Insets(top, right, bottom, left));
     }
-
-    public void setPreferredSize(int height, int width) {
-        sceneHolder.setMinWidth(width);
-        sceneHolder.setPrefHeight(height);
-    }
 }

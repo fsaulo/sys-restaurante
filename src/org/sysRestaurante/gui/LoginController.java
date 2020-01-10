@@ -3,6 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,11 +23,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoginController implements DateFormatter {
+
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(LoginController.class.getName());
     private static final String SIGNATURE_IMAGE = "resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
     private static final String LOGINTEXT_IMAGE = "resources/images/login-text.png";
@@ -78,6 +79,7 @@ public class LoginController implements DateFormatter {
         }
 
         setLastSessionMessage();
+        Platform.runLater(() -> loginPane.requestFocus());
         LOGGER.setLevel(Level.ALL);
         LOGGER.info("Login pane initialized.");
     }
@@ -124,10 +126,6 @@ public class LoginController implements DateFormatter {
         MainGUIController mainController = MainGUI.getMainController();
         mainController.setMainPanePadding(0, 0, 0, 0);
         SceneNavigator.loadScene(SceneNavigator.APPLICATION_STAGE);
-    }
-
-    public Authentication getCertifications() {
-        return Objects.requireNonNullElseGet(certs, Authentication::new);
     }
 
     public void loginRequested() throws SQLException {

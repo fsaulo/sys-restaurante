@@ -47,7 +47,7 @@ public class Authentication {
         LocalDateTime date = LocalDateTime.now();
         boolean isConnectionNew = false;
         PreparedStatement ps;
-        String query = "INSERT INTO sessao (idUsuario, dataSessao, tempoSessao) VALUES (?, ?, ?)";
+        String query = "INSERT INTO sessao (id_usuario, data_sessao, tempo_sessao) VALUES (?, ?, ?)";
 
         if (con == null || con.isClosed()) {
             con = DBConnection.getConnection();
@@ -89,9 +89,9 @@ public class Authentication {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                int userId = rs.getInt("IdUsuario");
+                int userId = rs.getInt("id_usuario");
                 AppFactory appFactory = new AppFactory();
-                if (!rs.getBoolean("isAdmin")) {
+                if (!rs.getBoolean("is_admin")) {
                     appFactory.setUser(new Employee(
                             rs.getString("nome"),
                             rs.getString("senha"),
@@ -101,14 +101,14 @@ public class Authentication {
                     updateSessionTable(userId);
                     return 0;
                 }
-                else if (rs.getBoolean("isAdmin")) {
+                else if (rs.getBoolean("is_admin")) {
                     updateSessionTable(userId);
                     appFactory.setUser(new Manager(
                             rs.getString("nome"),
                             rs.getString("senha"),
                             rs.getString("username"),
                             rs.getString("email"),
-                            rs.getBoolean("isAdmin")
+                            rs.getBoolean("is_admin")
                     ));
                     return 1;
                 }
@@ -134,11 +134,11 @@ public class Authentication {
             User user = new User();
 
             while (rs.next()) {
-                user.setIdUsuario(rs.getInt("idUsuario"));
+                user.setIdUsuario(rs.getInt("id_usuario"));
                 user.setName(rs.getString("nome"));
                 user.setUsername(username);
                 user.setEmail(rs.getString("email"));
-                user.setAdmin(rs.getBoolean("isAdmin"));
+                user.setAdmin(rs.getBoolean("is_admin"));
             }
             ps.close();
             rs.close();
@@ -156,7 +156,7 @@ public class Authentication {
 
     public void setSessionDuration(int userId, int lastSessionID, long sessionTime) {
         PreparedStatement ps;
-        String query = "UPDATE sessao SET duracaoSessao = ? WHERE idUsuario = ? and idSessao = ?";
+        String query = "UPDATE sessao SET duracao_sessao = ? WHERE id_usuario = ? and id_sessao = ?";
 
         try  {
             con = DBConnection.getConnection();
@@ -188,8 +188,8 @@ public class Authentication {
             ArrayList<Long> dates = new ArrayList<>();
 
             while (rs.next()) {
-                dates.add(rs.getDate("dataSessao").getTime()
-                        + rs.getTime("tempoSessao").getTime()
+                dates.add(rs.getDate("data_sessao").getTime()
+                        + rs.getTime("tempo_sessao").getTime()
                         - 10800000L);
             }
             ps.close();
@@ -215,7 +215,7 @@ public class Authentication {
 
     public int getLastSessionId() {
         PreparedStatement ps;
-        String query = "SELECT idSessao FROM sessao ORDER BY idSessao DESC LIMIT 1";
+        String query = "SELECT id_sessao FROM sessao ORDER BY id_sessao DESC LIMIT 1";
 
         try {
             con = DBConnection.getConnection();
@@ -224,7 +224,7 @@ public class Authentication {
             int id = 0;
 
             if (rs.next()) {
-                id = rs.getInt("idSessao");
+                id = rs.getInt("id_sessao");
             }
 
             ps.close();

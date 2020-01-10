@@ -23,6 +23,8 @@ public class MainGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        primaryStage.setHeight(450);
+        primaryStage.setWidth(700);
         startProgram(primaryStage);
         Encryption.setKey("Jaguaric@3105");
         LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");
@@ -34,7 +36,8 @@ public class MainGUI extends Application {
 
         mainController = loader.getController();
         LOGGER.info("Wrapper pane successfully loaded.");
-        mainController.setMainPanePadding(300, 120, 300, 120);
+        mainController.setMainPanePadding(300, 70, 300, 70);
+        wrapperPane.setOnMouseClicked(e -> wrapperPane.requestFocus());
 
         SceneNavigator.setMainGUIController(mainController);
         SceneNavigator.loadScene(SceneNavigator.LOGIN);

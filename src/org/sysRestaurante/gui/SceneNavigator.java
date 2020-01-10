@@ -11,11 +11,11 @@ import java.util.logging.Logger;
 public class SceneNavigator {
 
     public static final String MAIN = "MainGUI.fxml";
-    public static final String LOGIN = "LoginPage.fxml";
+    public static final String LOGIN = "Login.fxml";
     public static final String MENU_TOOL_BAR = "ToolBar.fxml";
-    public static final String DASHBOARD = "DashboardPane.fxml";
-    public static final String APPLICATION_STAGE = "AppStage.fxml";
-    public static final String NOTE_PANE = "NotePane.fxml";
+    public static final String DASHBOARD = "Dashboard.fxml";
+    public static final String APPLICATION_STAGE = "App.fxml";
+    public static final String NOTE_PANE = "AddNotesDialog.fxml";
     public static final String CLEAR_NOTES_ALERT = "ClearNotesAlert.fxml";
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUIController.class.getName());

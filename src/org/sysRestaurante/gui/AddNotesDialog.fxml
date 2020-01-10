@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox fx:id="noteDialogBox" spacing="10.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.AddNotesDialogController">
+   <children>
+      <VBox>
+         <children>
+            <TextArea fx:id="textNote" prefHeight="100.0" prefWidth="300.0" promptText="Escreva aqui seu lembrete">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextArea>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <VBox spacing="10.0">
+         <children>
+            <Button fx:id="confirmNote" mnemonicParsing="false" onAction="#addNote" opacity="0.8" prefWidth="90.0" text="Adicionar nota" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+            <Pane VBox.vgrow="ALWAYS" />
+            <Button fx:id="cancelNote" mnemonicParsing="false" onAction="#cancel" opacity="0.8" prefWidth="90.0" text="Cancelar">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</HBox>

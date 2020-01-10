@@ -13,14 +13,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class Annotation {
+public class Reminder {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Registration.class.getName());
 
     public void insert(int idUser, String content, LocalDate date) {
         PreparedStatement ps;
         Connection con;
-        String query = "INSERT INTO anotacoes (idUsuario, conteudo, data) VALUES (?, ?, ?)";
+        String query = "INSERT INTO lembrete (id_usuario, conteudo, data) VALUES (?, ?, ?)";
 
         try {
             con = DBConnection.getConnection();
@@ -42,7 +42,7 @@ public class Annotation {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection con = null;
-        String query = "SELECT * FROM anotacoes";
+        String query = "SELECT * FROM lembrete";
 
         try {
             con = DBConnection.getConnection();
@@ -52,10 +52,10 @@ public class Annotation {
 
             while (rs.next()) {
                 Note note = new Note(rs.getString("conteudo"));
-                note.setIdUser(rs.getInt("idUsuario"));
-                note.setIdNote(rs.getInt("idAnotacao"));
+                note.setIdUser(rs.getInt("id_usuario"));
+                note.setIdNote(rs.getInt("id_lembrete"));
                 note.setDate(rs.getDate("data").toLocalDate());
-                note.setChecked(rs.getBoolean("isChecked"));
+                note.setChecked(rs.getBoolean("is_marcado"));
                 notes.add(note);
             }
             return notes;
@@ -70,13 +70,14 @@ public class Annotation {
         return null;
     }
 
-    public void removeAll() throws SQLException {
+    public void removeChecked() throws SQLException {
         PreparedStatement ps = null;
         Connection con = null;
-        String query = "DELETE FROM anotacoes";
+        String query = "DELETE FROM lembrete WHERE is_marcado = ?";
         try {
             con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
+            ps.setBoolean(1, true);
             ps.executeUpdate();
         } catch (SQLException e) {
             ExceptionHandler.incrementGlobalExceptionsCount();
@@ -90,7 +91,7 @@ public class Annotation {
     public void check(int id) {
         PreparedStatement ps;
         Connection con;
-        String query = "UPDATE anotacoes SET isChecked = ? WHERE idAnotacao = ?";
+        String query = "UPDATE lembrete SET is_marcado = ? WHERE id_lembrete = ?";
         try {
             con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
@@ -107,7 +108,7 @@ public class Annotation {
     public void uncheck(int id) {
         PreparedStatement ps;
         Connection con;
-        String query = "UPDATE anotacoes SET isChecked = ? WHERE idAnotacao = ?";
+        String query = "UPDATE lembrete SET is_marcado = ? WHERE id_lembrete = ?";
         try {
             con = DBConnection.getConnection();
             ps = con.prepareStatement(query);

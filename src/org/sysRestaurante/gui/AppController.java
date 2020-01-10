@@ -29,13 +29,14 @@ import java.time.temporal.ChronoUnit;
 import java.util.logging.Logger;
 
 public class AppController implements DateFormatter {
+
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(AppController.class.getName());
+    private static long timerInMillies;
+    private Label sessionTimer;
+    private Authentication certs = new Authentication();
 
     @FXML
     private BorderPane borderPaneHolder;
-    private Label sessionTimer;
-    private Authentication certs = new Authentication();
-    private static long timerInMillies;
 
     public void initialize() throws IOException {
         startChronometer();
@@ -46,15 +47,21 @@ public class AppController implements DateFormatter {
                 FXMLLoader.load(AppController.class.getResource(SceneNavigator.DASHBOARD)));
         SceneNavigator.loadScene(borderPaneHolder);
         borderPaneHolder.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
+        Stage stage = (Stage) borderPaneHolder.getScene().getWindow();
+        stage.setWidth(950);
+        stage.setHeight(670);
+        stage.centerOnScreen();
     }
 
     public HBox getFooter() {
         String lastSessionDate = DATE_FORMAT.format(certs.getLastSessionDate());
         Label timeStatusLabel = new Label("Logado em " + lastSessionDate);
+        Label copyleftLabel = new Label("Copyleft (C) 2020 Saulo Felix GNU SysRestaurante");
         Pane _growPane = new Pane();
         HBox footer = new HBox();
-        Label copyleftLabel = new Label("Copyleft (C) 2020 Saulo Felix GNU SysRestaurante");
 
+        timeStatusLabel.setOpacity(0.6);
+        copyleftLabel.setOpacity(0.6);
         footer.setPrefHeight(30);
         footer.setPadding(new Insets(1, 3, 1, 3));
         footer.setAlignment(Pos.CENTER);
@@ -72,6 +79,7 @@ public class AppController implements DateFormatter {
             long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(initialTime, LocalDateTime.now());
             String elapsedTime = LocalTime.ofSecondOfDay(elapsedTimeInSeconds).toString();
             sessionTimer.setText(" | Tempo da sessao " + elapsedTime);
+            sessionTimer.setOpacity(0.6);
             timerInMillies += 1L;
         }), new KeyFrame(Duration.millis(1000)));
 
@@ -79,6 +87,7 @@ public class AppController implements DateFormatter {
         chronometer.play();
         LOGGER.info("Chronometer initialized normally");
     }
+
     public long getElapsedSessionTime() {
         return timerInMillies;
     }

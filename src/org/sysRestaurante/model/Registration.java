@@ -17,7 +17,7 @@ public class Registration {
     public void insert(String nome, String pass, String username, String email) throws SQLException {
         PreparedStatement ps = null;
         Connection con = null;
-        String query = "INSERT INTO usuario (nome, senha, username, email, isAdmin) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO usuario (nome, senha, username, email, is_admin) VALUES (?, ?, ?, ?, ?)";
         String password = Encryption.encrypt(pass);
 
         try {
