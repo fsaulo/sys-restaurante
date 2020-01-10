@@ -24,7 +24,7 @@ public class MainGUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setHeight(450);
-        primaryStage.setWidth(700);
+        primaryStage.setWidth(750);
         startProgram(primaryStage);
         Encryption.setKey("Jaguaric@3105");
         LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");

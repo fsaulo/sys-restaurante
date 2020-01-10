@@ -17,6 +17,7 @@ public class SceneNavigator {
     public static final String APPLICATION_STAGE = "App.fxml";
     public static final String NOTE_PANE = "AddNotesDialog.fxml";
     public static final String CLEAR_NOTES_ALERT = "ClearNotesAlert.fxml";
+    public static final String CASHIER = "Cashier.fxml";
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUIController.class.getName());
 

@@ -32,8 +32,8 @@ public class DashbordController {
 
     public void initialize() {
         AppFactory.setDashbordController(this);
-        HBox footer = AppFactory.getAppController().getFooter();
-        borderPane.setBottom(footer);
+        borderPane.setBottom(AppFactory.getAppController().getFooter());
+        borderPane.setTop(AppFactory.getAppController().getHeader());
         clearNotesButton.setOnMouseClicked(e -> showClearAlertWindow());
         Platform.runLater(() -> notesPane.requestFocus());
         reloadNotes();

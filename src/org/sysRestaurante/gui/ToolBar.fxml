@@ -36,7 +36,7 @@
                <children>
                   <VBox alignment="CENTER_LEFT">
                      <children>
-                        <ToggleButton fx:id="toggleMenuPrincipal" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#menuPrincipal" prefHeight="45.0" prefWidth="300.0" style="-fx-border-width: 1;" styleClass="menus" text="Principal">
+                        <ToggleButton fx:id="toggleMenuPrincipal" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#menuPrincipal" onMouseClicked="#submenuGerenciarBalcao" prefHeight="45.0" prefWidth="300.0" style="-fx-border-width: 1;" styleClass="menus" text="Principal">
                            <font>
                               <Font name="Carlito Bold" size="18.0" />
                            </font>
@@ -49,7 +49,7 @@
                         </ToggleButton>
                         <VBox fx:id="vBoxMenuPrincipal">
                            <children>
-                              <ToggleButton fx:id="toggleGerenciarBalcao" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#submenuGerenciarBalcao" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Gerenciar balcão">
+                              <ToggleButton fx:id="toggleGerenciarBalcao" alignment="CENTER_LEFT" mnemonicParsing="false" onMouseClicked="#submenuGerenciarBalcao" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Gerenciar balcão">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="submenuGroup" />
                                  </toggleGroup>

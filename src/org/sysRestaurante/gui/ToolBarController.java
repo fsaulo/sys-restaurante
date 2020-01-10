@@ -2,6 +2,7 @@ package org.sysRestaurante.gui;
 
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
@@ -95,32 +96,13 @@ public class ToolBarController extends AppFactory {
         }
     }
 
-    public void onLogoutRequest(ActionEvent event) {
-        try {
-            event.consume();
-            AppFactory.setUser(null);
-            LOGGER.info("User logged out");
-            AppFactory.getLoginController().storeLastSessionDuration();
-            MainGUI.restartProgram();
-        } catch (IOException e) {
-            ExceptionHandler.incrementGlobalExceptionsCount();
-            LOGGER.severe("Couldn't log out due to IOException.");
-            e.printStackTrace();
-        }
-    }
-
     public void hideSubmenus(VBox... boxes) {
         for (VBox box : boxes) {
             box.getChildren().clear();
         }
     }
 
-    public void selectMenuPrincipal() {
-        this.toggleMenuPrincipal.setSelected(true);
-    }
-
     public void menuPrincipal(ActionEvent event) {
-        event.consume();
         unfoldSubmenus(
                 vBoxMenuPrincipal,
                 toggleGerenciarBalcao,
@@ -131,12 +113,19 @@ public class ToolBarController extends AppFactory {
         );
     }
 
-    public void dashboard(MouseEvent event) {
-        AppFactory.getAppController().loadDashboardPage(event);
+    public void selectMenuPrincipal() {
+        toggleMenuPrincipal.setSelected(true);
     }
 
-    public void submenuGerenciarBalcao() {
+    public void dashboard(MouseEvent event) {
+        untoggleGroup(submenuGroup);
+        AppFactory.getAppController().loadPage(event, SceneNavigator.DASHBOARD);
+    }
+
+    public void submenuGerenciarBalcao(MouseEvent event) {
+        if (!toggleGerenciarBalcao.isSelected()) toggleGerenciarBalcao.setSelected(true);
         selectMenuPrincipal();
+        AppFactory.getAppController().loadPage(event, SceneNavigator.CASHIER);
     }
 
     public void submenuComandas() {
@@ -179,6 +168,26 @@ public class ToolBarController extends AppFactory {
                     if (grupo.getSelectedToggle() == null) {
                         grupo.selectToggle(old);
                     }});
+        }
+    }
+
+    public void untoggleGroup(ToggleGroup group) {
+        ToggleButton toggle = new ToggleButton();
+        toggle.setToggleGroup(group);
+        toggle.setSelected(true);
+    }
+
+    public void onLogoutRequest(ActionEvent event) {
+        try {
+            event.consume();
+            AppFactory.setUser(null);
+            LOGGER.info("User logged out");
+            AppFactory.getLoginController().storeLastSessionDuration();
+            MainGUI.restartProgram();
+        } catch (IOException e) {
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            LOGGER.severe("Couldn't log out due to IOException.");
+            e.printStackTrace();
         }
     }
 }

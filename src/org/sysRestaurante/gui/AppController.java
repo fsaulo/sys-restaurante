@@ -14,6 +14,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
@@ -48,7 +51,7 @@ public class AppController implements DateFormatter {
         SceneNavigator.loadScene(borderPaneHolder);
         borderPaneHolder.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
         Stage stage = (Stage) borderPaneHolder.getScene().getWindow();
-        stage.setWidth(950);
+        stage.setWidth(1100);
         stage.setHeight(670);
         stage.centerOnScreen();
     }
@@ -69,6 +72,15 @@ public class AppController implements DateFormatter {
         footer.getChildren().addAll(timeStatusLabel, sessionTimer);
         footer.getChildren().addAll(_growPane, copyleftLabel);
         return footer;
+    }
+
+    public HBox getHeader() {
+        Label titleLable = new Label("Bar & Restaurante Frutos do Mar");
+        titleLable.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 30));
+        HBox header = new HBox();
+        header.setPadding(new Insets(1, 1, 1, 1));
+        header.getChildren().add(titleLable);
+        return header;
     }
 
     private void startChronometer() {
@@ -92,14 +104,14 @@ public class AppController implements DateFormatter {
         return timerInMillies;
     }
 
-    public void loadDashboardPage(MouseEvent e) {
+    public void loadPage(MouseEvent e, String fxml) {
         try {
             borderPaneHolder.centerProperty()
-                    .setValue(FXMLLoader.load(AppController.class.getResource(SceneNavigator.DASHBOARD)));
+                    .setValue(FXMLLoader.load(AppController.class.getResource(fxml)));
             e.consume();
         } catch (IOException ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();
-            LOGGER.severe("Couldn't load dashboard.");
+            LOGGER.severe("Couldn't load " + fxml + " page.");
             ex.printStackTrace();
         }
     }
