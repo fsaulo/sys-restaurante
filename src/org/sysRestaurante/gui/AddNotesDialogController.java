@@ -29,8 +29,8 @@ public class AddNotesDialogController {
                     AppFactory.getUser().getIdUsuario(),
                     textNote.getText(),
                     LocalDate.now());
-            AppFactory.getDashbordController().addNoteToList(new Note(textNote.getText()));
-            AppFactory.getDashbordController().reloadNotes();
+            AppFactory.getDashboardController().addNoteToList(new Note(textNote.getText()));
+            AppFactory.getDashboardController().reloadNotes();
         }
         textNote.clear();
         ((Node) (event.getSource())).getScene().getWindow().hide();

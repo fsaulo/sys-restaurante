@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.model.Reminder;
 import org.sysRestaurante.util.ExceptionHandler;
@@ -25,8 +24,8 @@ public class ClearNotesAlertController {
         yesButton.setOnMouseClicked(e -> {
             try {
                 new Reminder().removeChecked();
-                AppFactory.getDashbordController().removeNotesFromList();
-                AppFactory.getDashbordController().reloadNotes();
+                AppFactory.getDashboardController().removeNotesFromList();
+                AppFactory.getDashboardController().reloadNotes();
                 ((Node) e.getSource()).getScene().getWindow().hide();
             } catch (SQLException ex) {
                 ExceptionHandler.incrementGlobalExceptionsCount();
@@ -34,8 +33,6 @@ public class ClearNotesAlertController {
             }
         });
 
-        noButton.setOnMouseClicked(e -> {
-            ((Node) e.getSource()).getScene().getWindow().hide();
-        });
+        noButton.setOnMouseClicked(e -> ((Node) e.getSource()).getScene().getWindow().hide());
     }
 }

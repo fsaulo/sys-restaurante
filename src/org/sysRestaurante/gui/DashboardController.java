@@ -5,10 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.etc.Note;
 import org.sysRestaurante.model.Reminder;
@@ -18,9 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class DashbordController {
+public class DashboardController {
 
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DashbordController.class.getName());
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DashboardController.class.getName());
     private ArrayList<Note> notesList;
 
     @FXML
@@ -31,7 +28,7 @@ public class DashbordController {
     private VBox notesPane;
 
     public void initialize() {
-        AppFactory.setDashbordController(this);
+        AppFactory.setDashboardController(this);
         borderPane.setBottom(AppFactory.getAppController().getFooter());
         borderPane.setTop(AppFactory.getAppController().getHeader());
         clearNotesButton.setOnMouseClicked(e -> showClearAlertWindow());

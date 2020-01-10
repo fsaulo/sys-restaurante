@@ -4,7 +4,7 @@ import org.sysRestaurante.etc.Employee;
 import org.sysRestaurante.etc.Manager;
 import org.sysRestaurante.etc.User;
 import org.sysRestaurante.gui.AppController;
-import org.sysRestaurante.gui.DashbordController;
+import org.sysRestaurante.gui.DashboardController;
 import org.sysRestaurante.gui.LoginController;
 import org.sysRestaurante.model.Authentication;
 
@@ -13,7 +13,7 @@ public class AppFactory {
     private static Employee employee;
     private static User user;
     private static AppController appController;
-    private static DashbordController dashbordController;
+    private static DashboardController dashboardController;
     private static LoginController loginController;
     private static Authentication authentication;
 
@@ -33,12 +33,12 @@ public class AppFactory {
         AppFactory.loginController = loginController;
     }
 
-    public static DashbordController getDashbordController() {
-        return dashbordController;
+    public static DashboardController getDashboardController() {
+        return dashboardController;
     }
 
-    public static void setDashbordController(DashbordController dashbordController) {
-        AppFactory.dashbordController = dashbordController;
+    public static void setDashboardController(DashboardController dashboardController) {
+        AppFactory.dashboardController = dashboardController;
     }
 
     public static AppController getAppController() {
