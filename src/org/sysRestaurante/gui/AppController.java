@@ -10,7 +10,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -51,26 +53,28 @@ public class AppController implements DateFormatter {
         SceneNavigator.loadScene(borderPaneHolder);
         borderPaneHolder.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
         Stage stage = (Stage) borderPaneHolder.getScene().getWindow();
-        stage.setWidth(1100);
-        stage.setHeight(670);
+        stage.setWidth(1280);
+        stage.setHeight(720);
         stage.centerOnScreen();
     }
 
     public HBox getFooter() {
         String lastSessionDate = DATE_FORMAT.format(certs.getLastSessionDate());
-        Label timeStatusLabel = new Label("Logado em " + lastSessionDate);
-        Label copyleftLabel = new Label("Copyleft (C) 2020 Saulo Felix GNU SysRestaurante");
-        Pane _growPane = new Pane();
-        HBox footer = new HBox();
-
+        Label timeStatusLabel = new Label("Logado em: " + lastSessionDate);
+        timeStatusLabel.setStyle("-fx-border-color: #CBCBCC; -fx-font-size: 14");
+        timeStatusLabel.setPadding(new Insets(0,5,0,5));
         timeStatusLabel.setOpacity(0.6);
+        Label copyleftLabel = new Label("(C) 2020 Saulo Felix GNU SysRestaurante");
+        copyleftLabel.setStyle("-fx-font-size: 14");
         copyleftLabel.setOpacity(0.6);
-        footer.setPrefHeight(30);
-        footer.setPadding(new Insets(1, 3, 1, 3));
-        footer.setAlignment(Pos.CENTER);
-        footer.setHgrow(_growPane, Priority.ALWAYS);
+        Pane growPane = new Pane();
+        HBox footer = new HBox();
+        footer.setPadding(new Insets(5, 0, 0, 0));
+        footer.setSpacing(5);
+        footer.setAlignment(Pos.BOTTOM_CENTER);
+        footer.setHgrow(growPane, Priority.ALWAYS);
         footer.getChildren().addAll(timeStatusLabel, sessionTimer);
-        footer.getChildren().addAll(_growPane, copyleftLabel);
+        footer.getChildren().addAll(growPane, copyleftLabel);
         return footer;
     }
 
@@ -90,7 +94,9 @@ public class AppController implements DateFormatter {
         Timeline chronometer = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(initialTime, LocalDateTime.now());
             String elapsedTime = LocalTime.ofSecondOfDay(elapsedTimeInSeconds).toString();
-            sessionTimer.setText(" | Tempo da sessao " + elapsedTime);
+            sessionTimer.setText("" + elapsedTime);
+            sessionTimer.setStyle("-fx-border-color: #CBCBCC; -fx-font-size: 14");
+            sessionTimer.setPadding(new Insets(0, 5, 0, 5));
             sessionTimer.setOpacity(0.6);
             timerInMillies += 1L;
         }), new KeyFrame(Duration.millis(1000)));
