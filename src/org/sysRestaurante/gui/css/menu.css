@@ -123,3 +123,25 @@
     -fx-effect: dropshadow(three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
 }
 
+.cashier-button {
+    -fx-background-color: #dddddd;
+    -fx-background-radius: 5px;
+}
+
+.cashier-button:hover {
+    -fx-background-color:
+        linear-gradient(#59c2ff 5%, #3da4ff 100%);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.cashier-button:hover *{
+   -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.tile-info {
+    -fx-background-color: #F4F4F4;
+    -fx-border-color: #C8C8C8;
+}
