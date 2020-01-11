@@ -3,7 +3,6 @@
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.ToggleButton?>
@@ -186,23 +185,27 @@
             <String fx:value="box" />
          </styleClass>
       </ScrollPane>
-      <HBox alignment="TOP_CENTER" prefHeight="30.0" styleClass="box-footer">
+      <HBox alignment="TOP_CENTER" styleClass="box-footer">
          <VBox.margin>
             <Insets />
          </VBox.margin>
          <children>
-            <Label fx:id="userLabel" prefHeight="25.0" prefWidth="130.0" styleClass="menu-user" text="Hello, Admin">
+            <Label fx:id="userLabel" prefWidth="170.0" styleClass="menu-user" text="Hello, Admin">
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
                <font>
                   <Font name="Cantarell Regular" size="14.0" />
                </font></Label>
-            <Pane prefHeight="28.0" prefWidth="100.0" />
-            <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#onLogoutRequest" prefHeight="28.0" prefWidth="80.0" styleClass="menu-exit" text="Sair">
+            <Pane prefWidth="67.0" />
+            <Label fx:id="userLabel1" onMouseClicked="#onLogoutRequest" prefWidth="75.0" styleClass="menu-exit" text="Sair">
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
                <font>
                   <Font name="Cantarell Regular" size="14.0" />
-               </font></Button>
+               </font>
+            </Label>
          </children>
       </HBox>
    </children>

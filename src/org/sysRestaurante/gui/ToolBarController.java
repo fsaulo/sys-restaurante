@@ -177,7 +177,7 @@ public class ToolBarController extends AppFactory {
         toggle.setSelected(true);
     }
 
-    public void onLogoutRequest(ActionEvent event) {
+    public void onLogoutRequest(MouseEvent event) {
         try {
             event.consume();
             AppFactory.setUser(null);
