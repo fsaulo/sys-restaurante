@@ -13,7 +13,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -23,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="dashboardGrid" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.DashboardController">
+<GridPane fx:id="dashboardGrid" prefHeight="741.0" prefWidth="1055.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.DashboardController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -50,50 +49,29 @@
                   </VBox>
                   <VBox spacing="10.0" style="-fx-background-color: #dcdcdc;" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox minHeight="-Infinity" spacing="10.0" styleClass="tile-info">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
+                        <HBox spacing="10.0" styleClass="tile-info">
                            <children>
-                              <VBox prefHeight="50.0" prefWidth="250.0" HBox.hgrow="ALWAYS" />
-                              <Separator orientation="VERTICAL" />
-                              <VBox prefHeight="50.0" prefWidth="250.0" HBox.hgrow="ALWAYS" />
-                              <Separator orientation="VERTICAL" />
-                              <VBox prefHeight="50.0" prefWidth="250.0" HBox.hgrow="ALWAYS" />
+                              <LineChart animated="false" legendSide="RIGHT" prefWidth="682.0" HBox.hgrow="ALWAYS">
+                                 <xAxis>
+                                    <CategoryAxis side="BOTTOM" />
+                                 </xAxis>
+                                 <yAxis>
+                                    <NumberAxis minorTickCount="0" prefHeight="199.0" prefWidth="13.0" side="LEFT" tickLabelGap="5.0" tickMarkVisible="false" />
+                                 </yAxis>
+                              </LineChart>
+                              <PieChart title="Produtos mais vendidos" />
                            </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
                         </HBox>
-                        <TitledPane alignment="CENTER_RIGHT" animated="false" text="Vendas na semana">
-                           <content>
-                              <HBox prefHeight="250.0" prefWidth="651.0" spacing="10.0">
-                                 <children>
-                                    <LineChart animated="false" legendSide="RIGHT" prefWidth="682.0" HBox.hgrow="ALWAYS">
-                                       <xAxis>
-                                          <CategoryAxis side="BOTTOM" />
-                                       </xAxis>
-                                       <yAxis>
-                                          <NumberAxis minorTickCount="0" prefHeight="199.0" prefWidth="13.0" side="LEFT" tickLabelGap="5.0" tickMarkVisible="false" />
-                                       </yAxis>
-                                    </LineChart>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </HBox>
-                           </content>
-                           <font>
-                              <Font name="Carlito" size="16.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </TitledPane>
                         <HBox spacing="10.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <SplitPane dividerPositions="0.6418109187749668" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                              <SplitPane dividerPositions="0.5006657789613849" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                                  <items>
-                                    <VBox alignment="TOP_CENTER" minWidth="200.0" prefHeight="252.0" prefWidth="394.0" styleClass="tile-info">
+                                    <VBox alignment="TOP_CENTER" minWidth="200.0" prefHeight="252.0" prefWidth="431.0" styleClass="tile-info">
                                        <children>
-                                          <Label maxWidth="-Infinity" text="Relatório de transaçoes">
+                                          <Label maxWidth="-Infinity" text="Resumo financeiro">
                                              <font>
                                                 <Font name="Carlito" size="16.0" />
                                              </font>
@@ -106,16 +84,12 @@
                                     </VBox>
                                     <VBox alignment="TOP_CENTER" prefHeight="252.0" prefWidth="0.0" styleClass="tile-info">
                                        <children>
-                                          <Label text="Produtos mais vendidos">
+                                          <Label text="Registros">
                                              <font>
                                                 <Font name="Carlito" size="16.0" />
                                              </font>
                                           </Label>
-                                          <VBox alignment="CENTER" style="-fx-background-color: white; -fx-border-color: #C8C8C8;" VBox.vgrow="ALWAYS">
-                                             <children>
-                                                <PieChart />
-                                             </children>
-                                          </VBox>
+                                          <VBox alignment="CENTER" style="-fx-background-color: white; -fx-border-color: #C8C8C8;" VBox.vgrow="ALWAYS" />
                                        </children>
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

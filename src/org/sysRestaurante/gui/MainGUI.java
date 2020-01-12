@@ -57,7 +57,7 @@ public class MainGUI extends Application {
         stage.show();
 
         stage.setOnCloseRequest(e -> {
-            if (AppFactory.getUser() != null) {
+            if (AppFactory.getUserDao() != null) {
                 AppFactory.getLoginController().storeLastSessionDuration();
             }
             LOGGER.info(DBConnection.getGlobalDBRequestsCount() + " requests to database.");

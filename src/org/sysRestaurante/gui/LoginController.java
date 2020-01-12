@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.etc.User;
+import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.util.DateFormatter;
 import org.sysRestaurante.util.ExceptionHandler;
@@ -31,7 +31,7 @@ public class LoginController implements DateFormatter {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(LoginController.class.getName());
     private static final String SIGNATURE_IMAGE = "resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
     private static final String LOGINTEXT_IMAGE = "resources/images/login-text.png";
-    private static User userData;
+    private static UserDao userDaoData;
     private Authentication certs = new Authentication();
 
     @FXML
@@ -104,7 +104,7 @@ public class LoginController implements DateFormatter {
     }
 
     public void storeLastSessionDuration() {
-        certs.setSessionDuration(userData.getIdUsuario(),
+        certs.setSessionDuration(userDaoData.getIdUsuario(),
                 new Authentication().getLastSessionId(),
                 AppFactory.getAppController().getElapsedSessionTime());
     }
@@ -121,8 +121,8 @@ public class LoginController implements DateFormatter {
     }
 
     public void onAuthenticationAccepted() {
-        userData = certs.getUserData(usernameField.getText());
-        AppFactory.setUser(userData);
+        userDaoData = certs.getUserData(usernameField.getText());
+        AppFactory.setUserDao(userDaoData);
         MainGUIController mainController = MainGUI.getMainController();
         mainController.setMainPanePadding(0, 0, 0, 0);
         SceneNavigator.loadScene(SceneNavigator.APPLICATION_STAGE);

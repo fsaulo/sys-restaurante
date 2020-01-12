@@ -1,9 +1,9 @@
 package org.sysRestaurante.model;
 
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.etc.Employee;
-import org.sysRestaurante.etc.Manager;
-import org.sysRestaurante.etc.User;
+import org.sysRestaurante.dao.EmployeeDao;
+import org.sysRestaurante.dao.ManagerDao;
+import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.Encryption;
 import org.sysRestaurante.util.ExceptionHandler;
@@ -92,7 +92,7 @@ public class Authentication {
                 int userId = rs.getInt("id_usuario");
                 AppFactory appFactory = new AppFactory();
                 if (!rs.getBoolean("is_admin")) {
-                    appFactory.setUser(new Employee(
+                    appFactory.setUserDao(new EmployeeDao(
                             rs.getString("nome"),
                             rs.getString("senha"),
                             rs.getString("username"),
@@ -103,7 +103,7 @@ public class Authentication {
                 }
                 else if (rs.getBoolean("is_admin")) {
                     updateSessionTable(userId);
-                    appFactory.setUser(new Manager(
+                    appFactory.setUserDao(new ManagerDao(
                             rs.getString("nome"),
                             rs.getString("senha"),
                             rs.getString("username"),
@@ -121,7 +121,7 @@ public class Authentication {
         return 1;
     }
 
-    public User getUserData(String username) {
+    public UserDao getUserData(String username) {
         PreparedStatement ps;
         ResultSet rs;
         String query = "SELECT * FROM usuario WHERE username = ?";
@@ -131,19 +131,19 @@ public class Authentication {
             ps = con.prepareStatement(query);
             ps.setString(1, username);
             rs = ps.executeQuery();
-            User user = new User();
+            UserDao userDao = new UserDao();
 
             while (rs.next()) {
-                user.setIdUsuario(rs.getInt("id_usuario"));
-                user.setName(rs.getString("nome"));
-                user.setUsername(username);
-                user.setEmail(rs.getString("email"));
-                user.setAdmin(rs.getBoolean("is_admin"));
+                userDao.setIdUsuario(rs.getInt("id_usuario"));
+                userDao.setName(rs.getString("nome"));
+                userDao.setUsername(username);
+                userDao.setEmail(rs.getString("email"));
+                userDao.setAdmin(rs.getBoolean("is_admin"));
             }
             ps.close();
             rs.close();
             con.close();
-            return user;
+            return userDao;
         } catch (SQLException e) {
             LOGGER.severe("Couldn't get user data.");
             ExceptionHandler.incrementGlobalExceptionsCount();

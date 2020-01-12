@@ -1,21 +1,31 @@
 package org.sysRestaurante.applet;
 
-import org.sysRestaurante.etc.Employee;
-import org.sysRestaurante.etc.Manager;
-import org.sysRestaurante.etc.User;
+import org.sysRestaurante.dao.CashierDao;
+import org.sysRestaurante.dao.EmployeeDao;
+import org.sysRestaurante.dao.ManagerDao;
+import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.gui.AppController;
 import org.sysRestaurante.gui.DashboardController;
 import org.sysRestaurante.gui.LoginController;
 import org.sysRestaurante.model.Authentication;
 
 public class AppFactory {
-    private static Manager manager;
-    private static Employee employee;
-    private static User user;
+    private static ManagerDao managerDao;
+    private static EmployeeDao employeeDao;
+    private static UserDao userDao;
     private static AppController appController;
     private static DashboardController dashboardController;
     private static LoginController loginController;
     private static Authentication authentication;
+    private static CashierDao cashierDao;
+
+    public static CashierDao getCashierDao() {
+        return cashierDao;
+    }
+
+    public static void setCashierDao(CashierDao cashierDao) {
+        AppFactory.cashierDao = cashierDao;
+    }
 
     public static Authentication getAuthentication() {
         return authentication;
@@ -50,27 +60,27 @@ public class AppFactory {
     }
 
 
-    public static Manager getManager() {
-        return manager;
+    public static ManagerDao getManagerDao() {
+        return managerDao;
     }
 
-    public static void setManager(Manager manager) {
-        AppFactory.manager = manager;
+    public static void setManagerDao(ManagerDao managerDao) {
+        AppFactory.managerDao = managerDao;
     }
 
-    public static Employee getEmployee() {
-        return employee;
+    public static EmployeeDao getEmployeeDao() {
+        return employeeDao;
     }
 
-    public static void setEmployee(Employee employee) {
-        AppFactory.employee = employee;
+    public static void setEmployeeDao(EmployeeDao employeeDao) {
+        AppFactory.employeeDao = employeeDao;
     }
 
-    public static User getUser() {
-        return user;
+    public static UserDao getUserDao() {
+        return userDao;
     }
 
-    public static void setUser(User user) {
-        AppFactory.user = user;
+    public static void setUserDao(UserDao userDao) {
+        AppFactory.userDao = userDao;
     }
 }

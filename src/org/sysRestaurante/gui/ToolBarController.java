@@ -2,7 +2,6 @@ package org.sysRestaurante.gui;
 
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
@@ -180,7 +179,7 @@ public class ToolBarController extends AppFactory {
     public void onLogoutRequest(MouseEvent event) {
         try {
             event.consume();
-            AppFactory.setUser(null);
+            AppFactory.setUserDao(null);
             LOGGER.info("User logged out");
             AppFactory.getLoginController().storeLastSessionDuration();
             MainGUI.restartProgram();

@@ -1,8 +1,8 @@
-package org.sysRestaurante.etc;
+package org.sysRestaurante.dao;
 
 import java.time.LocalDate;
 
-public class Note {
+public class NoteDao {
     private int idNote;
     private int idUser;
     private String content;
@@ -17,7 +17,7 @@ public class Note {
         isChecked = checked;
     }
 
-    public Note(String content) {
+    public NoteDao(String content) {
         this.content = content;
     }
 

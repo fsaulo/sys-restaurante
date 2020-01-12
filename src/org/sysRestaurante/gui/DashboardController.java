@@ -7,7 +7,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.etc.Note;
+import org.sysRestaurante.dao.NoteDao;
 import org.sysRestaurante.model.Reminder;
 import org.sysRestaurante.util.LoggerHandler;
 
@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class DashboardController {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DashboardController.class.getName());
-    private ArrayList<Note> notesList;
+    private ArrayList<NoteDao> notesList;
 
     @FXML
     private Button clearNotesButton;
@@ -41,7 +41,7 @@ public class DashboardController {
     public void reloadNotes() {
         removeNotesFromList();
         updateNotesList();
-        for (Note item : notesList) {
+        for (NoteDao item : notesList) {
             CheckBox box = new CheckBox(item.getContent());
             box.setWrapText(true);
             box.setOnMouseClicked(e -> {
@@ -77,7 +77,7 @@ public class DashboardController {
         }
     }
 
-    public void addNoteToList(Note note) {
-        notesList.add(note);
+    public void addNoteToList(NoteDao noteDao) {
+        notesList.add(noteDao);
     }
 }

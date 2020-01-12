@@ -1,9 +1,9 @@
-package org.sysRestaurante.etc;
+package org.sysRestaurante.dao;
 
-public class Manager extends User {
+public class ManagerDao extends UserDao {
     private boolean isAdmin;
 
-    public Manager(String name, String username, String email, String pass, boolean isAdmin) {
+    public ManagerDao(String name, String username, String email, String pass, boolean isAdmin) {
         super();
         setAdmin(isAdmin);
     }

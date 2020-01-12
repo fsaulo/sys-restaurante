@@ -1,6 +1,6 @@
-package org.sysRestaurante.etc;
+package org.sysRestaurante.dao;
 
-public class Log {
+public class LogDao {
     private int idLog;
     private int userId;
     private int dateLog;

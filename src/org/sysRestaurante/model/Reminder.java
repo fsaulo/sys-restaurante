@@ -1,6 +1,6 @@
 package org.sysRestaurante.model;
 
-import org.sysRestaurante.etc.Note;
+import org.sysRestaurante.dao.NoteDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -38,7 +38,7 @@ public class Reminder {
         }
     }
 
-    public ArrayList<Note> getAllPermanentNotes() throws SQLException {
+    public ArrayList<NoteDao> getAllPermanentNotes() throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection con = null;
@@ -48,17 +48,17 @@ public class Reminder {
             con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
             rs = ps.executeQuery();
-            ArrayList<Note> notes = new ArrayList<>();
+            ArrayList<NoteDao> noteDaos = new ArrayList<>();
 
             while (rs.next()) {
-                Note note = new Note(rs.getString("conteudo"));
-                note.setIdUser(rs.getInt("id_usuario"));
-                note.setIdNote(rs.getInt("id_lembrete"));
-                note.setDate(rs.getDate("data").toLocalDate());
-                note.setChecked(rs.getBoolean("is_marcado"));
-                notes.add(note);
+                NoteDao noteDao = new NoteDao(rs.getString("conteudo"));
+                noteDao.setIdUser(rs.getInt("id_usuario"));
+                noteDao.setIdNote(rs.getInt("id_lembrete"));
+                noteDao.setDate(rs.getDate("data").toLocalDate());
+                noteDao.setChecked(rs.getBoolean("is_marcado"));
+                noteDaos.add(noteDao);
             }
-            return notes;
+            return noteDaos;
         } catch (SQLException ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();

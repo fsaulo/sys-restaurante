@@ -1,9 +1,9 @@
-package org.sysRestaurante.etc;
+package org.sysRestaurante.dao;
 
-public class Employee extends User {
+public class EmployeeDao extends UserDao {
     private int idEmployee;
 
-    public Employee(String name, String username, String email, String pass) {
+    public EmployeeDao(String name, String username, String email, String pass) {
         super();
     }
 

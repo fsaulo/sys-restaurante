@@ -45,10 +45,10 @@
                      <children>
                         <VBox prefHeight="690.0" prefWidth="280.0" spacing="5.0">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="70.0" prefWidth="140.0" styleClass="cashier-button">
+                              <VBox alignment="CENTER" onMouseClicked="#onOpenOrCloseCashierClicked" prefHeight="70.0" prefWidth="140.0" styleClass="cashier-button">
                                  <children>
                                     <ImageView fitHeight="30.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
-                                    <Label styleClass="cashier-text" text="Abrir/fechar caixa" textAlignment="CENTER" wrapText="true">
+                                    <Label fx:id="openOrCloseCashierLabel" styleClass="cashier-text" text="Abrir/fechar caixa" textAlignment="CENTER" wrapText="true">
                                        <font>
                                           <Font name="Carlito Bold" size="16.0" />
                                        </font>

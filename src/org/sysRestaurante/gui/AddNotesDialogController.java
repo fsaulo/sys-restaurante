@@ -7,7 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.etc.Note;
+import org.sysRestaurante.dao.NoteDao;
 import org.sysRestaurante.model.Reminder;
 
 import java.time.LocalDate;
@@ -26,10 +26,10 @@ public class AddNotesDialogController {
     public void addNote(ActionEvent event) {
         if (!textNote.getText().equals("")) {
             new Reminder().insert(
-                    AppFactory.getUser().getIdUsuario(),
+                    AppFactory.getUserDao().getIdUsuario(),
                     textNote.getText(),
                     LocalDate.now());
-            AppFactory.getDashboardController().addNoteToList(new Note(textNote.getText()));
+            AppFactory.getDashboardController().addNoteToList(new NoteDao(textNote.getText()));
             AppFactory.getDashboardController().reloadNotes();
         }
         textNote.clear();

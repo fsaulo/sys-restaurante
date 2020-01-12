@@ -1,9 +1,9 @@
-package org.sysRestaurante.etc;
+package org.sysRestaurante.dao;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Session {
+public class SessionDao {
     private int idSsession;
     private int idLastSession;
     private int idUser;

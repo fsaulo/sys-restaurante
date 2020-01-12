@@ -1,6 +1,6 @@
-package org.sysRestaurante.etc;
+package org.sysRestaurante.dao;
 
-public class User {
+public class UserDao {
     private String name;
     private String username;
     private String email;
