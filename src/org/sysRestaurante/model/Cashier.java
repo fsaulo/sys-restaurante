@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Cashier {
@@ -99,5 +100,31 @@ public class Cashier {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public static LocalDateTime getCashierDateTimeDetailsById(int idCashier) {
+        PreparedStatement ps;
+        ResultSet rs;
+        String query = "SELECT data_abertura, hora_abertura FROM caixa WHERE id_caixa = ?";
+        LocalDateTime localDateTime = null;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idCashier);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Date date = rs.getDate("data_abertura");
+                Time time = rs.getTime("hora_abertura");
+
+                localDateTime = date.toLocalDate().atTime(time.toLocalTime());
+            }
+
+            return localDateTime;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

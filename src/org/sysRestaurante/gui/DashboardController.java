@@ -4,11 +4,15 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.NoteDao;
+import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Reminder;
+import org.sysRestaurante.util.DateFormatter;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.sql.SQLException;
@@ -26,6 +30,10 @@ public class DashboardController {
     private BorderPane borderPane;
     @FXML
     private VBox notesPane;
+    @FXML
+    private VBox statusCashierBox;
+    @FXML
+    private Label statusCashierLabel;
 
     public void initialize() {
         AppFactory.setDashboardController(this);
@@ -34,6 +42,7 @@ public class DashboardController {
         clearNotesButton.setOnMouseClicked(e -> showClearAlertWindow());
         Platform.runLater(() -> notesPane.requestFocus());
         reloadNotes();
+        updateCashierStatus();
 
         LOGGER.info("At dashboard flow.");
     }
@@ -74,6 +83,30 @@ public class DashboardController {
             notesList = new Reminder().getAllPermanentNotes();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void updateCashierStatus() {
+        boolean isCashierOpenned = Cashier.getLastCashierStatus();
+        statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
+        Label message = new Label();
+        message.setStyle("-fx-font-family: carlito; " +
+                "-fx-font-size: 15; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-style: italic");
+        String date = DateFormatter
+                .TIME_DETAILS_FORMAT
+                .format(Cashier.getCashierDateTimeDetailsById(AppFactory.getCashierDao().getIdCashier()));
+
+        if (isCashierOpenned) {
+            statusCashierLabel.setText("CAIXA LIVRE");
+            statusCashierBox.setStyle("-fx-background-color: #58996A; -fx-background-radius: 5");
+            statusCashierBox.getChildren().add(statusCashierLabel);
+        } else {
+            message.setText("Fechado em " + date);
+            statusCashierLabel.setText("CAIXA FECHADO");
+            statusCashierBox.setStyle("-fx-background-color: #bababa; -fx-background-radius: 5");
+            statusCashierBox.getChildren().addAll(statusCashierLabel, message);
         }
     }
 

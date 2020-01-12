@@ -7,6 +7,7 @@ import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.gui.AppController;
 import org.sysRestaurante.gui.DashboardController;
 import org.sysRestaurante.gui.LoginController;
+import org.sysRestaurante.gui.MainGUIController;
 import org.sysRestaurante.model.Authentication;
 
 public class AppFactory {
@@ -18,6 +19,15 @@ public class AppFactory {
     private static LoginController loginController;
     private static Authentication authentication;
     private static CashierDao cashierDao;
+    private static MainGUIController mainController;
+
+    public static MainGUIController getMainController() {
+        return mainController;
+    }
+
+    public static void setMainController(MainGUIController mainController) {
+        AppFactory.mainController = mainController;
+    }
 
     public static CashierDao getCashierDao() {
         return cashierDao;

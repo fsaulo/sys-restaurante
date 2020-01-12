@@ -8,19 +8,27 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
@@ -130,12 +138,15 @@ public class AppController implements DateFormatter {
     public static void showDialog(String fxml) {
         try {
             Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            AppFactory.getMainController().darkenScreen();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(fxml));
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setResizable(false);
-            stage.show();
+            stage.showAndWait();
+            AppFactory.getMainController().brightenScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
