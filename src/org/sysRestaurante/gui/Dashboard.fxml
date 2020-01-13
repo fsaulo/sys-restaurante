@@ -80,7 +80,7 @@
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="TOP_CENTER" prefHeight="252.0" prefWidth="0.0" styleClass="tile-info">
+                                    <VBox alignment="TOP_CENTER" minWidth="140.0" prefHeight="252.0" styleClass="tile-info">
                                        <children>
                                           <Label text="Registros">
                                              <font>
@@ -153,14 +153,14 @@
                         </VBox>
                      </content>
                   </ScrollPane>
-                  <HBox alignment="TOP_CENTER" spacing="15.0">
+                  <HBox alignment="CENTER" spacing="15.0">
                      <children>
-                        <Button fx:id="addNoteButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showNotesWindow" opacity="0.8" prefWidth="95.0" styleClass="cashier-button" text="Adicionar lembrete" textAlignment="CENTER" wrapText="true">
+                        <Button fx:id="addNoteButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showNotesWindow" opacity="0.8" prefHeight="50.0" prefWidth="106.0" styleClass="cashier-button" text="Adicionar lembrete" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="Carlito Bold" size="15.0" />
                            </font>
                         </Button>
-                        <Button fx:id="clearNotesButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" opacity="0.8" prefWidth="95.0" styleClass="remove-item-button" text="Limpar marcados" textAlignment="CENTER" wrapText="true">
+                        <Button fx:id="clearNotesButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" opacity="0.8" prefWidth="106.0" styleClass="remove-item-button" text="Limpar marcados" textAlignment="CENTER" wrapText="true" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="Carlito Bold" size="15.0" />
                            </font>
@@ -168,7 +168,7 @@
                      </children>
                   </HBox>
                   <Separator opacity="0.8" prefHeight="20.0" prefWidth="200.0" />
-                  <VBox fx:id="statusCashierBox" alignment="CENTER" prefHeight="65.0" style="-fx-background-color: #58996A; -fx-background-radius: 5;">
+                  <VBox fx:id="statusCashierBox" alignment="CENTER" minHeight="-Infinity" prefHeight="65.0" style="-fx-background-color: #58996A; -fx-background-radius: 5;">
                      <children>
                         <Label fx:id="statusCashierLabel" text="CAIXA ABERTO" textFill="WHITE">
                            <font>
