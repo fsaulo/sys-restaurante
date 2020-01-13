@@ -289,7 +289,7 @@
                               <Separator prefWidth="200.0" />
                               <HBox prefHeight="50.0" spacing="5.0">
                                  <children>
-                                    <VBox alignment="CENTER" onMouseClicked="#onOpenOrCloseCashierClicked" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                                    <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Label fx:id="openOrCloseCashierLabel11" styleClass="cashier-text" text="Consulta" textAlignment="CENTER" wrapText="true">
                                              <font>
@@ -301,7 +301,7 @@
                                           <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="CENTER" onMouseClicked="#onOpenOrCloseCashierClicked" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                                    <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Label fx:id="openOrCloseCashierLabel21" styleClass="cashier-text" text="Exibição" textAlignment="CENTER" wrapText="true">
                                              <font>
@@ -317,7 +317,7 @@
                               </HBox>
                               <HBox disable="true" prefHeight="50.0" spacing="5.0">
                                  <children>
-                                    <VBox alignment="CENTER" onMouseClicked="#onOpenOrCloseCashierClicked" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                                    <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Label fx:id="openOrCloseCashierLabel1" styleClass="cashier-text" text="Detalhes" textAlignment="CENTER" wrapText="true">
                                              <font>
@@ -329,7 +329,7 @@
                                           <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="CENTER" onMouseClicked="#onOpenOrCloseCashierClicked" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                                    <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
                                        <children>
                                           <Label fx:id="openOrCloseCashierLabel2" styleClass="cashier-text" text="Editar" textAlignment="CENTER" wrapText="true">
                                              <font>

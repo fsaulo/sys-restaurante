@@ -29,6 +29,7 @@ public class CashierController {
     private VBox cashierDateDetailsBox;
 
     public void initialize() {
+        AppFactory.setCashierController(this);
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
         updateCashierElements();

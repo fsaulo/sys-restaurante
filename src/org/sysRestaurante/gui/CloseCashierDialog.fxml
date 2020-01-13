@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefWidth="526.0" spacing="50.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER_LEFT">
+         <children>
+            <Label text="Deseja realmente encerrar o dia?">
+               <font>
+                  <Font name="Carlito Bold" size="25.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+         </children>
+      </VBox>
+      <VBox spacing="5.0">
+         <children>
+            <HBox alignment="CENTER_RIGHT" style="-fx-border-color: #DCDCDC;">
+               <children>
+                  <VBox alignment="CENTER_LEFT" style="-fx-border-width: 1,0,0,0;" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Produto mais vendido">
+                           <font>
+                              <Font name="Carlito Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label opacity="0.7" text="Cerveja. Total: 255">
+                           <font>
+                              <Font name="Carlito" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Separator opacity="0.5" orientation="VERTICAL" />
+                  <VBox alignment="TOP_RIGHT" prefWidth="190.0">
+                     <children>
+                        <Label text="Comandas finalizadas">
+                           <font>
+                              <Font name="Carlito Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label opacity="0.7" text="25">
+                           <font>
+                              <Font name="Carlito" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Separator opacity="0.5" orientation="VERTICAL" />
+                  <VBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="190.0">
+                     <children>
+                        <Label text="Duraçao do caixa">
+                           <font>
+                              <Font name="Carlito Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label opacity="0.7" text="25 horas">
+                           <font>
+                              <Font name="Carlito" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" style="-fx-border-color: #DCDCDC;">
+               <children>
+                  <VBox alignment="CENTER_LEFT" minWidth="-Infinity" opacity="0.6" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Caixa aberto em">
+                           <font>
+                              <Font name="Carlito Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="TOP_LEFT" text="01/02/2019 21:44" underline="true" wrapText="true">
+                           <font>
+                              <Font name="Carlito Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Separator opacity="0.5" orientation="VERTICAL" />
+                  <VBox alignment="TOP_RIGHT" minWidth="-Infinity" prefHeight="51.0" prefWidth="190.0">
+                     <children>
+                        <Label text="Total retiradas">
+                           <font>
+                              <Font name="Carlito Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label text="R$ -10,00" textFill="RED">
+                           <font>
+                              <Font name="Carlito Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <Separator opacity="0.5" orientation="VERTICAL" />
+                  <VBox alignment="TOP_RIGHT" minWidth="-Infinity" prefHeight="51.0" prefWidth="190.0">
+                     <children>
+                        <Label text="Balanço do dia">
+                           <font>
+                              <Font name="Carlito Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label text="R$ 144,21" textFill="#289e2c">
+                           <font>
+                              <Font name="Carlito Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <Separator prefWidth="200.0" />
+            <HBox alignment="BOTTOM_RIGHT" spacing="10.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="140.0" text="Continuar">
+                     <font>
+                        <Font name="Carlito" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="140.0" styleClass="cancel-button" text="Cancelar (Esc)">
+                     <font>
+                        <Font name="Carlito" size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <stylesheets>
+      <URL value="@css/menu.css" />
+   </stylesheets>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</VBox>

@@ -168,3 +168,17 @@
     -fx-text-fill: white;
     -fx-cursor: hand;
 }
+
+.cancel-button:pressed {
+    -fx-background-color:
+        linear-gradient(rgba(250,89,89,1) 0%, rgba(255,85,85,1) 27%);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.cancel-button:pressed *{
+    -fx-background-color:
+        linear-gradient(rgba(250,89,89,1) 0%, rgba(255,85,85,1) 27%);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
