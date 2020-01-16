@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="766.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierController">
+<GridPane fx:id="gridWrapper" prefHeight="766.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
    </columnConstraints>
@@ -201,7 +201,7 @@
                                  </font>
                               </Label>
                               <Separator prefWidth="200.0" />
-                              <VBox alignment="CENTER" onMouseClicked="#onOpenOrCloseCashierClicked" prefHeight="70.0" styleClass="cashier-button">
+                              <VBox fx:id="openOrCloseCashierButton" alignment="CENTER" onMouseClicked="#onOpenOrCloseCashier" prefHeight="70.0" styleClass="cashier-button">
                                  <children>
                                     <ImageView fitHeight="30.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
                                     <Label fx:id="openOrCloseCashierLabel" styleClass="cashier-text" text="Abrir/fechar caixa" textAlignment="CENTER" wrapText="true">

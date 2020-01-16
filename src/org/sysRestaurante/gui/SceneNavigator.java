@@ -2,6 +2,9 @@ package org.sysRestaurante.gui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
@@ -18,6 +21,8 @@ public class SceneNavigator {
     public static final String NOTE_PANE = "AddNotesDialog.fxml";
     public static final String CLEAR_NOTES_ALERT = "ClearNotesAlert.fxml";
     public static final String CASHIER = "Cashier.fxml";
+    public static final String CLOSE_CASHIER_DIALOG = "CloseCashierDialog.fxml";
+    public static final KeyCombination F10_OPEN_OR_CLOSE_CASHIER = new KeyCodeCombination(KeyCode.F10);
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUIController.class.getName());
 

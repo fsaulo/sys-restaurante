@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefWidth="526.0" spacing="50.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="vboxWrapper" alignment="TOP_CENTER" prefWidth="700.0" spacing="50.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CloseCashierDialogController">
    <children>
       <VBox alignment="CENTER_LEFT">
          <children>
@@ -132,19 +132,19 @@
             <Separator prefWidth="200.0" />
             <HBox alignment="BOTTOM_RIGHT" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="140.0" text="Continuar">
+                  <Button fx:id="continueButton" mnemonicParsing="false" opacity="0.8" prefHeight="40.0" prefWidth="110.0" text="Continuar">
                      <font>
-                        <Font name="Carlito" size="15.0" />
+                        <Font name="Carlito Bold" size="15.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="140.0" styleClass="cancel-button" text="Cancelar (Esc)">
+                  <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" opacity="0.8" prefHeight="40.0" prefWidth="110.0" text="Cancelar">
                      <font>
                         <Font name="Carlito" size="15.0" />
                      </font>
                   </Button>
                </children>
                <padding>
-                  <Insets top="5.0" />
+                  <Insets bottom="5.0" top="5.0" />
                </padding>
             </HBox>
          </children>
