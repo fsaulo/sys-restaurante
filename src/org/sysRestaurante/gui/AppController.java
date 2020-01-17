@@ -10,6 +10,8 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.effect.ColorAdjust;
@@ -30,6 +32,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.model.Authentication;
@@ -92,11 +95,11 @@ public class AppController implements DateFormatter {
     }
 
     public HBox getHeader() {
-        Label titleLable = new Label("Bar & Restaurante Frutos do Mar");
-        titleLable.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 30));
+        Label titleLabel = new Label("Bar & Restaurante Frutos do Mar");
+        titleLabel.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 30));
         HBox header = new HBox();
         header.setPadding(new Insets(1, 1, 1, 1));
-        header.getChildren().add(titleLable);
+        header.getChildren().add(titleLabel);
         return header;
     }
 
@@ -149,6 +152,39 @@ public class AppController implements DateFormatter {
             AppFactory.getMainController().brightenScreen();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void openPOS() {
+        try {
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            AppFactory.getMainController().darkenScreen();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(AppController.class.getResource(SceneNavigator.CASHIER_POS));
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+
+            stage.setOnCloseRequest(e -> {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Alerta do sistema");
+                alert.setHeaderText("Tem certeza que deseja cancelar venda?");
+                alert.setContentText("Todos os registros salvos serão perdidos.");
+                alert.showAndWait();
+
+                if (alert.getResult() != ButtonType.CANCEL)
+                    ((Node) e.getSource()).getScene().getWindow().hide();
+
+            });
+
+            stage.setHeight(AppFactory.getAppController().borderPaneHolder.getHeight()*0.90);
+            stage.setWidth(AppFactory.getAppController().borderPaneHolder.getWidth()*0.90);
+            stage.setResizable(false);
+            stage.showAndWait();
+
+            AppFactory.getMainController().brightenScreen();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 }

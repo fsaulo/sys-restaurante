@@ -42,6 +42,7 @@ public class DashboardController {
         clearNotesButton.setOnMouseClicked(e -> showClearAlertWindow());
         Platform.runLater(() -> notesPane.requestFocus());
         reloadNotes();
+        handleKeyEvent();
         updateCashierStatus();
 
         LOGGER.info("At dashboard flow.");
@@ -63,6 +64,10 @@ public class DashboardController {
                 box.setSelected(true);
             notesPane.getChildren().add(box);
         }
+    }
+
+    public void handleKeyEvent() {
+        AppFactory.getMainController().getScene().getAccelerators().clear();
     }
 
     public void showNotesWindow() {

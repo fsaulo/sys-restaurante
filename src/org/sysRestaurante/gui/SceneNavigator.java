@@ -22,6 +22,8 @@ public class SceneNavigator {
     public static final String CLEAR_NOTES_ALERT = "ClearNotesAlert.fxml";
     public static final String CASHIER = "Cashier.fxml";
     public static final String CLOSE_CASHIER_DIALOG = "CloseCashierDialog.fxml";
+    public static final String OPEN_CASHIER_DIALOG = "OpenCashierDialog.fxml";
+    public static final String CASHIER_POS = "CashierPOS.fxml";
     public static final KeyCombination F10_OPEN_OR_CLOSE_CASHIER = new KeyCodeCombination(KeyCode.F10);
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUIController.class.getName());

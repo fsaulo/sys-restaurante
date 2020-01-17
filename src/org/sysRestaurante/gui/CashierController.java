@@ -2,20 +2,21 @@ package org.sysRestaurante.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.util.DateFormatter;
 import org.sysRestaurante.util.LoggerHandler;
 
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 public class CashierController {
-
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(CashierController.class.getName());
 
     @FXML
     private BorderPane borderPaneHolder;
@@ -32,7 +33,17 @@ public class CashierController {
     @FXML
     private Label statusCashierLabel;
     @FXML
+    private Label revenueLabel;
+    @FXML
     private VBox cashierDateDetailsBox;
+    @FXML
+    private Label inCashLabel;
+    @FXML
+    private Label byCardLabel;
+    @FXML
+    private Label withdrawalLabel;
+
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(CashierController.class.getName());
 
     @FXML
     public void initialize() {
@@ -40,28 +51,40 @@ public class CashierController {
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
         updateCashierElements();
+        handleKeyEvent();
         LOGGER.info("At cashier page");
     }
 
     @FXML
-    public void onOpenOrCloseCashier(MouseEvent event) {
+    public void onOpenOrCloseCashier() {
         boolean isCashierOpenned = Cashier.getLastCashierStatus();
-        Cashier cashier = new Cashier();
 
         if (isCashierOpenned) {
             AppController.showDialog(SceneNavigator.CLOSE_CASHIER_DIALOG);
         } else {
-            cashier.open(AppFactory.getUserDao().getIdUsuario());
+            AppController.showDialog(SceneNavigator.OPEN_CASHIER_DIALOG);
         }
 
-        event.consume();
         updateCashierElements();
+    }
+
+    @FXML
+    public void onNewOrder() {
+        AppFactory.getAppController().openPOS();
+    }
+
+    public void handleKeyEvent() {
+        AppFactory.getMainController().getScene().getAccelerators().clear();
+        AppFactory.getMainController().getScene().getAccelerators()
+                .put(SceneNavigator.F10_OPEN_OR_CLOSE_CASHIER, this::onOpenOrCloseCashier);
     }
 
     public void updateCashierElements() {
         boolean isCashierOpenned = Cashier.getLastCashierStatus();
+        CashierDao cashierDao;
 
         if (isCashierOpenned) {
+            cashierDao = new Cashier().getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
             setDisableCashierOptions(false);
             openOrCloseCashierLabel.setText("Fechar caixa");
             statusCashierLabel.setText("CAIXA LIVRE");
@@ -70,6 +93,7 @@ public class CashierController {
             statusCashierBox.getChildren().add(statusCashierLabel);
             changeCashierDetails(true);
         } else {
+            cashierDao = new CashierDao();
             setDisableCashierOptions(true);
             openOrCloseCashierLabel.setText("Abrir caixa");
             Label statusMessage = new Label("Use o atalho F10 para abrir o caixa");
@@ -82,6 +106,16 @@ public class CashierController {
                     "-fx-font-style: italic");
             changeCashierDetails(false);
         }
+
+        Currency brl = Currency.getInstance("BRL");
+        NumberFormat brlCurrencyFormat = NumberFormat.getCurrencyInstance();
+        brlCurrencyFormat.setCurrency(brl);
+        brlCurrencyFormat.setMaximumFractionDigits(brl.getDefaultFractionDigits());
+
+        revenueLabel.setText(brlCurrencyFormat.format(cashierDao.getRevenue()));
+        inCashLabel.setText(brlCurrencyFormat.format(cashierDao.getInCash()));
+        byCardLabel.setText(brlCurrencyFormat.format(cashierDao.getByCard()));
+        withdrawalLabel.setText(brlCurrencyFormat.format(cashierDao.getWithdrawal()));
     }
 
     public void setDisableCashierOptions(boolean status) {

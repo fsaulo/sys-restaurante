@@ -2,6 +2,7 @@ package org.sysRestaurante.gui;
 
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Toggle;
@@ -101,7 +102,7 @@ public class ToolBarController extends AppFactory {
         }
     }
 
-    public void menuPrincipal(ActionEvent event) {
+    public void menuPrincipal(Event event) {
         unfoldSubmenus(
                 vBoxMenuPrincipal,
                 toggleGerenciarBalcao,
@@ -110,6 +111,7 @@ public class ToolBarController extends AppFactory {
                 togglePainelCardapio,
                 togglePedidos
         );
+        event.consume();
     }
 
     public void selectMenuPrincipal() {
