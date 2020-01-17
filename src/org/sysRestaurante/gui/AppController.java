@@ -3,6 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -33,6 +34,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.model.Authentication;
@@ -172,9 +174,9 @@ public class AppController implements DateFormatter {
                 alert.setContentText("Todos os registros salvos serão perdidos.");
                 alert.showAndWait();
 
-                if (alert.getResult() != ButtonType.CANCEL)
-                    ((Node) e.getSource()).getScene().getWindow().hide();
-
+                if (alert.getResult() == ButtonType.CANCEL) {
+                    e.consume();
+                }
             });
 
             stage.setHeight(AppFactory.getAppController().borderPaneHolder.getHeight()*0.90);

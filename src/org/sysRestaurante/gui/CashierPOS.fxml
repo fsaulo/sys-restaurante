@@ -11,17 +11,16 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierPOSController">
    <center>
-      <VBox prefWidth="374.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox maxWidth="-Infinity" prefWidth="374.0" spacing="5.0" BorderPane.alignment="CENTER">
          <children>
             <HBox spacing="10.0">
                <children>
-                  <TextField prefHeight="31.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" HBox.hgrow="ALWAYS" />
+                  <TextField prefHeight="31.0" prefWidth="267.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" />
                   <Button mnemonicParsing="false" opacity="0.8" prefHeight="31.0" prefWidth="90.0" text="Pesquisar">
                      <font>
                         <Font name="Carlito" size="16.0" />
@@ -36,18 +35,7 @@
                </font>
             </Label>
             <Separator prefWidth="200.0" />
-            <ListView prefHeight="308.0" prefWidth="387.0" />
-            <Label text="Principais produtos">
-               <font>
-                  <Font name="Carlito Bold" size="20.0" />
-               </font>
-            </Label>
-            <Separator prefWidth="200.0" />
-            <HBox VBox.vgrow="ALWAYS">
-               <children>
-                  <TilePane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #CBCBCC;" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
+            <ListView prefHeight="308.0" prefWidth="387.0" VBox.vgrow="ALWAYS" />
          </children>
          <BorderPane.margin>
             <Insets left="5.0" right="5.0" />
@@ -82,13 +70,44 @@
                <content>
                   <VBox alignment="CENTER" spacing="5.0">
                      <children>
+                        <Label text="Opções de venda">
+                           <font>
+                              <Font name="Carlito Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Separator prefWidth="200.0" />
+                        <VBox fx:id="finalizeSell" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #58996A; -fx-background-radius: 5; -fx-cursor: hand;">
+                           <children>
+                              <Label fx:id="openOrCloseCashierLabel" styleClass="cashier-text" text="Finalizar venda (F2)" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                                 <font>
+                                    <Font name="Carlito Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                        <VBox fx:id="cancelButton" alignment="CENTER" prefHeight="30.0" style="-fx-background-color: rgba(250,89,89,1); -fx-background-radius: 5; -fx-cursor: hand;">
+                           <children>
+                              <Label fx:id="openOrCloseCashierLabel3" styleClass="cashier-text" text="Cancelar (F4)" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                                 <font>
+                                    <Font name="Carlito Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                        <Separator prefWidth="200.0" />
                         <Label text="Nota fiscal">
                            <font>
                               <Font name="Carlito Bold" size="16.0" />
                            </font>
                         </Label>
                         <Separator prefWidth="200.0" />
-                        <HBox prefHeight="50.0" spacing="5.0">
+                        <HBox prefHeight="30.0" spacing="5.0">
                            <children>
                               <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
                                  <children>
@@ -123,7 +142,7 @@
                            </font>
                         </Label>
                         <Separator prefWidth="200.0" />
-                        <HBox disable="true" prefHeight="50.0" spacing="5.0">
+                        <HBox disable="true" prefHeight="30.0" spacing="5.0">
                            <children>
                               <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
                                  <children>
@@ -151,47 +170,6 @@
                               </VBox>
                            </children>
                         </HBox>
-                        <Separator prefWidth="200.0" />
-                        <Label text="Opções de venda">
-                           <font>
-                              <Font name="Carlito Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <Separator prefWidth="200.0" />
-                        <VBox fx:id="finalizeSell" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #58996A; -fx-background-radius: 5; -fx-cursor: hand;">
-                           <children>
-                              <Label fx:id="openOrCloseCashierLabel" styleClass="cashier-text" text="Finalizar venda" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                                 <font>
-                                    <Font name="Carlito Bold" size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label text="(F2)" textFill="WHITE">
-                                 <font>
-                                    <Font name="Carlito Bold" size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </VBox>
-                        <VBox fx:id="cancelButton" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: rgba(250,89,89,1); -fx-background-radius: 5; -fx-cursor: hand;">
-                           <children>
-                              <Label fx:id="openOrCloseCashierLabel3" styleClass="cashier-text" text="Cancelar" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                                 <font>
-                                    <Font name="Carlito Bold" size="16.0" />
-                                 </font>
-                              </Label>
-                              <Label text="(F4)" textFill="WHITE">
-                                 <font>
-                                    <Font name="Carlito Bold" size="16.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </VBox>
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -219,7 +197,7 @@
                <children>
                   <Label text="Total" textFill="#6b9758">
                      <font>
-                        <Font name="Carlito" size="18.0" />
+                        <Font name="Carlito Bold" size="20.0" />
                      </font>
                   </Label>
                   <Label text="R$ 54,90" textFill="#78d34e">
