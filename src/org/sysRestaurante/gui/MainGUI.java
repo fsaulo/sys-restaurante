@@ -23,8 +23,8 @@ public class MainGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setHeight(450);
-        primaryStage.setWidth(750);
+        primaryStage.setHeight(550);
+        primaryStage.setWidth(800);
         startProgram(primaryStage);
         Encryption.setKey("Jaguaric@3105");
         LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");

@@ -134,7 +134,7 @@ public class Authentication {
             UserDao userDao = new UserDao();
 
             while (rs.next()) {
-                userDao.setIdUsuario(rs.getInt("id_usuario"));
+                userDao.setIdUser(rs.getInt("id_usuario"));
                 userDao.setName(rs.getString("nome"));
                 userDao.setUsername(username);
                 userDao.setEmail(rs.getString("email"));

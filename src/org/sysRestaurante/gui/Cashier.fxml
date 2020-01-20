@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridWrapper" prefHeight="766.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierController">
+<GridPane fx:id="gridWrapper" prefHeight="766.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
    </columnConstraints>
@@ -55,7 +66,17 @@
                                           <Insets left="5.0" right="5.0" />
                                        </padding>
                                     </HBox>
-                                    <TableView VBox.vgrow="ALWAYS" />
+                                    <TableView VBox.vgrow="ALWAYS">
+                                       <columns>
+                                          <TableColumn prefWidth="52.0" text="Cod." />
+                                          <TableColumn prefWidth="154.0" text="Detalhes" />
+                                          <TableColumn minWidth="0.0" prefWidth="106.0" text="Observação" />
+                                          <TableColumn prefWidth="94.0" text="Data" />
+                                          <TableColumn prefWidth="95.0" text="Total à vista" />
+                                          <TableColumn prefWidth="107.0" text="Total no cartão" />
+                                          <TableColumn prefWidth="69.0" text="Status" />
+                                          <TableColumn prefWidth="92.0" text="Total" />
+                                       </columns></TableView>
                                     <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" styleClass="box-content">
                                        <children>
                                           <VBox fx:id="cashierDateDetailsBox" alignment="CENTER_RIGHT" opacity="0.6">

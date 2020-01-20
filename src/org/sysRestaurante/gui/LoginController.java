@@ -32,7 +32,7 @@ public class LoginController implements DateFormatter {
     private static final String SIGNATURE_IMAGE = "resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
     private static final String LOGINTEXT_IMAGE = "resources/images/login-text.png";
     private static UserDao userDaoData;
-    private Authentication certs = new Authentication();
+    private final Authentication certs = new Authentication();
 
     @FXML
     private Label dbStatusLabel;
@@ -104,7 +104,7 @@ public class LoginController implements DateFormatter {
     }
 
     public void storeLastSessionDuration() {
-        certs.setSessionDuration(userDaoData.getIdUsuario(),
+        certs.setSessionDuration(userDaoData.getIdUser(),
                 new Authentication().getLastSessionId(),
                 AppFactory.getAppController().getElapsedSessionTime());
     }

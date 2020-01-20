@@ -1,9 +1,9 @@
 package org.sysRestaurante.model;
 
-import com.sun.javafx.geom.AreaOp;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.util.DBConnection;
+import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.sql.Connection;
@@ -52,10 +52,13 @@ public class Cashier {
             }
 
             AppFactory.setCashierDao(cashier);
+            LOGGER.info("Cashier openned.");
             keys.close();
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            LOGGER.severe("Cashier couldn't be oppenned.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
         }
     }
@@ -74,9 +77,13 @@ public class Cashier {
             ps.setBoolean(4, false);
             ps.setInt(5, idCashier);
             ps.executeUpdate();
+
+            LOGGER.info("Cashier closed.");
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            LOGGER.severe("Cashier couldn't be oppened.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
         }
     }

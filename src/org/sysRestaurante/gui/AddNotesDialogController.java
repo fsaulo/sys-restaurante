@@ -26,7 +26,7 @@ public class AddNotesDialogController {
     public void addNote(ActionEvent event) {
         if (!textNote.getText().equals("")) {
             new Reminder().insert(
-                    AppFactory.getUserDao().getIdUsuario(),
+                    AppFactory.getUserDao().getIdUser(),
                     textNote.getText(),
                     LocalDate.now());
             AppFactory.getDashboardController().addNoteToList(new NoteDao(textNote.getText()));

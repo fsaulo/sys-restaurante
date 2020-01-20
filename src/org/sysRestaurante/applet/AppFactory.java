@@ -6,6 +6,7 @@ import org.sysRestaurante.dao.ManagerDao;
 import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.gui.AppController;
 import org.sysRestaurante.gui.CashierController;
+import org.sysRestaurante.gui.CashierPOSController;
 import org.sysRestaurante.gui.DashboardController;
 import org.sysRestaurante.gui.LoginController;
 import org.sysRestaurante.gui.MainGUIController;
@@ -22,6 +23,15 @@ public class AppFactory {
     private static CashierDao cashierDao;
     private static MainGUIController mainController;
     private static CashierController cashierController;
+    private static CashierPOSController cashierPOSController;
+
+    public static CashierPOSController getCashierPOSController() {
+        return cashierPOSController;
+    }
+
+    public static void setCashierPOSController(CashierPOSController cashierPOSController) {
+        AppFactory.cashierPOSController = cashierPOSController;
+    }
 
     public static CashierController getCashierController() {
         return cashierController;
@@ -102,4 +112,5 @@ public class AppFactory {
     public static void setEmployeeDao(EmployeeDao employeeDao) {
         AppFactory.employeeDao = employeeDao;
     }
+
 }

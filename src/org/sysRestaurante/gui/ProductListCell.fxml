@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="wrapperBox" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="id" text="1">
+         <font>
+            <Font name="Carlito" size="16.0" />
+         </font>
+      </Label>
+      <Separator orientation="VERTICAL">
+         <HBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </HBox.margin>
+      </Separator>
+      <Label fx:id="description" text="Descricao do produto" HBox.hgrow="ALWAYS">
+         <font>
+            <Font name="Carlito" size="16.0" />
+         </font>
+      </Label>
+      <Pane HBox.hgrow="ALWAYS" />
+      <Separator orientation="VERTICAL">
+         <HBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </HBox.margin></Separator>
+      <Label fx:id="price" minWidth="-Infinity" prefWidth="100.0" text="R$ 23.12">
+         <font>
+            <Font name="Carlito Bold" size="16.0" />
+         </font>
+      </Label>
+   </children>
+</HBox>

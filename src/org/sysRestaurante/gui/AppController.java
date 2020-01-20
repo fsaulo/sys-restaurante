@@ -3,38 +3,26 @@ package org.sysRestaurante.gui;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.Effect;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.model.Authentication;
@@ -53,7 +41,7 @@ public class AppController implements DateFormatter {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(AppController.class.getName());
     private static long timerInMillies;
     private Label sessionTimer;
-    private Authentication certs = new Authentication();
+    private final Authentication certs = new Authentication();
 
     @FXML
     private BorderPane borderPaneHolder;
@@ -148,6 +136,7 @@ public class AppController implements DateFormatter {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(fxml));
             Scene scene = new Scene(loader.load());
+            stage.setTitle("SysRestaurante: Dialog " + fxml);
             stage.setScene(scene);
             stage.setResizable(false);
             stage.showAndWait();
@@ -160,12 +149,14 @@ public class AppController implements DateFormatter {
     public static void openPOS() {
         try {
             Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            AppFactory.getMainController().darkenScreen();
+            stage.initModality(Modality.WINDOW_MODAL);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.CASHIER_POS));
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
+            stage.setTitle("SysRestaurante: Point of Sale");
+            stage.setMinWidth(720);
+            stage.setMinHeight(430);
 
             stage.setOnCloseRequest(e -> {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -181,10 +172,9 @@ public class AppController implements DateFormatter {
 
             stage.setHeight(AppFactory.getAppController().borderPaneHolder.getHeight()*0.90);
             stage.setWidth(AppFactory.getAppController().borderPaneHolder.getWidth()*0.90);
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.showAndWait();
 
-            AppFactory.getMainController().brightenScreen();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

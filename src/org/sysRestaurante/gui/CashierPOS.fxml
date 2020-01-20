@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
@@ -14,13 +15,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierPOSController">
+<BorderPane fx:id="wrapperBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierPOSController">
    <center>
-      <VBox maxWidth="-Infinity" prefWidth="374.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox spacing="10.0">
+            <Label text="Lista de produtos">
+               <font>
+                  <Font name="Carlito Bold" size="20.0" />
+               </font>
+            </Label>
+            <Separator prefWidth="200.0" />
+            <HBox prefWidth="350.0" spacing="10.0">
                <children>
-                  <TextField prefHeight="31.0" prefWidth="267.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" />
+                  <TextField prefHeight="31.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" HBox.hgrow="ALWAYS" />
                   <Button mnemonicParsing="false" opacity="0.8" prefHeight="31.0" prefWidth="90.0" text="Pesquisar">
                      <font>
                         <Font name="Carlito" size="16.0" />
@@ -29,50 +36,50 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <Label text="Lista de produtos">
-               <font>
-                  <Font name="Carlito Bold" size="20.0" />
-               </font>
-            </Label>
-            <Separator prefWidth="200.0" />
-            <ListView prefHeight="308.0" prefWidth="387.0" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="productsListView" prefHeight="235.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding></ListView>
+            <VBox prefHeight="200.0" prefWidth="350.0" spacing="5.0">
+               <children>
+                  <Label text="Detalhes">
+                     <font>
+                        <Font name="Carlito Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <Separator prefWidth="200.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: #CBCBCC;">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </VBox>
          </children>
          <BorderPane.margin>
             <Insets left="5.0" right="5.0" />
          </BorderPane.margin>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
       </VBox>
    </center>
-   <top>
-      <VBox>
-         <children>
-            <Label fx:id="label" text="Ponto de venda">
-               <font>
-                  <Font name="Carlito Bold" size="44.0" />
-               </font>
-            </Label>
-            <Separator prefWidth="200.0" />
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="5.0" />
-         </BorderPane.margin>
-      </VBox>
-   </top>
    <right>
-      <VBox alignment="TOP_CENTER" prefWidth="179.0" spacing="5.0" style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="5.0" />
+            <Insets />
          </BorderPane.margin>
          <children>
-            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefWidth="230.0" styleClass="scroll" VBox.vgrow="ALWAYS">
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll" VBox.vgrow="ALWAYS">
                <content>
-                  <VBox alignment="CENTER" spacing="5.0">
+                  <VBox alignment="TOP_RIGHT" spacing="4.0">
                      <children>
                         <Label text="Opções de venda">
                            <font>
-                              <Font name="Carlito Bold" size="16.0" />
+                              <Font name="Carlito Bold" size="20.0" />
                            </font>
                         </Label>
                         <Separator prefWidth="200.0" />
@@ -142,9 +149,9 @@
                            </font>
                         </Label>
                         <Separator prefWidth="200.0" />
-                        <HBox disable="true" prefHeight="30.0" spacing="5.0">
+                        <HBox fx:id="editableItems" disable="true" prefHeight="30.0" spacing="5.0">
                            <children>
-                              <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                              <VBox fx:id="removeButton" alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label fx:id="openOrCloseCashierLabel11" styleClass="cashier-text" text="Remover" textAlignment="CENTER" wrapText="true">
                                        <font>
@@ -170,10 +177,8 @@
                               </VBox>
                            </children>
                         </HBox>
+                        <Separator prefWidth="200.0" />
                      </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
                   </VBox>
                </content>
             </ScrollPane>
@@ -181,26 +186,32 @@
       </VBox>
    </right>
    <bottom>
-      <HBox prefHeight="20.0" prefWidth="590.0" style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER" />
+      <HBox prefHeight="20.0" style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER" />
    </bottom>
    <left>
-      <VBox prefHeight="569.0" prefWidth="400.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Ítens no carrinho">
+            <Label fx:id="label" text="Ítens no carrinho">
                <font>
                   <Font name="Carlito Bold" size="20.0" />
                </font>
             </Label>
             <Separator prefWidth="200.0" />
-            <TableView prefHeight="200.0" prefWidth="476.0" VBox.vgrow="ALWAYS" />
-            <VBox alignment="TOP_RIGHT" style="-fx-background-color: black; -fx-border-color: gray; -fx-border-width: 3;">
+            <TableView fx:id="selectedProductsTableView" prefWidth="400.0" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="descriptionColumn" editable="false" minWidth="-1.0" prefWidth="161.0" text="Descrição do produto" />
+                  <TableColumn fx:id="priceColumn" editable="false" minWidth="-Infinity" text="Preço" />
+                  <TableColumn fx:id="qtdColumn" prefWidth="70.0" text="Quantidade" />
+                  <TableColumn fx:id="totalColumn" editable="false" minWidth="-1.0" prefWidth="88.0" text="Total" />
+               </columns></TableView>
+            <VBox alignment="TOP_RIGHT" style="-fx-background-color: black; -fx-border-color: gray; -fx-border-width: 2;">
                <children>
-                  <Label text="Total" textFill="#6b9758">
+                  <Label text="Total" textFill="#77d14db2">
                      <font>
-                        <Font name="Carlito Bold" size="20.0" />
+                        <Font name="Arial Black" size="15.0" />
                      </font>
                   </Label>
-                  <Label text="R$ 54,90" textFill="#78d34e">
+                  <Label fx:id="totalCashierLabel" text="R$ 54,90" textFill="#78d34e">
                      <font>
                         <Font name="Arial Black" size="27.0" />
                      </font>
@@ -214,9 +225,9 @@
                </padding>
             </VBox>
          </children>
-         <padding>
+         <BorderPane.margin>
             <Insets bottom="5.0" />
-         </padding>
+         </BorderPane.margin>
       </VBox>
    </left>
    <stylesheets>

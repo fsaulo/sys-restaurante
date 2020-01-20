@@ -3,7 +3,6 @@ package org.sysRestaurante.gui;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
@@ -13,8 +12,10 @@ import javafx.scene.text.FontWeight;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.util.CurrencyField;
+import org.sysRestaurante.util.LoggerHandler;
 
 import java.util.Locale;
+import java.util.logging.Logger;
 
 public class OpenCashierDialogController {
 
@@ -27,6 +28,9 @@ public class OpenCashierDialogController {
     @FXML
     private TextArea addNote;
 
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(
+            OpenCashierDialogController.class.getName());
+
     public void initialize() {
         Cashier cashier = new Cashier();
         CurrencyField startCashField = new CurrencyField(new Locale("pt",  "BR"));
@@ -36,13 +40,9 @@ public class OpenCashierDialogController {
         Platform.runLater(startCashField::requestFocus);
 
         continueButton.setOnMouseClicked(event -> {
-            cashier.open(AppFactory.getUserDao().getIdUsuario(), startCashField.getAmount(), addNote.getText());
+            LOGGER.info("Trying to open cashier...");
+            cashier.open(AppFactory.getUserDao().getIdUser(), startCashField.getAmount(), addNote.getText());
             ((Node) event.getSource()).getScene().getWindow().hide();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Informação do sistema");
-            alert.setHeaderText(null);
-            alert.setContentText("Caixa aberto com sucesso!");
-            alert.showAndWait();
         });
         cancelButton.setCancelButton(true);
         cancelButton.setOnMouseClicked(event -> ((Node) event.getSource()).getScene().getWindow().hide());

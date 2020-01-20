@@ -5,7 +5,7 @@ public class UserDao {
     private String username;
     private String email;
     private String pass;
-    private int idUsuario;
+    private int idUser;
     private boolean isAdmin;
 
     public boolean isAdmin() {
@@ -48,11 +48,11 @@ public class UserDao {
         this.pass = pass;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public int getIdUser() {
+        return idUser;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 }

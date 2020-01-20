@@ -1,11 +1,11 @@
 package org.sysRestaurante.util;
 
 import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.Locale;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.TextField;
@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
 public class CurrencyField extends TextField {
 
     private NumberFormat format;
-    private SimpleDoubleProperty amount;
+    private final SimpleDoubleProperty amount;
 
     public CurrencyField(Locale locale) {
         this(locale, 0.00);
@@ -25,21 +25,13 @@ public class CurrencyField extends TextField {
         format = NumberFormat.getCurrencyInstance(locale);
         setText(format.format(initialAmount));
 
-        focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            Platform.runLater(() -> {
-                int lenght = getText().length();
-                selectRange(lenght, lenght);
-                positionCaret(lenght);
-            });
-        });
+        focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> Platform.runLater(() -> {
+            int lenght = getText().length();
+            selectRange(lenght, lenght);
+            positionCaret(lenght);
+        }));
 
-        textProperty().addListener(new ChangeListener<String>() {
-
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                formatText(newValue);
-            }
-        });
+        textProperty().addListener((observable, oldValue, newValue) -> formatText(newValue));
     }
 
     public Double getAmount() {
@@ -85,5 +77,13 @@ public class CurrencyField extends TextField {
         builder.delete(start, end);
         formatText(builder.toString());
         selectRange(start, start);
+    }
+
+    public static NumberFormat getBRLCurrencyFormat() {
+        Currency brl = Currency.getInstance("BRL");
+        NumberFormat brlCurrencyFormat = NumberFormat.getCurrencyInstance();
+        brlCurrencyFormat.setCurrency(brl);
+        brlCurrencyFormat.setMaximumFractionDigits(brl.getDefaultFractionDigits());
+        return brlCurrencyFormat;
     }
 }

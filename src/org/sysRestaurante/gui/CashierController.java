@@ -1,6 +1,7 @@
 package org.sysRestaurante.gui;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -8,12 +9,11 @@ import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.model.Cashier;
+import org.sysRestaurante.util.CurrencyField;
 import org.sysRestaurante.util.DateFormatter;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.text.NumberFormat;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.logging.Logger;
 
 public class CashierController {
@@ -61,16 +61,33 @@ public class CashierController {
 
         if (isCashierOpenned) {
             AppController.showDialog(SceneNavigator.CLOSE_CASHIER_DIALOG);
+            updateCashierElements();
+            if (!Cashier.getLastCashierStatus()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informação do sistema");
+                alert.setHeaderText("Caixa fechado com sucesso!");
+                alert.setContentText("Para realizar novas operações de caixa, será necessário abri-lo novamente.");
+                alert.showAndWait();
+            }
         } else {
             AppController.showDialog(SceneNavigator.OPEN_CASHIER_DIALOG);
+            updateCashierElements();
+            if (Cashier.getLastCashierStatus()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informação do sistema");
+                alert.setHeaderText(null);
+                alert.setContentText("Caixa aberto com sucesso!");
+                alert.showAndWait();
+            }
         }
-
-        updateCashierElements();
     }
 
     @FXML
     public void onNewOrder() {
+        newOrderBox.setDisable(true);
         AppFactory.getAppController().openPOS();
+        newOrderBox.setDisable(false);
+
     }
 
     public void handleKeyEvent() {
@@ -104,14 +121,12 @@ public class CashierController {
                     "-fx-font-size: 15; " +
                     "-fx-text-fill: white; " +
                     "-fx-font-style: italic");
+            statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
+            statusCashierBox.getChildren().addAll(statusCashierLabel, statusMessage);
             changeCashierDetails(false);
         }
 
-        Currency brl = Currency.getInstance("BRL");
-        NumberFormat brlCurrencyFormat = NumberFormat.getCurrencyInstance();
-        brlCurrencyFormat.setCurrency(brl);
-        brlCurrencyFormat.setMaximumFractionDigits(brl.getDefaultFractionDigits());
-
+        NumberFormat brlCurrencyFormat = CurrencyField.getBRLCurrencyFormat();
         revenueLabel.setText(brlCurrencyFormat.format(cashierDao.getRevenue()));
         inCashLabel.setText(brlCurrencyFormat.format(cashierDao.getInCash()));
         byCardLabel.setText(brlCurrencyFormat.format(cashierDao.getByCard()));
