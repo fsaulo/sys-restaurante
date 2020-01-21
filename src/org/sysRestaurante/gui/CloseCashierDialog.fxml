@@ -62,7 +62,7 @@
                               <Font name="Carlito Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label opacity="0.7" text="25 horas">
+                        <Label fx:id="durationLabel" opacity="0.7" text="25 horas">
                            <font>
                               <Font name="Carlito" size="20.0" />
                            </font>
@@ -83,7 +83,7 @@
                               <Font name="Carlito Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label alignment="TOP_LEFT" text="01/02/2019 21:44" underline="true" wrapText="true">
+                        <Label fx:id="dateOpennedLabel" alignment="TOP_LEFT" text="01/02/2019 21:44" underline="true" wrapText="true">
                            <font>
                               <Font name="Carlito Bold" size="20.0" />
                            </font>
@@ -98,7 +98,7 @@
                               <Font name="Carlito Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label text="R$ -10,00" textFill="RED">
+                        <Label fx:id="withdrawalsLabel" text="R$ -10,00" textFill="RED">
                            <font>
                               <Font name="Carlito Bold" size="20.0" />
                            </font>
@@ -113,7 +113,7 @@
                               <Font name="Carlito Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label text="R$ 144,21" textFill="#289e2c">
+                        <Label fx:id="revenueLabel" text="R$ 144,21" textFill="#289e2c">
                            <font>
                               <Font name="Carlito Bold" size="20.0" />
                            </font>

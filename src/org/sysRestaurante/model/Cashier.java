@@ -1,7 +1,10 @@
 package org.sysRestaurante.model;
 
+import javafx.collections.ObservableList;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
+import org.sysRestaurante.dao.OrderDao;
+import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -11,10 +14,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Cashier {
@@ -23,6 +28,9 @@ public class Cashier {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Cashier.class.getName());
 
     public void open(int userId, double initialAmount, String note) {
+        String query = "INSERT INTO caixa (id_usuario, data_abertura, hora_abertura, balanco_inicial, is_aberto, " +
+                "observacao) VALUES (?,?,?,?,?,?)";
+
         PreparedStatement ps;
         CashierDao cashier = new CashierDao();
         cashier.setIdUser(userId);
@@ -30,9 +38,6 @@ public class Cashier {
         cashier.setTimeOpening(LocalTime.now());
         cashier.setOpenned(true);
         if (initialAmount < 0) initialAmount = 0.0;
-        String query = "INSERT INTO caixa (id_usuario, data_abertura, hora_abertura, balanco_inicial, is_aberto, " +
-                "observacao) " +
-                "VALUES (?,?,?,?,?,?)";
 
         try {
             con = DBConnection.getConnection();
@@ -63,19 +68,17 @@ public class Cashier {
         }
     }
 
-    public void close(int idCashier, double totalRevenue) {
+    public void close(int idCashier) {
+        String query = "UPDATE caixa SET data_fechamento = ?, hora_fechamento = ?, is_aberto = ? WHERE id_caixa = ?";
         PreparedStatement ps;
-        String query = "UPDATE caixa SET data_fechamento = ?, hora_fechamento = ?, balanco = ?, is_aberto = ?" +
-                "WHERE id_caixa = ?";
 
         try {
             con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
             ps.setDate(1, Date.valueOf(LocalDate.now()));
             ps.setTime(2, Time.valueOf(LocalTime.now()));
-            ps.setDouble(3, totalRevenue);
-            ps.setBoolean(4, false);
-            ps.setInt(5, idCashier);
+            ps.setBoolean(3, false);
+            ps.setInt(4, idCashier);
             ps.executeUpdate();
 
             LOGGER.info("Cashier closed.");
@@ -87,11 +90,73 @@ public class Cashier {
             ex.printStackTrace();
         }
     }
+    public static void setRevenue(int idCashier, double inCash, double byCard, double withdrawals) {
+        String query1 = "SELECT balanco, total_avista, total_acartao, total_retiradas FROM caixa WHERE id_caixa = ?";
+        String query2 = "UPDATE caixa SET total_avista = ?, total_acartao = ?, balanco = ?, total_retiradas = ? " +
+                "WHERE id_caixa = ?";
 
-    public static boolean getLastCashierStatus() {
+        PreparedStatement ps;
+        double oldRevenue = 0;
+        double oldInCash = 0;
+        double oldByCard = 0;
+        double oldWithdrawals = 0;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query1);
+            ps.setInt(1, idCashier);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                oldRevenue = rs.getDouble("balanco");
+                oldInCash = rs.getDouble("total_avista");
+                oldByCard = rs.getDouble("total_acartao");
+                oldWithdrawals = rs.getDouble("total_retiradas");
+            }
+
+            ps = con.prepareStatement(query2);
+            ps.setDouble(1, inCash + oldInCash);
+            ps.setDouble(2, byCard + oldByCard);
+            ps.setDouble(3, oldRevenue + inCash + byCard);
+            ps.setDouble(4, oldWithdrawals + withdrawals);
+            ps.setInt(5, idCashier);
+            ps.executeUpdate();
+
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static double getRevenue(int idCashier) {
+        String query = "SELECT balanco FROM caixa WHERE id_caixa = ?";
+        double revenue = 0;
         PreparedStatement ps;
         ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idCashier);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                revenue = rs.getDouble("balanco");
+            }
+
+            return revenue;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static boolean getLastCashierStatus() {
         String query = "SELECT id_caixa, is_aberto FROM caixa ORDER BY id_caixa DESC LIMIT 1";
+        PreparedStatement ps;
+        ResultSet rs;
         boolean isOpenned = false;
         int idCashier = 0;
 
@@ -120,9 +185,9 @@ public class Cashier {
     }
 
     public static LocalDateTime getCashierDateTimeDetailsById(int idCashier) {
+        String query = "SELECT data_abertura, hora_abertura FROM caixa WHERE id_caixa = ?";
         PreparedStatement ps;
         ResultSet rs;
-        String query = "SELECT data_abertura, hora_abertura FROM caixa WHERE id_caixa = ?";
         LocalDateTime localDateTime = null;
 
         try {
@@ -145,9 +210,9 @@ public class Cashier {
     }
 
     public CashierDao getCashierDataAccessObject(int idCashier) {
+        String query = "SELECT * FROM caixa WHERE id_caixa = ?";
         PreparedStatement ps;
         ResultSet rs;
-        String query = "SELECT * FROM caixa WHERE id_caixa = ?";
         CashierDao cashierDao = new CashierDao();
 
         try {
@@ -179,5 +244,92 @@ public class Cashier {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public OrderDao newOrder(double inCash, double byCard, String note) {
+        String query = "INSERT INTO pedido (id_usuario, id_categoria_status, data_pedido, observacao, valor_cartao," +
+                "valor_avista) VALUES (?,?,?,?,?,?)";
+
+        int idUser = AppFactory.getUserDao().getIdUser();
+        int idOrder;
+        OrderDao orderDao = new OrderDao();
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idUser);
+            ps.setInt(2, 1);
+            ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+            ps.setString(4, note);
+            ps.setDouble(5, byCard);
+            ps.setDouble(6, inCash);
+            ps.executeUpdate();
+            rs = ps.getGeneratedKeys();
+
+            while (rs.next()) {
+                idOrder = rs.getInt(1);
+                orderDao.setIdOrder(idOrder);
+            }
+
+            orderDao.setByCard(byCard);
+            orderDao.setInCash(inCash);
+            orderDao.setIdUser(idUser);
+            orderDao.setNote(note);
+
+            LOGGER.info("New order done.");
+            ps.close();
+            con.close();
+            return orderDao;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public void registerOrderInCashier(int idCashier, int idOrder) {
+        String query = "INSERT INTO caixa_has_pedidos (id_caixa, id_pedido) VALUES (?, ?)";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idCashier);
+            ps.setInt(2, idOrder);
+            ps.executeUpdate();
+
+            LOGGER.info("Sell was registered successfully.");
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void addProductsToOrder(int idOrder, ObservableList<ProductDao> productsList) {
+        String query = "INSERT INTO pedido_has_produtos (id_produto, id_pedido, qtd_pedido) VALUES (?, ?, ?)";
+        PreparedStatement ps = null;
+        LOGGER.setLevel(Level.ALL);
+
+        try {
+            Connection con = DBConnection.getConnection();
+            for (ProductDao item : productsList) {
+                LOGGER.config("Adding products. Product id: " + item.getIdProduct());
+                ps = con.prepareStatement(query);
+                ps.setInt(1, item.getIdProduct());
+                ps.setInt(2, idOrder);
+                ps.setInt(3, item.getQuantity());
+                ps.executeUpdate();
+            }
+
+            ps.close();
+            con.close();
+            LOGGER.info("Products added.");
+        } catch (SQLException ex) {
+            LOGGER.severe("Error trying to register products in order.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            ex.printStackTrace();
+        }
     }
 }

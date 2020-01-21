@@ -36,22 +36,22 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <ListView fx:id="productsListView" prefHeight="235.0" VBox.vgrow="ALWAYS">
+            <ListView fx:id="productsListView" prefHeight="235.0" prefWidth="350.0" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding></ListView>
-            <VBox prefHeight="200.0" prefWidth="350.0" spacing="5.0">
+            <VBox spacing="5.0">
                <children>
                   <Label text="Detalhes">
                      <font>
                         <Font name="Carlito Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Separator prefWidth="200.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: #CBCBCC;">
+                  <Separator />
+                  <VBox prefHeight="150.0" style="-fx-border-color: #CBCBCC;">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -83,7 +83,7 @@
                            </font>
                         </Label>
                         <Separator prefWidth="200.0" />
-                        <VBox fx:id="finalizeSell" alignment="CENTER" prefHeight="50.0" style="-fx-background-color: #58996A; -fx-background-radius: 5; -fx-cursor: hand;">
+                        <VBox fx:id="finalizeSell" alignment="CENTER" onMouseClicked="#onFinalizeOrder" prefHeight="50.0" style="-fx-background-color: #58996A; -fx-background-radius: 5; -fx-cursor: hand;">
                            <children>
                               <Label fx:id="openOrCloseCashierLabel" styleClass="cashier-text" text="Finalizar venda (F2)" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                                  <font>

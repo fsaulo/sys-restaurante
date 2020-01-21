@@ -3,6 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -14,8 +15,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
+import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Product;
 import org.sysRestaurante.util.CurrencyField;
 
@@ -23,6 +27,8 @@ public class CashierPOSController {
 
     @FXML
     public VBox cancelButton;
+    @FXML
+    public VBox finalizeSell;
     @FXML
     private VBox removeButton;
     @FXML
@@ -45,6 +51,7 @@ public class CashierPOSController {
     private TableColumn<ProductDao, Double> totalColumn;
 
     private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
+    private double total = 0;
 
     public void initialize() {
         AppFactory.setCashierPOSController(this);
@@ -74,7 +81,6 @@ public class CashierPOSController {
             alert.setHeaderText("Tem certeza que deseja cancelar venda?");
             alert.setContentText("Todos os registros salvos serão perdidos.");
             alert.showAndWait();
-
             if (alert.getResult() != ButtonType.CANCEL)
                 ((Node) e.getSource()).getScene().getWindow().hide();
         });
@@ -84,6 +90,20 @@ public class CashierPOSController {
             if (selectedProductsTableView.getSelectionModel().isEmpty())
                 editableItems.setDisable(true);
         });
+    }
+
+    @FXML
+    public void onFinalizeOrder(Event event) {
+        Cashier cashier = new Cashier();
+        OrderDao orderDao = cashier.newOrder(total, 0, "");
+
+        cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), total, 0, 0);
+        cashier.addProductsToOrder(orderDao.getIdOrder(), selectedProductsTableView.getItems());
+        cashier.registerOrderInCashier(AppFactory.getCashierDao().getIdCashier(), orderDao.getIdOrder());
+        AppFactory.getCashierController().updateCashierElements();
+
+        editableItems.getScene().getWindow().hide();
+        event.consume();
     }
 
     public void addToSelectedProductsList(ProductDao product) {
@@ -100,7 +120,7 @@ public class CashierPOSController {
         updateSelectedList();
     }
 
-    public void updateSelectedList() {
+    private void updateSelectedList() {
         selectedProductsTableView.setItems(selectedProductsList);
         selectedProductsTableView.refresh();
         if (selectedProductsTableView.getSelectionModel().isEmpty())
@@ -108,8 +128,8 @@ public class CashierPOSController {
         updateTotalCashierLabel();
     }
 
-    public void updateTotalCashierLabel() {
-        double total = 0;
+    private void updateTotalCashierLabel() {
+        total = 0;
         for (ProductDao item : selectedProductsTableView.getItems()) {
             total += item.getTotal();
         }

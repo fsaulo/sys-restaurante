@@ -19,8 +19,4 @@ public class Animation {
         fadeTransition.setAutoReverse(true);
         fadeTransition.play();
     }
-
-    public static void close() {
-        fadeTransition.stop();
-    }
 }
