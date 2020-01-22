@@ -1,5 +1,7 @@
 package org.sysRestaurante.dao;
 
+import org.sysRestaurante.model.Cashier;
+
 import java.time.LocalDate;
 
 public class OrderDao {
@@ -10,7 +12,68 @@ public class OrderDao {
     private double byCard;
     private double inCash;
     private LocalDate orderDate;
+    private String details;
     private String note;
+    private String status;
+
+    public void setDetails(int idCategory) {
+        switch (idCategory) {
+            case 1:
+                details = "Pedido no caixa";
+                break;
+            case 2:
+                details = "Pedido em comanda";
+                break;
+            case 3:
+                details = "Avariado";
+                break;
+            case 4:
+                details = "Retirada";
+                break;
+            case 5:
+                details = "Doação";
+                break;
+            case 6:
+                details = "Sem retorno";
+                break;
+            default:
+                details = "Sem categoria";
+        }
+    }
+
+    public void setStatus(int idStatus) {
+        switch (idStatus) {
+            case 1:
+                status = "Concluído";
+                break;
+            case 2:
+                status = "Aguardando pagamento";
+                break;
+            case 3:
+                status = "Cancelado";
+                break;
+            case 4:
+                status = "Aguardando preparo";
+                break;
+            case 5:
+                status = "Pedido pronto";
+                break;
+            case 6:
+                status = "Produto avariado";
+                break;
+            default:
+                status = "Desconhecido";
+                break;
+        }
+    }
+
+    public String getStatus() {
+        return  status;
+    }
+
+    public String getDetails() {
+        return details;
+    }
 
     public int getIdOrder() {
         return idOrder;

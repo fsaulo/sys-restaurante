@@ -3,17 +3,26 @@ package org.sysRestaurante.gui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
+import org.sysRestaurante.dao.OrderDao;
+import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Cashier;
+import org.sysRestaurante.util.CurrencyCellFormatter;
 import org.sysRestaurante.util.CurrencyField;
+import org.sysRestaurante.util.DateCellFormatter;
 import org.sysRestaurante.util.DateFormatter;
 import org.sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.util.StatusCellFormatter;
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.logging.Logger;
 
 public class CashierController {
@@ -42,6 +51,18 @@ public class CashierController {
     private Label byCardLabel;
     @FXML
     private Label withdrawalLabel;
+    @FXML
+    private TableColumn<OrderDao, Integer> codOrder;
+    @FXML
+    private TableColumn<OrderDao, String> details;
+    @FXML
+    private TableColumn<OrderDao, String> status;
+    @FXML
+    private TableColumn<OrderDao, LocalDate> date;
+    @FXML
+    private TableColumn<OrderDao, Double> total;
+    @FXML
+    private TableView<OrderDao> orderListTableView;
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(CashierController.class.getName());
 
@@ -50,6 +71,8 @@ public class CashierController {
         AppFactory.setCashierController(this);
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
+
+        updateOrderTableList();
         updateCashierElements();
         handleKeyEvent();
         LOGGER.info("At cashier page");
@@ -87,7 +110,6 @@ public class CashierController {
         newOrderBox.setDisable(true);
         AppFactory.getAppController().openPOS();
         newOrderBox.setDisable(false);
-
     }
 
     public void handleKeyEvent() {
@@ -97,6 +119,11 @@ public class CashierController {
     }
 
     public void updateCashierElements() {
+        updateCashierStatus();
+        updateOrderTableList();
+    }
+
+    public void updateCashierStatus() {
         boolean isCashierOpenned = Cashier.getLastCashierStatus();
         CashierDao cashierDao;
 
@@ -131,6 +158,18 @@ public class CashierController {
         inCashLabel.setText(brlCurrencyFormat.format(cashierDao.getInCash()));
         byCardLabel.setText(brlCurrencyFormat.format(cashierDao.getByCard()));
         withdrawalLabel.setText(brlCurrencyFormat.format(cashierDao.getWithdrawal()));
+    }
+
+    public void updateOrderTableList() {
+        orderListTableView.setItems(new Cashier().getOrderByIdCashier(AppFactory.getCashierDao().getIdCashier()));
+        codOrder.setCellValueFactory(new PropertyValueFactory<>("idOrder"));
+        total.setCellValueFactory(new PropertyValueFactory<>("inCash"));
+        details.setCellValueFactory(new PropertyValueFactory<>("details"));
+        date.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        status.setCellFactory(tc -> new StatusCellFormatter());
+        date.setCellFactory(tc -> new DateCellFormatter());
+        orderListTableView.refresh();
     }
 
     public void setDisableCashierOptions(boolean status) {

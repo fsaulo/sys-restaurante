@@ -1,11 +1,9 @@
-package org.sysRestaurante.gui;
-
+package org.sysRestaurante.util;
 
 import javafx.scene.control.TableCell;
 import org.sysRestaurante.dao.ProductDao;
-import org.sysRestaurante.util.CurrencyField;
 
-public class CurrencyTableCell extends TableCell<ProductDao, Double> {
+public class CurrencyCellFormatter extends TableCell<ProductDao, Double> {
 
     @Override
     protected void updateItem(Double item, boolean empty) {
@@ -18,4 +16,3 @@ public class CurrencyTableCell extends TableCell<ProductDao, Double> {
         }
     }
 }
-

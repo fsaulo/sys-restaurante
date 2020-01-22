@@ -22,6 +22,7 @@ import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Product;
 import org.sysRestaurante.util.CurrencyField;
+import org.sysRestaurante.util.CurrencyCellFormatter;
 
 public class CashierPOSController {
 
@@ -55,16 +56,9 @@ public class CashierPOSController {
 
     public void initialize() {
         AppFactory.setCashierPOSController(this);
-        productsListView.setItems(new Product().getProducts());
-        productsListView.setCellFactory(productsListView -> new ProductListViewCell());
-        selectedProductsTableView.setOnMouseClicked(event -> editableItems.setDisable(false));
 
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        qtdColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        priceColumn.setCellValueFactory(new PropertyValueFactory<>("sellPrice"));
-        priceColumn.setCellFactory(tc -> new CurrencyTableCell());
-        totalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
-        totalColumn.setCellFactory(tc -> new CurrencyTableCell());
+        updateTables();
+        updateTotalCashierLabel();
 
         removeButton.setOnMouseClicked(event -> {
             for (ProductDao item : selectedProductsTableView.getSelectionModel().getSelectedItems()) {
@@ -74,7 +68,6 @@ public class CashierPOSController {
             updateSelectedList();
         });
 
-        updateTotalCashierLabel();
         cancelButton.setOnMouseClicked(e -> {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Alerta do sistema");
@@ -95,15 +88,26 @@ public class CashierPOSController {
     @FXML
     public void onFinalizeOrder(Event event) {
         Cashier cashier = new Cashier();
-        OrderDao orderDao = cashier.newOrder(total, 0, "");
-
+        OrderDao orderDao = cashier.newOrder(AppFactory.getCashierDao().getIdCashier(), total, 0, "");
         cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), total, 0, 0);
         cashier.addProductsToOrder(orderDao.getIdOrder(), selectedProductsTableView.getItems());
-        cashier.registerOrderInCashier(AppFactory.getCashierDao().getIdCashier(), orderDao.getIdOrder());
         AppFactory.getCashierController().updateCashierElements();
 
         editableItems.getScene().getWindow().hide();
         event.consume();
+    }
+
+    public void updateTables() {
+        productsListView.setItems(new Product().getProducts());
+        productsListView.setCellFactory(productsListView -> new ProductListViewCell());
+        selectedProductsTableView.setOnMouseClicked(event -> editableItems.setDisable(false));
+
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        qtdColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("sellPrice"));
+        priceColumn.setCellFactory(tc -> new CurrencyCellFormatter());
+        totalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
+        totalColumn.setCellFactory(tc -> new CurrencyCellFormatter());
     }
 
     public void addToSelectedProductsList(ProductDao product) {
