@@ -13,6 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -21,8 +22,8 @@ import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Product;
+import org.sysRestaurante.util.CellFormatter;
 import org.sysRestaurante.util.CurrencyField;
-import org.sysRestaurante.util.CurrencyCellFormatter;
 
 public class CashierPOSController {
 
@@ -59,6 +60,13 @@ public class CashierPOSController {
 
         updateTables();
         updateTotalCashierLabel();
+
+        productsListView.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                ProductDao product = productsListView.getSelectionModel().getSelectedItem();
+                addToSelectedProductsList(product);
+            }
+        });
 
         removeButton.setOnMouseClicked(event -> {
             for (ProductDao item : selectedProductsTableView.getSelectionModel().getSelectedItems()) {
@@ -105,9 +113,11 @@ public class CashierPOSController {
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         qtdColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("sellPrice"));
-        priceColumn.setCellFactory(tc -> new CurrencyCellFormatter());
         totalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
-        totalColumn.setCellFactory(tc -> new CurrencyCellFormatter());
+        priceColumn.setCellFactory((CellFormatter<ProductDao, Double>) value -> CurrencyField.getBRLCurrencyFormat()
+                .format(value));
+        totalColumn.setCellFactory((CellFormatter<ProductDao, Double>) value -> CurrencyField.getBRLCurrencyFormat()
+                .format(value));
     }
 
     public void addToSelectedProductsList(ProductDao product) {

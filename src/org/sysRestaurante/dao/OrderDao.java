@@ -1,7 +1,5 @@
 package org.sysRestaurante.dao;
 
-import org.sysRestaurante.model.Cashier;
-
 import java.time.LocalDate;
 
 public class OrderDao {

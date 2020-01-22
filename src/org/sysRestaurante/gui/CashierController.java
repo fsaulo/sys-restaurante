@@ -12,17 +12,16 @@ import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.OrderDao;
-import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Cashier;
-import org.sysRestaurante.util.CurrencyCellFormatter;
+import org.sysRestaurante.util.CellFormatter;
 import org.sysRestaurante.util.CurrencyField;
-import org.sysRestaurante.util.DateCellFormatter;
 import org.sysRestaurante.util.DateFormatter;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.StatusCellFormatter;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 public class CashierController {
@@ -168,7 +167,10 @@ public class CashierController {
         date.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
         status.setCellFactory(tc -> new StatusCellFormatter());
-        date.setCellFactory(tc -> new DateCellFormatter());
+        date.setCellFactory((CellFormatter<OrderDao, LocalDate>) value -> DateTimeFormatter.ofPattern("dd-MM-yyyy")
+                .format(value));
+        total.setCellFactory((CellFormatter<OrderDao, Double>) value -> CurrencyField.getBRLCurrencyFormat()
+                .format(value));
         orderListTableView.refresh();
     }
 

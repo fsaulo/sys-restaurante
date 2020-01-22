@@ -70,10 +70,10 @@
                                        <columns>
                                           <TableColumn fx:id="codOrder" editable="false" maxWidth="78.0" minWidth="50.0" prefWidth="-1.0" text="Cod." />
                                           <TableColumn fx:id="details" editable="false" minWidth="100.0" prefWidth="-1.0" text="Detalhes" />
-                                          <TableColumn fx:id="date" editable="false" minWidth="40.0" prefWidth="-1.0" text="Data" />
-                                          <TableColumn fx:id="status" editable="false" minWidth="20.0" prefWidth="-1.0" text="Status" />
-                                          <TableColumn fx:id="note" editable="false" minWidth="50.0" prefWidth="-1.0" text="Observação" />
-                                          <TableColumn fx:id="total" editable="false" minWidth="40.0" prefWidth="-1.0" text="Total" />
+                                          <TableColumn fx:id="total" editable="false" minWidth="20.0" prefWidth="81.0" text="Total" />
+                                          <TableColumn fx:id="note" editable="false" minWidth="50.0" prefWidth="183.0" text="Observação" />
+                                          <TableColumn fx:id="status" editable="false" minWidth="20.0" prefWidth="143.0" text="Status" />
+                                          <TableColumn fx:id="date" editable="false" minWidth="20.0" prefWidth="-1.0" text="Data" />
                                        </columns>
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
