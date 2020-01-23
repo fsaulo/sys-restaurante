@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -19,9 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
-import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Product;
 import org.sysRestaurante.util.CellFormatter;
 import org.sysRestaurante.util.CurrencyField;

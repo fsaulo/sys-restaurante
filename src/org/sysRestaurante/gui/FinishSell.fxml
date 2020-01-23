@@ -3,6 +3,7 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -55,7 +56,7 @@
       </HBox>
       <HBox fx:id="box3" alignment="CENTER_LEFT" spacing="10.0" styleClass="box-content">
          <children>
-            <Label prefWidth="280.0" text="Desconto aplicados (%)">
+            <Label prefWidth="280.0" text="Descontos aplicados (%)">
                <font>
                   <Font name="Carlito" size="17.0" />
                </font>
@@ -80,16 +81,17 @@
       </VBox>
       <VBox alignment="TOP_RIGHT" prefWidth="391.0" style="-fx-background-color: black; -fx-border-color: gray; -fx-border-width: 2;">
          <children>
-            <Label opacity="0.5" text="Subtotal" textFill="#77d14db2">
+            <Label opacity="0.8" text="Subtotal" textFill="#77d14db2">
                <font>
                   <Font name="Arial Black" size="15.0" />
                </font>
             </Label>
-            <Label opacity="0.5" text="R$ 54,90" textFill="#78d34e">
+            <Label opacity="0.55" text="R$ 54,90" textFill="#77d14d">
                <font>
                   <Font name="Arial Black" size="18.0" />
                </font>
             </Label>
+            <Separator opacity="0.32" prefWidth="200.0" />
             <Label text="Troco" textFill="#77d14db2">
                <font>
                   <Font name="Arial Black" size="15.0" />
