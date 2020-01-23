@@ -45,6 +45,7 @@ public class CloseCashierDialogController {
             cashier.close(cashierDao.getIdCashier());
             ((Node) event.getSource()).getScene().getWindow().hide();
             AppFactory.setCashierDao(null);
+            AppFactory.getCashierController().updateCashierElements();
         });
 
         updateDetails();

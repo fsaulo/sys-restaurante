@@ -84,7 +84,6 @@ public class CashierController {
 
         if (isCashierOpenned) {
             AppController.showDialog(SceneNavigator.CLOSE_CASHIER_DIALOG);
-            updateCashierElements();
             if (!Cashier.getLastCashierStatus()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Informação do sistema");
@@ -173,7 +172,7 @@ public class CashierController {
     public void updateOrderTableList() {
         orderListTableView.setItems(new Cashier().getOrderByIdCashier(AppFactory.getCashierDao().getIdCashier()));
         codOrder.setCellValueFactory(new PropertyValueFactory<>("idOrder"));
-        total.setCellValueFactory(new PropertyValueFactory<>("inCash"));
+        total.setCellValueFactory(new PropertyValueFactory<>("total"));
         details.setCellValueFactory(new PropertyValueFactory<>("details"));
         date.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));

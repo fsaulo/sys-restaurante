@@ -9,6 +9,7 @@ public class OrderDao {
     private int idCategory;
     private double byCard;
     private double inCash;
+    private double total = byCard + inCash;
     private LocalDate orderDate;
     private String details;
     private String note;
@@ -63,6 +64,14 @@ public class OrderDao {
                 status = "Desconhecido";
                 break;
         }
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public String getStatus() {

@@ -211,6 +211,7 @@ public class Cashier {
                 orderDao.setDetails(rs.getInt("id_categoria_pedido"));
                 orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
                 orderDao.setStatus(rs.getInt("id_categoria_status"));
+                orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
                 orderList.add(orderDao);
             }
 
