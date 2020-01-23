@@ -48,7 +48,7 @@ public class FinishSellController {
             cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), total, 0, 0);
             cashier.addProductsToOrder(orderDao.getIdOrder(), items);
             AppFactory.getCashierController().updateCashierElements();
-            AppFactory.getCashierPOSController().setSellConfirmed(true);
+            AppFactory.getCashierController().setSellConfirmed(true);
             box1.getScene().getWindow().hide();
         });
     }

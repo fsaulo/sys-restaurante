@@ -109,6 +109,16 @@ public class CashierController {
     public void onNewOrder() {
         newOrderBox.setDisable(true);
         AppFactory.getAppController().openPOS();
+
+        if (isSellConfirmed()) {
+            setSellConfirmed(false);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Informação do sistema");
+            alert.setContentText("Pedido registrado com sucesso!");
+            alert.setHeaderText(null);
+            alert.showAndWait();
+        }
+
         newOrderBox.setDisable(false);
     }
 
@@ -198,5 +208,13 @@ public class CashierController {
             message.setStyle("-fx-font-family: carlito; -fx-font-size: 15; -fx-font-weight: bold");
             cashierDateDetailsBox.getChildren().add(message);
         }
+    }
+
+    public void setSellConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public boolean isSellConfirmed() {
+        return confirmed;
     }
 }

@@ -102,16 +102,8 @@ public class CashierPOSController {
             alert.showAndWait();
         } else {
             AppController.openFinishSell();
-            if (isSellConfirmed()) {
+            if (AppFactory.getCashierController().isSellConfirmed())
                 editableItems.getScene().getWindow().hide();
-                setSellConfirmed(false);
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informação do sistema");
-                alert.setContentText("Pedido registrado com sucesso!");
-                alert.setHeaderText(null);
-                alert.showAndWait();
-            }
         }
         event.consume();
     }
@@ -167,13 +159,5 @@ public class CashierPOSController {
 
     public ObservableList<ProductDao> getItems() {
         return selectedProductsTableView.getItems();
-    }
-
-    public void setSellConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
-
-    public boolean isSellConfirmed() {
-        return confirmed;
     }
 }
