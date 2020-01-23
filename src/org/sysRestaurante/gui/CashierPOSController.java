@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -54,6 +55,7 @@ public class CashierPOSController {
 
     private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
     private double total = 0;
+    private boolean confirmed = false;
 
     public void initialize() {
         AppFactory.setCashierPOSController(this);
@@ -95,13 +97,25 @@ public class CashierPOSController {
 
     @FXML
     public void onFinalizeOrder(Event event) {
-        Cashier cashier = new Cashier();
-        OrderDao orderDao = cashier.newOrder(AppFactory.getCashierDao().getIdCashier(), total, 0, "");
-        cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), total, 0, 0);
-        cashier.addProductsToOrder(orderDao.getIdOrder(), selectedProductsTableView.getItems());
-        AppFactory.getCashierController().updateCashierElements();
+        if (selectedProductsTableView.getItems().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta do sistema");
+            alert.setHeaderText("Atenção!");
+            alert.setContentText("Não é possível encerrar o pedido pois nenhum ítem foi adicionado a lista");
+            alert.showAndWait();
+        } else {
+            AppController.openFinishSell();
+            if (isSellConfirmed()) {
+                editableItems.getScene().getWindow().hide();
+                setSellConfirmed(false);
 
-        editableItems.getScene().getWindow().hide();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Informação do sistema");
+                alert.setContentText("Pedido registrado com sucesso!");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
+        }
         event.consume();
     }
 
@@ -148,5 +162,21 @@ public class CashierPOSController {
             total += item.getTotal();
         }
         totalCashierLabel.setText(CurrencyField.getBRLCurrencyFormat().format(total));
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public ObservableList<ProductDao> getItems() {
+        return selectedProductsTableView.getItems();
+    }
+
+    public void setSellConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public boolean isSellConfirmed() {
+        return confirmed;
     }
 }

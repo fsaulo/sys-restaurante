@@ -179,4 +179,21 @@ public class AppController implements DateFormatter {
             ex.printStackTrace();
         }
     }
+
+    public static void openFinishSell() {
+        try {
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(AppController.class.getResource(SceneNavigator.FINISH_SELL_DIALOG));
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setTitle("SysRestaurante: Finalizando pedido");
+            stage.setResizable(false);
+            stage.showAndWait();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
