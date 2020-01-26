@@ -81,14 +81,7 @@ public class LoginController implements DateFormatter {
         usernameField.setText("fsaulo");
         passwordField.setText("123");
 
-        Platform.runLater(() -> {
-            loginPane.requestFocus();
-            try {
-                loginRequested();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        });
+        Platform.runLater(() -> loginPane.requestFocus());
 
         setLastSessionMessage();
         LOGGER.setLevel(Level.ALL);

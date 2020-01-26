@@ -220,7 +220,7 @@ public class CashierPOSController {
         }
     }
 
-    public void onCancelButton() {
+    public boolean onCancelButton() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Alerta do sistema");
         alert.setHeaderText("Tem certeza que deseja cancelar venda?");
@@ -231,7 +231,9 @@ public class CashierPOSController {
             cancelButton.getScene().getWindow().hide();
             AppFactory.setOrderDao(new OrderDao());
             AppFactory.getSelectedProducts().clear();
+            return true;
         }
+        return false;
     }
 
     public void updateTables() {

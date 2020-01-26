@@ -153,8 +153,8 @@ public class FinishSellController {
 
     @FXML
     public void cancel() {
-        AppFactory.getCashierPOSController().onCancelButton();
-        goBackButton.getScene().getWindow().hide();
+        if (AppFactory.getCashierPOSController().onCancelButton())
+            goBackButton.getScene().getWindow().hide();
     }
 
     @FXML
