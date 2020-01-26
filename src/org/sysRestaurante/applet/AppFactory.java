@@ -12,18 +12,14 @@ import org.sysRestaurante.gui.CashierPOSController;
 import org.sysRestaurante.gui.DashboardController;
 import org.sysRestaurante.gui.LoginController;
 import org.sysRestaurante.gui.MainGUIController;
-import org.sysRestaurante.model.Authentication;
 
 import java.util.ArrayList;
 
 public class AppFactory {
-    private static ManagerDao managerDao;
-    private static EmployeeDao employeeDao;
     private static UserDao userDao;
     private static AppController appController;
     private static DashboardController dashboardController;
     private static LoginController loginController;
-    private static Authentication authentication;
     private static CashierDao cashierDao;
     private static MainGUIController mainController;
     private static CashierController cashierController;
@@ -91,14 +87,6 @@ public class AppFactory {
         AppFactory.cashierDao = cashierDao;
     }
 
-    public static Authentication getAuthentication() {
-        return authentication;
-    }
-
-    public static void setAuthentication(Authentication authentication) {
-        AppFactory.authentication = authentication;
-    }
-
     public static LoginController getLoginController() {
         return loginController;
     }
@@ -117,22 +105,6 @@ public class AppFactory {
 
     public static void setAppController(AppController appController) {
         AppFactory.appController = appController;
-    }
-
-    public static ManagerDao getManagerDao() {
-        return managerDao;
-    }
-
-    public static void setManagerDao(ManagerDao managerDao) {
-        AppFactory.managerDao = managerDao;
-    }
-
-    public static EmployeeDao getEmployeeDao() {
-        return employeeDao;
-    }
-
-    public static void setEmployeeDao(EmployeeDao employeeDao) {
-        AppFactory.employeeDao = employeeDao;
     }
 
 }

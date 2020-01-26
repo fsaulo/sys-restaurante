@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
@@ -18,10 +17,15 @@ import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Cashier;
+import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.util.CurrencyField;
 import org.sysRestaurante.util.PercentageField;
 
+import java.net.MalformedURLException;
 import java.text.Format;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class FinishSellController {
@@ -35,7 +39,11 @@ public class FinishSellController {
     @FXML
     private VBox confirmBox;
     @FXML
+    private VBox goBackButton;
+    @FXML
     private VBox seeReceiptBox;
+    @FXML
+    private VBox saveReceipt;
     @FXML
     private TextArea noteTextArea;
     @FXML
@@ -49,17 +57,33 @@ public class FinishSellController {
 
     @FXML
     public void initialize() {
-        payInCash = new CurrencyField(new Locale("pt",  "BR"));
+        payInCash = new CurrencyField(new Locale("pt", "BR"));
         payInCash.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 20));
         payInCash.setPrefWidth(200);
         payInCash.setAmount(AppFactory.getCashierPOSController().getTotal());
-        payByCard = new CurrencyField(new Locale("pt",  "BR"));
+        payByCard = new CurrencyField(new Locale("pt", "BR"));
         payByCard.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 20));
         payByCard.setPrefWidth(200);
         percentageField = new PercentageField();
         percentageField.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 20));
         percentageField.setPrefWidth(200);
         confirmBox.setDisable(false);
+
+        saveReceipt.setOnMouseClicked(event -> {
+            try {
+                receiptContentConstructor();
+                Receipt receipt = new Receipt(
+                        AppFactory.getSelectedProducts(),
+                        AppFactory.getOrderDao());
+                receipt.saveReceiptAsPng();
+            } catch (MalformedURLException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Informações de erro");
+                alert.setHeaderText("Arquivo não contém extensão válida.");
+                alert.setContentText("Extensões válidas: *.png");
+                alert.showAndWait();
+            }
+        });
 
         box1.getChildren().add(payInCash);
         box2.getChildren().add(payByCard);
@@ -88,7 +112,7 @@ public class FinishSellController {
                 changeLabel.setText(format.format(getChange())));
         payByCard.textProperty().addListener((observable, oldValue, newValue) ->
                 changeLabel.setText(format.format(getChange())));
-}
+    }
 
     @FXML
     public void confirm() {
@@ -100,7 +124,7 @@ public class FinishSellController {
         String note = noteTextArea.getText();
 
         if (note == null || note.isEmpty()) {
-            note = (discount > 0) ? "Descontos aplicados: " + (int) (100*discount) + "%" : "Sem observações";
+            note = (discount > 0) ? "Descontos aplicados: " + (int) (100 * discount) + "%" : "Sem observações";
         }
 
         if (change < 0) {
@@ -123,24 +147,36 @@ public class FinishSellController {
             AppFactory.getCashierController().updateCashierElements();
             AppFactory.getCashierController().setSellConfirmed(true);
             AppFactory.setOrderDao(orderDao);
-//            box1.getScene().getWindow().hide();
+            box1.getScene().getWindow().hide();
         }
     }
 
-    public void viewReceipt() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação do sistema");
-        alert.setHeaderText("Pedido não confirmado.");
-        alert.setContentText("Para ver o recibo você deve confirmar o pedido. Deseja continuar?");
-        alert.showAndWait();
+    @FXML
+    public void cancel() {
+        AppFactory.getCashierPOSController().onCancelButton();
+        goBackButton.getScene().getWindow().hide();
+    }
 
-        if (alert.getResult().equals(ButtonType.OK)) {
-            confirm();
-            if (AppFactory.getCashierController().isSellConfirmed()) {
-                AppController.showDialog(SceneNavigator.RECEIPT_VIEW);
-                confirmBox.setDisable(true);
-            }
-        }
+    @FXML
+    public void back() {
+        goBackButton.getScene().getWindow().hide();
+    }
+
+    public void viewReceipt() {
+        receiptContentConstructor();
+        AppController.showDialog(SceneNavigator.RECEIPT_VIEW, false);
+    }
+
+    public void receiptContentConstructor() {
+        OrderDao orderDao = new OrderDao();
+        orderDao.setOrderDate(LocalDate.now());
+        orderDao.setOrderTime(LocalTime.now());
+        orderDao.setTotal(AppFactory.getCashierPOSController().getTotal());
+        orderDao.setDiscount(percentageField.getAmount() * 100);
+        orderDao.setIdOrder(new Cashier().getLastOrderId() + 1);
+        AppFactory.setOrderDao(orderDao);
+        ArrayList<ProductDao> products = AppFactory.getSelectedProducts();
+        AppFactory.setSelectedProducts(products);
     }
 
     public void handleKeyEvent() {

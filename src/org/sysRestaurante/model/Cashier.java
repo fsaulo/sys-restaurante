@@ -189,6 +189,31 @@ public class Cashier {
         return false;
     }
 
+    public int getLastOrderId() {
+        String query = "SELECT id_pedido FROM pedido ORDER BY id_pedido DESC LIMIT 1";
+        PreparedStatement ps;
+        ResultSet rs;
+        int idOrder = 0;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                idOrder = rs.getInt("id_pedido");
+            }
+
+            ps.close();
+            con.close();
+            rs.close();
+            return idOrder;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+
     public ObservableList<OrderDao> getOrderByIdCashier(int idCashier) {
         String query = "SELECT * FROM pedido where id_caixa = ?";
         ObservableList<OrderDao> orderList = FXCollections.observableArrayList();
@@ -227,7 +252,7 @@ public class Cashier {
 
     public OrderDao getOrderById(int idOrder) {
         String query = "SELECT * FROM pedido where id_pedido = ?";
-        OrderDao orderDao = new OrderDao();;
+        OrderDao orderDao = new OrderDao();
         PreparedStatement ps;
         ResultSet rs;
 

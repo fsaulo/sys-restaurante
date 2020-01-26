@@ -30,7 +30,6 @@ public class MainGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-//        testReceipt();
         primaryStage.setHeight(550);
         primaryStage.setWidth(800);
         startProgram(primaryStage);
@@ -78,30 +77,6 @@ public class MainGUI extends Application {
     public static void restartProgram() throws IOException {
         clear();
         startProgram(new Stage());
-    }
-
-    public void testReceipt() {
-        UserDao userDao = new Authentication().getUserData("fsaulo");
-        OrderDao orderDao = new Cashier().getOrderById(299);
-        ProductDao product1 = new ProductDao();
-        product1.setDescription("Coca-cola 1L Retornável");
-        product1.setQuantity(2);
-        product1.setSellPrice(5.50);
-        ProductDao product2 = new ProductDao();
-        product2.setDescription("Cerveja SKOL Litrão");
-        product2.setQuantity(5);
-        product2.setSellPrice(10.50);
-        ProductDao product3 = new ProductDao();
-        product3.setDescription("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        product3.setQuantity(5);
-        product3.setSellPrice(10.50);
-        ArrayList<ProductDao> prs = new ArrayList<>();
-        prs.add(product1);
-        prs.add(product2);
-        prs.add(product3);
-        Receipt rp = new Receipt(prs, userDao, orderDao);
-        System.out.println(rp.getReceipt());
-        Platform.exit();
     }
 
     public static MainGUIController getMainController() {

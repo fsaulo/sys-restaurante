@@ -22,10 +22,10 @@ public class ReceiptViewController {
         UserDao userDao = AppFactory.getUserDao();
         OrderDao orderDao = AppFactory.getOrderDao();
         ArrayList<ProductDao> products = AppFactory.getSelectedProducts();
-        String receipt = new Receipt(products, userDao, orderDao).getReceipt();
-
-        Text rpp = new Text(receipt);
-        rpp.setFont(new Font("monospaced", 12));
+        Receipt receipt = new Receipt(products, orderDao);
+        receipt.buildReceipt();
+        Text rpp = new Text(receipt.getReceipt());
+        rpp.setFont(new Font("DejaVu Sans Mono", 13));
         receiptText.getChildren().add(rpp);
     }
 }

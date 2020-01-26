@@ -70,11 +70,11 @@ public class DashboardController {
     }
 
     public void showNotesWindow() {
-        AppController.showDialog(SceneNavigator.NOTE_PANE);
+        AppController.showDialog(SceneNavigator.NOTE_PANE, true);
     }
 
     public void showClearAlertWindow() {
-        AppController.showDialog(SceneNavigator.CLEAR_NOTES_ALERT);
+        AppController.showDialog(SceneNavigator.CLEAR_NOTES_ALERT, true);
     }
 
     public void removeNotesFromList() {

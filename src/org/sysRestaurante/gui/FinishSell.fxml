@@ -137,7 +137,7 @@
             </VBox>
             <VBox alignment="CENTER" prefWidth="75.0" spacing="10.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="30.0" prefWidth="70.0" styleClass="cashier-button">
+                  <VBox fx:id="saveReceipt" alignment="CENTER" prefHeight="30.0" prefWidth="70.0" styleClass="cashier-button">
                      <children>
                         <Label styleClass="cashier-text" text="Salvar" textAlignment="CENTER" wrapText="true">
                            <font>
@@ -165,7 +165,7 @@
             </VBox>
             <VBox alignment="CENTER" prefWidth="75.0" spacing="10.0">
                <children>
-                  <VBox alignment="CENTER" prefHeight="30.0" prefWidth="70.0" styleClass="cashier-button">
+                  <VBox fx:id="goBackButton" alignment="CENTER" onMouseClicked="#back" prefHeight="30.0" prefWidth="70.0" styleClass="cashier-button">
                      <children>
                         <Label styleClass="cashier-text" text="Voltar" textAlignment="CENTER" wrapText="true">
                            <font>
@@ -177,7 +177,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </VBox>
-                  <VBox alignment="CENTER" prefWidth="70.0" styleClass="cashier-button">
+                  <VBox alignment="CENTER" onMouseClicked="#cancel" prefWidth="70.0" styleClass="cashier-button">
                      <children>
                         <Label styleClass="cashier-text" text="Cancelar" textAlignment="CENTER" wrapText="true">
                            <font>

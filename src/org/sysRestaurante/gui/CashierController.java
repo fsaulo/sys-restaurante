@@ -85,7 +85,7 @@ public class CashierController {
         boolean isCashierOpenned = Cashier.getLastCashierStatus();
 
         if (isCashierOpenned) {
-            AppController.showDialog(SceneNavigator.CLOSE_CASHIER_DIALOG);
+            AppController.showDialog(SceneNavigator.CLOSE_CASHIER_DIALOG, true);
             if (!Cashier.getLastCashierStatus()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Informação do sistema");
@@ -94,7 +94,7 @@ public class CashierController {
                 alert.showAndWait();
             }
         } else {
-            AppController.showDialog(SceneNavigator.OPEN_CASHIER_DIALOG);
+            AppController.showDialog(SceneNavigator.OPEN_CASHIER_DIALOG, true);
             updateCashierElements();
             if (Cashier.getLastCashierStatus()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);

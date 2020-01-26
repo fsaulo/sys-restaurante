@@ -3,6 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -21,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Product;
 import org.sysRestaurante.util.CellFormatter;
@@ -102,15 +104,7 @@ public class CashierPOSController {
             updateSelectedList();
         });
 
-        cancelButton.setOnMouseClicked(e -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Alerta do sistema");
-            alert.setHeaderText("Tem certeza que deseja cancelar venda?");
-            alert.setContentText("Todos os registros salvos serão perdidos.");
-            alert.showAndWait();
-            if (alert.getResult() != ButtonType.CANCEL)
-                ((Node) e.getSource()).getScene().getWindow().hide();
-        });
+        cancelButton.setOnMouseClicked(event -> onCancelButton());
 
         selectedProductsTableView.focusedProperty().addListener((observable) -> {
             updateControls();
@@ -218,8 +212,25 @@ public class CashierPOSController {
             alert.showAndWait();
         } else {
             AppController.openFinishSell();
-            if (AppFactory.getCashierController().isSellConfirmed())
+            if (AppFactory.getCashierController().isSellConfirmed()) {
+                AppFactory.getSelectedProducts().clear();
+                AppFactory.setOrderDao(new OrderDao());
                 editableItems.getScene().getWindow().hide();
+            }
+        }
+    }
+
+    public void onCancelButton() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Alerta do sistema");
+        alert.setHeaderText("Tem certeza que deseja cancelar venda?");
+        alert.setContentText("Todos os registros salvos serão perdidos.");
+        alert.showAndWait();
+
+        if (alert.getResult() != ButtonType.CANCEL) {
+            cancelButton.getScene().getWindow().hide();
+            AppFactory.setOrderDao(new OrderDao());
+            AppFactory.getSelectedProducts().clear();
         }
     }
 

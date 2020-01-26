@@ -8,8 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -42,7 +40,6 @@ public class AppController implements DateFormatter {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(AppController.class.getName());
     private static long timerInMillies;
-    private static  Scene scene;
     private Label sessionTimer;
     private final Authentication certs = new Authentication();
 
@@ -131,11 +128,13 @@ public class AppController implements DateFormatter {
         }
     }
 
-    public static void showDialog(String fxml) {
+    public static void showDialog(String fxml, boolean main) {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            AppFactory.getMainController().darkenScreen();
+
+            if (main) AppFactory.getMainController().darkenScreen();
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(fxml));
             Scene scene = new Scene(loader.load());
@@ -143,7 +142,8 @@ public class AppController implements DateFormatter {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.showAndWait();
-            AppFactory.getMainController().brightenScreen();
+
+            if (main) AppFactory.getMainController().brightenScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
