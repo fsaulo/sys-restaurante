@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 
 import java.text.NumberFormat;
 
@@ -30,6 +31,17 @@ public class PercentageField extends TextField {
                             positionCaret(lenght);
                         }));
 
+        setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.DELETE)) {
+                formatText(format.format(0));
+                positionCaret(getText().length());
+            }
+
+            if (amount.getValue() == 0) {
+                positionCaret(getText().length());
+            }
+        });
+
         textProperty().addListener((observable, oldValue, newValue) -> formatText(newValue));
     }
 
@@ -53,6 +65,10 @@ public class PercentageField extends TextField {
             amount.set(newValue);
             setText(format.format(newValue));
         }
+    }
+
+    public Double getAmount() {
+        return amount.get();
     }
 
     @Override

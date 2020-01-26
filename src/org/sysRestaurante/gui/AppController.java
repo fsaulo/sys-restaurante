@@ -8,6 +8,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -40,6 +42,7 @@ public class AppController implements DateFormatter {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(AppController.class.getName());
     private static long timerInMillies;
+    private static  Scene scene;
     private Label sessionTimer;
     private final Authentication certs = new Authentication();
 
@@ -149,7 +152,7 @@ public class AppController implements DateFormatter {
     public static void openPOS() {
         try {
             Stage stage = new Stage();
-            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initModality(Modality.APPLICATION_MODAL);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.CASHIER_POS));
             Scene scene = new Scene(loader.load());

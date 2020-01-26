@@ -9,6 +9,8 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class CurrencyField extends TextField {
 
@@ -31,6 +33,17 @@ public class CurrencyField extends TextField {
                         selectRange(lenght, lenght);
                         positionCaret(lenght);
                         }));
+
+        setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.DELETE)) {
+                formatText(format.format(0));
+                positionCaret(getText().length());
+            }
+
+            if (amount.getValue() == 0) {
+                positionCaret(getText().length());
+            }
+        });
 
         textProperty().addListener((observable, oldValue, newValue) -> formatText(newValue));
     }

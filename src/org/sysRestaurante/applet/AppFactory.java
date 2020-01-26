@@ -3,6 +3,8 @@ package org.sysRestaurante.applet;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.EmployeeDao;
 import org.sysRestaurante.dao.ManagerDao;
+import org.sysRestaurante.dao.OrderDao;
+import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.gui.AppController;
 import org.sysRestaurante.gui.CashierController;
@@ -11,6 +13,8 @@ import org.sysRestaurante.gui.DashboardController;
 import org.sysRestaurante.gui.LoginController;
 import org.sysRestaurante.gui.MainGUIController;
 import org.sysRestaurante.model.Authentication;
+
+import java.util.ArrayList;
 
 public class AppFactory {
     private static ManagerDao managerDao;
@@ -24,6 +28,24 @@ public class AppFactory {
     private static MainGUIController mainController;
     private static CashierController cashierController;
     private static CashierPOSController cashierPOSController;
+    private static ArrayList<ProductDao> selectedProducts;
+    private static OrderDao orderDao;
+
+    public static OrderDao getOrderDao() {
+        return orderDao;
+    }
+
+    public static void setOrderDao(OrderDao orderDao) {
+        AppFactory.orderDao = orderDao;
+    }
+
+    public static ArrayList<ProductDao> getSelectedProducts() {
+        return selectedProducts;
+    }
+
+    public static void setSelectedProducts(ArrayList<ProductDao> selectedProducts) {
+        AppFactory.selectedProducts = selectedProducts;
+    }
 
     public static CashierPOSController getCashierPOSController() {
         return cashierPOSController;

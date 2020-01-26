@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Product {
@@ -37,6 +38,7 @@ public class Product {
                 productDao.setSellPrice(rs.getDouble("preco_venda"));
                 productDao.setBuyPrice(rs.getDouble("preco_varejo"));
                 productDao.setBarCode(rs.getLong("codigo_de_barras"));
+                productDao.setCategory(rs.getInt("id_categoria"));
                 products.add(productDao);
             }
 
@@ -49,7 +51,6 @@ public class Product {
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
         }
-
         return null;
     }
 }

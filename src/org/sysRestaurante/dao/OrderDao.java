@@ -1,6 +1,8 @@
 package org.sysRestaurante.dao;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class OrderDao {
 
@@ -10,7 +12,10 @@ public class OrderDao {
     private double byCard;
     private double inCash;
     private double total = byCard + inCash;
+    private double discount;
     private LocalDate orderDate;
+    private LocalTime orderTime;
+    private LocalDateTime orderDateTime;
     private String details;
     private String note;
     private String status;
@@ -64,6 +69,30 @@ public class OrderDao {
                 status = "Desconhecido";
                 break;
         }
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public void setOrderDateTime(LocalDateTime orderDateTime) {
+        this.orderDateTime = orderDateTime;
+    }
+
+    public LocalDateTime getOrderDateTime() {
+        return orderDateTime;
+    }
+
+    public LocalTime getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(LocalTime orderTime) {
+        this.orderTime = orderTime;
     }
 
     public double getTotal() {

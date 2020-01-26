@@ -20,6 +20,5 @@ public interface CellFormatter <E, T> extends Callback<TableColumn<E, T>, TableC
             }
         };
     }
-
     String convert(T value);
 }

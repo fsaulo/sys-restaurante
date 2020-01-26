@@ -26,7 +26,10 @@ public class SceneNavigator {
     public static final String CASHIER_POS = "CashierPOS.fxml";
     public static final String PRODUCT_LIST_CELL = "ProductListCell.fxml";
     public static final String FINISH_SELL_DIALOG = "FinishSell.fxml";
+    public static final String RECEIPT_VIEW = "ReceiptView.fxml";
     public static final KeyCombination F10_OPEN_OR_CLOSE_CASHIER = new KeyCodeCombination(KeyCode.F10);
+    public static final KeyCombination F2_CONFIRMATION = new KeyCodeCombination(KeyCode.F2);
+    public static final KeyCombination F4_CANCEL = new KeyCodeCombination(KeyCode.F4);
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUIController.class.getName());
 

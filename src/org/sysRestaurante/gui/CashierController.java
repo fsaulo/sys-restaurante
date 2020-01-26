@@ -57,6 +57,8 @@ public class CashierController {
     @FXML
     private TableColumn<OrderDao, String> status;
     @FXML
+    private TableColumn<OrderDao, String> notes;
+    @FXML
     private TableColumn<OrderDao, LocalDate> date;
     @FXML
     private TableColumn<OrderDao, Double> total;
@@ -64,7 +66,7 @@ public class CashierController {
     private TableView<OrderDao> orderListTableView;
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(CashierController.class.getName());
-    private boolean confirmed;
+    private boolean confirmed = false;
 
     @FXML
     public void initialize() {
@@ -125,6 +127,8 @@ public class CashierController {
         AppFactory.getMainController().getScene().getAccelerators().clear();
         AppFactory.getMainController().getScene().getAccelerators()
                 .put(SceneNavigator.F10_OPEN_OR_CLOSE_CASHIER, this::onOpenOrCloseCashier);
+        AppFactory.getMainController().getScene().getAccelerators()
+                .put(SceneNavigator.F2_CONFIRMATION, this::onNewOrder);
     }
 
     public void updateCashierElements() {
@@ -176,6 +180,7 @@ public class CashierController {
         details.setCellValueFactory(new PropertyValueFactory<>("details"));
         date.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
         status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        notes.setCellValueFactory(new PropertyValueFactory<>("note"));
         status.setCellFactory(tc -> new StatusCellFormatter());
         date.setCellFactory((CellFormatter<OrderDao, LocalDate>) value -> DateTimeFormatter.ofPattern("dd-MM-yyyy")
                 .format(value));
@@ -186,8 +191,8 @@ public class CashierController {
 
     public void setDisableCashierOptions(boolean status) {
         searchOrderBox.setDisable(status);
-        newOrderBox.setDisable(status);
         cancelOrderBox.setDisable(status);
+        newOrderBox.setDisable(status);
     }
 
     public void changeCashierDetails(boolean isCashierOpenned) {

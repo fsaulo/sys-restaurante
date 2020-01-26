@@ -9,10 +9,34 @@ public class ProductDao {
     private double buyPrice;
     private double total;
     private String description;
+    private String category;
 
     public ProductDao() {
         quantity = 1;
         total = 0;
+    }
+
+    public void setCategory(int idCategory) {
+        switch (idCategory) {
+            case 1:
+                category = "Bebida";
+                break;
+            case 2:
+                category = "Almoço";
+                break;
+            case 3:
+                category = "Tira-gosto";
+                break;
+            case 4:
+                category = "Porção extra";
+            default:
+                category = "Sem categoria";
+                break;
+        }
+    }
+
+    public String getCategory() {
+        return this.category;
     }
 
     public void setTotal(double price) {

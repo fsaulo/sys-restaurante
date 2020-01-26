@@ -225,6 +225,41 @@ public class Cashier {
         return null;
     }
 
+    public OrderDao getOrderById(int idOrder) {
+        String query = "SELECT * FROM pedido where id_pedido = ?";
+        OrderDao orderDao = new OrderDao();;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idOrder);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                orderDao.setIdOrder(rs.getInt("id_pedido"));
+                orderDao.setInCash(rs.getDouble("valor_avista"));
+                orderDao.setByCard(rs.getDouble("valor_cartao"));
+                orderDao.setNote(rs.getString("observacao"));
+                orderDao.setDiscount(rs.getInt("descontos"));
+                orderDao.setDetails(rs.getInt("id_categoria_pedido"));
+                orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
+                orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
+                orderDao.setStatus(rs.getInt("id_categoria_status"));
+                orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
+            }
+
+            ps.close();
+            rs.close();
+            con.close();
+            return orderDao;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     public static LocalDateTime getCashierDateTimeDetailsById(int idCashier) {
         String query = "SELECT data_abertura, hora_abertura FROM caixa WHERE id_caixa = ?";
         PreparedStatement ps;
@@ -290,9 +325,9 @@ public class Cashier {
         return null;
     }
 
-    public OrderDao newOrder(int idCashier, double inCash, double byCard, String note) {
+    public OrderDao newOrder(int idCashier, double inCash, double byCard, int type, double discount, String note) {
         String query = "INSERT INTO pedido (id_usuario, id_caixa, id_categoria_status, data_pedido, observacao, " +
-                "valor_cartao, valor_avista, id_categoria_pedido) VALUES (?,?,?,?,?,?,?,?)";
+                "valor_cartao, valor_avista, id_categoria_pedido, hora_pedido, descontos) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         int idUser = AppFactory.getUserDao().getIdUser();
         int idOrder;
@@ -310,7 +345,9 @@ public class Cashier {
             ps.setString(5, note);
             ps.setDouble(6, byCard);
             ps.setDouble(7, inCash);
-            ps.setInt(8, 1);
+            ps.setInt(8, type);
+            ps.setTime(9, java.sql.Time.valueOf(LocalTime.now()));
+            ps.setDouble(10, discount * 100);
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
 
@@ -324,6 +361,10 @@ public class Cashier {
             orderDao.setIdUser(idUser);
             orderDao.setNote(note);
             orderDao.setDetails(1);
+            orderDao.setOrderTime(LocalTime.now());
+            orderDao.setDiscount(discount);
+            orderDao.setOrderDate(LocalDate.now());
+            orderDao.setOrderTime(LocalTime.now());
 
             LOGGER.info("Sell was registered successfully.");
             ps.close();
