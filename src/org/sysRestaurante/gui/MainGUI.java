@@ -90,4 +90,10 @@ public class MainGUI extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
+    public void test() {
+        String str = "Um texto com espacos";
+        System.out.println(str.toUpperCase().replaceAll("\\s+", ""));
+        Platform.exit();
+    }
 }

@@ -10,7 +10,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -75,36 +74,32 @@
                         </HBox>
                         <HBox spacing="10.0" VBox.vgrow="ALWAYS">
                            <children>
-                              <SplitPane dividerPositions="0.5006657789613849" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
-                                 <items>
-                                    <VBox alignment="TOP_CENTER" minWidth="200.0" prefHeight="252.0" prefWidth="431.0" styleClass="tile-info">
-                                       <children>
-                                          <Label maxWidth="-Infinity" text="Resumo financeiro">
-                                             <font>
-                                                <Font name="Carlito" size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <VBox alignment="CENTER" prefHeight="212.0" prefWidth="381.0" style="-fx-background-color: white; -fx-border-color: #C8C8C8;" VBox.vgrow="ALWAYS" />
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox alignment="TOP_CENTER" minWidth="140.0" prefHeight="252.0" styleClass="tile-info">
-                                       <children>
-                                          <Label text="Registros">
-                                             <font>
-                                                <Font name="Carlito" size="16.0" />
-                                             </font>
-                                          </Label>
-                                          <VBox alignment="CENTER" style="-fx-background-color: white; -fx-border-color: #C8C8C8;" VBox.vgrow="ALWAYS" />
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                 </items>
-                              </SplitPane>
+                              <VBox alignment="TOP_CENTER" minWidth="200.0" styleClass="tile-info" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label maxWidth="-Infinity" text="Resumo financeiro">
+                                       <font>
+                                          <Font name="Carlito" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <VBox alignment="CENTER" prefHeight="212.0" prefWidth="381.0" style="-fx-background-color: white; -fx-border-color: #C8C8C8;" VBox.vgrow="ALWAYS" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" minWidth="140.0" prefHeight="211.0" prefWidth="382.0" styleClass="tile-info" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Registros">
+                                       <font>
+                                          <Font name="Carlito" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <VBox alignment="CENTER" style="-fx-background-color: white; -fx-border-color: #C8C8C8;" VBox.vgrow="ALWAYS" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
                            </children>
                         </HBox>
                      </children>

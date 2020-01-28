@@ -32,8 +32,8 @@
             <Separator prefWidth="200.0" />
             <HBox prefWidth="350.0" spacing="10.0">
                <children>
-                  <TextField prefHeight="31.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" opacity="0.65" prefHeight="31.0" prefWidth="100.0" text="Pesquisar">
+                  <TextField fx:id="searchBox" prefHeight="31.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" HBox.hgrow="ALWAYS" />
+                  <Button fx:id="searchButton" mnemonicParsing="false" opacity="0.65" prefHeight="31.0" prefWidth="100.0" text="Pesquisar">
                      <font>
                         <Font name="Carlito" size="15.0" />
                      </font>

@@ -72,7 +72,7 @@ public class AppController implements DateFormatter {
         Pane growPane = new Pane();
         HBox footer = new HBox();
         footer.setSpacing(3);
-        footer.setPadding(new Insets(1, 3, 1, 3));
+        footer.setPadding(new Insets(2, 3, 1, 3));
         footer.setStyle("-fx-border-color: #CBCBCC");
         footer.setAlignment(Pos.CENTER);
         footer.setHgrow(growPane, Priority.ALWAYS);

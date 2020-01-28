@@ -121,10 +121,14 @@ public class FinishSellController {
 
         double discount = this.percentageField.getAmount();
         double change = getChange();
-        String note = noteTextArea.getText();
+        StringBuilder note = new StringBuilder();
+        note.append((discount > 0) ? "Descontos aplicados: " + (int) (100 * discount) + "%" : "");
 
-        if (note == null || note.isEmpty()) {
-            note = (discount > 0) ? "Descontos aplicados: " + (int) (100 * discount) + "%" : "Sem observações";
+        if (note.toString().equals("") && noteTextArea.getText().isBlank()) {
+            note.append("Sem observações");
+        } else if (!noteTextArea.getText().isBlank() && !noteTextArea.getText().isEmpty()){
+            note.append(" ; ");
+            note.append(noteTextArea.getText());
         }
 
         if (change < 0) {
@@ -141,7 +145,7 @@ public class FinishSellController {
                     payByCard,
                     1,
                     discount,
-                    note);
+                    note.toString());
             cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
             cashier.addProductsToOrder(orderDao.getIdOrder(), items);
             AppFactory.getCashierController().updateCashierElements();

@@ -3,6 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -15,9 +16,11 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -33,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.Format;
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class CashierPOSController {
 
@@ -48,6 +52,10 @@ public class CashierPOSController {
     private VBox editButton;
     @FXML
     private VBox clearButton;
+    @FXML
+    private TextField searchBox;
+    @FXML
+    private Button searchButton;
     @FXML
     private Button addProductButton;
     @FXML
@@ -84,6 +92,7 @@ public class CashierPOSController {
     private ImageView barcodeImage;
 
     private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
+    private final ObservableList<ProductDao> products = new Product().getProducts();
     private static final String GENERIC_BARCODE = "resources/images/barcode.png";
     private double total = 0;
 
@@ -120,18 +129,45 @@ public class CashierPOSController {
             }
         });
 
+        searchBox.textProperty().addListener((observable -> refreshProductsList()));
+        searchBox.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                productsListView.getSelectionModel().selectFirst();
+                addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem());
+            }
+        });
+
+
         addProductButton.setOnMouseClicked(event -> {
             addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem(), qtySpinner.getValue());
             qtySpinner.decrement(qtySpinner.getValue() - 1);
         });
 
         Platform.runLater(this::handleKeyEvent);
+        searchButton.setOnMouseClicked(event -> refreshProductsList());
         qtySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 1));
         finalizeSell.setOnMouseClicked(event -> onFinalizeOrder());
         clearButton.setOnMouseClicked(event -> clearShoppingBasket());
         selectedProductsTableView.setOnMouseClicked((e) -> { updateControls(); refreshDetailsBoxSelectable(false); });
         productsListView.focusedProperty().addListener((observable) -> refreshDetailsBoxSelectable(true));
         productsListView.setOnMouseClicked((e) -> refreshDetailsBoxSelectable(true));
+    }
+
+    public void refreshProductsList() {
+        FilteredList<ProductDao> filteredData = new FilteredList<>(products, null);
+        String filter = searchBox.getText().toUpperCase();
+
+        if(filter == null || filter.length() == 0) {
+            filteredData.setPredicate(null);
+        }
+        else {
+            filteredData.setPredicate(s ->
+                    s.getDescription().toUpperCase().contains(filter) ||
+                    s.getCategory().toUpperCase().contains(filter) ||
+                    String.valueOf(s.getIdProduct()).contains(filter));
+        }
+
+        productsListView.setItems(filteredData);
     }
 
     public void handleKeyEvent() {
@@ -178,6 +214,10 @@ public class CashierPOSController {
                     label.requestFocus();
                     productsListView.getSelectionModel().clearSelection();
                     break;
+                default:
+                    searchBox.setText(keyEvent.getText());
+                    searchBox.requestFocus();
+                    break;
             }
             refreshDetailsBoxSelectable(true);
         });
@@ -194,6 +234,10 @@ public class CashierPOSController {
                     break;
                 case DELETE:
                     selectedProductsList.remove(selectedProductsTableView.getSelectionModel().getSelectedItem());
+                    break;
+                default:
+                    searchBox.setText(keyEvent.getText());
+                    searchBox.requestFocus();
                     break;
             }
             refreshDetailsBoxSelectable(false);
@@ -237,7 +281,7 @@ public class CashierPOSController {
     }
 
     public void updateTables() {
-        productsListView.setItems(new Product().getProducts());
+        productsListView.setItems(products);
         productsListView.setCellFactory(plv -> new ProductListViewCell());
         selectedProductsTableView.setOnMouseClicked(event -> updateControls());
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
