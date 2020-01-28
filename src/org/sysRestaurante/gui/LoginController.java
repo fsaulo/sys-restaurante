@@ -56,7 +56,6 @@ public class LoginController implements DateFormatter {
     public void initialize() {
         if (certs.isDatabaseConnected()) {
             dbStatusLabel.setTextFill(Color.web("Green"));
-            dbStatusLabel.setText("Conectado");
 
         } else {
             dbStatusLabel.setTextFill(Color.web("Red"));

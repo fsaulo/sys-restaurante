@@ -138,8 +138,10 @@ public class CashierPOSController {
 
 
         addProductButton.setOnAction(event -> {
-            addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem(), qtySpinner.getValue());
-            qtySpinner.decrement(qtySpinner.getValue() - 1);
+            if (!productsListView.getItems().isEmpty()) {
+                addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem(), qtySpinner.getValue());
+                qtySpinner.decrement(qtySpinner.getValue() - 1);
+            }
         });
 
         Platform.runLater(this::handleKeyEvent);
