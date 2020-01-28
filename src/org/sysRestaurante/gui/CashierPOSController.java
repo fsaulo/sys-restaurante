@@ -4,9 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -36,7 +34,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.Format;
 import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 public class CashierPOSController {
 
@@ -131,14 +128,16 @@ public class CashierPOSController {
 
         searchBox.textProperty().addListener((observable -> refreshProductsList()));
         searchBox.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.ENTER)) {
+            if (event.getCode().equals(KeyCode.ENTER) && !productsListView.getItems().isEmpty()) {
                 productsListView.getSelectionModel().selectFirst();
                 addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem());
+            } else if (event.getCode().equals(KeyCode.ESCAPE)) {
+                label.requestFocus();
             }
         });
 
 
-        addProductButton.setOnMouseClicked(event -> {
+        addProductButton.setOnAction(event -> {
             addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem(), qtySpinner.getValue());
             qtySpinner.decrement(qtySpinner.getValue() - 1);
         });
@@ -215,8 +214,11 @@ public class CashierPOSController {
                     productsListView.getSelectionModel().clearSelection();
                     break;
                 default:
-                    searchBox.setText(keyEvent.getText());
-                    searchBox.requestFocus();
+                    searchBox.setText(searchBox.getText().concat(keyEvent.getText()));
+                    if (keyEvent.getText() != null && !keyEvent.getText().isEmpty() &&
+                            keyEvent.getText().chars().allMatch(Character::isLetterOrDigit)) {
+                        searchBox.requestFocus();
+                    }
                     break;
             }
             refreshDetailsBoxSelectable(true);
@@ -236,8 +238,11 @@ public class CashierPOSController {
                     selectedProductsList.remove(selectedProductsTableView.getSelectionModel().getSelectedItem());
                     break;
                 default:
-                    searchBox.setText(keyEvent.getText());
-                    searchBox.requestFocus();
+                    searchBox.setText(searchBox.getText().concat(keyEvent.getText()));
+                    if (keyEvent.getText() != null && !keyEvent.getText().isEmpty() &&
+                            keyEvent.getText().chars().allMatch(Character::isLetterOrDigit)) {
+                        searchBox.requestFocus();
+                    }
                     break;
             }
             refreshDetailsBoxSelectable(false);
