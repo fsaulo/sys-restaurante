@@ -27,7 +27,7 @@
    <children>
       <BorderPane fx:id="borderPaneHolder">
          <center>
-            <VBox spacing="10.0" styleClass="box-content" BorderPane.alignment="CENTER">
+            <VBox spacing="5.0" styleClass="box-content" BorderPane.alignment="CENTER">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -72,8 +72,8 @@
                                           <TableColumn fx:id="details" editable="false" minWidth="100.0" prefWidth="-1.0" text="Detalhes" />
                                           <TableColumn fx:id="total" editable="false" minWidth="20.0" prefWidth="81.0" text="Total" />
                                           <TableColumn fx:id="notes" editable="false" minWidth="100.0" prefWidth="183.0" text="Observação" />
-                                          <TableColumn fx:id="status" editable="false" minWidth="20.0" prefWidth="143.0" text="Status" />
-                                          <TableColumn fx:id="date" editable="false" minWidth="50.0" prefWidth="-1.0" text="Data" />
+                                          <TableColumn fx:id="status" editable="false" minWidth="20.0" prefWidth="114.0" text="Status" />
+                                          <TableColumn fx:id="date" editable="false" minWidth="34.0" prefWidth="102.0" text="Data" />
                                        </columns>
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -174,9 +174,6 @@
                                              </padding>
                                           </VBox>
                                        </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
                                     </HBox>
                                  </children>
                               </VBox>
@@ -186,6 +183,9 @@
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
                   </HBox>
                </children>
                <BorderPane.margin>

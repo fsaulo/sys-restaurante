@@ -230,7 +230,7 @@
                            </font>
                         </Label>
                         <Separator prefWidth="200.0" />
-                        <HBox spacing="22.0">
+                        <HBox disable="true" spacing="22.0">
                            <children>
                               <CheckBox mnemonicParsing="false" selected="true" text="Dinheiro">
                                  <font>
