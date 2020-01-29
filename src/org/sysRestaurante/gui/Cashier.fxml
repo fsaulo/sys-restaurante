@@ -39,154 +39,138 @@
                               <Font name="Carlito Bold" size="39.0" />
                            </font>
                         </Label>
-                        <Separator prefWidth="200.0" />
                      </children>
                      <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" top="5.0" />
                      </padding>
                   </VBox>
-                  <HBox spacing="5.0" VBox.vgrow="ALWAYS">
+                  <Separator prefWidth="200.0" />
+                  <VBox spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
+                        <HBox alignment="CENTER_LEFT" styleClass="box-content">
                            <children>
-                              <VBox alignment="CENTER" spacing="5.0" VBox.vgrow="ALWAYS">
+                              <Label opacity="0.8" text="Histórico do caixa">
+                                 <font>
+                                    <Font name="Carlito Bold" size="22.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </HBox>
+                        <TableView fx:id="orderListTableView" VBox.vgrow="ALWAYS">
+                           <columns>
+                              <TableColumn fx:id="codOrder" editable="false" maxWidth="78.0" minWidth="50.0" prefWidth="-1.0" text="Cod." />
+                              <TableColumn fx:id="details" editable="false" minWidth="100.0" prefWidth="-1.0" text="Detalhes" />
+                              <TableColumn fx:id="total" editable="false" minWidth="20.0" prefWidth="81.0" text="Total" />
+                              <TableColumn fx:id="notes" editable="false" minWidth="100.0" prefWidth="183.0" text="Observação" />
+                              <TableColumn fx:id="status" editable="false" minWidth="20.0" prefWidth="114.0" text="Status" />
+                              <TableColumn fx:id="date" editable="false" minWidth="34.0" prefWidth="102.0" text="Data" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" styleClass="box-content">
+                           <children>
+                              <VBox fx:id="cashierDateDetailsBox" alignment="CENTER_RIGHT" opacity="0.6">
                                  <children>
-                                    <HBox alignment="CENTER_LEFT" styleClass="box-content">
-                                       <children>
-                                          <Label opacity="0.8" text="Histórico do caixa">
-                                             <font>
-                                                <Font name="Carlito Bold" size="22.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets left="5.0" right="5.0" />
-                                       </padding>
-                                    </HBox>
-                                    <TableView fx:id="orderListTableView" VBox.vgrow="ALWAYS">
-                                       <columns>
-                                          <TableColumn fx:id="codOrder" editable="false" maxWidth="78.0" minWidth="50.0" prefWidth="-1.0" text="Cod." />
-                                          <TableColumn fx:id="details" editable="false" minWidth="100.0" prefWidth="-1.0" text="Detalhes" />
-                                          <TableColumn fx:id="total" editable="false" minWidth="20.0" prefWidth="81.0" text="Total" />
-                                          <TableColumn fx:id="notes" editable="false" minWidth="100.0" prefWidth="183.0" text="Observação" />
-                                          <TableColumn fx:id="status" editable="false" minWidth="20.0" prefWidth="114.0" text="Status" />
-                                          <TableColumn fx:id="date" editable="false" minWidth="34.0" prefWidth="102.0" text="Data" />
-                                       </columns>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy></TableView>
-                                    <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" styleClass="box-content">
-                                       <children>
-                                          <VBox fx:id="cashierDateDetailsBox" alignment="CENTER_RIGHT" opacity="0.6">
-                                             <children>
-                                                <Label text="Caixa aberto em">
-                                                   <font>
-                                                      <Font name="Carlito Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label text="02/01/2020 01:22">
-                                                   <font>
-                                                      <Font name="Carlito Bold" size="15.0" />
-                                                   </font>
-                                                   <tooltip>
-                                                      <Tooltip text="Caixa aberto em {data} por {pessoa}" />
-                                                   </tooltip>
-                                                </Label>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </VBox>
-                                          <Separator orientation="VERTICAL" />
-                                          <Pane opacity="0.0" HBox.hgrow="ALWAYS" />
-                                          <VBox alignment="TOP_RIGHT" opacity="0.6">
-                                             <children>
-                                                <Label text="Total retiradas">
-                                                   <font>
-                                                      <Font name="Carlito Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="withdrawalLabel" text="R$ 10,00" textFill="RED">
-                                                   <font>
-                                                      <Font name="Carlito Bold" size="20.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </VBox>
-                                          <Separator orientation="VERTICAL" />
-                                          <VBox alignment="TOP_RIGHT" opacity="0.6">
-                                             <children>
-                                                <Label text="Total à vista">
-                                                   <font>
-                                                      <Font name="Carlito Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="inCashLabel" text="R$ 54,01" textFill="#289e2c">
-                                                   <font>
-                                                      <Font name="Carlito Bold" size="20.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </VBox>
-                                          <Separator orientation="VERTICAL" />
-                                          <VBox alignment="TOP_RIGHT" opacity="0.6">
-                                             <children>
-                                                <Label text="Total no cartão">
-                                                   <font>
-                                                      <Font name="Carlito Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="byCardLabel" text="R$ 100,10" textFill="#289e2c">
-                                                   <font>
-                                                      <Font name="Carlito Bold" size="20.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </VBox>
-                                          <Separator orientation="VERTICAL" />
-                                          <VBox alignment="TOP_RIGHT">
-                                             <children>
-                                                <Label opacity="0.7" text="Balanço do dia">
-                                                   <font>
-                                                      <Font name="Carlito Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <Label fx:id="revenueLabel" text="R$ 144,21" textFill="#289e2c">
-                                                   <font>
-                                                      <Font name="Carlito Bold" size="20.0" />
-                                                   </font>
-                                                </Label>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </padding>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
+                                    <Label text="Caixa aberto em">
+                                       <font>
+                                          <Font name="Carlito Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="02/01/2020 01:22">
+                                       <font>
+                                          <Font name="Carlito Bold" size="15.0" />
+                                       </font>
+                                       <tooltip>
+                                          <Tooltip text="Caixa aberto em {data} por {pessoa}" />
+                                       </tooltip>
+                                    </Label>
                                  </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                              <Separator orientation="VERTICAL" />
+                              <Pane opacity="0.0" HBox.hgrow="ALWAYS" />
+                              <VBox alignment="TOP_RIGHT" opacity="0.6">
+                                 <children>
+                                    <Label text="Total retiradas">
+                                       <font>
+                                          <Font name="Carlito Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="withdrawalLabel" text="R$ 10,00" textFill="RED">
+                                       <font>
+                                          <Font name="Carlito Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                              <Separator orientation="VERTICAL" />
+                              <VBox alignment="TOP_RIGHT" opacity="0.6">
+                                 <children>
+                                    <Label text="Total à vista">
+                                       <font>
+                                          <Font name="Carlito Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="inCashLabel" text="R$ 54,01" textFill="#289e2c">
+                                       <font>
+                                          <Font name="Carlito Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                              <Separator orientation="VERTICAL" />
+                              <VBox alignment="TOP_RIGHT" opacity="0.6">
+                                 <children>
+                                    <Label text="Total no cartão">
+                                       <font>
+                                          <Font name="Carlito Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="byCardLabel" text="R$ 100,10" textFill="#289e2c">
+                                       <font>
+                                          <Font name="Carlito Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                              <Separator orientation="VERTICAL" />
+                              <VBox alignment="TOP_RIGHT">
+                                 <children>
+                                    <Label opacity="0.7" text="Balanço do dia">
+                                       <font>
+                                          <Font name="Carlito Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="revenueLabel" text="R$ 144,21" textFill="#289e2c">
+                                       <font>
+                                          <Font name="Carlito Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
                               </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
                      </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </HBox>
+                  </VBox>
                </children>
                <BorderPane.margin>
                   <Insets bottom="3.0" />

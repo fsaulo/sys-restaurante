@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="wrapperBox" minHeight="340.0" minWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierPOSController">
+<BorderPane fx:id="wrapperBox" prefHeight="600.0" prefWidth="1090.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierPOSController">
    <center>
       <VBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
@@ -41,7 +41,7 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <ListView fx:id="productsListView">
+            <ListView fx:id="productsListView" VBox.vgrow="ALWAYS">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>

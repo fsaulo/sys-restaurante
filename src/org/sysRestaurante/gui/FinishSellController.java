@@ -17,6 +17,7 @@ import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Cashier;
+import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.util.CurrencyField;
 import org.sysRestaurante.util.PercentageField;
@@ -116,7 +117,7 @@ public class FinishSellController {
 
     @FXML
     public void confirm() {
-        Cashier cashier = new Cashier();
+        Order order = new Order();
         ObservableList<ProductDao> items = AppFactory.getCashierPOSController().getItems();
 
         double discount = this.percentageField.getAmount();
@@ -140,14 +141,14 @@ public class FinishSellController {
         } else {
             double payByCard = this.payByCard.getAmount();
             double payInCash = getSubtotal() - payByCard;
-            OrderDao orderDao = cashier.newOrder(AppFactory.getCashierDao().getIdCashier(),
+            OrderDao orderDao = order.newOrder(AppFactory.getCashierDao().getIdCashier(),
                     payInCash,
                     payByCard,
                     1,
                     discount,
                     note.toString());
-            cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
-            cashier.addProductsToOrder(orderDao.getIdOrder(), items);
+            new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+            order.addProductsToOrder(orderDao.getIdOrder(), items);
             AppFactory.getCashierController().updateCashierElements();
             AppFactory.getCashierController().setSellConfirmed(true);
             AppFactory.setOrderDao(orderDao);
@@ -177,7 +178,7 @@ public class FinishSellController {
         orderDao.setOrderTime(LocalTime.now());
         orderDao.setTotal(AppFactory.getCashierPOSController().getTotal());
         orderDao.setDiscount(percentageField.getAmount() * 100);
-        orderDao.setIdOrder(new Cashier().getLastOrderId() + 1);
+        orderDao.setIdOrder(new Order().getLastOrderId() + 1);
         AppFactory.setOrderDao(orderDao);
         ArrayList<ProductDao> products = AppFactory.getSelectedProducts();
         AppFactory.setSelectedProducts(products);

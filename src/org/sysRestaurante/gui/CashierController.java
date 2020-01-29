@@ -13,6 +13,7 @@ import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.model.Cashier;
+import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.CellFormatter;
 import org.sysRestaurante.util.CurrencyField;
 import org.sysRestaurante.util.DateFormatter;
@@ -174,7 +175,7 @@ public class CashierController {
     }
 
     public void updateOrderTableList() {
-        orderListTableView.setItems(new Cashier().getOrderByIdCashier(AppFactory.getCashierDao().getIdCashier()));
+        orderListTableView.setItems(new Order().getOrderByIdCashier(AppFactory.getCashierDao().getIdCashier()));
         codOrder.setCellValueFactory(new PropertyValueFactory<>("idOrder"));
         total.setCellValueFactory(new PropertyValueFactory<>("total"));
         details.setCellValueFactory(new PropertyValueFactory<>("details"));

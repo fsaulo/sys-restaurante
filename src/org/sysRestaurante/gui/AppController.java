@@ -173,8 +173,8 @@ public class AppController implements DateFormatter {
                 }
             });
 
-            stage.setHeight(AppFactory.getAppController().borderPaneHolder.getHeight()*0.90);
-            stage.setWidth(AppFactory.getAppController().borderPaneHolder.getWidth()*0.90);
+            stage.setMinWidth(840);
+            stage.setWidth(1090);
             stage.setResizable(true);
             stage.showAndWait();
 

@@ -119,7 +119,6 @@
 .box-content {
     -fx-border-color: #CBCBCC;
     -fx-border-width: 1 1 1;
-    -fx-background-radius: 9,8,5,4;
     -fx-effect: dropshadow(three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
 }
 

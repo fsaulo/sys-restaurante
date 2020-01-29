@@ -129,8 +129,9 @@ public class ToolBarController extends AppFactory {
         AppFactory.getAppController().loadPage(event, SceneNavigator.CASHIER);
     }
 
-    public void submenuComandas() {
+    public void submenuComandas(MouseEvent event) {
         selectMenuPrincipal();
+        AppFactory.getAppController().loadPage(event, SceneNavigator.MANAGE_COMANDA);
     }
 
     public void submenuPedidos() {

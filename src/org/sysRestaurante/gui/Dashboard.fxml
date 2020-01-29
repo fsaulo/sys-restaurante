@@ -37,12 +37,12 @@
                               <Font name="Carlito Bold" size="39.0" />
                            </font>
                         </Label>
-                        <Separator prefWidth="200.0" />
                      </children>
                      <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="5.0" left="5.0" top="5.0" />
                      </padding>
                   </VBox>
+                  <Separator prefWidth="200.0" />
                   <VBox spacing="5.0" VBox.vgrow="ALWAYS">
                      <children>
                         <HBox alignment="CENTER_LEFT" styleClass="box-content">
@@ -103,9 +103,6 @@
                            </children>
                         </HBox>
                      </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
                   </VBox>
                </children>
                <padding>
