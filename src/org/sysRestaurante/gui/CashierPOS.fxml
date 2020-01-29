@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="wrapperBox" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierPOSController">
+<BorderPane fx:id="wrapperBox" minHeight="340.0" minWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierPOSController">
    <center>
       <VBox spacing="5.0" BorderPane.alignment="CENTER">
          <children>
@@ -41,13 +41,11 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <ListView fx:id="productsListView" prefHeight="235.0" prefWidth="350.0" VBox.vgrow="ALWAYS">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
+            <ListView fx:id="productsListView">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding></ListView>
+               </padding>
+            </ListView>
             <Separator />
             <VBox fx:id="detailsWrapperBox" spacing="5.0">
                <children>
@@ -63,19 +61,19 @@
                            <children>
                               <VBox HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="contentLabel" prefWidth="240.0" text="Coca-cola 2L Garrafa retornável" wrapText="true">
+                                    <Label fx:id="contentLabel" alignment="TOP_LEFT" prefHeight="50.0" prefWidth="240.0" text="Coca-cola 2L Garrafa retornável" wrapText="true">
                                        <font>
                                           <Font name="Carlito Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <HBox alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="190.0">
+                                    <HBox alignment="BOTTOM_LEFT">
                                        <children>
                                           <Label text="Preço unit.">
                                              <font>
                                                 <Font name="Carlito" size="15.0" />
                                              </font>
                                           </Label>
-                                          <Pane HBox.hgrow="ALWAYS" />
+                                          <Pane prefHeight="6.0" prefWidth="120.0" HBox.hgrow="ALWAYS" />
                                           <Label fx:id="unitPriceLabel" text="R$ 5,50">
                                              <font>
                                                 <Font name="Carlito Bold" size="17.0" />
@@ -93,6 +91,7 @@
                                           <Font name="Carlito Bold" size="16.0" />
                                        </font>
                                     </Label>
+                                    <Pane VBox.vgrow="ALWAYS" />
                                     <Spinner fx:id="qtySpinner" opacity="0.8" prefHeight="31.0" prefWidth="72.0" />
                                  </children>
                               </VBox>
@@ -300,7 +299,7 @@
                </font>
             </Label>
             <Separator prefWidth="200.0" />
-            <TableView fx:id="selectedProductsTableView" editable="true" prefHeight="144.0" prefWidth="400.0" VBox.vgrow="ALWAYS">
+            <TableView fx:id="selectedProductsTableView" editable="true" prefHeight="144.0" VBox.vgrow="ALWAYS">
                <columns>
                   <TableColumn fx:id="descriptionColumn" editable="false" minWidth="-1.0" prefWidth="161.0" text="Descrição do produto" />
                   <TableColumn fx:id="priceColumn" editable="false" minWidth="-Infinity" text="Preço" />
@@ -313,7 +312,7 @@
                <VBox.margin>
                   <Insets bottom="1.0" />
                </VBox.margin></TableView>
-            <HBox fx:id="editableItems" prefHeight="30.0" prefWidth="400.0" spacing="5.0">
+            <HBox fx:id="editableItems" prefHeight="30.0" spacing="5.0">
                <children>
                   <VBox fx:id="removeButton" alignment="CENTER" prefWidth="70.0" styleClass="cashier-button">
                      <children>

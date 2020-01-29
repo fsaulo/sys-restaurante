@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
@@ -172,6 +173,8 @@ public class CashierPOSController {
     public void handleKeyEvent() {
         wrapperBox.getScene().getAccelerators().clear();
         wrapperBox.getScene().getAccelerators().put(SceneNavigator.F2_CONFIRMATION, this::onFinalizeOrder);
+        wrapperBox.getScene().getAccelerators().put(SceneNavigator.F3_SEARCH, () -> searchBox.requestFocus());
+        wrapperBox.getScene().getAccelerators().put(SceneNavigator.F4_CANCEL, this::onCancelButton);
         productsListView.requestFocus();
         productsListView.setOnKeyPressed(keyEvent -> {
             switch (keyEvent.getCode()) {
@@ -276,10 +279,9 @@ public class CashierPOSController {
         alert.setContentText("Todos os registros salvos serão perdidos.");
         alert.showAndWait();
 
-        if (alert.getResult() != ButtonType.CANCEL) {
-            cancelButton.getScene().getWindow().hide();
+        if (alert.getResult() == ButtonType.OK) {
+            wrapperBox.getScene().getWindow().hide();
             AppFactory.setOrderDao(new OrderDao());
-            AppFactory.getSelectedProducts().clear();
             return true;
         }
         return false;
@@ -430,5 +432,9 @@ public class CashierPOSController {
             selectedProductsTableView.getItems().clear();
             selectedProductsList.clear();
         }
+    }
+
+    public void searchByCategory(String category) {
+        searchBox.setText(category);
     }
 }

@@ -19,10 +19,10 @@ public class ProductDao {
     public void setCategory(int idCategory) {
         switch (idCategory) {
             case 1:
-                category = "Bebida";
+                category = "Bebidas";
                 break;
             case 2:
-                category = "Almoço";
+                category = "Almoços";
                 break;
             case 3:
                 category = "Tira-gosto";

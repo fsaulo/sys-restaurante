@@ -168,3 +168,17 @@
     -fx-text-fill: white;
     -fx-cursor: hand;
 }
+
+.category-label {
+    -fx-background-color: #DDEAF1;
+    -fx-border-color: #C3DBE8;
+    -fx-border-width: 2;
+    -fx-border-radius: 3;
+    -fx-background-radius: 5;
+}
+
+.category-label: hover {
+    -fx-background-color: #C3DBE8;
+    -fx-border-color: #7D8C94;
+    -fx-cursor: hand;
+}

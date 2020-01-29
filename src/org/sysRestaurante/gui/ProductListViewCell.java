@@ -22,6 +22,8 @@ public class ProductListViewCell extends ListCell<ProductDao> {
     @FXML
     private Label id;
     @FXML
+    private Label category;
+    @FXML
     private HBox wrapperBox;
 
     private FXMLLoader mLLoader;
@@ -49,6 +51,11 @@ public class ProductListViewCell extends ListCell<ProductDao> {
             description.setText(product.getDescription());
             price.setText(brlCurrencyFormat.format(product.getSellPrice()));
             id.setText(String.valueOf(product.getIdProduct()));
+            category.setText(product.getCategory());
+            category.setOnMouseClicked(event ->
+                AppFactory.getCashierPOSController().searchByCategory(category.getText())
+            );
+
             wrapperBox.setOnMouseClicked(event -> {
                 if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     if (product != null) {
