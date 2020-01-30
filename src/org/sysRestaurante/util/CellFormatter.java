@@ -2,7 +2,6 @@ package org.sysRestaurante.util;
 
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.Tooltip;
 import javafx.util.Callback;
 
 public interface CellFormatter <E, T> extends Callback<TableColumn<E, T>, TableCell<E, T>> {

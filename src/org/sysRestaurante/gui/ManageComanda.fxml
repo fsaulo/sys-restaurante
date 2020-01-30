@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridWrapper" prefHeight="766.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ManageComandaController">
+<GridPane fx:id="gridWrapper" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ManageComandaController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
    </columnConstraints>
@@ -60,9 +60,9 @@
                      <content>
                         <HBox>
                            <children>
-                              <TilePane fx:id="tilePane" hgap="5.0" vgap="5.0">
+                              <TilePane fx:id="tilePane" hgap="9.0" prefColumns="4" vgap="9.0">
                                  <children>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="182.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
+                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
                                        <children>
                                           <Label text="MESA #023" textFill="WHITE">
                                              <font>
@@ -93,7 +93,7 @@
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="182.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
+                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
                                        <children>
                                           <Label text="MESA #027" textFill="WHITE">
                                              <font>
@@ -124,7 +124,7 @@
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="182.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
+                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
                                        <children>
                                           <Label text="MESA #033" textFill="WHITE">
                                              <font>
@@ -155,7 +155,7 @@
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="182.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
+                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
                                        <children>
                                           <Label text="MESA #034" textFill="WHITE">
                                              <font>
@@ -186,7 +186,7 @@
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="182.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
+                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
                                        <children>
                                           <Label text="MESA #035" textFill="WHITE">
                                              <font>
@@ -217,7 +217,7 @@
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="182.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
+                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
                                        <children>
                                           <Label text="MESA #043" textFill="WHITE">
                                              <font>
@@ -248,7 +248,7 @@
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="182.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
+                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
                                        <children>
                                           <Label text="MESA #048" textFill="WHITE">
                                              <font>
@@ -279,7 +279,7 @@
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="182.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
+                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
                                        <children>
                                           <Label text="MESA #050" textFill="WHITE">
                                              <font>

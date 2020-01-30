@@ -8,19 +8,12 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.dao.OrderDao;
-import org.sysRestaurante.dao.ProductDao;
-import org.sysRestaurante.dao.UserDao;
-import org.sysRestaurante.model.Authentication;
-import org.sysRestaurante.model.Cashier;
-import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.Encryption;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class MainGUI extends Application {
