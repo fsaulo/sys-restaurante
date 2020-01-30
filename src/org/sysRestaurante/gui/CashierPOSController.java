@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
@@ -53,7 +52,7 @@ public class CashierPOSController {
     @FXML
     private TextField searchBox;
     @FXML
-    private Button searchButton;
+    private Button clearSearchButton;
     @FXML
     private Button addProductButton;
     @FXML
@@ -146,7 +145,7 @@ public class CashierPOSController {
         });
 
         Platform.runLater(this::handleKeyEvent);
-        searchButton.setOnMouseClicked(event -> refreshProductsList());
+        clearSearchButton.setOnMouseClicked(event -> searchBox.clear());
         qtySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 1));
         finalizeSell.setOnMouseClicked(event -> onFinalizeOrder());
         clearButton.setOnMouseClicked(event -> clearShoppingBasket());
@@ -173,9 +172,13 @@ public class CashierPOSController {
     }
 
     public void handleKeyEvent() {
+        Runnable run = () -> {
+            searchBox.requestFocus();
+            searchBox.selectAll();
+        };
         wrapperBox.getScene().getAccelerators().clear();
         wrapperBox.getScene().getAccelerators().put(SceneNavigator.F2_CONFIRMATION, this::onFinalizeOrder);
-        wrapperBox.getScene().getAccelerators().put(SceneNavigator.F3_SEARCH, () -> searchBox.requestFocus());
+        wrapperBox.getScene().getAccelerators().put(SceneNavigator.F3_SEARCH, run);
         wrapperBox.getScene().getAccelerators().put(SceneNavigator.F4_CANCEL, this::onCancelButton);
         productsListView.requestFocus();
         productsListView.setOnKeyPressed(keyEvent -> {

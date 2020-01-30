@@ -20,7 +20,7 @@
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>
       </Separator>
-      <Label fx:id="description" maxWidth="240.0" text="Descricao do produto" HBox.hgrow="NEVER">
+      <Label fx:id="description" maxWidth="230.0" text="Descricao do produto" HBox.hgrow="NEVER">
          <font>
             <Font name="Carlito" size="16.0" />
          </font>

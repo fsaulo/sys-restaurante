@@ -129,6 +129,7 @@ public class CashierController {
 
     public void handleKeyEvent() {
         AppFactory.getMainController().getScene().getAccelerators().clear();
+        AppFactory.getAppController().setFullScreenShortcut();
         AppFactory.getMainController().getScene().getAccelerators()
                 .put(SceneNavigator.F10_OPEN_OR_CLOSE_CASHIER, this::onOpenOrCloseCashier);
         AppFactory.getMainController().getScene().getAccelerators()

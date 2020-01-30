@@ -28,10 +28,11 @@ public class SceneNavigator {
     public static final String FINISH_SELL_DIALOG = "FinishSell.fxml";
     public static final String RECEIPT_VIEW = "ReceiptView.fxml";
     public static final String MANAGE_COMANDA = "ManageComanda.fxml";
-    public static final KeyCombination F10_OPEN_OR_CLOSE_CASHIER = new KeyCodeCombination(KeyCode.F10);
     public static final KeyCombination F2_CONFIRMATION = new KeyCodeCombination(KeyCode.F2);
     public static final KeyCombination F3_SEARCH = new KeyCodeCombination(KeyCode.F3);
     public static final KeyCombination F4_CANCEL = new KeyCodeCombination(KeyCode.F4);
+    public static final KeyCombination F10_OPEN_OR_CLOSE_CASHIER = new KeyCodeCombination(KeyCode.F10);
+    public static final KeyCombination F11_FULLSCREEN_MODE = new KeyCodeCombination(KeyCode.F11);
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUIController.class.getName());
 

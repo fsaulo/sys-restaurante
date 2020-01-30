@@ -58,15 +58,16 @@ public class FinishSellController {
 
     @FXML
     public void initialize() {
+        Font font = Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 20);
         payInCash = new CurrencyField(new Locale("pt", "BR"));
-        payInCash.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        payInCash.setFont(font);
         payInCash.setPrefWidth(200);
         payInCash.setAmount(AppFactory.getCashierPOSController().getTotal());
         payByCard = new CurrencyField(new Locale("pt", "BR"));
-        payByCard.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        payByCard.setFont(font);
         payByCard.setPrefWidth(200);
         percentageField = new PercentageField();
-        percentageField.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        percentageField.setFont(font);
         percentageField.setPrefWidth(200);
         confirmBox.setDisable(false);
 
@@ -105,7 +106,6 @@ public class FinishSellController {
             }
         });
 
-        Platform.runLater(this::handleKeyEvent);
         seeReceiptBox.setOnMouseClicked(event -> viewReceipt());
         subtotalLabel.setText(format.format(getSubtotal()));
         changeLabel.setText(format.format(getChange()));
@@ -113,6 +113,7 @@ public class FinishSellController {
                 changeLabel.setText(format.format(getChange())));
         payByCard.textProperty().addListener((observable, oldValue, newValue) ->
                 changeLabel.setText(format.format(getChange())));
+        Platform.runLater(this::handleKeyEvent);
     }
 
     @FXML
@@ -132,7 +133,7 @@ public class FinishSellController {
             note.append(noteTextArea.getText());
         }
 
-        if (change < 0) {
+        if (change < 0.0) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText("Não foi possível completar transação.");
             alert.setContentText("Valor pago inferior ao valor do pedido");
@@ -194,7 +195,8 @@ public class FinishSellController {
     public double getChange() {
         double total = AppFactory.getCashierPOSController().getTotal();
         double discount = total * percentageField.getAmount();
-        return (payInCash.getAmount() + payByCard.getAmount()) - (total - discount);
+        double change = Math.round(((payInCash.getAmount() + payByCard.getAmount()) - (total - discount))*100)/100.0;
+        return change;
     }
 
     public double getSubtotal() {

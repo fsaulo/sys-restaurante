@@ -3,6 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -56,9 +57,19 @@ public class AppController implements DateFormatter {
         SceneNavigator.loadScene(borderPaneHolder);
         borderPaneHolder.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
         Stage stage = (Stage) borderPaneHolder.getScene().getWindow();
-        stage.setWidth(1280);
-        stage.setHeight(720);
+        stage.setWidth(1170);
+        stage.setHeight(700);
         stage.centerOnScreen();
+        Platform.runLater(this::setFullScreenShortcut);
+    }
+
+    public void setFullScreenShortcut() {
+        Stage stage = (Stage) borderPaneHolder.getParent().getScene().getWindow();
+        stage.setFullScreenExitHint("Você entrou em modo tela cheia.\nPara sair pressione ESC ou F11");
+        Runnable maximize = () -> {
+            if (stage.isFullScreen()) stage.setFullScreen(false);
+            else stage.setFullScreen(true); };
+        AppFactory.getMainController().getScene().getAccelerators().put(SceneNavigator.F11_FULLSCREEN_MODE, maximize);
     }
 
     public HBox getFooter() {
@@ -132,6 +143,7 @@ public class AppController implements DateFormatter {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(AppFactory.getMainController().getScene().getWindow());
 
             if (main) AppFactory.getMainController().darkenScreen();
 
@@ -153,6 +165,7 @@ public class AppController implements DateFormatter {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(AppFactory.getMainController().getScene().getWindow());
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.CASHIER_POS));
             Scene scene = new Scene(loader.load());
@@ -187,6 +200,7 @@ public class AppController implements DateFormatter {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(AppFactory.getCashierPOSController().detailsWrapperBox.getScene().getWindow());
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.FINISH_SELL_DIALOG));
             Scene scene = new Scene(loader.load());
