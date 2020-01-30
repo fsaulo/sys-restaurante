@@ -60,6 +60,15 @@
                            </padding>
                         </HBox>
                         <TableView fx:id="orderListTableView" VBox.vgrow="ALWAYS">
+                           <placeholder>
+                              <HBox alignment="CENTER">
+                                 <Label text="Nenhum registro encontrado" textAlignment="CENTER" wrapText="true" opacity="0.7">
+                                    <font>
+                                       <Font name="Carlito Bold" size="20"/>
+                                    </font>
+                                 </Label>
+                              </HBox>
+                           </placeholder>
                            <columns>
                               <TableColumn fx:id="codOrder" editable="false" maxWidth="78.0" minWidth="50.0" prefWidth="-1.0" text="Cod." />
                               <TableColumn fx:id="details" editable="false" minWidth="100.0" prefWidth="-1.0" text="Detalhes" />

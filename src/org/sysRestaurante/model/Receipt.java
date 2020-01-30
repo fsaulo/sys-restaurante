@@ -140,7 +140,7 @@ public class Receipt {
 
         if (productList != null) {
             for (ProductDao item : productList) {
-                strItem = ellipsize(item.getDescription(), 30);
+                strItem = ellipsize(item.getDescription(), 25);
                 strQty = "x" + item.getQuantity();
                 strPrice = CurrencyField.getBRLCurrencyFormat().format(item.getSellPrice());
                 body.append(String.format("%-28s %10s %10s\n", strItem, strQty, strPrice));
@@ -156,18 +156,19 @@ public class Receipt {
         String subtotal = String.format("%-24s %25s", "SUBTOTAL:", strSubtotal);
         String total = String.format("%-24s %25s", "TOTAL:", strTotal);
         String discount = String.format("%-24s %25s", "DESCONTOS APLICADOS:", strDiscount);
-        String msg1 = center("OBRIGADO, VOLTE SEMPRE!");
+        String msg1 = center("OBRIGADO PELA PREFERÊNCIA.");
+        String msg2 = center("VOLTE SEMPRE!");
         String dateTime = String.format("%-24s %25s", "DATA: " + strDate, "HORA: " + strTime);
-        String footer = "\n\n" + sep1 + "\n" +
+        String footer = "\n\n" + sep2 + "\n" +
                         subtotal + "\n" +
                         discount + "\n" +
                         total + "\n" +
                         sep1 + "\n" +
                         "NOME FUNC. " + strFuncName + "\n" +
                         dateTime + "\n" +
-                        sep1 + "\n" +
+                        sep2 + "\n\n" +
                         msg1 + "\n" +
-                        sep1 + "\n";
+                        msg2;
         return footer;
     }
 

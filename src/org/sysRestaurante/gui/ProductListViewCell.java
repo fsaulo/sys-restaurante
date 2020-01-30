@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import org.sysRestaurante.applet.AppFactory;
@@ -49,6 +50,7 @@ public class ProductListViewCell extends ListCell<ProductDao> {
 
             NumberFormat brlCurrencyFormat = CurrencyField.getBRLCurrencyFormat();
             description.setText(product.getDescription());
+            description.setTooltip(new Tooltip(product.getDescription()));
             price.setText(brlCurrencyFormat.format(product.getSellPrice()));
             id.setText(String.valueOf(product.getIdProduct()));
             category.setText(product.getCategory());

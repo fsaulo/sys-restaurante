@@ -33,7 +33,7 @@
             <HBox prefWidth="350.0" spacing="10.0">
                <children>
                   <TextField fx:id="searchBox" prefHeight="31.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="searchButton" mnemonicParsing="false" opacity="0.65" prefHeight="31.0" prefWidth="100.0" text="Pesquisar">
+                  <Button fx:id="searchButton" mnemonicParsing="false" opacity="0.65" prefHeight="31.0" text="Limpar">
                      <font>
                         <Font name="Carlito" size="15.0" />
                      </font>
@@ -42,6 +42,23 @@
             </HBox>
             <Separator prefWidth="200.0" />
             <ListView fx:id="productsListView" VBox.vgrow="ALWAYS">
+               <placeholder>
+                  <VBox alignment="TOP_CENTER" spacing="5">
+                     <padding>
+                        <Insets bottom="30" left="30" right="30" top="30" />
+                     </padding>
+                     <Label opacity="0.7" text="Nenhum produto encontrado com essa descrição." textAlignment="CENTER" wrapText="true">
+                        <font>
+                           <Font name="Carlito" size="18" />
+                        </font>
+                     </Label>
+                     <Label opacity="0.7" text="Pressione F3 para começar a escrever uma nova busca rápida." textAlignment="CENTER" wrapText="true">
+                        <font>
+                           <Font name="Carlito Bold" size="18" />
+                        </font>
+                     </Label>
+                  </VBox>
+               </placeholder>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -300,6 +317,13 @@
             </Label>
             <Separator prefWidth="200.0" />
             <TableView fx:id="selectedProductsTableView" editable="true" prefHeight="144.0" VBox.vgrow="ALWAYS">
+               <placeholder>
+                  <Label opacity="0.7" text="O carrinho está vazio" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="Carlito Bold" size="20" />
+                     </font>
+                  </Label>
+               </placeholder>
                <columns>
                   <TableColumn fx:id="descriptionColumn" editable="false" minWidth="-1.0" prefWidth="161.0" text="Descrição do produto" />
                   <TableColumn fx:id="priceColumn" editable="false" minWidth="-Infinity" text="Preço" />
@@ -311,7 +335,8 @@
                </columnResizePolicy>
                <VBox.margin>
                   <Insets bottom="1.0" />
-               </VBox.margin></TableView>
+               </VBox.margin>
+            </TableView>
             <HBox fx:id="editableItems" prefHeight="30.0" spacing="5.0">
                <children>
                   <VBox fx:id="removeButton" alignment="CENTER" prefWidth="70.0" styleClass="cashier-button">
