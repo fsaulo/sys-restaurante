@@ -15,7 +15,7 @@ import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.model.Authentication;
-import org.sysRestaurante.util.DateFormatter;
+import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 

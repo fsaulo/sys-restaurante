@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -22,13 +23,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Window;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Product;
-import org.sysRestaurante.util.CellFormatter;
-import org.sysRestaurante.util.CurrencyField;
-import org.sysRestaurante.util.SpinnerCellFactory;
+import org.sysRestaurante.gui.formatter.CellFormatter;
+import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.gui.formatter.SpinnerCellFactory;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -176,6 +178,9 @@ public class CashierPOSController {
             searchBox.requestFocus();
             searchBox.selectAll();
         };
+        wrapperBox.getScene().getWindow().setOnCloseRequest(event -> {
+            if (!onCancelButton()) event.consume();
+        });
         wrapperBox.getScene().getAccelerators().clear();
         wrapperBox.getScene().getAccelerators().put(SceneNavigator.F2_CONFIRMATION, this::onFinalizeOrder);
         wrapperBox.getScene().getAccelerators().put(SceneNavigator.F3_SEARCH, run);
@@ -282,6 +287,7 @@ public class CashierPOSController {
         alert.setTitle("Alerta do sistema");
         alert.setHeaderText("Tem certeza que deseja cancelar venda?");
         alert.setContentText("Todos os registros salvos serão perdidos.");
+        alert.initOwner(wrapperBox.getScene().getWindow());
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.OK) {
@@ -289,6 +295,7 @@ public class CashierPOSController {
             AppFactory.setOrderDao(new OrderDao());
             return true;
         }
+
         return false;
     }
 
@@ -437,6 +444,14 @@ public class CashierPOSController {
             selectedProductsTableView.getItems().clear();
             selectedProductsList.clear();
         }
+    }
+
+    public Window getPOSWindow() {
+        Window window = wrapperBox.getScene().getWindow();
+        if (window != null) {
+            return window;
+        }
+        return new Scene(wrapperBox).getWindow();
     }
 
     public void searchByCategory(String category) {

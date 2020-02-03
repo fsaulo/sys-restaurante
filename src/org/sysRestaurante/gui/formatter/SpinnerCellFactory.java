@@ -1,4 +1,4 @@
-package org.sysRestaurante.util;
+package org.sysRestaurante.gui.formatter;
 
 import javafx.application.Platform;
 import javafx.scene.control.Spinner;

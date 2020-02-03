@@ -1,4 +1,4 @@
-package org.sysRestaurante.util;
+package org.sysRestaurante.gui.formatter;
 
 import java.text.NumberFormat;
 import java.util.Currency;

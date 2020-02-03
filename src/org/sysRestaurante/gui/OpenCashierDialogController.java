@@ -11,7 +11,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.model.Cashier;
-import org.sysRestaurante.util.CurrencyField;
+import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.util.Locale;

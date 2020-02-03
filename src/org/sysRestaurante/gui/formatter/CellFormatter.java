@@ -1,4 +1,4 @@
-package org.sysRestaurante.util;
+package org.sysRestaurante.gui.formatter;
 
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;

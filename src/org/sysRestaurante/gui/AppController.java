@@ -24,10 +24,11 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.model.Authentication;
-import org.sysRestaurante.util.DateFormatter;
+import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
@@ -161,6 +162,23 @@ public class AppController implements DateFormatter {
         }
     }
 
+    public static void showDialog(String fxml, Window owner) {
+        try {
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(owner);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(AppController.class.getResource(fxml));
+            Scene scene = new Scene(loader.load());
+            stage.setTitle("SysRestaurante: Dialog " + fxml);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void openPOS() {
         try {
             Stage stage = new Stage();
@@ -173,24 +191,10 @@ public class AppController implements DateFormatter {
             stage.setTitle("SysRestaurante: Point of Sale");
             stage.setMinWidth(720);
             stage.setMinHeight(430);
-
-            stage.setOnCloseRequest(e -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Alerta do sistema");
-                alert.setHeaderText("Tem certeza que deseja cancelar venda?");
-                alert.setContentText("Todos os registros salvos serão perdidos.");
-                alert.showAndWait();
-
-                if (alert.getResult() == ButtonType.CANCEL) {
-                    e.consume();
-                }
-            });
-
             stage.setMinWidth(840);
             stage.setWidth(1090);
             stage.setResizable(true);
             stage.showAndWait();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }

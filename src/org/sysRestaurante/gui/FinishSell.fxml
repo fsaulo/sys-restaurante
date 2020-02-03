@@ -137,7 +137,7 @@
             </VBox>
             <VBox alignment="CENTER" prefWidth="75.0" spacing="10.0">
                <children>
-                  <VBox fx:id="saveReceipt" alignment="CENTER" prefHeight="30.0" prefWidth="70.0" styleClass="cashier-button">
+                  <VBox fx:id="saveReceipt" alignment="CENTER" onMouseClicked="#saveReceipt" prefHeight="30.0" prefWidth="70.0" styleClass="cashier-button">
                      <children>
                         <Label styleClass="cashier-text" text="Salvar" textAlignment="CENTER" wrapText="true">
                            <font>

@@ -19,7 +19,6 @@ public class SceneNavigator {
     public static final String DASHBOARD = "Dashboard.fxml";
     public static final String APPLICATION_STAGE = "App.fxml";
     public static final String NOTE_PANE = "AddNotesDialog.fxml";
-    public static final String CLEAR_NOTES_ALERT = "ClearNotesAlert.fxml";
     public static final String CASHIER = "Cashier.fxml";
     public static final String CLOSE_CASHIER_DIALOG = "CloseCashierDialog.fxml";
     public static final String OPEN_CASHIER_DIALOG = "OpenCashierDialog.fxml";

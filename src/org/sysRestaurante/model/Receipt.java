@@ -2,8 +2,10 @@ package org.sysRestaurante.model;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Dialog;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -11,12 +13,14 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.dao.UserDao;
-import org.sysRestaurante.util.CurrencyField;
+import org.sysRestaurante.gui.formatter.CurrencyField;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -185,13 +189,14 @@ public class Receipt {
         return stackPane.snapshot(new SnapshotParameters(), null);
     }
 
-    public void saveReceiptAsPng() throws MalformedURLException {
+    public void saveReceiptAsPng(Window owner) throws MalformedURLException {
         WritableImage nodeshot = getReceiptImageFile();
         int idOrder = AppFactory.getOrderDao().getIdOrder();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialFileName("SysRecibo_Caixa_Cod" + idOrder + "_" + LocalDate.now() + ".png");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
-        File file = fileChooser.showSaveDialog(new Stage());
+        fileChooser.setTitle("Salvar recibo");
+        File file = fileChooser.showSaveDialog(owner);
 
         if (file != null) {
             if(!file.getName().contains(".")) {
@@ -208,6 +213,7 @@ public class Receipt {
                 alert.setTitle("Informação do sistema");
                 alert.setHeaderText(null);
                 alert.setContentText("Recibo salvo com sucesso");
+                alert.initOwner(owner);
                 alert.showAndWait();
             } catch (IOException e) {
                 e.printStackTrace();

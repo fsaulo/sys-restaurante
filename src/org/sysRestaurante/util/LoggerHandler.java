@@ -1,5 +1,7 @@
 package org.sysRestaurante.util;
 
+import org.sysRestaurante.gui.formatter.LoggerFormatter;
+
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;

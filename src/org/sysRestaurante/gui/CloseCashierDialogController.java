@@ -9,8 +9,8 @@ import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.model.Cashier;
-import org.sysRestaurante.util.CurrencyField;
-import org.sysRestaurante.util.DateFormatter;
+import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.time.LocalDateTime;

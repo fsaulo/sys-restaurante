@@ -25,8 +25,13 @@ public class MainGUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setHeight(550);
         primaryStage.setWidth(800);
+
+        String javafx_version = System.getProperties().get("javafx.runtime.version").toString();
+        LOGGER.info("JavaFX Runtime Version: " + javafx_version);
+
         startProgram(primaryStage);
         Encryption.setKey("Jaguaric@3105");
+
         LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");
     }
 
@@ -82,11 +87,5 @@ public class MainGUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public void test() {
-        String str = "Um texto com espacos";
-        System.out.println(str.toUpperCase().replaceAll("\\s+", ""));
-        Platform.exit();
     }
 }

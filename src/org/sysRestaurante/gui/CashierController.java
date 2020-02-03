@@ -1,8 +1,6 @@
 package org.sysRestaurante.gui;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -16,11 +14,11 @@ import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
-import org.sysRestaurante.util.CellFormatter;
-import org.sysRestaurante.util.CurrencyField;
-import org.sysRestaurante.util.DateFormatter;
+import org.sysRestaurante.gui.formatter.CellFormatter;
+import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.util.LoggerHandler;
-import org.sysRestaurante.util.StatusCellFormatter;
+import org.sysRestaurante.gui.formatter.StatusCellFormatter;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -120,6 +118,7 @@ public class CashierController {
             alert.setTitle("Informação do sistema");
             alert.setContentText("Pedido registrado com sucesso!");
             alert.setHeaderText(null);
+            alert.initOwner(newOrderBox.getScene().getWindow());
             alert.showAndWait();
         }
 

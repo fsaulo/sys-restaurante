@@ -2,7 +2,9 @@ package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -11,7 +13,7 @@ import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.NoteDao;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Reminder;
-import org.sysRestaurante.util.DateFormatter;
+import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.sql.SQLException;
@@ -75,7 +77,23 @@ public class DashboardController {
     }
 
     public void showClearAlertWindow() {
-        AppController.showDialog(SceneNavigator.CLEAR_NOTES_ALERT, true);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação do sistema");
+        alert.setHeaderText("Deseja remover todas as anotações marcadas?");
+        alert.setContentText("Essa ação não poderá ser desfeita");
+        alert.initOwner(borderPane.getScene().getWindow());
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.OK) {
+            try {
+                new Reminder().removeChecked();
+                removeNotesFromList();
+                reloadNotes();
+            } catch (SQLException e) {
+                LOGGER.severe("Couldn't remove checked notes");
+                e.printStackTrace();
+            }
+        }
     }
 
     public void removeNotesFromList() {

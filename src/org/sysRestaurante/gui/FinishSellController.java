@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
@@ -19,7 +20,7 @@ import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
-import org.sysRestaurante.util.CurrencyField;
+import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.util.PercentageField;
 
 import java.net.MalformedURLException;
@@ -70,27 +71,10 @@ public class FinishSellController {
         percentageField.setFont(font);
         percentageField.setPrefWidth(200);
         confirmBox.setDisable(false);
-
-        saveReceipt.setOnMouseClicked(event -> {
-            try {
-                receiptContentConstructor();
-                Receipt receipt = new Receipt(
-                        AppFactory.getSelectedProducts(),
-                        AppFactory.getOrderDao());
-                receipt.saveReceiptAsPng();
-            } catch (MalformedURLException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Informações de erro");
-                alert.setHeaderText("Arquivo não contém extensão válida.");
-                alert.setContentText("Extensões válidas: *.png");
-                alert.showAndWait();
-            }
-        });
-
+        confirmBox.setOnMouseClicked(event -> confirm());
         box1.getChildren().add(payInCash);
         box2.getChildren().add(payByCard);
         box3.getChildren().add(percentageField);
-        confirmBox.setOnMouseClicked(event -> confirm());
 
         Format format = CurrencyField.getBRLCurrencyFormat();
         percentageField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -138,6 +122,7 @@ public class FinishSellController {
             alert.setHeaderText("Não foi possível completar transação.");
             alert.setContentText("Valor pago inferior ao valor do pedido");
             alert.setTitle("Alerta do sistema");
+            alert.initOwner(confirmBox.getScene().getWindow());
             alert.showAndWait();
         } else {
             double payByCard = this.payByCard.getAmount();
@@ -159,8 +144,18 @@ public class FinishSellController {
 
     @FXML
     public void cancel() {
-        if (AppFactory.getCashierPOSController().onCancelButton())
-            goBackButton.getScene().getWindow().hide();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Alerta do sistema");
+        alert.setHeaderText("Tem certeza que deseja cancelar venda?");
+        alert.setContentText("Todos os registros salvos serão perdidos.");
+        alert.initOwner(confirmBox.getScene().getWindow());
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.OK) {
+            changeLabel.getScene().getWindow().hide();
+            AppFactory.setOrderDao(new OrderDao());
+            AppFactory.getCashierPOSController().getPOSWindow().hide();
+        }
     }
 
     @FXML
@@ -168,9 +163,27 @@ public class FinishSellController {
         goBackButton.getScene().getWindow().hide();
     }
 
+    @FXML
+    public void saveReceipt() {
+        try {
+            receiptContentConstructor();
+            Receipt receipt = new Receipt(
+                    AppFactory.getSelectedProducts(),
+                    AppFactory.getOrderDao());
+            receipt.saveReceiptAsPng(saveReceipt.getScene().getWindow());
+        } catch (MalformedURLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Informações de erro");
+            alert.setHeaderText("Arquivo não contém extensão válida.");
+            alert.setContentText("Extensões válidas: *.png");
+            alert.initOwner(confirmBox.getScene().getWindow());
+            alert.showAndWait();
+        }
+    }
+
     public void viewReceipt() {
         receiptContentConstructor();
-        AppController.showDialog(SceneNavigator.RECEIPT_VIEW, false);
+        AppController.showDialog(SceneNavigator.RECEIPT_VIEW, changeLabel.getScene().getWindow());
     }
 
     public void receiptContentConstructor() {

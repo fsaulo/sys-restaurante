@@ -9,7 +9,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ProductDao;
-import org.sysRestaurante.util.CurrencyField;
+import org.sysRestaurante.gui.formatter.CurrencyField;
 
 import java.io.IOException;
 import java.text.NumberFormat;
