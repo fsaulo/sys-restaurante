@@ -2,7 +2,6 @@ package org.sysRestaurante.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableCell;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;

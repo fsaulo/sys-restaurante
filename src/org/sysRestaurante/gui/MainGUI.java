@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
-import org.sysRestaurante.dao.TableDao;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;

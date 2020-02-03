@@ -2,17 +2,14 @@ package org.sysRestaurante.gui;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
-import org.sysRestaurante.dao.TableDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Order;
 
@@ -46,9 +43,17 @@ public class ManageComandaController {
                 Label label2 = new Label("Ocupado");
                 Label label3 = new Label(CurrencyField.getBRLCurrencyFormat().format(item.getTotal()));
                 vbox.getChildren().addAll(label1, label2, label3);
-                vbox.setStyle("-fx-background-color: #dddddd; -fx-border-color: black");
+                vbox.setStyle("-fx-background-color: #dddddd; -fx-border-color: black; -fx-cursor: hand");
                 vbox.setSpacing(3);
                 vbox.setPadding(new Insets(3));
+                vbox.setOnMouseClicked(event -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Informação do sistema");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Comanda " + item.getIdComanda() + " selecionada");
+                    alert.initOwner(vbox.getScene().getWindow());
+                    alert.showAndWait();
+                });
                 tilePane.getChildren().addAll(vbox);
             }
         }

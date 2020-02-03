@@ -10,7 +10,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 public class CurrencyField extends TextField {
 
