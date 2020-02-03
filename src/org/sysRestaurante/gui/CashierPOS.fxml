@@ -21,7 +21,7 @@
 
 <BorderPane fx:id="wrapperBox" prefHeight="600.0" prefWidth="1090.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierPOSController">
    <center>
-      <VBox spacing="5.0" BorderPane.alignment="CENTER">
+      <VBox spacing="5.0" BorderPane.alignment="BOTTOM_CENTER">
          <children>
             <Label text="Lista de produtos">
                <font>
@@ -32,11 +32,6 @@
             <HBox prefWidth="350.0" spacing="10.0">
                <children>
                   <TextField fx:id="searchBox" prefHeight="31.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="clearSearchButton" mnemonicParsing="false" opacity="0.65" prefHeight="31.0" text="Limpar">
-                     <font>
-                        <Font name="Carlito" size="15.0" />
-                     </font>
-                  </Button>
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
@@ -63,7 +58,7 @@
                </padding>
             </ListView>
             <Separator />
-            <VBox fx:id="detailsWrapperBox" spacing="5.0">
+            <VBox fx:id="detailsWrapperBox" prefWidth="469.0" spacing="5.0" VBox.vgrow="NEVER">
                <children>
                   <Label text="Detalhes">
                      <font>
@@ -73,23 +68,23 @@
                   <Separator />
                   <VBox style="-fx-border-color: #CBCBCC;">
                      <children>
-                        <HBox prefWidth="348.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                        <HBox prefWidth="467.0" spacing="5.0">
                            <children>
-                              <VBox HBox.hgrow="ALWAYS">
+                              <VBox prefWidth="267.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label fx:id="contentLabel" alignment="TOP_LEFT" prefHeight="50.0" prefWidth="240.0" text="Coca-cola 2L Garrafa retornável" wrapText="true">
+                                    <Label fx:id="contentLabel" alignment="TOP_LEFT" prefHeight="65.0" prefWidth="268.0" text="Coca-cola 2L Garrafa retornável" wrapText="true" VBox.vgrow="ALWAYS">
                                        <font>
                                           <Font name="Carlito Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <HBox alignment="BOTTOM_LEFT">
+                                    <HBox alignment="CENTER">
                                        <children>
-                                          <Label text="Preço unit.">
+                                          <Label text="Preço unit." HBox.hgrow="ALWAYS">
                                              <font>
                                                 <Font name="Carlito" size="15.0" />
                                              </font>
                                           </Label>
-                                          <Pane prefHeight="6.0" prefWidth="120.0" HBox.hgrow="ALWAYS" />
+                                          <Pane prefWidth="120.0" HBox.hgrow="ALWAYS" />
                                           <Label fx:id="unitPriceLabel" text="R$ 5,50">
                                              <font>
                                                 <Font name="Carlito Bold" size="17.0" />
@@ -108,7 +103,7 @@
                                        </font>
                                     </Label>
                                     <Pane VBox.vgrow="ALWAYS" />
-                                    <Spinner fx:id="qtySpinner" opacity="0.8" prefHeight="31.0" prefWidth="72.0" />
+                                    <Spinner fx:id="qtySpinner" minHeight="-Infinity" opacity="0.8" prefHeight="31.0" prefWidth="72.0" />
                                  </children>
                               </VBox>
                               <VBox alignment="BOTTOM_CENTER">
@@ -129,9 +124,9 @@
                            </padding>
                         </HBox>
                         <Separator prefWidth="200.0" />
-                        <HBox alignment="CENTER">
+                        <HBox alignment="CENTER" prefWidth="467.0">
                            <children>
-                              <VBox prefHeight="81.0" prefWidth="127.0" HBox.hgrow="ALWAYS">
+                              <VBox prefWidth="127.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label text="Cod. do produto">
                                        <font>
@@ -146,7 +141,7 @@
                                  </children>
                               </VBox>
                               <Separator orientation="VERTICAL" />
-                              <VBox alignment="TOP_CENTER" prefHeight="81.0" prefWidth="116.0" HBox.hgrow="ALWAYS">
+                              <VBox alignment="TOP_CENTER" prefWidth="116.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label text="Categoria">
                                        <font>
@@ -161,7 +156,7 @@
                                  </children>
                               </VBox>
                               <Separator orientation="VERTICAL" />
-                              <VBox alignment="TOP_CENTER" prefHeight="81.0" prefWidth="172.0" HBox.hgrow="ALWAYS">
+                              <VBox alignment="TOP_CENTER" prefWidth="172.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label text="Código de barras">
                                        <font>

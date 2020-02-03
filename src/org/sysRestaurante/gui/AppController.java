@@ -10,8 +10,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
@@ -58,7 +56,7 @@ public class AppController implements DateFormatter {
         SceneNavigator.loadScene(borderPaneHolder);
         borderPaneHolder.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
         Stage stage = (Stage) borderPaneHolder.getScene().getWindow();
-        stage.setWidth(1195);
+        stage.setWidth(1215);
         stage.setHeight(700);
         stage.centerOnScreen();
         Platform.runLater(this::setFullScreenShortcut);

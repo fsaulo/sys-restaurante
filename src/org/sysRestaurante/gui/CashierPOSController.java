@@ -54,8 +54,6 @@ public class CashierPOSController {
     @FXML
     private TextField searchBox;
     @FXML
-    private Button clearSearchButton;
-    @FXML
     private Button addProductButton;
     @FXML
     private Label unitPriceLabel;
@@ -147,7 +145,6 @@ public class CashierPOSController {
         });
 
         Platform.runLater(this::handleKeyEvent);
-        clearSearchButton.setOnMouseClicked(event -> searchBox.clear());
         qtySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 1));
         finalizeSell.setOnMouseClicked(event -> onFinalizeOrder());
         clearButton.setOnMouseClicked(event -> clearShoppingBasket());
@@ -270,7 +267,7 @@ public class CashierPOSController {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Alerta do sistema");
             alert.setHeaderText("Atenção!");
-            alert.setContentText("Não é possível encerrar o pedido pois nenhum ítem foi adicionado a lista");
+            alert.setContentText("Não é possível encerrar o pedido pois nenhum item foi adicionado a lista");
             alert.showAndWait();
         } else {
             AppController.openFinishSell();
@@ -431,18 +428,21 @@ public class CashierPOSController {
     }
 
     public void clearShoppingBasket() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmação do sistema");
-        alert.setHeaderText("Tem certeza que deseja limpar todos os ítens do carrinho?");
-        alert.setContentText("Essa ação não poderá ser desfeita.");
-        alert.showAndWait();
+        if (!selectedProductsTableView.getItems().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmação do sistema");
+            alert.setHeaderText("Tem certeza que deseja limpar todos os itens do carrinho?");
+            alert.setContentText("Essa ação não poderá ser desfeita.");
+            alert.initOwner(wrapperBox.getScene().getWindow());
+            alert.showAndWait();
 
-        if (alert.getResult().equals(ButtonType.OK)) {
-            for (ProductDao item : selectedProductsTableView.getSelectionModel().getSelectedItems()) {
-                item.setQuantity(0);
+            if (alert.getResult().equals(ButtonType.OK)) {
+                for (ProductDao item : selectedProductsTableView.getSelectionModel().getSelectedItems()) {
+                    item.setQuantity(0);
+                }
+                selectedProductsTableView.getItems().clear();
+                selectedProductsList.clear();
             }
-            selectedProductsTableView.getItems().clear();
-            selectedProductsList.clear();
         }
     }
 

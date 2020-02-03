@@ -92,6 +92,7 @@ public class CashierController {
                 alert.setTitle("Informação do sistema");
                 alert.setHeaderText("Caixa fechado com sucesso!");
                 alert.setContentText("Para realizar novas operações de caixa, será necessário abri-lo novamente.");
+                alert.initOwner(borderPaneHolder.getScene().getWindow());
                 alert.showAndWait();
             }
         } else {
@@ -102,6 +103,7 @@ public class CashierController {
                 alert.setTitle("Informação do sistema");
                 alert.setHeaderText(null);
                 alert.setContentText("Caixa aberto com sucesso!");
+                alert.initOwner(borderPaneHolder.getScene().getWindow());
                 alert.showAndWait();
             }
         }
