@@ -7,10 +7,19 @@ public class ComandaDao extends OrderDao {
     private int idComanda;
     private int idTable;
     private int idEmployee;
+    private int idCashier;
     private LocalTime timeOpening;
     private LocalDate dateOpening;
     private LocalTime timeClosing;
     private LocalDate dateClosing;
+
+    public int getIdCashier() {
+        return idCashier;
+    }
+
+    public void setIdCashier(int idCashier) {
+        this.idCashier = idCashier;
+    }
 
     public LocalTime getTimeOpening() {
         return timeOpening;

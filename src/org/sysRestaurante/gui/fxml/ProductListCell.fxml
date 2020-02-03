@@ -41,8 +41,8 @@
       </Label>
    </children>
    <stylesheets>
-      <URL value="@css/menu.css" />
-      <URL value="@css/controls.css" />
+      <URL value="@../css/menu.css" />
+      <URL value="@../css/controls.css" />
    </stylesheets>
    <padding>
       <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />

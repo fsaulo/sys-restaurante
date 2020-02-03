@@ -18,7 +18,6 @@ public class ReceiptViewController {
     TextFlow receiptText;
 
     public void initialize() {
-        UserDao userDao = AppFactory.getUserDao();
         OrderDao orderDao = AppFactory.getOrderDao();
         ArrayList<ProductDao> products = AppFactory.getSelectedProducts();
         Receipt receipt = new Receipt(products, orderDao);

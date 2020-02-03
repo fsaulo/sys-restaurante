@@ -40,8 +40,8 @@ public class AppController implements DateFormatter {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(AppController.class.getName());
     private static long timerInMillies;
-    private Label sessionTimer;
     private final Authentication certs = new Authentication();
+    private Label sessionTimer;
 
     @FXML
     private BorderPane borderPaneHolder;

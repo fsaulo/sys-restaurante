@@ -165,7 +165,7 @@
                                     </Label>
                                     <ImageView fx:id="barcodeImage" fitHeight="59.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../../../resources/images/barcode.png" />
+                                          <Image url="@../../../../../resources/images/barcode.png" />
                                        </image>
                                     </ImageView>
                                  </children>
@@ -393,8 +393,8 @@
       </VBox>
    </left>
    <stylesheets>
-      <URL value="@css/menu.css" />
-      <URL value="@css/controls.css" />
+      <URL value="@../css/menu.css" />
+      <URL value="@../css/controls.css" />
    </stylesheets>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

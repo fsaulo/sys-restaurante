@@ -2,9 +2,12 @@ package org.sysRestaurante.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableCell;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
+import org.sysRestaurante.dao.TableDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -16,6 +19,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -194,5 +199,67 @@ public class Order {
             ex.printStackTrace();
         }
         return 0;
+    }
+
+    public List<TableDao> getBusyTables() {
+        String query = "SELECT * FROM mesa WHERE id_categoria_status = ?";
+        List<TableDao> tables = new ArrayList<>();
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, 7);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                TableDao table = new TableDao();
+                table.setIdTable(rs.getInt("id_mesa"));
+                table.setStatus(true);
+                tables.add(table);
+            }
+
+            return tables;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<ComandaDao> getComandasByIdCashier(int idCashier) {
+        String query = "SELECT * FROM comanda WHERE id_caixa = ?";
+        List<ComandaDao> tables = new ArrayList<>();
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idCashier);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ComandaDao comanda = new ComandaDao();
+                comanda.setIdCashier(idCashier);
+                comanda.setIdTable(rs.getInt("id_mesa"));
+                comanda.setIdComanda(rs.getInt("id_comanda"));
+                comanda.setIdOrder(rs.getInt("id_pedido"));
+//                comanda.setDateOpening(rs.getDate("data_abertura").toLocalDate());
+//                comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
+                comanda.setTotal(rs.getDouble("total"));
+                comanda.setStatus(rs.getInt("id_categoria_status"));
+                tables.add(comanda);
+            }
+
+            ps.close();
+            rs.close();
+            con.close();
+            return tables;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+
     }
 }

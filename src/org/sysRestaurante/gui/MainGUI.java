@@ -8,12 +8,16 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.ComandaDao;
+import org.sysRestaurante.dao.TableDao;
+import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.Encryption;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class MainGUI extends Application {
@@ -26,8 +30,10 @@ public class MainGUI extends Application {
         primaryStage.setHeight(550);
         primaryStage.setWidth(800);
 
-        String javafx_version = System.getProperties().get("javafx.runtime.version").toString();
-        LOGGER.info("JavaFX Runtime Version: " + javafx_version);
+        final String JAVA_VERSION = System.getProperty("java.version");
+        final String JAVAFX_VERSION = System.getProperties().get("javafx.runtime.version").toString();
+        LOGGER.info("Java JDK Runtime Version: " + JAVA_VERSION);
+        LOGGER.info("JavaFX Runtime Version: " + JAVAFX_VERSION);
 
         startProgram(primaryStage);
         Encryption.setKey("Jaguaric@3105");
@@ -87,5 +93,13 @@ public class MainGUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void test_tables() {
+        List<ComandaDao> comandas = new Order().getComandasByIdCashier(304);
+        for (ComandaDao table : comandas) {
+            System.out.println("Comanda #" + table.getIdComanda() + " aberta.");
+        }
+        Platform.exit();
     }
 }

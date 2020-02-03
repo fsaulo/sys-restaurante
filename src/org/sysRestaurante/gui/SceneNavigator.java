@@ -13,20 +13,20 @@ import java.util.logging.Logger;
 
 public class SceneNavigator {
 
-    public static final String MAIN = "MainGUI.fxml";
-    public static final String LOGIN = "Login.fxml";
-    public static final String MENU_TOOL_BAR = "ToolBar.fxml";
-    public static final String DASHBOARD = "Dashboard.fxml";
-    public static final String APPLICATION_STAGE = "App.fxml";
-    public static final String NOTE_PANE = "AddNotesDialog.fxml";
-    public static final String CASHIER = "Cashier.fxml";
-    public static final String CLOSE_CASHIER_DIALOG = "CloseCashierDialog.fxml";
-    public static final String OPEN_CASHIER_DIALOG = "OpenCashierDialog.fxml";
-    public static final String CASHIER_POS = "CashierPOS.fxml";
-    public static final String PRODUCT_LIST_CELL = "ProductListCell.fxml";
-    public static final String FINISH_SELL_DIALOG = "FinishSell.fxml";
-    public static final String RECEIPT_VIEW = "ReceiptView.fxml";
-    public static final String MANAGE_COMANDA = "ManageComanda.fxml";
+    public static final String MAIN = "fxml/MainGUI.fxml";
+    public static final String LOGIN = "fxml/Login.fxml";
+    public static final String MENU_TOOL_BAR = "fxml/ToolBar.fxml";
+    public static final String DASHBOARD = "fxml/Dashboard.fxml";
+    public static final String APPLICATION_STAGE = "fxml/App.fxml";
+    public static final String NOTE_PANE = "fxml/AddNotesDialog.fxml";
+    public static final String CASHIER = "fxml/Cashier.fxml";
+    public static final String CLOSE_CASHIER_DIALOG = "fxml/CloseCashierDialog.fxml";
+    public static final String OPEN_CASHIER_DIALOG = "fxml/OpenCashierDialog.fxml";
+    public static final String CASHIER_POS = "fxml/CashierPOS.fxml";
+    public static final String PRODUCT_LIST_CELL = "fxml/ProductListCell.fxml";
+    public static final String FINISH_SELL_DIALOG = "fxml/FinishSell.fxml";
+    public static final String RECEIPT_VIEW = "fxml/ReceiptView.fxml";
+    public static final String MANAGE_COMANDA = "fxml/ManageComanda.fxml";
     public static final KeyCombination F2_CONFIRMATION = new KeyCodeCombination(KeyCode.F2);
     public static final KeyCombination F3_SEARCH = new KeyCodeCombination(KeyCode.F3);
     public static final KeyCombination F4_CANCEL = new KeyCodeCombination(KeyCode.F4);
