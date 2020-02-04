@@ -163,7 +163,6 @@ public class CashierPOSController {
         else {
             filteredData.setPredicate(s ->
                     s.getDescription().toUpperCase().contains(filter) ||
-                    s.getCategory().toUpperCase().contains(filter) ||
                     String.valueOf(s.getIdProduct()).contains(filter));
         }
 

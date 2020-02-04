@@ -52,4 +52,26 @@ public class Product {
         }
         return null;
     }
+
+    public static String getProductCategoryById(int idCategory) {
+        String query = "SELECT descricao FROM categoria_produto WHERE id_categoria_produto = ?";
+        String category = "Sem categoria";
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idCategory);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                category = rs.getString("descricao");
+            }
+            return category;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -11,7 +11,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;

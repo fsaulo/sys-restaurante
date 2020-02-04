@@ -2,7 +2,7 @@ package org.sysRestaurante.dao;
 
 public class TableDao {
     private int idTable;
-    private boolean busy;
+    private int idStatus;
 
     public int getIdTable() {
         return idTable;
@@ -12,11 +12,11 @@ public class TableDao {
         this.idTable = idTable;
     }
 
-    public boolean isStatus() {
-        return busy;
+    public int getIdStatus() {
+        return idStatus;
     }
 
-    public void setStatus(boolean status) {
-        this.busy = status;
+    public void setStatus(int status) {
+        this.idStatus = status;
     }
 }

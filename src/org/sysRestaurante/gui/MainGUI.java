@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.model.Order;
+import org.sysRestaurante.model.Product;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -92,13 +93,5 @@ public class MainGUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public void test_tables() {
-        List<ComandaDao> comandas = new Order().getComandasByIdCashier(304);
-        for (ComandaDao table : comandas) {
-            System.out.println("Comanda #" + table.getIdComanda() + " aberta.");
-        }
-        Platform.exit();
     }
 }

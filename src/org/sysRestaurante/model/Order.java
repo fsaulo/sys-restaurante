@@ -28,8 +28,8 @@ public class Order {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Order.class.getName());
 
     public OrderDao newOrder(int idCashier, double inCash, double byCard, int type, double discount, String note) {
-        String query = "INSERT INTO pedido (id_usuario, id_caixa, id_categoria_status, data_pedido, observacao, " +
-                "valor_cartao, valor_avista, id_categoria_pedido, hora_pedido, descontos) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO pedido (id_usuario, id_caixa, data_pedido, observacao, " +
+                "valor_cartao, valor_avista, id_categoria_pedido, hora_pedido, descontos) VALUES (?,?,?,?,?,?,?,?,?)";
 
         int idUser = AppFactory.getUserDao().getIdUser();
         int idOrder;
@@ -42,14 +42,13 @@ public class Order {
             ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUser);
             ps.setInt(2, idCashier);
-            ps.setInt(3, 1);
-            ps.setDate(4, java.sql.Date.valueOf(LocalDate.now()));
-            ps.setString(5, note);
-            ps.setDouble(6, byCard);
-            ps.setDouble(7, inCash);
-            ps.setInt(8, type);
-            ps.setTime(9, java.sql.Time.valueOf(LocalTime.now()));
-            ps.setDouble(10, discount * 100);
+            ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+            ps.setString(4, note);
+            ps.setDouble(5, byCard);
+            ps.setDouble(6, inCash);
+            ps.setInt(7, type);
+            ps.setTime(8, java.sql.Time.valueOf(LocalTime.now()));
+            ps.setDouble(9, discount * 100);
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
 
@@ -125,7 +124,6 @@ public class Order {
                 orderDao.setDetails(rs.getInt("id_categoria_pedido"));
                 orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
                 orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
-                orderDao.setStatus(rs.getInt("id_categoria_status"));
                 orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
             }
 
@@ -160,7 +158,7 @@ public class Order {
                 orderDao.setNote(rs.getString("observacao"));
                 orderDao.setDetails(rs.getInt("id_categoria_pedido"));
                 orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
-                orderDao.setStatus(rs.getInt("id_categoria_status"));
+                orderDao.setStatus(rs.getInt("id_categoria_pedido"));
                 orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
                 orderList.add(orderDao);
             }
@@ -201,7 +199,7 @@ public class Order {
     }
 
     public List<TableDao> getBusyTables() {
-        String query = "SELECT * FROM mesa WHERE id_categoria_status = ?";
+        String query = "SELECT * FROM mesa WHERE id_categoria_pedido = ?";
         List<TableDao> tables = new ArrayList<>();
         PreparedStatement ps;
         ResultSet rs;
@@ -215,7 +213,7 @@ public class Order {
             while (rs.next()) {
                 TableDao table = new TableDao();
                 table.setIdTable(rs.getInt("id_mesa"));
-                table.setStatus(true);
+                table.setStatus(1);
                 tables.add(table);
             }
 
@@ -244,10 +242,10 @@ public class Order {
                 comanda.setIdTable(rs.getInt("id_mesa"));
                 comanda.setIdComanda(rs.getInt("id_comanda"));
                 comanda.setIdOrder(rs.getInt("id_pedido"));
-//                comanda.setDateOpening(rs.getDate("data_abertura").toLocalDate());
-//                comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
                 comanda.setTotal(rs.getDouble("total"));
-                comanda.setStatus(rs.getInt("id_categoria_status"));
+                comanda.setStatus(rs.getInt("id_categoria_pedido"));
+                // comanda.setDateOpening(rs.getDate("data_abertura").toLocalDate());
+                // comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
                 tables.add(comanda);
             }
 
@@ -259,6 +257,49 @@ public class Order {
             ex.printStackTrace();
         }
         return null;
+    }
 
+    public String getOrderCategoryById(int idCategory) {
+        String query = "SELECT descricao FROM categoria_pedido WHERE id_categoria_pedido = ?";
+        String category = "Sem categoria";
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idCategory);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                category = rs.getString("descricao");
+            }
+            return category;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public String getTableCategoryById(int idCategory) {
+        String query = "SELECT descricao FROM categoria_mesa WHERE id_categoria_mesa = ?";
+        String category = "Sem categoria";
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idCategory);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                category = rs.getString("descricao");
+            }
+            return category;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
