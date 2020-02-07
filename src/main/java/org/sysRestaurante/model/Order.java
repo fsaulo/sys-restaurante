@@ -244,8 +244,7 @@ public class Order {
                 comanda.setIdOrder(rs.getInt("id_pedido"));
                 comanda.setTotal(rs.getDouble("total"));
                 comanda.setStatus(rs.getInt("id_categoria_pedido"));
-                // comanda.setDateOpening(rs.getDate("data_abertura").toLocalDate());
-                // comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
+                comanda.setIdCategory(rs.getInt("id_categoria_pedido"));
                 tables.add(comanda);
             }
 

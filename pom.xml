@@ -99,5 +99,13 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.7.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.plushaze.traynotification</groupId>
+            <artifactId>TrayNotification</artifactId>
+            <version>0.3</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/lib/TrayNotification.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

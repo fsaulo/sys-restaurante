@@ -1,16 +1,16 @@
 package org.sysRestaurante.gui;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
@@ -34,63 +34,41 @@ public class ManageComandaController {
         tilePane.setPrefColumns(50);
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
-        tileListBusyTables();
+        listBusyTable();
     }
 
-    public void tileListBusyTables() {
+    public void listBusyTable() {
         List<ComandaDao> openComandas = new Order().getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
         tilePane.getChildren().clear();
         for (ComandaDao item : openComandas) {
-            if (item.getStatus().equals("Aguardando preparo")) {
-                VBox vbox = new VBox();
-                Label label1 = new Label("Comanda #" + item.getIdComanda());
-                Label label2 = new Label("Ocupado");
-                Label label3 = new Label(CurrencyField.getBRLCurrencyFormat().format(item.getTotal()));
-                Label label4 = new Label("MESA #" + item.getIdTable());
-                label1.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold");
-                label2.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold");
-                label3.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold");
-                label4.setStyle("-fx-font: Carlito 17; -fx-font-weight: bold");
-                Circle icon = new Circle(4);
-                icon.setFill(Color.ORANGE);
-                label2.setGraphic(icon);
-                Separator sep = new Separator();
-                sep.setMinHeight(3);
-                vbox.getChildren().addAll(label4, sep, label1, label2, label3);
-                vbox.setStyle("-fx-background-color: #dddddd; -fx-border-color: black; -fx-cursor: hand");
-                vbox.setSpacing(3);
-                vbox.setPadding(new Insets(3));
-                vbox.setAlignment(Pos.TOP_RIGHT);
-                vbox.setMinWidth(150);
-                vbox.setOnMouseClicked(event -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Informação do sistema");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Comanda " + item.getIdComanda() + " selecionada");
-                    alert.initOwner(vbox.getScene().getWindow());
-                    alert.showAndWait();
-                });
-
-                vbox.setOnMouseEntered(event -> {
-                    vbox.setStyle("-fx-background-color: gray; -fx-border-color: black; -fx-cursor: hand");
-                    label1.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold; -fx-text-fill: white");
-                    label2.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold; -fx-text-fill: white");
-                    label3.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold; -fx-text-fill: white");
-                    label4.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold; -fx-text-fill: white");
-                });
-
-                vbox.setOnMouseExited(event -> {
-                    vbox.setStyle("-fx-background-color: #dddddd; -fx-border-color: black; -fx-cursor: hand");
-                    label1.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold; -fx-text-fill: black");
-                    label2.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold; -fx-text-fill: black");
-                    label3.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold; -fx-text-fill: black");
-                    label4.setStyle("-fx-font: Carlito 15; -fx-font-weight: bold; -fx-text-fill: black");
-                });
-
-                icon.setOnMouseEntered(event -> icon.setRadius(6));
-                icon.setOnMouseExited(event -> icon.setRadius(4));
-                tilePane.getChildren().addAll(vbox);
+            if (item.getIdCategory() != 6) {
+                buildAndAddTiles(item);
             }
         }
+    }
+
+    public void buildAndAddTiles(ComandaDao comanda) {
+        VBox vbox = new VBox();
+        Label comandaCod = new Label("#" + comanda.getIdComanda());
+        Label statusLabel = new Label("Ocupada");
+        Label cashSpent = new Label(CurrencyField.getBRLCurrencyFormat().format(comanda.getTotal()));
+        Label tableCod = new Label("MESA " + comanda.getIdTable());
+        HBox topTile = new HBox();
+        Pane pane = new Pane();
+        HBox.setHgrow(pane, Priority.ALWAYS);
+        topTile.getChildren().addAll(comandaCod, pane, tableCod);
+        Circle icon = new Circle(4);
+        icon.getStyleClass().add("circle-status");
+        comandaCod.setStyle("-fx-font-size: 13px; -fx-opacity: 0.5");
+        statusLabel.setGraphic(icon);
+        tableCod.setStyle("-fx-font-size: 17px;");
+        Separator sep = new Separator();
+        sep.setMinHeight(3);
+        vbox.getChildren().addAll(topTile, sep, statusLabel, cashSpent);
+        vbox.setAlignment(Pos.TOP_RIGHT);
+        vbox.setMinWidth(163);
+        vbox.getStylesheets().add("css/menu.css");
+        vbox.getStyleClass().add("comanda-tile");
+        tilePane.getChildren().addAll(vbox);
     }
 }

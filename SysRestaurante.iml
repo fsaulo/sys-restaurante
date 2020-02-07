@@ -25,5 +25,14 @@
     <orderEntry type="library" name="Maven: org.openjfx:javafx-swing:win:13" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-archetype-fxml:0.0.3" level="project" />
     <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.7.2" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: com.github.plushaze.traynotification:TrayNotification:0.3">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/TrayNotification.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

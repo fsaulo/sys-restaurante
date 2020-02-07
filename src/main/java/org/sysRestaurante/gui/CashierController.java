@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.OrderDao;
@@ -19,6 +20,9 @@ import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.gui.formatter.StatusCellFormatter;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
@@ -116,12 +120,12 @@ public class CashierController {
 
         if (isSellConfirmed()) {
             setSellConfirmed(false);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Informação do sistema");
-            alert.setContentText("Pedido registrado com sucesso!");
-            alert.setHeaderText(null);
-            alert.initOwner(newOrderBox.getScene().getWindow());
-            alert.showAndWait();
+            TrayNotification success = new TrayNotification();
+            success.setAnimationType(AnimationType.POPUP);
+            success.setTitle("Informações do Sistema");
+            success.setMessage("Pedido registrado com sucesso!");
+            success.setNotificationType(NotificationType.SUCCESS);
+            success.showAndDismiss(Duration.seconds(3));
         }
 
         newOrderBox.setDisable(false);

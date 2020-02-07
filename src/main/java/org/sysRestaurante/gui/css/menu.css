@@ -182,13 +182,34 @@
     -fx-cursor: hand;
 }
 
-.comanda-tile: {
-    -fx-font: Carlito 15;
+.comanda-tile {
     -fx-font-weight: bold;
+    -fx-font-family: Carlito;
+    -fx-font-size: 15px;
+    -fx-border-color: #9E9B8F;
+    -fx-border-width: 2;
+    -fx-spacing: 5;
+    -fx-padding: 3;
+    -fx-cursor: hand;
+    -fx-background-color: #EAE7DE;
+    -fx-opacity: 0.8;
 }
 
 .comanda-tile: hover {
-    -fx-background-color: gray;
-    -fx-border-color: black;
+    -fx-background-color: #9E9B8F;
     -fx-cursor: hand;
+    -fx-text-fill: white;
+}
+
+.comanda-tile: hover *{
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+}
+
+.circle-status {
+    -fx-fill: orange;
+}
+
+.circle-status: hover {
+    -fx-radius: 6
 }

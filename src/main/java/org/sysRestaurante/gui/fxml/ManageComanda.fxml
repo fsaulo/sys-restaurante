@@ -2,14 +2,15 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
@@ -51,12 +52,18 @@
                               <Font name="Carlito Bold" size="22.0" />
                            </font>
                         </Label>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <Label opacity="0.59" text="Digite o número da mesa para realizar uma busca">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                      <padding>
                         <Insets left="5.0" right="5.0" />
                      </padding>
                   </HBox>
-                  <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" styleClass="box-content" VBox.vgrow="ALWAYS">
+                  <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent;" styleClass="box-content" VBox.vgrow="ALWAYS">
                      <content>
                         <HBox>
                            <children>
@@ -321,23 +328,65 @@
                   </ScrollPane>
                   <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" styleClass="box-content">
                      <children>
-                        <HBox alignment="CENTER_LEFT" spacing="5.0" HBox.hgrow="ALWAYS">
+                        <VBox alignment="CENTER" minWidth="135.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="cashier-button">
                            <children>
-                              <Button mnemonicParsing="false" opacity="0.69" prefHeight="50.0" prefWidth="155.0" style="-fx-border-color: gray; -fx-border-width: 2; -fx-border-radius: 3;" styleClass="cashier-button" text="Nova comanda">
+                              <Label text="Nova comanda" textAlignment="CENTER" wrapText="true">
                                  <font>
-                                    <Font name="Carlito Bold" size="16.0" />
+                                    <Font name="Carlito Bold" size="15.0" />
                                  </font>
-                              </Button>
-                              <Button mnemonicParsing="false" opacity="0.7" prefHeight="50.0" prefWidth="155.0" style="-fx-border-color: gray; -fx-border-radius: 3; -fx-border-width: 2;" styleClass="cashier-button" text="Ver todas as mesas" wrapText="true">
-                                 <font>
-                                    <Font name="Carlito Bold" size="16.0" />
-                                 </font>
-                              </Button>
+                                 <tooltip>
+                                    <Tooltip style="-fx-background-color: black;" text="Registrar uma nova comanda">
+                                       <font>
+                                          <Font name="Carlito" size="14.0" />
+                                       </font>
+                                    </Tooltip>
+                                 </tooltip>
+                              </Label>
                            </children>
-                           <padding>
+                           <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </HBox>
+                           </HBox.margin>
+                        </VBox>
+                        <Separator orientation="VERTICAL" />
+                        <VBox alignment="CENTER" opacity="0.8" prefWidth="80.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="cashier-button">
+                           <children>
+                              <Label text="Listar mesas" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="Carlito Bold" size="15.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip style="-fx-background-color: black;" text="Listar todas as mesas cadastradas (disponíveis e ocupadas)">
+                                       <font>
+                                          <Font name="Carlito" size="14.0" />
+                                       </font>
+                                    </Tooltip>
+                                 </tooltip>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="2.0" right="3.0" top="5.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox alignment="CENTER" opacity="0.8" prefWidth="80.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="cashier-button">
+                           <children>
+                              <Label text="Registrar mesa" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="Carlito Bold" size="15.0" />
+                                 </font>
+                                 <tooltip>
+                                    <Tooltip style="-fx-background-color: black;" text="Cadastre uma mesa que não está na lista">
+                                       <font>
+                                          <Font name="Carlito" size="14.0" />
+                                       </font>
+                                    </Tooltip>
+                                 </tooltip>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="3.0" right="5.0" top="5.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <Pane HBox.hgrow="ALWAYS" />
                         <Separator orientation="VERTICAL" />
                         <VBox alignment="TOP_RIGHT" opacity="0.6">
                            <children>
