@@ -29,8 +29,8 @@ import java.util.logging.Logger;
 public class LoginController implements DateFormatter {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(LoginController.class.getName());
-    private static final String SIGNATURE_IMAGE = "resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
-    private static final String LOGINTEXT_IMAGE = "resources/images/login-text.png";
+    private static final String SIGNATURE_IMAGE = "src/main/resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
+    private static final String LOGINTEXT_IMAGE = "src/main/resources/images/login-text.png";
     private static UserDao userDaoData;
     private final Authentication certs = new Authentication();
 

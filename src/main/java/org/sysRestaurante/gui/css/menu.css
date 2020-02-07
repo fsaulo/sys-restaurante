@@ -181,3 +181,14 @@
     -fx-border-color: #7D8C94;
     -fx-cursor: hand;
 }
+
+.comanda-tile: {
+    -fx-font: Carlito 15;
+    -fx-font-weight: bold;
+}
+
+.comanda-tile: hover {
+    -fx-background-color: gray;
+    -fx-border-color: black;
+    -fx-cursor: hand;
+}

@@ -90,7 +90,7 @@ public class CashierPOSController {
 
     private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
     private final ObservableList<ProductDao> products = new Product().getProducts();
-    private static final String GENERIC_BARCODE = "resources/images/barcode.png";
+    private static final String GENERIC_BARCODE = "src/main/resources/images/barcode.png";
     private double total = 0;
 
     public void initialize() {
@@ -163,6 +163,7 @@ public class CashierPOSController {
         else {
             filteredData.setPredicate(s ->
                     s.getDescription().toUpperCase().contains(filter) ||
+                    s.getCategory().toUpperCase().contains(filter) ||
                     String.valueOf(s.getIdProduct()).contains(filter));
         }
 

@@ -27,8 +27,8 @@ public class MainGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setHeight(550);
-        primaryStage.setWidth(800);
+        primaryStage.setHeight(450);
+        primaryStage.setWidth(550);
 
         final String JAVA_VERSION = System.getProperty("java.version");
         final String JAVAFX_VERSION = System.getProperties().get("javafx.runtime.version").toString();
@@ -65,6 +65,7 @@ public class MainGUI extends Application {
         stage.setScene(createScene(loadMainPane()));
         stage.setMinHeight(390);
         stage.setMinWidth(465);
+        stage.centerOnScreen();
         stage.show();
 
         stage.setOnCloseRequest(e -> {
@@ -80,7 +81,10 @@ public class MainGUI extends Application {
 
     public static void restartProgram() throws IOException {
         clear();
-        startProgram(new Stage());
+        Stage stage = new Stage();
+        stage.setHeight(450);
+        stage.setWidth(550);
+        startProgram(stage);
     }
 
     public static MainGUIController getMainController() {
