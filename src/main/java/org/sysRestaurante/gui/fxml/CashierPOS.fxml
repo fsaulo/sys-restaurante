@@ -35,7 +35,7 @@
                </children>
             </HBox>
             <Separator prefWidth="200.0" />
-            <ListView fx:id="productsListView" VBox.vgrow="ALWAYS">
+            <ListView fx:id="productsListView" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent; -fx-border-color: #dddddd;" VBox.vgrow="ALWAYS">
                <placeholder>
                   <VBox alignment="TOP_CENTER" spacing="5">
                      <padding>

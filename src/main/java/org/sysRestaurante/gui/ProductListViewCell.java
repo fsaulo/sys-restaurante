@@ -7,6 +7,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
@@ -33,7 +34,7 @@ public class ProductListViewCell extends ListCell<ProductDao> {
     protected void updateItem(ProductDao product, boolean empty) {
         super.updateItem(product, empty);
 
-        if(empty || product == null) {
+        if (product == null || empty) {
             setText(null);
             setGraphic(null);
         } else {

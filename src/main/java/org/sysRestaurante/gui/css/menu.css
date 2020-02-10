@@ -182,6 +182,20 @@
     -fx-cursor: hand;
 }
 
+.availability-label {
+    -fx-background-color: #c9efd7;
+    -fx-border-color: #abccb7;
+    -fx-border-width: 2;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+}
+
+.availability-label: hover {
+    -fx-background-color: #8bc9a1;
+    -fx-border-color: #72a584;
+    -fx-cursor: hand;
+}
+
 .comanda-tile {
     -fx-font-weight: bold;
     -fx-font-family: Carlito;

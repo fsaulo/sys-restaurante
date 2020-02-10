@@ -198,6 +198,31 @@ public class Order {
         return 0;
     }
 
+    public List<TableDao> getTables() {
+        String query = "SELECT * FROM mesa";
+        List<TableDao> tables = new ArrayList<>();
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                TableDao table = new TableDao();
+                table.setIdTable(rs.getInt("id_mesa"));
+                table.setStatus(rs.getInt("id_categoria_mesa"));
+                tables.add(table);
+            }
+
+            return tables;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     public List<TableDao> getBusyTables() {
         String query = "SELECT * FROM mesa WHERE id_categoria_pedido = ?";
         List<TableDao> tables = new ArrayList<>();

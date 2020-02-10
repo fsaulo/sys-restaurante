@@ -128,8 +128,7 @@ public class AppController implements DateFormatter {
 
     public void loadPage(MouseEvent e, String fxml) {
         try {
-            borderPaneHolder.centerProperty()
-                    .setValue(FXMLLoader.load(AppController.class.getResource(fxml)));
+            borderPaneHolder.centerProperty().setValue(FXMLLoader.load(AppController.class.getResource(fxml)));
             e.consume();
         } catch (IOException ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();

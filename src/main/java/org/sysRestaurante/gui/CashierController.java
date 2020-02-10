@@ -8,8 +8,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-
 import javafx.util.Duration;
+
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.OrderDao;
@@ -93,7 +93,7 @@ public class CashierController {
             AppController.showDialog(SceneNavigator.CLOSE_CASHIER_DIALOG, true);
             if (!Cashier.getLastCashierStatus()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informação do sistema");
+                alert.setTitle("Informações do sistema");
                 alert.setHeaderText("Caixa fechado com sucesso!");
                 alert.setContentText("Para realizar novas operações de caixa, será necessário abri-lo novamente.");
                 alert.initOwner(borderPaneHolder.getScene().getWindow());
@@ -104,7 +104,7 @@ public class CashierController {
             updateCashierElements();
             if (Cashier.getLastCashierStatus()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Informação do sistema");
+                alert.setTitle("Informações do sistema");
                 alert.setHeaderText(null);
                 alert.setContentText("Caixa aberto com sucesso!");
                 alert.initOwner(borderPaneHolder.getScene().getWindow());

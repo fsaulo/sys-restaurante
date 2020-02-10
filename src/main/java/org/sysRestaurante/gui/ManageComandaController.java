@@ -1,10 +1,12 @@
 package org.sysRestaurante.gui;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -35,6 +37,12 @@ public class ManageComandaController {
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
         listBusyTable();
+    }
+
+    @FXML
+    public void onNewComandaClicked(Event event) {
+        AppController.showDialog(SceneNavigator.NEW_COMANDA_DIALOG, scrollPane.getScene().getWindow());
+        event.consume();
     }
 
     public void listBusyTable() {

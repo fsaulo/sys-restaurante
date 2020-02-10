@@ -326,7 +326,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </ScrollPane>
-                  <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" styleClass="box-content">
+                  <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" styleClass="box-content" onMouseClicked="#onNewComandaClicked">
                      <children>
                         <VBox alignment="CENTER" minWidth="135.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="cashier-button">
                            <children>
@@ -369,7 +369,7 @@
                         </VBox>
                         <VBox alignment="CENTER" opacity="0.8" prefWidth="80.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="cashier-button">
                            <children>
-                              <Label text="Registrar mesa" textAlignment="CENTER" wrapText="true">
+                              <Label text=" Registrar mesa" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font name="Carlito Bold" size="15.0" />
                                  </font>
