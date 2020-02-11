@@ -6,7 +6,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -32,10 +31,12 @@ public class ManageComandaController {
 
     @FXML
     public void initialize() {
+        AppFactory.setManageComandaController(this);
         scrollPane.setFitToWidth(true);
         tilePane.setPrefColumns(50);
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
+        tilePane.getChildren().clear();
         listBusyTable();
     }
 
@@ -47,7 +48,6 @@ public class ManageComandaController {
 
     public void listBusyTable() {
         List<ComandaDao> openComandas = new Order().getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
-        tilePane.getChildren().clear();
         for (ComandaDao item : openComandas) {
             if (item.getIdCategory() != 6) {
                 buildAndAddTiles(item);
@@ -78,5 +78,9 @@ public class ManageComandaController {
         vbox.getStylesheets().add("css/menu.css");
         vbox.getStyleClass().add("comanda-tile");
         tilePane.getChildren().addAll(vbox);
+    }
+
+    public void refreshTileList() {
+        initialize();
     }
 }

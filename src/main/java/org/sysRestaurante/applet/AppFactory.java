@@ -12,6 +12,7 @@ import org.sysRestaurante.gui.CashierPOSController;
 import org.sysRestaurante.gui.DashboardController;
 import org.sysRestaurante.gui.LoginController;
 import org.sysRestaurante.gui.MainGUIController;
+import org.sysRestaurante.gui.ManageComandaController;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,15 @@ public class AppFactory {
     private static CashierPOSController cashierPOSController;
     private static ArrayList<ProductDao> selectedProducts;
     private static OrderDao orderDao;
+    private static ManageComandaController manageComandaController;
+
+    public static ManageComandaController getManageComandaController() {
+        return manageComandaController;
+    }
+
+    public static void setManageComandaController(ManageComandaController manageComandaController) {
+        AppFactory.manageComandaController = manageComandaController;
+    }
 
     public static OrderDao getOrderDao() {
         return orderDao;

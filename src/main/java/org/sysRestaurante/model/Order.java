@@ -77,6 +77,30 @@ public class Order {
         return null;
     }
 
+    public void newComanda(int idTable, int idOrder, int idCashier, int type) {
+        String query = "INSERT INTO comanda (id_caixa, data_abertura, id_mesa, " +
+                "id_categoria_pedido, hora_abertura, id_pedido) VALUES (?,?,?,?,?,?)";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idCashier);
+            ps.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
+            ps.setInt(3, idTable);
+            ps.setInt(4, type);
+            ps.setTime(5, java.sql.Time.valueOf(LocalTime.now()));
+            ps.setInt(6, idOrder);
+            ps.executeUpdate();
+
+            LOGGER.info("Comanda was registered successfully.");
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void addProductsToOrder(int idOrder, ObservableList<ProductDao> productsList) {
         String query = "INSERT INTO pedido_has_produtos (id_produto, id_pedido, qtd_pedido) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
