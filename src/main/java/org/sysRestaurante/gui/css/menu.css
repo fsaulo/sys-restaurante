@@ -182,7 +182,7 @@
     -fx-cursor: hand;
 }
 
-.availability-label {
+.availability-label-green {
     -fx-background-color: #c9efd7;
     -fx-border-color: #abccb7;
     -fx-border-width: 2;
@@ -190,10 +190,19 @@
     -fx-background-radius: 0;
 }
 
-.availability-label: hover {
+.availability-label-green: hover {
     -fx-background-color: #8bc9a1;
     -fx-border-color: #72a584;
     -fx-cursor: hand;
+}
+
+.availability-label-red {
+    -fx-background-color: #c2948a;
+    -fx-border-color: gray;
+    -fx-border-width: 2;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-text-fill: white;
 }
 
 .comanda-tile {

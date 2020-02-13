@@ -70,6 +70,7 @@ public class Order {
             LOGGER.info("Sell was registered successfully.");
             ps.close();
             con.close();
+            rs.close();
             return orderDao;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -240,11 +241,32 @@ public class Order {
                 tables.add(table);
             }
 
+            ps.close();
+            rs.close();
+            con.close();
             return tables;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static void changeTableStatus(int idTable, int type) {
+        String query = "UPDATE mesa SET id_categoria_mesa = ? WHERE id_mesa = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, type);
+            ps.setInt(2, idTable);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public List<TableDao> getBusyTables() {
@@ -266,6 +288,9 @@ public class Order {
                 tables.add(table);
             }
 
+            ps.close();
+            rs.close();
+            con.close();
             return tables;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -344,6 +369,10 @@ public class Order {
             if (rs.next()) {
                 category = rs.getString("descricao");
             }
+
+            ps.close();
+            rs.close();
+            con.close();
             return category;
         } catch (SQLException ex) {
             ex.printStackTrace();

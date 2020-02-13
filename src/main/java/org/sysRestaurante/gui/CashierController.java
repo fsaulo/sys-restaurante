@@ -125,7 +125,7 @@ public class CashierController {
             success.setTitle("Informações do Sistema");
             success.setMessage("Pedido registrado com sucesso!");
             success.setNotificationType(NotificationType.SUCCESS);
-            success.showAndDismiss(Duration.seconds(2));
+            success.showAndDismiss(Duration.seconds(1));
         }
 
         newOrderBox.setDisable(false);

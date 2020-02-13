@@ -68,6 +68,10 @@ public class Product {
             if (rs.next()) {
                 category = rs.getString("descricao");
             }
+
+            con.close();
+            rs.close();
+            ps.close();
             return category;
         } catch (SQLException ex) {
             ex.printStackTrace();

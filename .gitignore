@@ -7,6 +7,7 @@
 *.un~
 *.~
 *.tmp
+*.log
 
 # Ignore binaries
 *.class

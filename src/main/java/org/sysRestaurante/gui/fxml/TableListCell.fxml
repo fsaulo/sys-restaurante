@@ -15,7 +15,7 @@
          </font>
       </Label>
       <Pane HBox.hgrow="ALWAYS" />
-      <Label fx:id="availability" opacity="0.73" styleClass="availability-label" text="Disponível" textFill="#414343">
+      <Label fx:id="availability" text="Disponível" textFill="#414343">
          <font>
             <Font name="Carlito Bold" size="13.0" />
          </font>

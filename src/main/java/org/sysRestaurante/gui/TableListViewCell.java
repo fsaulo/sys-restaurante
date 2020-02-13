@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
 import org.sysRestaurante.dao.TableDao;
@@ -42,8 +43,19 @@ public class TableListViewCell extends ListCell<TableDao> {
                 }
             }
 
+            availability.getStylesheets().add("css/menu.css");
+            if (table.getIdStatus() != 1) {
+                wrapperBox.setOpacity(0.4);
+                wrapperBox.setDisable(true);
+                availability.setText("Ocupada/Reservada");
+                availability.getStyleClass().add("availability-label-red");
+            } else {
+                availability.setTooltip(new Tooltip("Mesa disponível"));
+                availability.getStyleClass().add("availability-label-green");
+                availability.setText("Disponível");
+            }
+
             codTable.setText("MESA #" + table.getIdTable());
-            availability.setText("Disponível");
 
             setText(null);
             setGraphic(wrapperBox);
