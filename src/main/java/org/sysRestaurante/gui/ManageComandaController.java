@@ -29,6 +29,8 @@ public class ManageComandaController {
     @FXML
     private BorderPane borderPaneHolder;
 
+    private static boolean confirmed;
+
     @FXML
     public void initialize() {
         AppFactory.setManageComandaController(this);
@@ -57,6 +59,7 @@ public class ManageComandaController {
 
     public void buildAndAddTiles(ComandaDao comanda) {
         VBox vbox = new VBox();
+        vbox.setOnMouseClicked(event -> newOrderInComanda(comanda));
         Label comandaCod = new Label("#" + comanda.getIdComanda());
         Label statusLabel = new Label("Ocupada");
         Label cashSpent = new Label(CurrencyField.getBRLCurrencyFormat().format(comanda.getTotal()));
@@ -80,7 +83,13 @@ public class ManageComandaController {
         tilePane.getChildren().addAll(vbox);
     }
 
+    public void newOrderInComanda(ComandaDao comanda) {
+        AppFactory.setComandaDao(comanda);
+        AppController.openComandaPOS();
+    }
+
     public void refreshTileList() {
         initialize();
     }
+
 }

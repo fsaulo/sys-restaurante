@@ -197,11 +197,32 @@ public class AppController implements DateFormatter {
         }
     }
 
+    public static void openComandaPOS() {
+        try {
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(AppFactory.getMainController().getScene().getWindow());
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(AppController.class.getResource(SceneNavigator.COMANDA_POS));
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setTitle("SysRestaurante: Point of Sale");
+            stage.setMinWidth(720);
+            stage.setMinHeight(430);
+            stage.setMinWidth(840);
+            stage.setWidth(1090);
+            stage.setResizable(true);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void openFinishSell() {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(AppFactory.getCashierPOSController().detailsWrapperBox.getScene().getWindow());
+            stage.initOwner(AppFactory.getPosController().getPOSWindow());
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.FINISH_SELL_DIALOG));
             Scene scene = new Scene(loader.load());

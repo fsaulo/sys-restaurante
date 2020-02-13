@@ -19,18 +19,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.dao.OrderDao;
+import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.ProductDao;
+import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Product;
 
-import java.util.ArrayList;
-
-public class CashierPOSController extends POSController {
+public class ComandaPOSController extends POSController {
 
     @FXML
-    public VBox cancelButton;
+    public VBox confirm;
     @FXML
-    public VBox finalizeSell;
+    public VBox cancel;
+    @FXML
+    public VBox finalizeComanda;
     @FXML
     public VBox detailsWrapperBox;
     @FXML
@@ -54,6 +55,10 @@ public class CashierPOSController extends POSController {
     @FXML
     private Label label;
     @FXML
+    private Label codComanda;
+    @FXML
+    private Label codTable;
+    @FXML
     private Label totalCashierLabel;
     @FXML
     private HBox editableItems;
@@ -76,18 +81,16 @@ public class CashierPOSController extends POSController {
     @FXML
     private ImageView barcodeImage;
 
-    private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
-    private final ObservableList<ProductDao> products = new Product().getProducts();
-    private static final String GENERIC_BARCODE = "src/main/resources/images/barcode.png";
-    private double total = 0;
+    private ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
+    private ObservableList<ProductDao> products = new Product().getProducts();
+    private ComandaDao comanda = AppFactory.getComandaDao();
+    private static boolean confirmed;
 
     public void initialize() {
         AppFactory.setPosController(this);
-        AppFactory.setCashierPOSController(this);
-
+        AppFactory.setComandaPOSController(this);
         setStageControls();
         setStageObjects();
-
     }
 
     public void setStageControls() {
@@ -131,8 +134,6 @@ public class CashierPOSController extends POSController {
             updateSelectedList();
         });
 
-        cancelButton.setOnMouseClicked(event -> onCancelButton());
-
         selectedProductsTableView.focusedProperty().addListener((observable) -> {
             updateControls();
             refreshDetailsBoxSelectable(false);
@@ -165,16 +166,64 @@ public class CashierPOSController extends POSController {
             }
         });
 
-        Platform.runLater( () -> {
-            wrapperBox.getScene().getWindow().setOnCloseRequest(event -> { if (!onCancelButton()) event.consume(); });
+        Platform.runLater(() -> {
             handleKeyEvent();
+            handleSpecificKeyEvent();
+            wrapperBox.getScene().getWindow().setOnCloseRequest(windowEvent -> addProductsToComanda());
         });
 
         qtySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 1));
-        finalizeSell.setOnMouseClicked(event -> this.onFinalizeOrder());
         clearButton.setOnMouseClicked(event -> clearShoppingBasket());
-        selectedProductsTableView.setOnMouseClicked((e) -> { updateControls(); refreshDetailsBoxSelectable(false); });
+        selectedProductsTableView.setOnMouseClicked((e) -> {
+            updateControls();
+            refreshDetailsBoxSelectable(false);
+        });
         productsListView.focusedProperty().addListener((observable) -> refreshDetailsBoxSelectable(true));
         productsListView.setOnMouseClicked((e) -> refreshDetailsBoxSelectable(true));
+        codComanda.setText("#" + comanda.getIdComanda());
+        codTable.setText("NOVO PEDIDO NA MESA " + comanda.getIdTable());
+        finalizeComanda.setOnMouseClicked(event -> onFinalizeOrder());
+        confirm.setOnMouseClicked(event -> {
+            addProductsToComanda();
+            wrapperBox.getScene().getWindow().hide();
+        });
+    }
+
+    @Override
+    public void onFinalizeOrder() {
+        if (selectedProductsTableView.getItems().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta do sistema");
+            alert.setHeaderText("Atenção!");
+            alert.setContentText("Não é possível encerrar o pedido pois nenhum item foi adicionado a lista");
+            alert.showAndWait();
+        } else {
+            AppFactory.setOrderDao(comanda);
+            AppController.openFinishSell();
+            if (isSellConfirmed()) {
+                AppFactory.getManageComandaController().refreshTileList();
+                close();
+            }
+        }
+    }
+
+    public void addProductsToComanda() {
+        new Order().addProductsToOrder(comanda.getIdOrder(), selectedProductsList);
+    }
+
+    public void handleSpecificKeyEvent() {
+        wrapperBox.getScene().getAccelerators().put(SceneNavigator.ESC_CLOSE, this::close);
+    }
+
+    private void close() {
+        wrapperBox.getScene().getWindow().hide();
+    }
+
+    public static void setSellConfirmed(boolean conf) {
+        confirmed = conf;
+    }
+
+    public static boolean isSellConfirmed() {
+        return confirmed;
     }
 }

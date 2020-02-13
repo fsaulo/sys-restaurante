@@ -15,6 +15,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Cashier;
@@ -63,7 +64,7 @@ public class FinishSellController {
         payInCash = new CurrencyField(new Locale("pt", "BR"));
         payInCash.setFont(font);
         payInCash.setPrefWidth(200);
-        payInCash.setAmount(AppFactory.getCashierPOSController().getTotal());
+        payInCash.setAmount(AppFactory.getPosController().getTotal());
         payByCard = new CurrencyField(new Locale("pt", "BR"));
         payByCard.setFont(font);
         payByCard.setPrefWidth(200);
@@ -103,7 +104,7 @@ public class FinishSellController {
     @FXML
     public void confirm() {
         Order order = new Order();
-        ObservableList<ProductDao> items = AppFactory.getCashierPOSController().getItems();
+        ObservableList<ProductDao> items = AppFactory.getPosController().getItems();
 
         double discount = this.percentageField.getAmount();
         double change = getChange();
@@ -127,17 +128,28 @@ public class FinishSellController {
         } else {
             double payByCard = this.payByCard.getAmount();
             double payInCash = getSubtotal() - payByCard;
-            OrderDao orderDao = order.newOrder(AppFactory.getCashierDao().getIdCashier(),
-                    payInCash,
-                    payByCard,
-                    1,
-                    discount,
-                    note.toString());
-            new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
-            order.addProductsToOrder(orderDao.getIdOrder(), items);
-            AppFactory.getCashierController().updateCashierElements();
-            AppFactory.getCashierController().setSellConfirmed(true);
-            AppFactory.setOrderDao(orderDao);
+            OrderDao orderDao = AppFactory.getOrderDao();
+
+
+            if (!(orderDao instanceof ComandaDao) || orderDao == null) {
+                orderDao = order.newOrder(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 1,
+                        discount, note.toString());
+                new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+                order.addProductsToOrder(orderDao.getIdOrder(), items);
+                AppFactory.getCashierController().updateCashierElements();
+                AppFactory.getCashierController().setSellConfirmed(true);
+            } else {
+                int idComanda = ((ComandaDao) orderDao).getIdComanda();
+                order.closeComanda(idComanda, payByCard + payInCash);
+                order.addProductsToOrder(orderDao.getIdOrder(), items);
+                order.updateOrderStatus(orderDao.getIdOrder(), 1);
+                order.updateOrderAmount(orderDao.getIdOrder(), payInCash, payByCard, discount);
+                order.closeTable(((ComandaDao) orderDao).getIdTable());
+                new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+                ComandaPOSController.setSellConfirmed(true);
+            }
+
+            AppFactory.setOrderDao(null);
             box1.getScene().getWindow().hide();
         }
     }
@@ -152,9 +164,9 @@ public class FinishSellController {
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.OK) {
-            changeLabel.getScene().getWindow().hide();
+            confirmBox.getScene().getWindow().hide();
             AppFactory.setOrderDao(new OrderDao());
-            AppFactory.getCashierPOSController().getPOSWindow().hide();
+            AppFactory.getPosController().getPOSWindow().hide();
         }
     }
 
@@ -190,7 +202,7 @@ public class FinishSellController {
         OrderDao orderDao = new OrderDao();
         orderDao.setOrderDate(LocalDate.now());
         orderDao.setOrderTime(LocalTime.now());
-        orderDao.setTotal(AppFactory.getCashierPOSController().getTotal());
+        orderDao.setTotal(AppFactory.getPosController().getTotal());
         orderDao.setDiscount(percentageField.getAmount() * 100);
         orderDao.setIdOrder(new Order().getLastOrderId() + 1);
         AppFactory.setOrderDao(orderDao);
@@ -206,14 +218,14 @@ public class FinishSellController {
     }
 
     public double getChange() {
-        double total = AppFactory.getCashierPOSController().getTotal();
+        double total = AppFactory.getPosController().getTotal();
         double discount = total * percentageField.getAmount();
         double change = Math.round(((payInCash.getAmount() + payByCard.getAmount()) - (total - discount))*100)/100.0;
         return change;
     }
 
     public double getSubtotal() {
-        double total = AppFactory.getCashierPOSController().getTotal();
+        double total = AppFactory.getPosController().getTotal();
         double discount = total * percentageField.getAmount();
         return total - discount;
     }

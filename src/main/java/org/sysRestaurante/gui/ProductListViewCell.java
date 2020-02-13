@@ -56,13 +56,13 @@ public class ProductListViewCell extends ListCell<ProductDao> {
             id.setText(String.valueOf(product.getIdProduct()));
             category.setText(product.getCategory());
             category.setOnMouseClicked(event ->
-                AppFactory.getCashierPOSController().searchByCategory(category.getText())
+                AppFactory.getPosController().searchByCategory(category.getText())
             );
 
             wrapperBox.setOnMouseClicked(event -> {
                 if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     if (product != null) {
-                        AppFactory.getCashierPOSController().addToSelectedProductsList(product);
+                        AppFactory.getPosController().addToSelectedProductsList(product);
                     } else {
                         event.consume();
                     }

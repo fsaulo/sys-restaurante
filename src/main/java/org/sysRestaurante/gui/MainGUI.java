@@ -25,14 +25,12 @@ public class MainGUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setHeight(450);
         primaryStage.setWidth(550);
-
         final String JAVA_VERSION = System.getProperty("java.version");
         final String JAVAFX_VERSION = System.getProperties().get("javafx.runtime.version").toString();
         LOGGER.info("Java JDK Runtime Version: " + JAVA_VERSION);
         LOGGER.info("JavaFX Runtime Version: " + JAVAFX_VERSION);
-
-        startProgram(primaryStage);
         Encryption.setKey("Jaguaric@3105");
+        startProgram(primaryStage);
 
         LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");
     }

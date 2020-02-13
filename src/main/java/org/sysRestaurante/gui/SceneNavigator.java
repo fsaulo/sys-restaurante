@@ -24,11 +24,13 @@ public class SceneNavigator {
     public static final String OPEN_CASHIER_DIALOG = "fxml/OpenCashierDialog.fxml";
     public static final String NEW_COMANDA_DIALOG = "fxml/NewComandaDialog.fxml";
     public static final String CASHIER_POS = "fxml/CashierPOS.fxml";
+    public static final String COMANDA_POS = "fxml/ComandaPOS.fxml";
     public static final String PRODUCT_LIST_CELL = "fxml/ProductListCell.fxml";
     public static final String TABLE_LIST_CELL = "fxml/TableListCell.fxml";
     public static final String FINISH_SELL_DIALOG = "fxml/FinishSell.fxml";
     public static final String RECEIPT_VIEW = "fxml/ReceiptView.fxml";
     public static final String MANAGE_COMANDA = "fxml/ManageComanda.fxml";
+    public static final KeyCombination ESC_CLOSE = new KeyCodeCombination(KeyCode.ESCAPE);
     public static final KeyCombination F2_CONFIRMATION = new KeyCodeCombination(KeyCode.F2);
     public static final KeyCombination F3_SEARCH = new KeyCodeCombination(KeyCode.F3);
     public static final KeyCombination F4_CANCEL = new KeyCodeCombination(KeyCode.F4);

@@ -12,10 +12,12 @@ import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -79,8 +81,8 @@ public class Order {
     }
 
     public void newComanda(int idTable, int idOrder, int idCashier, int type) {
-        String query = "INSERT INTO comanda (id_caixa, data_abertura, id_mesa, " +
-                "id_categoria_pedido, hora_abertura, id_pedido) VALUES (?,?,?,?,?,?)";
+        String query = "INSERT INTO comanda (id_caixa, data_abertura, id_mesa, id_categoria_pedido, hora_abertura, " +
+                "id_pedido) VALUES (?,?,?,?,?,?)";
         PreparedStatement ps;
 
         try {
@@ -95,6 +97,84 @@ public class Order {
             ps.executeUpdate();
 
             LOGGER.info("Comanda was registered successfully.");
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void closeComanda(int idComanda, double total) {
+        String query = "UPDATE comanda SET data_fechamento = ?, hora_fechamento = ?, total = ?, " +
+                "id_categoria_pedido = ? WHERE id_comanda = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setDate(1, Date.valueOf(LocalDate.now()));
+            ps.setTime(2, Time.valueOf(LocalTime.now()));
+            ps.setDouble(3, total);
+            ps.setInt(4, 6);
+            ps.setInt(5, idComanda);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void updateOrderStatus(int idOrder, int idStatus) {
+        String query = "UPDATE pedido SET id_categoria_pedido = ? WHERE id_pedido = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idStatus);
+            ps.setInt(2, idOrder);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void updateOrderAmount(int idOrder, double totalCash, double totalByCard, double discounts) {
+        String query = "UPDATE pedido SET valor_cartao = ?, valor_avista = ?, descontos = ? WHERE id_pedido = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setDouble(1, totalByCard);
+            ps.setDouble(2, totalCash);
+            ps.setDouble(3, discounts);
+            ps.setInt(4, idOrder);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void closeTable(int idTable) {
+        String query = "UPDATE mesa SET id_categoria_mesa = ? WHERE id_mesa = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, 1);
+            ps.setInt(2, idTable);
+            ps.executeUpdate();
+
             ps.close();
             con.close();
         } catch (SQLException ex) {
