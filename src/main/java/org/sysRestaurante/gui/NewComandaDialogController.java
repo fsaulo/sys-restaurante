@@ -9,14 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 import javafx.scene.layout.HBox;
-import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.TableDao;
 import org.sysRestaurante.model.Order;
-import tray.animations.AnimationType;
-import tray.notification.NotificationType;
-import tray.notification.TrayNotification;
+import org.sysRestaurante.util.NotificationHandler;
 
 public class NewComandaDialogController {
 
@@ -74,15 +71,9 @@ public class NewComandaDialogController {
         cashier.newComanda(idTable, order.getIdOrder(), idCashier, 2);
         Order.changeTableStatus(idTable, 2);
         AppFactory.getManageComandaController().refreshTileList();
-
-        TrayNotification success = new TrayNotification();
-        success.setAnimationType(AnimationType.POPUP);
-        success.setTitle("Informações do Sistema");
-        success.setMessage("Comanda aberta com sucesso!");
-        success.setNotificationType(NotificationType.SUCCESS);
-        success.showAndDismiss(Duration.seconds(1));
-
         ((Node) event.getSource()).getScene().getWindow().hide();
+
+        NotificationHandler.showInfo("Comanda aberta com sucesso!");
     }
 
     public void onCancelClicked(Event event) {

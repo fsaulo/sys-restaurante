@@ -99,11 +99,11 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.plushaze.traynotification</groupId>
-            <artifactId>TrayNotification</artifactId>
-            <version>0.3</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/TrayNotification.jar</systemPath>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>11.0.1</version>
+            <scope>compile</scope>
         </dependency>
+
     </dependencies>
 </project>
