@@ -30,6 +30,7 @@ public class SceneNavigator {
     public static final String FINISH_SELL_DIALOG = "fxml/FinishSell.fxml";
     public static final String RECEIPT_VIEW = "fxml/ReceiptView.fxml";
     public static final String MANAGE_COMANDA = "fxml/ManageComanda.fxml";
+    public static final String COMANDA_VIEW = "fxml/ComandaView.fxml";
     public static final KeyCombination ESC_CLOSE = new KeyCodeCombination(KeyCode.ESCAPE);
     public static final KeyCombination F2_CONFIRMATION = new KeyCodeCombination(KeyCode.F2);
     public static final KeyCombination F3_SEARCH = new KeyCodeCombination(KeyCode.F3);

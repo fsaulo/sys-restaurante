@@ -224,11 +224,6 @@
     -fx-text-fill: white;
 }
 
-.comanda-tile: hover *{
-    -fx-cursor: hand;
-    -fx-text-fill: white;
-}
-
 .circle-status {
     -fx-fill: orange;
 }
