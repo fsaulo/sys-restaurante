@@ -4,7 +4,6 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
@@ -34,7 +33,6 @@ public class ManageComandaController {
     private BorderPane borderPaneHolder;
 
     private PopOver popOver;
-    private static boolean confirmed;
 
     @FXML
     public void initialize() {
@@ -67,14 +65,14 @@ public class ManageComandaController {
     }
 
     public void buildAndAddTiles(ComandaDao comanda) throws IOException {
-        VBox vbox = new VBox();
         FXMLLoader loader = new FXMLLoader();
         Label comandaCod = new Label("#" + comanda.getIdComanda());
         Label statusLabel = new Label("Ocupada");
         Label cashSpent = new Label(CurrencyField.getBRLCurrencyFormat().format(comanda.getTotal()));
         Label tableCod = new Label("MESA " + comanda.getIdTable());
-        HBox topTile = new HBox();
+
         Pane pane = new Pane();
+        HBox topTile = new HBox();
         HBox.setHgrow(pane, Priority.ALWAYS);
         topTile.getChildren().addAll(comandaCod, pane, tableCod);
         Circle icon = new Circle(4);
@@ -84,19 +82,33 @@ public class ManageComandaController {
         tableCod.setStyle("-fx-font-size: 17px;");
         Separator sep = new Separator();
         sep.setMinHeight(3);
-        vbox.getChildren().addAll(topTile, sep, statusLabel, cashSpent);
-        vbox.setAlignment(Pos.TOP_RIGHT);
-        vbox.setMinWidth(163);
-        vbox.getStylesheets().add("css/menu.css");
-        vbox.getStyleClass().add("comanda-tile");
-        tilePane.getChildren().addAll(vbox);
-        VBox vBox = loader.load(MainGUI.class.getResource(SceneNavigator.COMANDA_VIEW));
-        popOver = new PopOver(vBox);
-        vbox.setOnMouseClicked(event -> popOver.show(vbox));
+
+        VBox tile = new VBox();
+        tile.getChildren().addAll(topTile, sep, statusLabel, cashSpent);
+        tile.setAlignment(Pos.TOP_RIGHT);
+        tile.setMinWidth(163);
+        tile.getStylesheets().add("css/menu.css");
+        tile.getStyleClass().add("comanda-tile");
+        tile.setOnMouseEntered(event -> changeLabelStyle("white", comandaCod, statusLabel, cashSpent, tableCod));
+        tile.setOnMouseExited(event -> changeLabelStyle("black", comandaCod, statusLabel, cashSpent, tableCod));
+        tilePane.getChildren().addAll(tile);
+
+        VBox popVbox = loader.load(MainGUI.class.getResource(SceneNavigator.COMANDA_VIEW));
+        popOver = new PopOver(popVbox);
+        tile.setOnMouseClicked(event -> popOver.show(tile));
+    }
+
+    public void changeLabelStyle(String color, Label... labels) {
+        if (color.equals("white")) {
+            for (Label label : labels)
+                label.getStyleClass().add("label-tile-hover");
+        } else {
+            for (Label label : labels)
+                label.getStyleClass().remove("label-tile-hover");
+        }
     }
 
     public void refreshTileList() {
         initialize();
     }
-
 }

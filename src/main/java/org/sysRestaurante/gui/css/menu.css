@@ -224,6 +224,13 @@
     -fx-text-fill: white;
 }
 
+.label-tile-hover {
+    -fx-text-fill: white;
+    -fx-font-family: Carlito;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
 .circle-status {
     -fx-fill: orange;
 }
