@@ -14,10 +14,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
 
 import java.io.IOException;
@@ -31,6 +33,8 @@ public class ManageComandaController {
     private TilePane tilePane;
     @FXML
     private BorderPane borderPaneHolder;
+    @FXML
+    private VBox newComandaButton;
 
     @FXML
     public void initialize() {
@@ -40,6 +44,11 @@ public class ManageComandaController {
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
         tilePane.getChildren().clear();
+
+        if (!Cashier.isOpen()) {
+            newComandaButton.setDisable(true);
+        }
+
         listBusyTable();
     }
 
