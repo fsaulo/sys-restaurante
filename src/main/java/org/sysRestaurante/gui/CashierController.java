@@ -84,11 +84,11 @@ public class CashierController {
 
     @FXML
     public void onOpenOrCloseCashier() {
-        boolean isCashierOpenned = Cashier.getLastCashierStatus();
+        boolean isCashierOpen = Cashier.isOpen();
 
-        if (isCashierOpenned) {
+        if (isCashierOpen) {
             AppController.showDialog(SceneNavigator.CLOSE_CASHIER_DIALOG, true);
-            if (!Cashier.getLastCashierStatus()) {
+            if (!Cashier.isOpen()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Informações do sistema");
                 alert.setHeaderText("Caixa fechado com sucesso!");
@@ -99,7 +99,7 @@ public class CashierController {
         } else {
             AppController.showDialog(SceneNavigator.OPEN_CASHIER_DIALOG, true);
             updateCashierElements();
-            if (Cashier.getLastCashierStatus()) {
+            if (Cashier.isOpen()) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Informações do sistema");
                 alert.setHeaderText(null);
@@ -139,7 +139,7 @@ public class CashierController {
 
     public void updateCashierStatus() {
         AppFactory.setCashierController(this);
-        boolean isCashierOpenned = Cashier.getLastCashierStatus();
+        boolean isCashierOpenned = Cashier.isOpen();
         CashierDao cashierDao;
 
         if (isCashierOpenned) {

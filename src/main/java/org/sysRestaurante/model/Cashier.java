@@ -152,7 +152,7 @@ public class Cashier {
         return 0;
     }
 
-    public static boolean getLastCashierStatus() {
+    public static boolean isOpen() {
         String query = "SELECT id_caixa, is_aberto FROM caixa ORDER BY id_caixa DESC LIMIT 1";
         PreparedStatement ps;
         ResultSet rs;

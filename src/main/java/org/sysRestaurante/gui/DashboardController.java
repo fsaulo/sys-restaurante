@@ -110,7 +110,7 @@ public class DashboardController {
     }
 
     public void updateCashierStatus() {
-        boolean isCashierOpenned = Cashier.getLastCashierStatus();
+        boolean isCashierOpenned = Cashier.isOpen();
         statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
         Label message = new Label();
         message.setStyle("-fx-font-family: carlito; " +

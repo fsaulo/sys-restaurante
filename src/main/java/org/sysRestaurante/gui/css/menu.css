@@ -238,3 +238,7 @@
 .circle-status: hover {
     -fx-radius: 6
 }
+
+.toggle-service: selected {
+    -fx-opacity: 1;
+}
