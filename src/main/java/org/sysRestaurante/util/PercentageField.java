@@ -78,4 +78,11 @@ public class PercentageField extends TextField {
         formatText(builder.toString());
         selectRange(start, start);
     }
+
+    public void setAmount(double value) {
+        if (value >= 0.0) {
+            this.amount.setValue(value);
+            setText(format.format(value));
+        }
+    }
 }
