@@ -138,6 +138,7 @@ public class CashierController {
     }
 
     public void updateCashierStatus() {
+        AppFactory.setCashierController(this);
         boolean isCashierOpenned = Cashier.getLastCashierStatus();
         CashierDao cashierDao;
 

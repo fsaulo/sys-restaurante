@@ -222,7 +222,25 @@ public class AppController implements DateFormatter {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(AppFactory.getPosController().getPOSWindow());
+            stage.initOwner(AppFactory.getMainController().getScene().getWindow());
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(AppController.class.getResource(SceneNavigator.FINISH_SELL_DIALOG));
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setTitle("SysRestaurante: Finalizando pedido");
+            stage.setResizable(false);
+            stage.showAndWait();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void openFinishSell(Object owner) {
+        try {
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner((Window) owner);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.FINISH_SELL_DIALOG));
             Scene scene = new Scene(loader.load());

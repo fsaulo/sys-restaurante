@@ -24,6 +24,8 @@ import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Product;
 
+import java.util.ArrayList;
+
 public class ComandaPOSController extends POSController {
 
     @FXML
@@ -199,7 +201,7 @@ public class ComandaPOSController extends POSController {
             alert.showAndWait();
         } else {
             AppFactory.setOrderDao(comanda);
-            AppController.openFinishSell();
+            AppController.openFinishSell(AppFactory.getPosController().getPOSWindow());
             if (isSellConfirmed()) {
                 AppFactory.getManageComandaController().refreshTileList();
                 close();
@@ -208,7 +210,7 @@ public class ComandaPOSController extends POSController {
     }
 
     public void addProductsToComanda() {
-        new Order().addProductsToOrder(comanda.getIdOrder(), selectedProductsList);
+        new Order().addProductsToOrder(comanda.getIdOrder(), (ArrayList<ProductDao>) selectedProductsList);
     }
 
     public void handleSpecificKeyEvent() {

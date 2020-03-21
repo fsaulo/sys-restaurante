@@ -1,7 +1,6 @@
 package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -60,11 +59,12 @@ public class FinishSellController {
 
     @FXML
     public void initialize() {
+        System.out.println(((ComandaDao) AppFactory.getOrderDao()).getIdTable());
         Font font = Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 20);
         payInCash = new CurrencyField(new Locale("pt", "BR"));
         payInCash.setFont(font);
         payInCash.setPrefWidth(200);
-        payInCash.setAmount(AppFactory.getPosController().getTotal());
+        payInCash.setAmount(getTotal());
         payByCard = new CurrencyField(new Locale("pt", "BR"));
         payByCard.setFont(font);
         payByCard.setPrefWidth(200);
@@ -104,7 +104,7 @@ public class FinishSellController {
     @FXML
     public void confirm() {
         Order order = new Order();
-        ObservableList<ProductDao> items = AppFactory.getPosController().getItems();
+        ArrayList<ProductDao> items = AppFactory.getSelectedProducts();
 
         double discount = this.percentageField.getAmount();
         double change = getChange();
@@ -130,15 +130,8 @@ public class FinishSellController {
             double payInCash = getSubtotal() - payByCard;
             OrderDao orderDao = AppFactory.getOrderDao();
 
-
-            if (!(orderDao instanceof ComandaDao) || orderDao == null) {
-                orderDao = order.newOrder(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 1,
-                        discount, note.toString());
-                new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
-                order.addProductsToOrder(orderDao.getIdOrder(), items);
-                AppFactory.getCashierController().updateCashierElements();
-                AppFactory.getCashierController().setSellConfirmed(true);
-            } else {
+            if (orderDao instanceof ComandaDao || orderDao == null) {
+                System.out.println("Instance of ComanDAO");
                 int idComanda = ((ComandaDao) orderDao).getIdComanda();
                 order.closeComanda(idComanda, payByCard + payInCash);
                 order.addProductsToOrder(orderDao.getIdOrder(), items);
@@ -146,13 +139,21 @@ public class FinishSellController {
                 order.updateOrderAmount(orderDao.getIdOrder(), payInCash, payByCard, discount);
                 order.closeTable(((ComandaDao) orderDao).getIdTable());
                 new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
-                ComandaPOSController.setSellConfirmed(true);
+                AppFactory.getManageComandaController().refreshTileList();
+            } else {
+                System.out.println("Instance of OrderDAO");
+                orderDao = order.newOrder(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 1,
+                        discount, note.toString());
+                new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+                order.addProductsToOrder(orderDao.getIdOrder(), items);
+                AppFactory.getCashierController().updateCashierElements();
+                AppFactory.getCashierController().setSellConfirmed(true);
             }
 
             AppFactory.setOrderDao(null);
             box1.getScene().getWindow().hide();
         }
-    }
+    }//
 
     @FXML
     public void cancel() {
@@ -166,7 +167,7 @@ public class FinishSellController {
         if (alert.getResult() == ButtonType.OK) {
             confirmBox.getScene().getWindow().hide();
             AppFactory.setOrderDao(new OrderDao());
-            AppFactory.getPosController().getPOSWindow().hide();
+            if (AppFactory.getPosController() != null) AppFactory.getPosController().getPOSWindow().hide();
         }
     }
 
@@ -179,9 +180,7 @@ public class FinishSellController {
     public void saveReceipt() {
         try {
             receiptContentConstructor();
-            Receipt receipt = new Receipt(
-                    AppFactory.getSelectedProducts(),
-                    AppFactory.getOrderDao());
+            Receipt receipt = new Receipt(AppFactory.getSelectedProducts(), AppFactory.getOrderDao());
             receipt.saveReceiptAsPng(saveReceipt.getScene().getWindow());
         } catch (MalformedURLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -202,7 +201,7 @@ public class FinishSellController {
         OrderDao orderDao = new OrderDao();
         orderDao.setOrderDate(LocalDate.now());
         orderDao.setOrderTime(LocalTime.now());
-        orderDao.setTotal(AppFactory.getPosController().getTotal());
+        orderDao.setTotal(getTotal());
         orderDao.setDiscount(percentageField.getAmount() * 100);
         orderDao.setIdOrder(new Order().getLastOrderId() + 1);
         AppFactory.setOrderDao(orderDao);
@@ -218,15 +217,23 @@ public class FinishSellController {
     }
 
     public double getChange() {
-        double total = AppFactory.getPosController().getTotal();
+        double total = getTotal();
         double discount = total * percentageField.getAmount();
         double change = Math.round(((payInCash.getAmount() + payByCard.getAmount()) - (total - discount))*100)/100.0;
         return change;
     }
 
     public double getSubtotal() {
-        double total = AppFactory.getPosController().getTotal();
+        double total = getTotal();
         double discount = total * percentageField.getAmount();
         return total - discount;
+    }
+
+    public double getTotal() {
+        double total = 0;
+        for (ProductDao item : AppFactory.getSelectedProducts()) {
+            total += item.getTotal();
+        }
+        return total;
     }
 }

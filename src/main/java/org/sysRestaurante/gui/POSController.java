@@ -271,7 +271,7 @@ public class POSController {
                 alert.showAndWait();
             } else {
                 AppFactory.setOrderDao(new OrderDao());
-                AppController.openFinishSell();
+                AppController.openFinishSell(AppFactory.getPosController().getPOSWindow());
                 if (AppFactory.getCashierController().isSellConfirmed()) {
                     AppFactory.getSelectedProducts().clear();
                     AppFactory.setOrderDao(new OrderDao());

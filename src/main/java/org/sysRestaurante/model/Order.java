@@ -182,7 +182,7 @@ public class Order {
         }
     }
 
-    public void addProductsToOrder(int idOrder, ObservableList<ProductDao> productsList) {
+    public void addProductsToOrder(int idOrder, ArrayList<ProductDao> productsList) {
         String query = "INSERT INTO pedido_has_produtos (id_produto, id_pedido, qtd_pedido) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
         LOGGER.setLevel(Level.ALL);

@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -19,11 +18,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Product;
-
-import java.util.ArrayList;
 
 public class CashierPOSController extends POSController {
 
@@ -78,16 +74,12 @@ public class CashierPOSController extends POSController {
 
     private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
     private final ObservableList<ProductDao> products = new Product().getProducts();
-    private static final String GENERIC_BARCODE = "src/main/resources/images/barcode.png";
-    private double total = 0;
 
     public void initialize() {
         AppFactory.setPosController(this);
         AppFactory.setCashierPOSController(this);
-
         setStageControls();
         setStageObjects();
-
     }
 
     public void setStageControls() {

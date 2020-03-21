@@ -32,8 +32,6 @@ public class ManageComandaController {
     @FXML
     private BorderPane borderPaneHolder;
 
-    private PopOver popOver;
-
     @FXML
     public void initialize() {
         AppFactory.setManageComandaController(this);
@@ -65,7 +63,6 @@ public class ManageComandaController {
     }
 
     public void buildAndAddTiles(ComandaDao comanda) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
         Label comandaCod = new Label("#" + comanda.getIdComanda());
         Label statusLabel = new Label("Ocupada");
         Label cashSpent = new Label(CurrencyField.getBRLCurrencyFormat().format(comanda.getTotal()));
@@ -89,17 +86,18 @@ public class ManageComandaController {
         tile.setMinWidth(163);
         tile.getStylesheets().add("css/menu.css");
         tile.getStyleClass().add("comanda-tile");
-        tile.setOnMouseEntered(event -> changeLabelStyle("white", comandaCod, statusLabel, cashSpent, tableCod));
-        tile.setOnMouseExited(event -> changeLabelStyle("black", comandaCod, statusLabel, cashSpent, tableCod));
+        tile.setOnMouseEntered(event -> setSelectedLabels(true, comandaCod, statusLabel, cashSpent, tableCod));
+        tile.setOnMouseExited(event -> setSelectedLabels(false, comandaCod, statusLabel, cashSpent, tableCod));
         tilePane.getChildren().addAll(tile);
 
-        VBox popVbox = loader.load(MainGUI.class.getResource(SceneNavigator.COMANDA_VIEW));
-        popOver = new PopOver(popVbox);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.COMANDA_VIEW));
+        loader.setController(new ComandaViewController(comanda));
+        PopOver popOver = new PopOver(loader.load());
         tile.setOnMouseClicked(event -> popOver.show(tile));
     }
 
-    public void changeLabelStyle(String color, Label... labels) {
-        if (color.equals("white")) {
+    public void setSelectedLabels(boolean isSelected, Label... labels) {
+        if (isSelected) {
             for (Label label : labels)
                 label.getStyleClass().add("label-tile-hover");
         } else {

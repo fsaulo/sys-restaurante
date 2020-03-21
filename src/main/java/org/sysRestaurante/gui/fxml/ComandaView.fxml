@@ -13,13 +13,13 @@
    <children>
       <HBox alignment="CENTER" prefHeight="40.0" prefWidth="342.0" style="-fx-border-color: #dddddd; -fx-background-color: white;">
          <children>
-            <Label text="Mesa 24">
+            <Label fx:id="tableLabel" text="Mesa 24">
                <font>
                   <Font name="Carlito Bold" size="27.0" />
                </font>
             </Label>
             <Pane HBox.hgrow="ALWAYS" />
-            <Label text="#153">
+            <Label fx:id="comandaLabel" text="#153">
                <font>
                   <Font name="Comfortaa Bold" size="16.0" />
                </font>
@@ -31,7 +31,7 @@
       <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: #dddddd;" VBox.vgrow="ALWAYS" />
       <HBox alignment="TOP_CENTER" spacing="10.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" styleClass="remove-item-button" text="Encerrar comanda">
+            <Button fx:id="closeComandaButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="150.0" styleClass="remove-item-button" text="Encerrar comanda">
                <font>
                   <Font name="Carlito Bold" size="16.0" />
                </font>
