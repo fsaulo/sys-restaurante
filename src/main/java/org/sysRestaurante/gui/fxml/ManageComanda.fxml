@@ -326,11 +326,11 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </ScrollPane>
-                  <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" styleClass="box-content" onMouseClicked="#onNewComandaClicked">
+                  <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" styleClass="box-content">
                      <children>
-                        <VBox alignment="CENTER" minWidth="135.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="cashier-button">
+                        <VBox fx:id="newComandaButton" alignment="CENTER" minWidth="135.0" onMouseClicked="#onNewComandaClicked" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="cashier-button">
                            <children>
-                              <Label text="Nova comanda" textAlignment="CENTER" wrapText="true">
+                              <Label fx:id="lb1" text="Nova comanda" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font name="Carlito Bold" size="15.0" />
                                  </font>
