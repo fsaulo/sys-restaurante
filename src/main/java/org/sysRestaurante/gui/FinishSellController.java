@@ -57,7 +57,13 @@ public class FinishSellController {
     @FXML
     private Label changeLabel;
     @FXML
+    private Label totalLabel;
+    @FXML
     private Label subtotalLabel;
+    @FXML
+    private Label discountLabel;
+    @FXML
+    private Label taxLabel;
     @FXML
     private ToggleButton ba0;
     @FXML
@@ -91,6 +97,7 @@ public class FinishSellController {
     private CurrencyField payByCard;
     private PercentageField percentageField1;
     private PercentageField percentageField2;
+    private static String GREEN = "#4a8d2c";
 
     @FXML
     public void initialize() {
@@ -99,27 +106,32 @@ public class FinishSellController {
 
         Format format = CurrencyField.getBRLCurrencyFormat();
         percentageField1.textProperty().addListener(observable -> {
-            subtotalLabel.setText(format.format(getSubtotal()));
+            totalLabel.setText(format.format(getTotal()));
             changeLabel.setText(format.format(getChange()));
+            discountLabel.setText(format.format(getDiscount()));
         });
 
         percentageField2.textProperty().addListener(observable -> {
-            subtotalLabel.setText(format.format(getSubtotal()));
+            totalLabel.setText(format.format(getTotal()));
             changeLabel.setText(format.format(getChange()));
+            taxLabel.setText(format.format(getTax()));
         });
 
         changeLabel.textProperty().addListener(observable -> {
             if (getChange() < 0) {
                 changeLabel.setTextFill(Color.RED);
             } else {
-                changeLabel.setTextFill(Color.valueOf("#78d34e"));
+                changeLabel.setTextFill(Color.valueOf(GREEN));
             }
         });
 
         if (AppFactory.getOrderDao() instanceof ComandaDao) cancelButton.setDisable(true);
         seeReceiptBox.setOnMouseClicked(event -> viewReceipt());
+        totalLabel.setText(format.format(getTotal()));
         subtotalLabel.setText(format.format(getSubtotal()));
+        discountLabel.setText(format.format(getDiscount()));
         changeLabel.setText(format.format(getChange()));
+        taxLabel.setText(format.format(getTax()));
         payInCash.textProperty().addListener(observable -> changeLabel.setText(format.format(getChange())));
         payByCard.textProperty().addListener(observable -> changeLabel.setText(format.format(getChange())));
         Platform.runLater(this::handleKeyEvent);
@@ -151,7 +163,7 @@ public class FinishSellController {
             alert.showAndWait();
         } else {
             double payByCard = this.payByCard.getAmount();
-            double payInCash = getSubtotal() - payByCard;
+            double payInCash = getTotal() - payByCard;
             OrderDao orderDao = AppFactory.getOrderDao();
 
             if (orderDao instanceof ComandaDao || orderDao == null) {
@@ -215,12 +227,12 @@ public class FinishSellController {
     }
 
     public void setInputFilds() {
-        Font font = Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 20);
+        Font font = Font.font("consolas", FontWeight.BOLD, FontPosture.REGULAR, 20);
         double width = 170.0;
         payInCash = new CurrencyField(new Locale("pt", "BR"));
         payInCash.setFont(font);
         payInCash.setPrefWidth(width);
-        payInCash.setAmount(getTotal());
+        payInCash.setAmount(getSubtotal());
         payByCard = new CurrencyField(new Locale("pt", "BR"));
         payByCard.setFont(font);
         payByCard.setPrefWidth(width);
@@ -256,12 +268,12 @@ public class FinishSellController {
         c2.setOnMouseClicked(e3 -> payByCard.setAmount(0.0));
 
         tc1.setOnMouseClicked(e4 -> {
-            payInCash.setAmount(getSubtotal());
+            payInCash.setAmount(getTotal());
             payByCard.setAmount(0.0);
         });
 
         tc2.setOnMouseClicked(e4 -> {
-            payByCard.setAmount(getSubtotal());
+            payByCard.setAmount(getTotal());
             payInCash.setAmount(0.0);
         });
     }
@@ -275,7 +287,7 @@ public class FinishSellController {
         OrderDao orderDao = new OrderDao();
         orderDao.setOrderDate(LocalDate.now());
         orderDao.setOrderTime(LocalTime.now());
-        orderDao.setTotal(getTotal());
+        orderDao.setTotal(getSubtotal());
         orderDao.setDiscount(percentageField1.getAmount() * 100);
         orderDao.setIdOrder(new Order().getLastOrderId() + 1);
         AppFactory.setOrderDao(orderDao);
@@ -284,14 +296,14 @@ public class FinishSellController {
     }
 
     public void handleKeyEvent() {
-        subtotalLabel.getParent().requestFocus();
-        subtotalLabel.getScene().getAccelerators().clear();
-        subtotalLabel.getScene().getAccelerators().put(SceneNavigator.F4_CANCEL, () ->
+        totalLabel.getParent().requestFocus();
+        totalLabel.getScene().getAccelerators().clear();
+        totalLabel.getScene().getAccelerators().put(SceneNavigator.F4_CANCEL, () ->
                 box1.getScene().getWindow().hide());
-        subtotalLabel.getScene().getAccelerators().put(SceneNavigator.F2_CONFIRMATION, this::confirm);
+        totalLabel.getScene().getAccelerators().put(SceneNavigator.F2_CONFIRMATION, this::confirm);
     }
 
-    public double getTotal() {
+    public double getSubtotal() {
         double total = 0;
         for (ProductDao item : AppFactory.getSelectedProducts()) {
             total += item.getTotal();
@@ -299,16 +311,24 @@ public class FinishSellController {
         return total;
     }
 
-    public double getSubtotal() {
-        double total = getTotal();
-        double discount = total * percentageField1.getAmount();
-        double serviceTax = total * percentageField2.getAmount();
-        return total + serviceTax - discount;
+    public double getDiscount() {
+        return getSubtotal() * percentageField1.getAmount();
+
+    }
+
+    public double getTax() {
+        return getSubtotal() * percentageField2.getAmount();
+    }
+
+    public double getTotal() {
+        double subtotal = getSubtotal();
+        double discount = getDiscount();
+        double tax = getTax();
+        return subtotal + tax - discount;
     }
 
     public double getChange() {
-        double subtotal = getSubtotal();
-        double change = Math.round(((payInCash.getAmount() + payByCard.getAmount()) - (subtotal))*100)/100.0;
-        return change;
+        double total = getTotal();
+        return Math.round(((payInCash.getAmount() + payByCard.getAmount()) - (total))*100)/100.0;
     }
 }

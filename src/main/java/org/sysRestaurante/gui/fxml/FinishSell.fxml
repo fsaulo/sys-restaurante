@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefWidth="415.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.FinishSellController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefWidth="415.0" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.FinishSellController">
    <children>
       <HBox alignment="CENTER_LEFT" prefWidth="390.0" style="-fx-background-color: white;" styleClass="box-content">
          <children>
@@ -123,11 +116,26 @@
                            <toggleGroup>
                               <ToggleGroup fx:id="serviceTax1" />
                            </toggleGroup>
+                           <font>
+                              <Font name="Comfortaa Regular" size="13.0" />
+                           </font>
                         </ToggleButton>
-                        <ToggleButton fx:id="ba5" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="5%" toggleGroup="$serviceTax1" />
-                        <ToggleButton fx:id="ba10" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="10%" toggleGroup="$serviceTax1" />
-                        <ToggleButton fx:id="ba15" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="15%" toggleGroup="$serviceTax1" />
-                        <ToggleButton fx:id="ba20" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="20%" toggleGroup="$serviceTax1" />
+                        <ToggleButton fx:id="ba5" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="5%" toggleGroup="$serviceTax1">
+                           <font>
+                              <Font name="Comfortaa Regular" size="13.0" />
+                           </font></ToggleButton>
+                        <ToggleButton fx:id="ba10" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="10%" toggleGroup="$serviceTax1">
+                           <font>
+                              <Font name="Comfortaa Regular" size="13.0" />
+                           </font></ToggleButton>
+                        <ToggleButton fx:id="ba15" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="15%" toggleGroup="$serviceTax1">
+                           <font>
+                              <Font name="Comfortaa Regular" size="13.0" />
+                           </font></ToggleButton>
+                        <ToggleButton fx:id="ba20" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="20%" toggleGroup="$serviceTax1">
+                           <font>
+                              <Font name="Comfortaa Regular" size="13.0" />
+                           </font></ToggleButton>
                      </children>
                   </HBox>
                </children>
@@ -152,11 +160,26 @@
                            <toggleGroup>
                               <ToggleGroup fx:id="serviceTax11" />
                            </toggleGroup>
+                           <font>
+                              <Font name="Comfortaa Regular" size="13.0" />
+                           </font>
                         </ToggleButton>
-                        <ToggleButton fx:id="bs5" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="5%" toggleGroup="$serviceTax11" />
-                        <ToggleButton fx:id="bs10" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="10%" toggleGroup="$serviceTax11" />
-                        <ToggleButton fx:id="bs15" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="15%" toggleGroup="$serviceTax11" />
-                        <ToggleButton fx:id="bs20" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="20%" toggleGroup="$serviceTax11" />
+                        <ToggleButton fx:id="bs5" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="5%" toggleGroup="$serviceTax11">
+                           <font>
+                              <Font name="Comfortaa Regular" size="13.0" />
+                           </font></ToggleButton>
+                        <ToggleButton fx:id="bs10" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="10%" toggleGroup="$serviceTax11">
+                           <font>
+                              <Font name="Comfortaa Regular" size="13.0" />
+                           </font></ToggleButton>
+                        <ToggleButton fx:id="bs15" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="15%" toggleGroup="$serviceTax11">
+                           <font>
+                              <Font name="Comfortaa Regular" size="13.0" />
+                           </font></ToggleButton>
+                        <ToggleButton fx:id="bs20" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="20%" toggleGroup="$serviceTax11">
+                           <font>
+                              <Font name="Comfortaa Regular" size="13.0" />
+                           </font></ToggleButton>
                      </children>
                   </HBox>
                </children>
@@ -173,42 +196,101 @@
                   <Font name="Carlito" size="17.0" />
                </font>
             </Label>
-            <TextArea fx:id="noteTextArea" prefHeight="65.0" prefWidth="405.0" />
+            <TextArea fx:id="noteTextArea" opacity="0.7" prefHeight="29.0" prefWidth="405.0" />
          </children>
       </VBox>
-      <VBox alignment="TOP_RIGHT" prefWidth="405.0" style="-fx-background-color: black; -fx-border-color: gray; -fx-border-width: 2;">
+      <HBox style="-fx-background-color: white;" styleClass="box-content">
          <children>
-            <Label opacity="0.8" text="Troco" textFill="#77d14db2">
-               <font>
-                  <Font name="Arial Black" size="15.0" />
-               </font>
-               <tooltip>
-                  <Tooltip text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis" />
-               </tooltip>
-            </Label>
-            <Label fx:id="changeLabel" opacity="0.55" text="R$ 0,90" textFill="#77d14d">
-               <font>
-                  <Font name="Arial Black" size="18.0" />
-               </font>
-            </Label>
-            <Label text="Subtotal" textFill="#77d14db2">
-               <font>
-                  <Font name="Arial Black" size="15.0" />
-               </font>
-               <tooltip>
-                  <Tooltip text="Total consumido menos descontos (acrescidas as taxas de serviço quando aplicáveis)" />
-               </tooltip>
-            </Label>
-            <Label fx:id="subtotalLabel" text="R$ 54,90" textFill="#78d34e">
-               <font>
-                  <Font name="Arial Black" size="27.0" />
-               </font>
-            </Label>
+            <VBox alignment="BOTTOM_LEFT">
+               <children>
+                  <Label opacity="0.7" text="Taxas" textFill="#000000b2">
+                     <font>
+                        <Font name="Carlito" size="15.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis" />
+                     </tooltip>
+                  </Label>
+                  <Label fx:id="taxLabel" opacity="0.75" text="R$ 0,20" textFill="#4a8d2c">
+                     <font>
+                        <Font name="Comfortaa Regular" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label opacity="0.7" text="Descontos" textFill="#000000b2">
+                     <font>
+                        <Font name="Carlito" size="15.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis" />
+                     </tooltip>
+                  </Label>
+                  <Label fx:id="discountLabel" opacity="0.75" text="R$ -0,90" textFill="#4a8d2c">
+                     <font>
+                        <Font name="Comfortaa Regular" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Separator orientation="VERTICAL" />
+            <VBox alignment="BOTTOM_LEFT">
+               <children>
+                  <Label opacity="0.7" text="Subtotal" textFill="#000000b2">
+                     <font>
+                        <Font name="Carlito" size="15.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis" />
+                     </tooltip>
+                  </Label>
+                  <Label fx:id="subtotalLabel" opacity="0.75" text="R$ 55,90" textFill="#4a8d2c">
+                     <font>
+                        <Font name="Comfortaa Regular" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Separator orientation="VERTICAL" />
+            <VBox alignment="BOTTOM_RIGHT" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label opacity="0.7" text="Troco" textFill="#000000b2">
+                     <font>
+                        <Font name="Carlito" size="15.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis" />
+                     </tooltip>
+                  </Label>
+                  <Label fx:id="changeLabel" opacity="0.75" text="R$ 1,30" textFill="#4a8d2c">
+                     <font>
+                        <Font name="Comfortaa Regular" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label opacity="0.7" text="Total" textFill="#000000b2">
+                     <font>
+                        <Font name="Carlito Bold" size="15.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip text="Total consumido menos descontos (acrescidas as taxas de serviço quando aplicáveis)" />
+                     </tooltip>
+                  </Label>
+                  <Label fx:id="totalLabel" text="R$ 54,90" textFill="#4a8d2c">
+                     <font>
+                        <Font name="Comfortaa Regular" size="25.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
          </children>
          <padding>
-            <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
-      </VBox>
+      </HBox>
       <HBox alignment="CENTER" spacing="5.0" style="-fx-background-color: white;" styleClass="box-content" VBox.vgrow="ALWAYS">
          <children>
             <VBox alignment="CENTER" prefWidth="85.0" spacing="5.0">
@@ -302,7 +384,7 @@
                         <Font name="Carlito Bold" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip text="Confirmar venda" />
+                        <Tooltip text="Confirmar pagamento" />
                      </tooltip>
                   </Label>
                </children>
