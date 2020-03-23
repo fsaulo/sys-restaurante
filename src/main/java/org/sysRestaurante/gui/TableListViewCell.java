@@ -50,6 +50,9 @@ public class TableListViewCell extends ListCell<TableDao> {
                 availability.setText("Ocupada/Reservada");
                 availability.getStyleClass().add("availability-label-red");
             } else {
+                wrapperBox.setOpacity(1);
+                wrapperBox.setDisable(false);
+                availability.getStyleClass().removeAll("availability-label-red");
                 availability.setTooltip(new Tooltip("Mesa disponível"));
                 availability.getStyleClass().add("availability-label-green");
                 availability.setText("Disponível");
