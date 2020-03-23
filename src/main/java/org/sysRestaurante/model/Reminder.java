@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class Reminder {
 
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Registration.class.getName());
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Personnel.class.getName());
 
     public void insert(int idUser, String content, LocalDate date) {
         PreparedStatement ps;

@@ -242,3 +242,8 @@
 .toggle-service: selected {
     -fx-opacity: 1;
 }
+
+.view * {
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color: gray;
+}

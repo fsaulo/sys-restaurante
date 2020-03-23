@@ -102,6 +102,7 @@ public class ManageComandaController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.COMANDA_VIEW));
         loader.setController(new ComandaViewController(comanda));
         PopOver popOver = new PopOver(loader.load());
+
         tile.setOnMouseClicked(event -> popOver.show(tile));
     }
 

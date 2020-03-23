@@ -5,24 +5,31 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
-import javafx.scene.layout.HBox;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.EmployeeDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.TableDao;
 import org.sysRestaurante.model.Order;
+import org.sysRestaurante.model.Personnel;
 import org.sysRestaurante.util.NotificationHandler;
+
+import java.util.ArrayList;
 
 public class NewComandaDialogController {
 
     @FXML
     private ListView<TableDao> tableListView;
     @FXML
-    private HBox cancelButton;
+    private Button cancelButton;
     @FXML
-    private HBox confirmButton;
+    private Button confirmButton;
+    @FXML
+    private ComboBox<String> employeeList;
     @FXML
     private Label selectedTableLabel;
 
@@ -42,6 +49,12 @@ public class NewComandaDialogController {
             selectedTableLabel.setStyle("-fx-text-fill: black");
             selectedTableLabel.setText("Mesa selecionada: #" + idTable);
         });
+
+        ArrayList<EmployeeDao> employees = new Personnel().list();
+        for (EmployeeDao employee : employees) {
+            String func = "Id: " + employee.getIdEmployee() + "; atendente: " + employee.getName();
+            employeeList.getItems().add(func);
+        }
 
         cancelButton.setOnMouseClicked(this::onCancelClicked);
         confirmButton.setOnMouseClicked(this::onConfirmClicked);
