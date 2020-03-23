@@ -1,7 +1,9 @@
 package org.sysRestaurante.gui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -10,6 +12,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.EmployeeDao;
 import org.sysRestaurante.dao.OrderDao;
@@ -32,11 +36,14 @@ public class NewComandaDialogController {
     private ComboBox<String> employeeList;
     @FXML
     private Label selectedTableLabel;
+    @FXML
+    private TextField searchBox;
 
     private final ObservableList<TableDao> tables = FXCollections.observableArrayList(new Order().getTables());
 
     @FXML
     public void initialize() {
+        Platform.runLater(() -> selectedTableLabel.requestFocus());
         selectedTableLabel.setText("");
         tableListView.setItems(tables);
         tableListView.setCellFactory(tlv -> new TableListViewCell());
@@ -52,12 +59,40 @@ public class NewComandaDialogController {
 
         ArrayList<EmployeeDao> employees = new Personnel().list();
         for (EmployeeDao employee : employees) {
-            String func = "Id: " + employee.getIdEmployee() + "; atendente: " + employee.getName();
+            String func = "ID: " + employee.getIdEmployee() + " ; atendente: " + employee.getName();
             employeeList.getItems().add(func);
         }
 
         cancelButton.setOnMouseClicked(this::onCancelClicked);
         confirmButton.setOnMouseClicked(this::onConfirmClicked);
+        searchBox.textProperty().addListener((observable -> refreshTables()));
+        searchBox.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER) && !tableListView.getItems().isEmpty()) {
+                tableListView.getSelectionModel().selectFirst();
+                onConfirmClicked(event);
+            } else if (event.getCode().equals(KeyCode.ESCAPE)) {
+                searchBox.clear();
+                selectedTableLabel.requestFocus();
+            }
+        });
+    }
+
+    public void refreshTables() {
+        FilteredList<TableDao> filteredData = new FilteredList<>(tables, null);
+        String filter = searchBox.getText().toUpperCase();
+        String AVAILABLE = "DISPONIVEL;DISPONÍVEL";
+
+        if (filter == null || filter.length() == 0) {
+            filteredData.setPredicate(null);
+        }
+        else if (AVAILABLE.contains(filter.toUpperCase())) {
+            filteredData.setPredicate(s -> s.getIdStatus() == 1);
+        } else {
+            filteredData.setPredicate(s -> String.valueOf(s.getIdTable()).contains(filter) ||
+                    AVAILABLE.contains(filter.toUpperCase()));
+        }
+
+        tableListView.setItems(filteredData);
     }
 
     public void onConfirmClicked(Event event) {
@@ -65,10 +100,26 @@ public class NewComandaDialogController {
         OrderDao order = new OrderDao();
         int idTable = 0;
 
-        TableDao selectedTable = tableListView.getSelectionModel().getSelectedItem();
-        boolean available = selectedTable.getIdStatus() == 1;
-        if (selectedTable != null && available) {
+        boolean empty = false;
+        boolean available = false;
+        TableDao selectedTable = null;
+
+        try {
+            selectedTable = tableListView.getSelectionModel().getSelectedItem();
+            available = selectedTable.getIdStatus() == 1;
+        } catch (NullPointerException ex) {
+            empty = true;
+        }
+
+
+        if (available && !empty) {
             idTable = tableListView.getSelectionModel().getSelectedItem().getIdTable();
+        } else if (empty) {
+            String empySelectionMessage = "Selecione uma mesa!";
+            selectedTableLabel.setText(empySelectionMessage);
+            selectedTableLabel.setStyle("-fx-text-fill: red");
+            event.consume();
+            return;
         } else {
             String tableNotAvailableMessage = "Mesa #" + selectedTable.getIdTable() + " não está disponível.";
             selectedTableLabel.setText(tableNotAvailableMessage);
@@ -76,6 +127,7 @@ public class NewComandaDialogController {
             event.consume();
             return;
         }
+
 
         int idCashier = AppFactory.getCashierDao().getIdCashier();
         String defaultMessage = "Cliente na mesa #" + selectedTable.getIdTable();
