@@ -45,9 +45,8 @@ public class NewComandaDialogController {
 
     @FXML
     public void initialize() {
-        Platform.runLater(() -> selectedTableLabel.requestFocus());
         handleEmployeesComboBox();
-        selectedTableLabel.setText("");
+        selectedTableLabel.setText("Nenhuma mesa selecionada");
         tableListView.setItems(tables);
         tableListView.setCellFactory(tlv -> new TableListViewCell());
         tableListView.focusModelProperty().addListener(observable -> {
@@ -73,6 +72,8 @@ public class NewComandaDialogController {
                 selectedTableLabel.requestFocus();
             }
         });
+
+        Platform.runLater(() -> selectedTableLabel.requestFocus());
     }
 
     public void refreshTables() {

@@ -8,7 +8,6 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -49,17 +48,16 @@
             </VBox>
          </placeholder>
       </ListView>
-      <HBox alignment="CENTER_RIGHT" prefHeight="35.0" spacing="5.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
+      <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <children>
-            <Label fx:id="selectedTableLabel" opacity="0.48" text="Mesa selecionada: 45">
+            <Label fx:id="selectedTableLabel" opacity="0.75" text="Mesa selecionada: 45">
                <font>
                   <Font name="Carlito Bold" size="17.0" />
                </font>
             </Label>
-            <Pane HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <ComboBox fx:id="employeeList" prefHeight="35.0" prefWidth="600.0" promptText="Selecionar atendente" style="-fx-font-family: Carlito; -fx-font-weight: bold; -fx-font-size: 16; -fx-focus-color: gray; -fx-faint-focus-color: transparent;" />

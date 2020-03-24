@@ -2,6 +2,7 @@ package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -15,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
+import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
@@ -25,6 +27,7 @@ import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.util.PercentageField;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.Format;
 import java.time.LocalDate;
@@ -43,15 +46,17 @@ public class FinishSellController {
     @FXML
     private HBox box4;
     @FXML
-    private VBox confirmBox;
+    private HBox hBoxControl;
     @FXML
-    private VBox goBackButton;
+    private VBox confirmBox;
     @FXML
     private VBox seeReceiptBox;
     @FXML
     private VBox saveReceipt;
     @FXML
     private VBox cancelButton;
+    @FXML
+    private VBox wrapperVBox;
     @FXML
     private TextArea noteTextArea;
     @FXML
@@ -93,6 +98,7 @@ public class FinishSellController {
     @FXML
     private Button c2;
 
+    private ArrayList<ProductDao> products;
     private CurrencyField payInCash;
     private CurrencyField payByCard;
     private PercentageField percentageField1;
@@ -126,7 +132,12 @@ public class FinishSellController {
         });
 
         if (AppFactory.getOrderDao() instanceof ComandaDao) cancelButton.setDisable(true);
-        seeReceiptBox.setOnMouseClicked(event -> viewReceipt());
+        PopOver popOver = viewReceipt();
+        seeReceiptBox.setOnMouseClicked(event -> {
+            popOver.show(seeReceiptBox);
+            hBoxControl.setDisable(true);
+        });
+        popOver.setOnHidden(e1 -> hBoxControl.setDisable(false));
         totalLabel.setText(format.format(getTotal()));
         subtotalLabel.setText(format.format(getSubtotal()));
         discountLabel.setText(format.format(getDiscount()));
@@ -207,7 +218,7 @@ public class FinishSellController {
 
     @FXML
     public void back() {
-        goBackButton.getScene().getWindow().hide();
+        wrapperVBox.getScene().getWindow().hide();
     }
 
     @FXML
@@ -224,6 +235,37 @@ public class FinishSellController {
             alert.initOwner(confirmBox.getScene().getWindow());
             alert.showAndWait();
         }
+    }
+
+    public void receiptContentConstructor() {
+        OrderDao orderDao = new OrderDao();
+        orderDao.setOrderDate(LocalDate.now());
+        orderDao.setOrderTime(LocalTime.now());
+        orderDao.setTotal(getSubtotal());
+        orderDao.setDiscount(percentageField1.getAmount() * 100);
+        orderDao.setIdOrder(new Order().getLastOrderId() + 1);
+        AppFactory.setOrderDao(orderDao);
+        products = AppFactory.getSelectedProducts();
+        AppFactory.setSelectedProducts(products);
+    }
+
+    public PopOver viewReceipt() {
+        receiptContentConstructor();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.RECEIPT_VIEW));
+        VBox node = null;
+        try {
+            node = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        PopOver popOver = new PopOver(node);
+        popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+
+        if (products.size() >= 15) {
+            popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+        }
+
+        return popOver;
     }
 
     public void setInputFilds() {
@@ -276,23 +318,6 @@ public class FinishSellController {
             payByCard.setAmount(getTotal());
             payInCash.setAmount(0.0);
         });
-    }
-
-    public void viewReceipt() {
-        receiptContentConstructor();
-        AppController.showDialog(SceneNavigator.RECEIPT_VIEW, changeLabel.getScene().getWindow());
-    }
-
-    public void receiptContentConstructor() {
-        OrderDao orderDao = new OrderDao();
-        orderDao.setOrderDate(LocalDate.now());
-        orderDao.setOrderTime(LocalTime.now());
-        orderDao.setTotal(getSubtotal());
-        orderDao.setDiscount(percentageField1.getAmount() * 100);
-        orderDao.setIdOrder(new Order().getLastOrderId() + 1);
-        AppFactory.setOrderDao(orderDao);
-        ArrayList<ProductDao> products = AppFactory.getSelectedProducts();
-        AppFactory.setSelectedProducts(products);
     }
 
     public void handleKeyEvent() {

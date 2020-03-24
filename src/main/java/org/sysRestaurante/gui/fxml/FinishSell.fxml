@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefWidth="415.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.FinishSellController">
+<VBox fx:id="wrapperVBox" minHeight="-Infinity" minWidth="-Infinity" prefWidth="415.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.FinishSellController">
    <children>
       <HBox alignment="CENTER_LEFT" prefWidth="390.0" style="-fx-background-color: white;" styleClass="box-content">
          <children>
@@ -299,7 +299,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <HBox alignment="CENTER" spacing="5.0" style="-fx-background-color: white;" styleClass="box-content" VBox.vgrow="ALWAYS">
+      <HBox fx:id="hBoxControl" alignment="CENTER" spacing="5.0" style="-fx-background-color: white;" styleClass="box-content" VBox.vgrow="ALWAYS">
          <children>
             <VBox alignment="CENTER" prefWidth="85.0" spacing="5.0">
                <children>

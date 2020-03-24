@@ -24,6 +24,7 @@ public class AddNotesDialogController {
     }
 
     public void addNote(ActionEvent event) {
+        textNote.setWrapText(true);
         if (!textNote.getText().equals("")) {
             new Reminder().insert(
                     AppFactory.getUserDao().getIdUser(),
