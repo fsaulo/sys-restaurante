@@ -400,6 +400,7 @@ public class Order {
                 comanda.setTotal(rs.getDouble("total"));
                 comanda.setStatus(rs.getInt("id_categoria_pedido"));
                 comanda.setIdCategory(rs.getInt("id_categoria_pedido"));
+                comanda.setIdEmployee(rs.getInt("id_funcionario"));
                 tables.add(comanda);
             }
 

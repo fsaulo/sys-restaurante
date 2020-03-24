@@ -2,6 +2,7 @@ package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -9,6 +10,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+
+import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.NoteDao;
 import org.sysRestaurante.model.Cashier;
@@ -16,6 +19,7 @@ import org.sysRestaurante.model.Reminder;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.util.LoggerHandler;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -27,6 +31,8 @@ public class DashboardController {
 
     @FXML
     private Button clearNotesButton;
+    @FXML
+    private Button addNoteButton;
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -41,12 +47,15 @@ public class DashboardController {
         borderPane.setBottom(AppFactory.getAppController().getFooter());
         borderPane.setTop(AppFactory.getAppController().getHeader());
         clearNotesButton.setOnMouseClicked(e -> showClearAlertWindow());
-        Platform.runLater(() -> notesPane.requestFocus());
         reloadNotes();
         updateCashierStatus();
-
         Platform.runLater(this::handleKeyEvent);
-        LOGGER.info("At dashboard flow.");
+
+        try {
+            handleAddNotesMenu();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void reloadNotes() {
@@ -70,10 +79,14 @@ public class DashboardController {
     public void handleKeyEvent() {
         AppFactory.getMainController().getScene().getAccelerators().clear();
         AppFactory.getAppController().setFullScreenShortcut();
+        statusCashierLabel.requestFocus();
     }
 
-    public void showNotesWindow() {
-        AppController.showDialog(SceneNavigator.NOTE_PANE, true);
+    public void handleAddNotesMenu() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.NOTE_PANE));
+        PopOver popOver = new PopOver(loader.load());
+        addNoteButton.setOnMouseClicked(e1 -> popOver.show(addNoteButton));
+        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_RIGHT);
     }
 
     public void showClearAlertWindow() {

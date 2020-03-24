@@ -157,12 +157,12 @@
                   </ScrollPane>
                   <HBox alignment="CENTER" prefWidth="230.0" spacing="15.0">
                      <children>
-                        <Button fx:id="addNoteButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showNotesWindow" opacity="0.8" prefHeight="55.0" prefWidth="106.0" styleClass="cashier-button" text="Adicionar lembrete" textAlignment="CENTER" wrapText="true">
+                        <Button fx:id="addNoteButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" opacity="0.8" prefHeight="55.0" prefWidth="109.0" text="Adicionar lembrete" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font name="Carlito Bold" size="16.0" />
                            </font>
                         </Button>
-                        <Button fx:id="clearNotesButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" opacity="0.8" prefHeight="55.0" prefWidth="106.0" styleClass="remove-item-button" text="Limpar marcados" textAlignment="CENTER" wrapText="true">
+                        <Button fx:id="clearNotesButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" opacity="0.8" prefHeight="55.0" prefWidth="106.0" text="Limpar marcados" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font name="Carlito Bold" size="16.0" />
                            </font>

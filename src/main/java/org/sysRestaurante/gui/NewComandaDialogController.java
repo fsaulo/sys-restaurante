@@ -46,7 +46,7 @@ public class NewComandaDialogController {
     @FXML
     public void initialize() {
         Platform.runLater(() -> selectedTableLabel.requestFocus());
-        handleComboBox();
+        handleEmployeesComboBox();
         selectedTableLabel.setText("");
         tableListView.setItems(tables);
         tableListView.setCellFactory(tlv -> new TableListViewCell());
@@ -148,7 +148,7 @@ public class NewComandaDialogController {
         NotificationHandler.showInfo("Comanda aberta com sucesso!");
     }
 
-    public void handleComboBox() {
+    public void handleEmployeesComboBox() {
         ArrayList<EmployeeDao> employees = new Personnel().list();
         Callback<ListView<EmployeeDao>, ListCell<EmployeeDao>> cellFactory = new Callback<>() {
             @Override
@@ -160,7 +160,7 @@ public class NewComandaDialogController {
                         if (item == null || empty) {
                             setGraphic(null);
                         } else {
-                            setText("ID: " + item.getIdEmployee() + "    " + item.getName());
+                            setText("ID: " + item.getIdEmployee() + " " + item.getName());
                         }
                     }
                 };

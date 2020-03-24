@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
@@ -35,6 +36,7 @@ public class ManageComandaController {
     private BorderPane borderPaneHolder;
     @FXML
     private VBox newComandaButton;
+
 
     @FXML
     public void initialize() {
