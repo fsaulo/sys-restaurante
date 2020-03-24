@@ -80,9 +80,9 @@ public class Order {
         return null;
     }
 
-    public void newComanda(int idTable, int idOrder, int idCashier, int type) {
+    public void newComanda(int idTable, int idOrder, int idCashier, int idEmployee, int type) {
         String query = "INSERT INTO comanda (id_caixa, data_abertura, id_mesa, id_categoria_pedido, hora_abertura, " +
-                "id_pedido) VALUES (?,?,?,?,?,?)";
+                "id_pedido, id_funcionario) VALUES (?,?,?,?,?,?,?)";
         PreparedStatement ps;
 
         try {
@@ -94,6 +94,7 @@ public class Order {
             ps.setInt(4, type);
             ps.setTime(5, java.sql.Time.valueOf(LocalTime.now()));
             ps.setInt(6, idOrder);
+            ps.setInt(7, idEmployee);
             ps.executeUpdate();
 
             LOGGER.info("Comanda was registered successfully.");

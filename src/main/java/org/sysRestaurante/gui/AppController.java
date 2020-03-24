@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -17,11 +18,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
@@ -142,9 +145,7 @@ public class AppController implements DateFormatter {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(AppFactory.getMainController().getScene().getWindow());
-
             if (main) AppFactory.getMainController().darkenScreen();
-
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(fxml));
             Scene scene = new Scene(loader.load());
@@ -159,11 +160,11 @@ public class AppController implements DateFormatter {
         }
     }
 
-    public static void showDialog(String fxml, Window owner) {
+    public static void showDialog(String fxml, Object owner) {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(owner);
+            stage.initOwner((Window) owner);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(fxml));
             Scene scene = new Scene(loader.load());
@@ -172,6 +173,41 @@ public class AppController implements DateFormatter {
             stage.setResizable(false);
             stage.showAndWait();
         } catch (IOException e) {
+            LOGGER.severe("Couldn't create stage.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            e.printStackTrace();
+        }
+    }
+
+    public static void showUndecoratedDialog(String fxml, Object owner) {
+        try {
+            Window parent = AppFactory.getAppController().borderPaneHolder.getScene().getWindow();
+            double centerPosX = parent.getX() + parent.getWidth()/2d;
+            double centerPosY = parent.getY() + parent.getHeight()/2d;
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setAlwaysOnTop(true);
+            stage.initOwner((Window) owner);
+            stage.initStyle(StageStyle.UNDECORATED);
+
+            AppFactory.getMainController().darkenScreen();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(AppController.class.getResource(fxml));
+            VBox popPup = loader.load();
+            Scene scene = new Scene(popPup);
+
+            stage.setX(centerPosX - popPup.getPrefWidth()/2d);
+            stage.setY(centerPosY - popPup.getPrefHeight()/2d);
+
+            stage.setTitle("SysRestaurante: Dialog " + fxml);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.showAndWait();
+            AppFactory.getMainController().brightenScreen();
+        } catch (IOException e) {
+            LOGGER.severe("Couldn't create stage.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
             e.printStackTrace();
         }
     }
@@ -183,27 +219,6 @@ public class AppController implements DateFormatter {
             stage.initOwner(AppFactory.getMainController().getScene().getWindow());
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.CASHIER_POS));
-            Scene scene = new Scene(loader.load());
-            stage.setScene(scene);
-            stage.setTitle("SysRestaurante: Point of Sale");
-            stage.setMinWidth(720);
-            stage.setMinHeight(430);
-            stage.setMinWidth(840);
-            stage.setWidth(1090);
-            stage.setResizable(true);
-            stage.showAndWait();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static void openComandaPOS() {
-        try {
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner(AppFactory.getMainController().getScene().getWindow());
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(AppController.class.getResource(SceneNavigator.COMANDA_POS));
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setTitle("SysRestaurante: Point of Sale");

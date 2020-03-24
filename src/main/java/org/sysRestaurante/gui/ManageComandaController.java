@@ -54,7 +54,7 @@ public class ManageComandaController {
 
     @FXML
     public void onNewComandaClicked(Event event) {
-        AppController.showDialog(SceneNavigator.NEW_COMANDA_DIALOG, scrollPane.getScene().getWindow());
+        AppController.showUndecoratedDialog(SceneNavigator.NEW_COMANDA_DIALOG, scrollPane.getScene().getWindow());
         event.consume();
     }
 

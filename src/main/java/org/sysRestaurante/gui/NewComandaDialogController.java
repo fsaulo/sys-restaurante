@@ -10,10 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.util.Callback;
+
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.EmployeeDao;
 import org.sysRestaurante.dao.OrderDao;
@@ -33,7 +35,7 @@ public class NewComandaDialogController {
     @FXML
     private Button confirmButton;
     @FXML
-    private ComboBox<String> employeeList;
+    private ComboBox<EmployeeDao> employeeList;
     @FXML
     private Label selectedTableLabel;
     @FXML
@@ -44,6 +46,7 @@ public class NewComandaDialogController {
     @FXML
     public void initialize() {
         Platform.runLater(() -> selectedTableLabel.requestFocus());
+        handleComboBox();
         selectedTableLabel.setText("");
         tableListView.setItems(tables);
         tableListView.setCellFactory(tlv -> new TableListViewCell());
@@ -51,17 +54,12 @@ public class NewComandaDialogController {
             int idTable = tableListView.getSelectionModel().getSelectedItem().getIdTable();
             selectedTableLabel.setText("Mesa selecionada: #" + idTable);
         });
+
         tableListView.setOnMouseClicked(event -> {
             int idTable = tableListView.getSelectionModel().getSelectedItem().getIdTable();
             selectedTableLabel.setStyle("-fx-text-fill: black");
             selectedTableLabel.setText("Mesa selecionada: #" + idTable);
         });
-
-        ArrayList<EmployeeDao> employees = new Personnel().list();
-        for (EmployeeDao employee : employees) {
-            String func = "ID: " + employee.getIdEmployee() + " ; atendente: " + employee.getName();
-            employeeList.getItems().add(func);
-        }
 
         cancelButton.setOnMouseClicked(this::onCancelClicked);
         confirmButton.setOnMouseClicked(this::onConfirmClicked);
@@ -114,31 +112,66 @@ public class NewComandaDialogController {
 
         if (available && !empty) {
             idTable = tableListView.getSelectionModel().getSelectedItem().getIdTable();
-        } else if (empty) {
-            String empySelectionMessage = "Selecione uma mesa!";
-            selectedTableLabel.setText(empySelectionMessage);
-            selectedTableLabel.setStyle("-fx-text-fill: red");
-            event.consume();
-            return;
-        } else {
-            String tableNotAvailableMessage = "Mesa #" + selectedTable.getIdTable() + " não está disponível.";
-            selectedTableLabel.setText(tableNotAvailableMessage);
-            selectedTableLabel.setStyle("-fx-text-fill: red");
+        } else  {
+            if (empty) {
+                String empySelectionMessage = "Selecione uma mesa!";
+                selectedTableLabel.setText(empySelectionMessage);
+                selectedTableLabel.setStyle("-fx-text-fill: red");
+
+            } else {
+                String tableNotAvailableMessage = "Mesa #" + selectedTable.getIdTable() + " não está disponível.";
+                selectedTableLabel.setText(tableNotAvailableMessage);
+                selectedTableLabel.setStyle("-fx-text-fill: red");
+            }
             event.consume();
             return;
         }
 
-
         int idCashier = AppFactory.getCashierDao().getIdCashier();
+        int idEmployee = 0;
+
+        try {
+            EmployeeDao employee = employeeList.getSelectionModel().getSelectedItem();
+            idEmployee = employee.getIdEmployee();
+        } catch (NullPointerException ex) {
+            idEmployee = -1;
+        }
+
         String defaultMessage = "Cliente na mesa #" + selectedTable.getIdTable();
         order = cashier.newOrder(idCashier, 0, 0, 2, 0,
                 defaultMessage);
-        cashier.newComanda(idTable, order.getIdOrder(), idCashier, 2);
+        cashier.newComanda(idTable, order.getIdOrder(), idCashier, idEmployee,2);
         Order.changeTableStatus(idTable, 2);
         AppFactory.getManageComandaController().refreshTileList();
         ((Node) event.getSource()).getScene().getWindow().hide();
 
         NotificationHandler.showInfo("Comanda aberta com sucesso!");
+    }
+
+    public void handleComboBox() {
+        ArrayList<EmployeeDao> employees = new Personnel().list();
+        Callback<ListView<EmployeeDao>, ListCell<EmployeeDao>> cellFactory = new Callback<>() {
+            @Override
+            public ListCell<EmployeeDao> call(ListView<EmployeeDao> l) {
+                return new ListCell<>() {
+                    @Override
+                    protected void updateItem(EmployeeDao item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setGraphic(null);
+                        } else {
+                            setText("ID: " + item.getIdEmployee() + "    " + item.getName());
+                        }
+                    }
+                };
+            }
+        };
+        employeeList.setButtonCell(cellFactory.call(null));
+        employeeList.setCellFactory(cellFactory);
+
+        for (EmployeeDao employee : employees) {
+            employeeList.getItems().add(employee);
+        }
     }
 
     public void onCancelClicked(Event event) {
