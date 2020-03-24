@@ -328,7 +328,7 @@
                   </ScrollPane>
                   <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" styleClass="box-content">
                      <children>
-                        <VBox fx:id="newComandaButton" alignment="CENTER" minWidth="135.0" onMouseClicked="#onNewComandaClicked" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="cashier-button">
+                        <VBox fx:id="newComandaButton" alignment="CENTER" minWidth="135.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="comanda-button">
                            <children>
                               <Label fx:id="lb1" text="Nova comanda" textAlignment="CENTER" wrapText="true">
                                  <font>
@@ -348,7 +348,7 @@
                            </HBox.margin>
                         </VBox>
                         <Separator orientation="VERTICAL" />
-                        <VBox alignment="CENTER" opacity="0.8" prefWidth="80.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="cashier-button">
+                        <VBox alignment="CENTER" opacity="0.8" prefWidth="80.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="comanda-button">
                            <children>
                               <Label text="Listar mesas" textAlignment="CENTER" wrapText="true">
                                  <font>
@@ -367,7 +367,7 @@
                               <Insets bottom="5.0" left="2.0" right="3.0" top="5.0" />
                            </HBox.margin>
                         </VBox>
-                        <VBox alignment="CENTER" opacity="0.8" prefWidth="80.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="cashier-button">
+                        <VBox alignment="CENTER" opacity="0.8" prefWidth="80.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="comanda-button">
                            <children>
                               <Label text=" Registrar mesa" textAlignment="CENTER" wrapText="true">
                                  <font>

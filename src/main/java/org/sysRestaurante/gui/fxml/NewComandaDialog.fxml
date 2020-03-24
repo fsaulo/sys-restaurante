@@ -14,7 +14,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="335.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.NewComandaDialogController">
    <children>
-      <HBox alignment="CENTER" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
+      <HBox alignment="CENTER_LEFT" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
          <children>
             <Label text="Selecione uma mesa">
                <font>
@@ -26,7 +26,10 @@
             <Insets left="5.0" right="5.0" />
          </padding>
       </HBox>
-      <TextField fx:id="searchBox" prefHeight="35.0" promptText="Digite o código da mesa" style="-fx-background-radius: 0;" />
+      <TextField fx:id="searchBox" prefHeight="35.0" promptText="Digite o código da mesa" style="-fx-background-radius: 0; -fx-faint-focus-color: transparent; -fx-focus-color: gray; -fx-border-color: #dddddd;">
+         <font>
+            <Font name="Carlito" size="16.0" />
+         </font></TextField>
       <ListView fx:id="tableListView" prefHeight="200.0" prefWidth="200.0" style="-fx-faint-focus-color: transparent; -fx-border-color: #dddddd; -fx-focus-color: transparent;" VBox.vgrow="ALWAYS">
          <placeholder>
             <VBox alignment="TOP_CENTER" spacing="5">
@@ -75,11 +78,11 @@
          </children>
       </HBox>
    </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
    <stylesheets>
       <URL value="@../css/menu.css" />
       <URL value="@../css/controls.css" />
    </stylesheets>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
 </VBox>

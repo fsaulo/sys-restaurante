@@ -12,7 +12,7 @@
 
 <VBox fx:id="popOverVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="382.0" prefWidth="342.0" spacing="5.0" styleClass="view" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER" prefHeight="40.0" prefWidth="342.0" style="-fx-background-color: white;" styleClass="box-content">
+      <HBox alignment="CENTER" prefHeight="40.0" prefWidth="342.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
          <children>
             <Label fx:id="tableLabel" text="Mesa 24">
                <font>
@@ -29,7 +29,7 @@
          <padding>
             <Insets left="5.0" right="5.0" />
          </padding></HBox>
-      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" styleClass="box-content" VBox.vgrow="ALWAYS" />
+      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: #dddddd;" VBox.vgrow="ALWAYS" />
       <ComboBox fx:id="employeeList" prefHeight="35.0" prefWidth="600.0" promptText="Selecionar atendente" style="-fx-font-family: Carlito; -fx-font-weight: bold; -fx-font-size: 16;" styleClass="removed-glow" visibleRowCount="5" />
       <HBox alignment="TOP_CENTER" spacing="10.0" styleClass="removed-glow">
          <children>

@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -236,6 +237,7 @@ public class AppController implements DateFormatter {
     public static void openFinishSell() {
         try {
             Stage stage = new Stage();
+            AppFactory.getMainController().darkenScreen();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(AppFactory.getMainController().getScene().getWindow());
             FXMLLoader loader = new FXMLLoader();
@@ -245,6 +247,7 @@ public class AppController implements DateFormatter {
             stage.setTitle("SysRestaurante: Finalizando pedido");
             stage.setResizable(false);
             stage.showAndWait();
+            AppFactory.getMainController().brightenScreen();
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -263,6 +266,31 @@ public class AppController implements DateFormatter {
             stage.setTitle("SysRestaurante: Finalizando pedido");
             stage.setResizable(false);
             stage.showAndWait();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void openFinishSell(Object owner, Node object) {
+        try {
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner((Window) owner);
+            ColorAdjust colorAdjust = new ColorAdjust();
+            colorAdjust.setBrightness(-0.5);
+            AppFactory.getMainController().darkenScreen();
+            object.getParent().getParent().setEffect(colorAdjust);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(AppController.class.getResource(SceneNavigator.FINISH_SELL_DIALOG));
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setTitle("SysRestaurante: Finalizando pedido");
+            stage.setResizable(false);
+            stage.showAndWait();
+            colorAdjust.setBrightness(0);
+            object.getParent().getParent().setEffect(colorAdjust);
+            AppFactory.getMainController().brightenScreen();
 
         } catch (IOException ex) {
             ex.printStackTrace();

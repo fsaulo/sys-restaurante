@@ -51,13 +51,21 @@ public class ManageComandaController {
             newComandaButton.setDisable(true);
         }
 
+        try {
+            handleAddComanda();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
         listBusyTable();
     }
 
-    @FXML
-    public void onNewComandaClicked(Event event) {
-        AppController.showUndecoratedDialog(SceneNavigator.NEW_COMANDA_DIALOG, scrollPane.getScene().getWindow());
-        event.consume();
+    public void handleAddComanda() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.NEW_COMANDA_DIALOG));
+        VBox node = loader.load();
+        PopOver popOver = new PopOver(node);
+        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_LEFT);
+        newComandaButton.setOnMouseClicked(e1 -> popOver.show(newComandaButton));
     }
 
     public void listBusyTable() {

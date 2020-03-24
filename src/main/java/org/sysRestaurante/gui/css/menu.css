@@ -122,6 +122,22 @@
     -fx-effect: dropshadow(three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
 }
 
+.comanda-button {
+    -fx-background-color: #dddddd;
+    -fx-background-radius: 5px;
+}
+
+.comanda-button:pressed {
+    -fx-background-color: #dddddd;
+    -fx-cursor: hand;
+}
+
+.comanda-button:hover {
+    -fx-background-color: white;
+    -fx-cursor: hand;
+}
+
+
 .cashier-button {
     -fx-background-color: #dddddd;
     -fx-background-radius: 5px;
