@@ -59,6 +59,8 @@ public class ComandaViewController {
             AppFactory.setOrderDao(comanda);
             AppController.openFinishSell();
         });
+        addOrder.setOnMouseClicked(event -> AppController.showDialog(SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
+                AppFactory.getMainController().getScene().getWindow()));
     }
 
     public void handleEmployeesComboBox() {
