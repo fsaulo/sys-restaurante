@@ -106,7 +106,7 @@ public class FinishSellController {
     private PercentageField percentageField1;
     private PercentageField percentageField2;
     private static String GREEN = "#4a8d2c";
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Order.class.getName());
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(FinishSellController.class.getName());
 
     @FXML
     public void initialize() {
@@ -136,10 +136,12 @@ public class FinishSellController {
 
         if (AppFactory.getOrderDao() instanceof ComandaDao) cancelButton.setDisable(true);
         PopOver popOver = viewReceipt();
+
         seeReceiptBox.setOnMouseClicked(event -> {
             popOver.show(seeReceiptBox);
             hBoxControl.setDisable(true);
         });
+
         popOver.setOnHidden(e1 -> hBoxControl.setDisable(false));
         totalLabel.setText(format.format(getTotal()));
         subtotalLabel.setText(format.format(getSubtotal()));
@@ -152,6 +154,42 @@ public class FinishSellController {
     }
 
     @FXML
+    public void cancel() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Alerta do sistema");
+        alert.setHeaderText("Tem certeza que deseja cancelar venda?");
+        alert.setContentText("Todos os registros salvos serão perdidos.");
+        alert.initOwner(wrapperVBox.getScene().getWindow());
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.OK) {
+            wrapperVBox.getScene().getWindow().hide();
+            AppFactory.setOrderDao(new OrderDao());
+            if (AppFactory.getPosController() != null) AppFactory.getPosController().getPOSWindow().hide();
+        }
+    }
+
+    @FXML
+    public void back() {
+        wrapperVBox.getScene().getWindow().hide();
+    }
+
+    @FXML
+    public void saveReceipt() {
+        try {
+            receiptContentConstructor();
+            Receipt receipt = new Receipt(AppFactory.getSelectedProducts(), AppFactory.getOrderDao());
+            receipt.saveReceiptAsPng(saveReceipt.getScene().getWindow());
+        } catch (MalformedURLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Informações de erro");
+            alert.setHeaderText("Arquivo não contém extensão válida.");
+            alert.setContentText("Extensões válidas: *.png");
+            alert.initOwner(wrapperVBox.getScene().getWindow());
+            alert.showAndWait();
+        }
+    }
+
     public void confirm() {
         Order order = new Order();
         ArrayList<ProductDao> items = AppFactory.getSelectedProducts();
@@ -163,7 +201,7 @@ public class FinishSellController {
 
         if (note.toString().equals("") && noteTextArea.getText().isBlank()) {
             note.append("Sem observações");
-        } else if (!noteTextArea.getText().isBlank() && !noteTextArea.getText().isEmpty()){
+        } else if (!noteTextArea.getText().isBlank() && !noteTextArea.getText().isEmpty()) {
             note.append(" ; ");
             note.append(noteTextArea.getText());
         }
@@ -173,7 +211,7 @@ public class FinishSellController {
             alert.setHeaderText("Não foi possível completar transação.");
             alert.setContentText("Valor pago inferior ao valor do pedido");
             alert.setTitle("Alerta do sistema");
-            alert.initOwner(confirmBox.getScene().getWindow());
+            alert.initOwner(wrapperVBox.getScene().getWindow());
             alert.showAndWait();
         } else {
             double payByCard = this.payByCard.getAmount();
@@ -201,44 +239,7 @@ public class FinishSellController {
             }
 
             AppFactory.setOrderDao(null);
-            box1.getScene().getWindow().hide();
-        }
-    }
-
-    @FXML
-    public void cancel() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Alerta do sistema");
-        alert.setHeaderText("Tem certeza que deseja cancelar venda?");
-        alert.setContentText("Todos os registros salvos serão perdidos.");
-        alert.initOwner(confirmBox.getScene().getWindow());
-        alert.showAndWait();
-
-        if (alert.getResult() == ButtonType.OK) {
-            confirmBox.getScene().getWindow().hide();
-            AppFactory.setOrderDao(new OrderDao());
-            if (AppFactory.getPosController() != null) AppFactory.getPosController().getPOSWindow().hide();
-        }
-    }
-
-    @FXML
-    public void back() {
-        wrapperVBox.getScene().getWindow().hide();
-    }
-
-    @FXML
-    public void saveReceipt() {
-        try {
-            receiptContentConstructor();
-            Receipt receipt = new Receipt(AppFactory.getSelectedProducts(), AppFactory.getOrderDao());
-            receipt.saveReceiptAsPng(saveReceipt.getScene().getWindow());
-        } catch (MalformedURLException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Informações de erro");
-            alert.setHeaderText("Arquivo não contém extensão válida.");
-            alert.setContentText("Extensões válidas: *.png");
-            alert.initOwner(confirmBox.getScene().getWindow());
-            alert.showAndWait();
+            wrapperVBox.getScene().getWindow().hide();
         }
     }
 
@@ -258,11 +259,13 @@ public class FinishSellController {
         receiptContentConstructor();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.RECEIPT_VIEW));
         VBox node = null;
+
         try {
             node = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         PopOver popOver = new PopOver(node);
         popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
 
@@ -328,9 +331,8 @@ public class FinishSellController {
     public void handleKeyEvent() {
         totalLabel.getParent().requestFocus();
         totalLabel.getScene().getAccelerators().clear();
-        totalLabel.getScene().getAccelerators().put(SceneNavigator.F4_CANCEL, () ->
-                box1.getScene().getWindow().hide());
         totalLabel.getScene().getAccelerators().put(SceneNavigator.F2_CONFIRMATION, this::confirm);
+        totalLabel.getScene().getAccelerators().put(SceneNavigator.F4_CANCEL, () -> box1.getScene().getWindow().hide());
     }
 
     public double getSubtotal() {
