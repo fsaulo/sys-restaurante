@@ -25,6 +25,7 @@ import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.PercentageField;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 public class FinishSellController {
 
@@ -104,6 +106,7 @@ public class FinishSellController {
     private PercentageField percentageField1;
     private PercentageField percentageField2;
     private static String GREEN = "#4a8d2c";
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Order.class.getName());
 
     @FXML
     public void initialize() {
@@ -178,7 +181,7 @@ public class FinishSellController {
             OrderDao orderDao = AppFactory.getOrderDao();
 
             if (orderDao instanceof ComandaDao || orderDao == null) {
-                System.out.println("ComandaDao instance");
+                LOGGER.info("Instance of 'Comanda' Data Access Object");
                 int idComanda = ((ComandaDao) orderDao).getIdComanda();
                 order.closeComanda(idComanda, payByCard + payInCash);
                 order.addProductsToOrder(orderDao.getIdOrder(), items);
@@ -188,7 +191,7 @@ public class FinishSellController {
                 new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
                 AppFactory.getManageComandaController().refreshTileList();
             } else {
-                System.out.println("OrderDao instance");
+                LOGGER.info("Instance of 'Order' Data Access Object");
                 orderDao = order.newOrder(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 1,
                         discount, note.toString());
                 new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
@@ -240,7 +243,7 @@ public class FinishSellController {
     }
 
     public void receiptContentConstructor() {
-        OrderDao orderDao = new OrderDao();
+        OrderDao orderDao = AppFactory.getOrderDao();
         orderDao.setOrderDate(LocalDate.now());
         orderDao.setOrderTime(LocalTime.now());
         orderDao.setTotal(getSubtotal());
