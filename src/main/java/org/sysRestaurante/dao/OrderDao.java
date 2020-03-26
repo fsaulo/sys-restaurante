@@ -19,6 +19,7 @@ public class OrderDao {
     private String details;
     private String note;
     private String status;
+    private String custumerName;
 
     public void setDetails(int idCategory) {
         switch (idCategory) {
@@ -69,6 +70,14 @@ public class OrderDao {
                 status = "Desconhecido";
                 break;
         }
+    }
+
+    public String getCustumerName() {
+        return custumerName;
+    }
+
+    public void setCustumerName(String custumerName) {
+        this.custumerName = custumerName;
     }
 
     public double getDiscount() {

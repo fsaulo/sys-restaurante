@@ -5,69 +5,74 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.EmployeeDao;
-import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
 
 import java.util.ArrayList;
 
-public class ComandaViewController {
+public class AddProductsToComandaController {
 
+    @FXML
+    private Button exitButton;
+    @FXML
+    private Button finalizeOrderButton;
+    @FXML
+    private VBox wrapperVBox;
     @FXML
     private Label tableLabel;
     @FXML
-    private Label comandaLabel;
-    @FXML
-    private Button closeComandaButton;
-    @FXML
-    private Button addOrder;
-    @FXML
-    private VBox popOverVbox;
+    private Label codOrderLabel;
     @FXML
     private ComboBox<EmployeeDao> employeeComboBox;
+    @FXML
+    private TextField customerBox;
+    @FXML
+    private Label customerLabel;
+    @FXML
+    private Label subtotalLabel;
 
-    private ComandaDao comanda;
+    private ComandaDao comanda = AppFactory.getComandaDao();
 
-    public ComandaViewController(ComandaDao comanda) {
-        this.comanda = comanda;
-    }
-
+    @FXML
     public void initialize() {
-        Platform.runLater(() -> tableLabel.requestFocus());
-
         handleEmployeesComboBox();
-        tableLabel.setText("MESA " + comanda.getIdTable());
-        comandaLabel.setText("#" + comanda.getIdComanda());
-        ArrayList<ProductDao> list = new ArrayList<>();
+        writeCustomer();
 
-        ProductDao productDao = new ProductDao();
-        productDao.setIdProduct(1);
-        productDao.setQuantity(1);
-        productDao.setSellPrice(5.0);
-        productDao.setTotal(5.0);
-        productDao.setDescription("Dummy product");
-        list.add(productDao);
+        exitButton.setOnAction(e1 -> {
+            wrapperVBox.getScene().getWindow().hide();
+            setCustomer();
+        });
 
         employeeComboBox.setOnAction(event -> updateEmployee());
-        closeComandaButton.setOnMouseClicked(event -> {
-            AppFactory.setSelectedProducts(list);
-            AppFactory.setOrderDao(comanda);
-            AppController.openFinishSell();
-        });
+        finalizeOrderButton.setOnAction(e2 -> finalizeOrder());
+        tableLabel.setText("MESA #" + this.comanda.getIdTable());
+        codOrderLabel.setText(String.valueOf(comanda.getIdOrder()));
+        customerLabel.setText(Order.getCustomerName(comanda.getIdOrder()));
+        customerBox.setOnKeyTyped(e-> customerLabel.setText(customerBox.getText()));
+        subtotalLabel.setText("R$ " + comanda.getTotal());
+        Platform.runLater(this::handleKeyEvent);
+    }
 
-        addOrder.setOnMouseClicked(event -> {
-            AppFactory.setComandaDao(comanda);
-            AppController.showDialog(SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
-                    AppFactory.getMainController().getScene().getWindow());
-        });
+    public void handleKeyEvent() {
+        wrapperVBox.requestFocus();
+        wrapperVBox.getScene().getWindow().setOnCloseRequest(e1 -> setCustomer());
+    }
+
+    public void setCustomer() {
+        Order.insertCustomerName(comanda.getIdOrder(), customerBox.getText());
+    }
+
+    public void writeCustomer() {
+        customerBox.setText(Order.getCustomerName(comanda.getIdOrder()));
     }
 
     public void updateEmployee() {
@@ -82,6 +87,8 @@ public class ComandaViewController {
 
         Order.updateEmployee(comanda.getIdOrder(), idEmployee);
     }
+
+    public void finalizeOrder() { }
 
     public void handleEmployeesComboBox() {
         ArrayList<EmployeeDao> employees = new Personnel().list();

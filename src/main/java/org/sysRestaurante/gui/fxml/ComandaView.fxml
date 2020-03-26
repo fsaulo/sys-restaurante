@@ -30,7 +30,7 @@
             <Insets left="5.0" right="5.0" />
          </padding></HBox>
       <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: #dddddd;" VBox.vgrow="ALWAYS" />
-      <ComboBox fx:id="employeeList" prefHeight="35.0" prefWidth="600.0" promptText="Selecionar atendente" style="-fx-font-family: Carlito; -fx-font-weight: bold; -fx-font-size: 16;" styleClass="removed-glow" visibleRowCount="5" />
+      <ComboBox fx:id="employeeComboBox" prefHeight="35.0" prefWidth="600.0" promptText="Selecionar atendente" style="-fx-font-family: Carlito; -fx-font-weight: bold; -fx-font-size: 16;" styleClass="removed-glow" visibleRowCount="5" />
       <HBox alignment="TOP_CENTER" spacing="10.0" styleClass="removed-glow">
          <children>
             <Button fx:id="closeComandaButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" style="-fx-focus-color: gray;" text="Encerrar comanda" HBox.hgrow="ALWAYS">

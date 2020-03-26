@@ -370,12 +370,12 @@
                <children>
                   <Label text="Total" textFill="#77d14db2">
                      <font>
-                        <Font name="Arial Black" size="15.0" />
+                        <Font name="Agency FB" size="26.0" />
                      </font>
                   </Label>
                   <Label fx:id="totalCashierLabel" text="R$ 54,90" textFill="#78d34e">
                      <font>
-                        <Font name="Arial Black" size="27.0" />
+                        <Font name="Agency FB" size="37.0" />
                      </font>
                   </Label>
                </children>

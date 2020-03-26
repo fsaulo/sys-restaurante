@@ -165,6 +165,24 @@ public class Order {
         }
     }
 
+    public static void updateEmployee(int idOrder, int idEmployee) {
+        String query = "UPDATE comanda SET id_funcionario = ? WHERE id_pedido = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idEmployee);
+            ps.setInt(2, idOrder);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void closeTable(int idTable) {
         String query = "UPDATE mesa SET id_categoria_mesa = ? WHERE id_mesa = ?";
         PreparedStatement ps;
@@ -181,6 +199,47 @@ public class Order {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static void insertCustomerName(int idOrder, String customerName) {
+        String query = "UPDATE pedido SET nome_cliente = ? WHERE id_pedido = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setString(1, customerName);
+            ps.setInt(2, idOrder);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static String getCustomerName(int idOrder) {
+        String query = "SELECT nome_cliente FROM pedido WHERE id_pedido = ?";
+        String name = null;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idOrder);
+            rs = ps.executeQuery();
+
+            if (rs.next()) name = rs.getString("nome_cliente");
+
+            ps.close();
+            con.close();
+            return name;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public void addProductsToOrder(int idOrder, ArrayList<ProductDao> productsList) {

@@ -178,6 +178,7 @@ public class FinishSellController {
             OrderDao orderDao = AppFactory.getOrderDao();
 
             if (orderDao instanceof ComandaDao || orderDao == null) {
+                System.out.println("ComandaDao instance");
                 int idComanda = ((ComandaDao) orderDao).getIdComanda();
                 order.closeComanda(idComanda, payByCard + payInCash);
                 order.addProductsToOrder(orderDao.getIdOrder(), items);
@@ -187,6 +188,7 @@ public class FinishSellController {
                 new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
                 AppFactory.getManageComandaController().refreshTileList();
             } else {
+                System.out.println("OrderDao instance");
                 orderDao = order.newOrder(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 1,
                         discount, note.toString());
                 new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
