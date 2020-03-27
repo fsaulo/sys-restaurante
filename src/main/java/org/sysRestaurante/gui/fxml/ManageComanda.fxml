@@ -395,7 +395,7 @@
                                     <Font name="Carlito Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="byCardLabel1" text="24 minutos">
+                              <Label fx:id="averageTime" text="24 minutos">
                                  <font>
                                     <Font name="Carlito Bold" size="20.0" />
                                  </font>
@@ -413,7 +413,7 @@
                                     <Font name="Carlito Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="byCardLabel" text="13" textFill="#fc6310">
+                              <Label fx:id="busyTables" text="13" textFill="#fc6310">
                                  <font>
                                     <Font name="Carlito Bold" size="20.0" />
                                  </font>
@@ -431,7 +431,7 @@
                                     <Font name="Carlito Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="inCashLabel" text="15" textFill="#289e2c">
+                              <Label fx:id="availableTables" text="15" textFill="#289e2c">
                                  <font>
                                     <Font name="Carlito Bold" size="20.0" />
                                  </font>
@@ -449,7 +449,7 @@
                                     <Font name="Carlito Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="inCashLabel1" text="R$ 54,01" textFill="#289e2c">
+                              <Label fx:id="averageIncome" text="R$ 54,01" textFill="#289e2c">
                                  <font>
                                     <Font name="Carlito Bold" size="20.0" />
                                  </font>

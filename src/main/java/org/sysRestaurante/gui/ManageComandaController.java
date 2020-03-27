@@ -1,6 +1,5 @@
 package org.sysRestaurante.gui;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -18,11 +17,13 @@ import javafx.scene.shape.Circle;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
+import org.sysRestaurante.dao.SessionDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
 
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -37,12 +38,26 @@ public class ManageComandaController {
     private BorderPane borderPaneHolder;
     @FXML
     private VBox newComandaButton;
+    @FXML
+    private Label averageTime;
+    @FXML
+    private Label busyTables;
+    @FXML
+    private Label availableTables;
+    @FXML
+    private Label averageIncome;
+
+    private SessionDao session;
+    private List<ComandaDao> comandas;
+    private int permanencyDurationInMinutes = 0;
+    private double totalIncome = 0;
 
     @FXML
     public void initialize() {
         AppFactory.setManageComandaController(this);
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
+        comandas = Order.getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
         scrollPane.setFitToWidth(true);
         tilePane.setPrefColumns(50);
         tilePane.getChildren().clear();
@@ -57,7 +72,14 @@ public class ManageComandaController {
             ex.printStackTrace();
         }
 
+        initSessionDetails();
         listBusyTable();
+
+        NumberFormat format = CurrencyField.getBRLCurrencyFormat();
+        averageTime.setText(session.getAveragePermanencyInMinutes() + " minutos");
+        busyTables.setText(String.valueOf(session.getBusyTablesCount()));
+        availableTables.setText(String.valueOf(session.getAvailableTablesCount()));
+        averageIncome.setText(format.format(averageIncome()));
     }
 
     public void handleAddComanda() throws IOException {
@@ -68,9 +90,19 @@ public class ManageComandaController {
         newComandaButton.setOnMouseClicked(e1 -> popOver.show(newComandaButton));
     }
 
+    public void initSessionDetails() {
+        int busy = Order.getBusyTables().size();
+        session = AppFactory.getSessionDao();
+        session.setIdCashier(AppFactory.getCashierDao().getIdCashier());
+        session.setBusyTablesCount(busy);
+        session.setAvailableTablesCount(Order.getTables().size() - busy);
+    }
+
     public void listBusyTable() {
-        List<ComandaDao> openComandas = new Order().getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
-        for (ComandaDao item : openComandas) {
+        for (ComandaDao item : comandas) {
+            computeAverageTime(item);
+            computeTotalIncome(item);
+
             if (item.getIdCategory() != 6) {
                 try {
                     buildAndAddTiles(item);
@@ -79,6 +111,28 @@ public class ManageComandaController {
                 }
             }
         }
+    }
+
+    public void computeAverageTime(ComandaDao comanda) {
+        LocalDateTime dateTimeOpenned = comanda.getDateOpening().atTime(comanda.getTimeOpening());
+        permanencyDurationInMinutes += ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now());
+
+        if (comandas.size() > 0) {
+            session.setAveragePermanencyInMinutes(permanencyDurationInMinutes / comandas.size());
+        } else {
+            session.setAveragePermanencyInMinutes(0);
+        }
+    }
+
+
+    public void computeTotalIncome(ComandaDao comada) {
+        totalIncome += comada.getTotal();
+        session.setTotalComandaIncome(totalIncome);
+    }
+
+    public double averageIncome() {
+        if (comandas.size() <= 0) return (0);
+        else return session.getTotalComandaIncome() / comandas.size();
     }
 
     public void buildAndAddTiles(ComandaDao comanda) throws IOException {
@@ -109,6 +163,7 @@ public class ManageComandaController {
         tile.setOnMouseEntered(event -> setSelectedLabels(true, comandaCod, statusLabel, cashSpent, tableCod, timeDuration));
         tile.setOnMouseExited(event -> setSelectedLabels(false, comandaCod, statusLabel, cashSpent, tableCod, timeDuration));
         tilePane.getChildren().addAll(tile);
+        session.setTotalComandaIncome(session.getTotalComandaIncome() + comanda.getTotal());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.COMANDA_VIEW));
         loader.setController(new ComandaViewController(comanda));

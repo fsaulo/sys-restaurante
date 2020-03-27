@@ -363,7 +363,7 @@ public class Order {
         return 0;
     }
 
-    public List<TableDao> getTables() {
+    public static List<TableDao> getTables() {
         String query = "SELECT * FROM mesa";
         List<TableDao> tables = new ArrayList<>();
         PreparedStatement ps;
@@ -409,8 +409,8 @@ public class Order {
         }
     }
 
-    public List<TableDao> getBusyTables() {
-        String query = "SELECT * FROM mesa WHERE id_categoria_pedido = ?";
+    public static List<TableDao> getBusyTables() {
+        String query = "SELECT * FROM mesa WHERE id_categoria_mesa = ? OR id_categoria_mesa = ?";
         List<TableDao> tables = new ArrayList<>();
         PreparedStatement ps;
         ResultSet rs;
@@ -418,12 +418,14 @@ public class Order {
         try {
             Connection con = DBConnection.getConnection();
             ps = con.prepareStatement(query);
-            ps.setInt(1, 7);
+            ps.setInt(1, 2);
+            ps.setInt(2, 3);
             rs = ps.executeQuery();
 
             while (rs.next()) {
                 TableDao table = new TableDao();
                 table.setIdTable(rs.getInt("id_mesa"));
+                table.setStatus(rs.getInt("id_categoria_mesa"));
                 table.setStatus(1);
                 tables.add(table);
             }
@@ -438,7 +440,7 @@ public class Order {
         return null;
     }
 
-    public List<ComandaDao> getComandasByIdCashier(int idCashier) {
+    public static List<ComandaDao> getComandasByIdCashier(int idCashier) {
         String query = "SELECT * FROM comanda WHERE id_caixa = ?";
         List<ComandaDao> tables = new ArrayList<>();
         PreparedStatement ps;

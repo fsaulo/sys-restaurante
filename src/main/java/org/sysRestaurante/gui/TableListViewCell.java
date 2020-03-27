@@ -44,22 +44,31 @@ public class TableListViewCell extends ListCell<TableDao> {
             }
 
             availability.getStylesheets().add("css/menu.css");
-            if (table.getIdStatus() != 1) {
-                wrapperBox.setOpacity(0.4);
-                wrapperBox.setDisable(true);
-                availability.setText("Ocupada/Reservada");
-                availability.getStyleClass().add("availability-label-red");
-            } else {
-                wrapperBox.setOpacity(1);
-                wrapperBox.setDisable(false);
-                availability.getStyleClass().removeAll("availability-label-red");
-                availability.setTooltip(new Tooltip("Mesa disponível"));
-                availability.getStyleClass().add("availability-label-green");
-                availability.setText("Disponível");
+            switch (table.getIdStatus()) {
+                case 1:
+                    wrapperBox.setOpacity(1);
+                    wrapperBox.setDisable(false);
+                    availability.getStyleClass().removeAll("availability-label-red");
+                    availability.setTooltip(new Tooltip("Mesa disponível"));
+                    availability.getStyleClass().add("availability-label-green");
+                    availability.setText("Disponível");
+                    break;
+                case 2:
+                    wrapperBox.setOpacity(0.4);
+                    wrapperBox.setDisable(true);
+                    availability.setText("Ocupada/Reservada");
+                    availability.getStyleClass().add("availability-label-red");
+                    break;
+                case 3:
+                    wrapperBox.setOpacity(1);
+                    wrapperBox.setDisable(false);
+                    availability.getStyleClass().add("availability-label-red");
+                    availability.setTooltip(new Tooltip("Encerre a comanda antes de fechar o caixa"));
+                    availability.setText("Ocupada/Reservada");
+                    break;
             }
 
             codTable.setText("MESA #" + table.getIdTable());
-
             setText(null);
             setGraphic(wrapperBox);
         }

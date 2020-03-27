@@ -29,6 +29,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.SessionDao;
 import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.util.ExceptionHandler;
@@ -52,7 +53,9 @@ public class AppController implements DateFormatter {
 
     public void initialize() throws IOException {
         startChronometer();
+        SessionDao session = new SessionDao();
         AppFactory.setAppController(this);
+        AppFactory.setSessionDao(session);
         borderPaneHolder.leftProperty().setValue(
                 FXMLLoader.load(AppController.class.getResource(SceneNavigator.MENU_TOOL_BAR)));
         borderPaneHolder.centerProperty().setValue(

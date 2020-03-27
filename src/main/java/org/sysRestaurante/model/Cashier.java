@@ -27,12 +27,14 @@ public class Cashier {
                 "observacao) VALUES (?,?,?,?,?,?)";
 
         PreparedStatement ps;
+        if (initialAmount < 0) initialAmount = 0.0;
+
         CashierDao cashier = new CashierDao();
         cashier.setIdUser(userId);
         cashier.setDateOpening(LocalDate.now());
         cashier.setTimeOpening(LocalTime.now());
         cashier.setOpenned(true);
-        if (initialAmount < 0) initialAmount = 0.0;
+        cashier.setInitialAmount(initialAmount);
 
         try {
             con = DBConnection.getConnection();
@@ -63,9 +65,10 @@ public class Cashier {
         }
     }
 
-    public void close(int idCashier) {
+    public static void close(int idCashier) {
         String query = "UPDATE caixa SET data_fechamento = ?, hora_fechamento = ?, is_aberto = ? WHERE id_caixa = ?";
         PreparedStatement ps;
+        Connection con;
 
         try {
             con = DBConnection.getConnection();

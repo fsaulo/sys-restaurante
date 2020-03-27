@@ -25,7 +25,7 @@ public class CashierDao {
         this.idCashier = idCashier;
     }
 
-    public double isInitialAmount() {
+    public double getInitialAmount() {
         return initialAmount;
     }
 

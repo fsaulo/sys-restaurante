@@ -4,6 +4,7 @@ import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
+import org.sysRestaurante.dao.SessionDao;
 import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.gui.AppController;
 import org.sysRestaurante.gui.CashierController;
@@ -23,6 +24,7 @@ public class AppFactory {
     private static LoginController loginController;
     private static CashierDao cashierDao;
     private static OrderDao orderDao;
+    private static SessionDao sessionDao;
     private static ComandaDao comandaDao;
     private static MainGUIController mainController;
     private static CashierController cashierController;
@@ -31,6 +33,13 @@ public class AppFactory {
     private static ManageComandaController manageComandaController;
     private static POSController posController;
 
+    public static SessionDao getSessionDao() {
+        return sessionDao;
+    }
+
+    public static void setSessionDao(SessionDao sessionDao) {
+        AppFactory.sessionDao = sessionDao;
+    }
 
     public static ComandaDao getComandaDao() {
         return comandaDao;
