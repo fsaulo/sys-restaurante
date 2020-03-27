@@ -74,12 +74,13 @@ public class ComandaViewController {
         int idEmployee;
 
         try {
-            EmployeeDao employee = employeeComboBox.getSelectionModel().getSelectedItem();
+            EmployeeDao employee = employeeComboBox.selectionModelProperty().get().getSelectedItem();
             idEmployee = employee.getIdEmployee();
         } catch (NullPointerException ex) {
             idEmployee = -1;
         }
 
+        comanda.setIdEmployee(idEmployee);
         Order.updateEmployee(comanda.getIdOrder(), idEmployee);
     }
 

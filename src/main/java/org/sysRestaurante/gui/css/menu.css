@@ -263,3 +263,9 @@
     -fx-faint-focus-color: transparent;
     -fx-focus-color: gray;
 }
+
+.combo-box-view {
+    -fx-font-family: Carlito;
+    -fx-font-weight: bold;
+    -fx-font-size: 16;
+}

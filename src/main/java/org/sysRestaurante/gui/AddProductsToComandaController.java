@@ -49,6 +49,7 @@ public class AddProductsToComandaController {
 
         exitButton.setOnAction(e1 -> {
             wrapperVBox.getScene().getWindow().hide();
+            AppFactory.getManageComandaController().refreshTileList();
             setCustomer();
         });
 
@@ -64,7 +65,10 @@ public class AddProductsToComandaController {
 
     public void handleKeyEvent() {
         wrapperVBox.requestFocus();
-        wrapperVBox.getScene().getWindow().setOnCloseRequest(e1 -> setCustomer());
+        wrapperVBox.getScene().getWindow().setOnCloseRequest(e1 -> {
+            setCustomer();
+            AppFactory.getManageComandaController().refreshTileList();
+        });
     }
 
     public void setCustomer() {
@@ -79,7 +83,7 @@ public class AddProductsToComandaController {
         int idEmployee;
 
         try {
-            EmployeeDao employee = employeeComboBox.getSelectionModel().getSelectedItem();
+            EmployeeDao employee = employeeComboBox.selectionModelProperty().get().getSelectedItem();
             idEmployee = employee.getIdEmployee();
         } catch (NullPointerException ex) {
             idEmployee = -1;
