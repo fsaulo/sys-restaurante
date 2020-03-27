@@ -460,6 +460,8 @@ public class Order {
                 comanda.setStatus(rs.getInt("id_categoria_pedido"));
                 comanda.setIdCategory(rs.getInt("id_categoria_pedido"));
                 comanda.setIdEmployee(rs.getInt("id_funcionario"));
+                comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
+                comanda.setDateOpening(rs.getDate("data_abertura").toLocalDate());
                 tables.add(comanda);
             }
 

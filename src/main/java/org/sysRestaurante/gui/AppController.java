@@ -126,6 +126,7 @@ public class AppController implements DateFormatter {
         LOGGER.info("Chronometer initialized normally");
     }
 
+
     public long getElapsedSessionTime() {
         return timerInMillies;
     }

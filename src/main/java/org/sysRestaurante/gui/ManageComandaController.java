@@ -1,10 +1,9 @@
 package org.sysRestaurante.gui;
 
-import javafx.event.Event;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
@@ -24,6 +23,8 @@ import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class ManageComandaController {
@@ -37,14 +38,13 @@ public class ManageComandaController {
     @FXML
     private VBox newComandaButton;
 
-
     @FXML
     public void initialize() {
         AppFactory.setManageComandaController(this);
-        scrollPane.setFitToWidth(true);
-        tilePane.setPrefColumns(50);
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
+        scrollPane.setFitToWidth(true);
+        tilePane.setPrefColumns(50);
         tilePane.getChildren().clear();
 
         if (!Cashier.isOpen()) {
@@ -86,6 +86,7 @@ public class ManageComandaController {
         Label statusLabel = new Label("Ocupada");
         Label cashSpent = new Label(CurrencyField.getBRLCurrencyFormat().format(comanda.getTotal()));
         Label tableCod = new Label("MESA " + comanda.getIdTable());
+        Label timeDuration = new Label("Aberto há " + calculateTimePeriod(comanda));
 
         Pane pane = new Pane();
         HBox topTile = new HBox();
@@ -94,25 +95,24 @@ public class ManageComandaController {
         Circle icon = new Circle(4);
         icon.getStyleClass().add("circle-status");
         comandaCod.setStyle("-fx-font-size: 13px; -fx-opacity: 0.5");
-        statusLabel.setGraphic(icon);
         tableCod.setStyle("-fx-font-size: 17px;");
+        statusLabel.setGraphic(icon);
         Separator sep = new Separator();
         sep.setMinHeight(3);
 
         VBox tile = new VBox();
-        tile.getChildren().addAll(topTile, sep, statusLabel, cashSpent);
+        tile.getChildren().addAll(topTile, sep, statusLabel, cashSpent, timeDuration);
         tile.setAlignment(Pos.TOP_RIGHT);
-        tile.setMinWidth(163);
+        tile.setMinWidth(190);
         tile.getStylesheets().add("css/menu.css");
         tile.getStyleClass().add("comanda-tile");
-        tile.setOnMouseEntered(event -> setSelectedLabels(true, comandaCod, statusLabel, cashSpent, tableCod));
-        tile.setOnMouseExited(event -> setSelectedLabels(false, comandaCod, statusLabel, cashSpent, tableCod));
+        tile.setOnMouseEntered(event -> setSelectedLabels(true, comandaCod, statusLabel, cashSpent, tableCod, timeDuration));
+        tile.setOnMouseExited(event -> setSelectedLabels(false, comandaCod, statusLabel, cashSpent, tableCod, timeDuration));
         tilePane.getChildren().addAll(tile);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.COMANDA_VIEW));
         loader.setController(new ComandaViewController(comanda));
         PopOver popOver = new PopOver(loader.load());
-
         tile.setOnMouseClicked(event -> popOver.show(tile));
     }
 
@@ -128,5 +128,24 @@ public class ManageComandaController {
 
     public void refreshTileList() {
         initialize();
+    }
+
+    public String calculateTimePeriod(ComandaDao comanda) {
+        LocalDateTime dateTimeOpenned = comanda.getDateOpening().atTime(comanda.getTimeOpening());
+        String durationText = null;
+
+        if (ChronoUnit.DAYS.between(dateTimeOpenned, LocalDateTime.now()) > 1) {
+            durationText = ChronoUnit.DAYS.between(dateTimeOpenned, LocalDateTime.now()) + " dias";
+        } else if (ChronoUnit.HOURS.between(dateTimeOpenned, LocalDateTime.now()) > 1) {
+            durationText = ChronoUnit.HOURS.between(dateTimeOpenned, LocalDateTime.now()) + " horas";
+        } else if (ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now()) > 60) {
+            durationText = "mais de uma hora";
+        } else if (ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now()) < 1){
+            durationText = "menos de um minuto";
+        } else {
+            durationText = ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now()) + " minutos";
+        }
+
+        return durationText;
     }
 }

@@ -14,9 +14,13 @@ import javafx.util.Callback;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.EmployeeDao;
+import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
 
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class AddProductsToComandaController {
@@ -39,12 +43,15 @@ public class AddProductsToComandaController {
     private Label customerLabel;
     @FXML
     private Label subtotalLabel;
+    @FXML
+    private Label timeLabel;
 
     private ComandaDao comanda = AppFactory.getComandaDao();
 
     @FXML
     public void initialize() {
         handleEmployeesComboBox();
+        calculateTimePeriod();
         writeCustomer();
 
         exitButton.setOnAction(e1 -> {
@@ -59,7 +66,8 @@ public class AddProductsToComandaController {
         codOrderLabel.setText(String.valueOf(comanda.getIdOrder()));
         customerLabel.setText(Order.getCustomerName(comanda.getIdOrder()));
         customerBox.setOnKeyTyped(e-> customerLabel.setText(customerBox.getText()));
-        subtotalLabel.setText("R$ " + comanda.getTotal());
+        NumberFormat format = CurrencyField.getBRLCurrencyFormat();
+        subtotalLabel.setText(format.format(comanda.getTotal()));
         Platform.runLater(this::handleKeyEvent);
     }
 
@@ -130,6 +138,19 @@ public class AddProductsToComandaController {
 
         if (selectedEmployee != null ) {
             employeeComboBox.getSelectionModel().select(selectedEmployee);
+        }
+    }
+
+    public void calculateTimePeriod() {
+        LocalDateTime dateTimeOpenned = comanda.getDateOpening().atTime(comanda.getTimeOpening());
+        if (ChronoUnit.DAYS.between(dateTimeOpenned, LocalDateTime.now()) > 1) {
+            timeLabel.setText(ChronoUnit.DAYS.between(dateTimeOpenned, LocalDateTime.now()) + " dias");
+        } else if (ChronoUnit.HOURS.between(dateTimeOpenned, LocalDateTime.now()) > 1) {
+            timeLabel.setText(ChronoUnit.HOURS.between(dateTimeOpenned, LocalDateTime.now()) + " horas");
+        } else if (ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now()) > 60) {
+            timeLabel.setText("Mais de uma hora");
+        } else {
+            timeLabel.setText(ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now()) + " minutos");
         }
     }
 }
