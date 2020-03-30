@@ -17,6 +17,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Product;
@@ -30,11 +31,9 @@ public class CashierPOSController extends POSController {
     @FXML
     public VBox detailsWrapperBox;
     @FXML
-    private VBox removeButton;
+    private Button removeButton;
     @FXML
-    private VBox editButton;
-    @FXML
-    private VBox clearButton;
+    private Button clearButton;
     @FXML
     private TextField searchBox;
     @FXML
@@ -85,7 +84,6 @@ public class CashierPOSController extends POSController {
     public void setStageControls() {
         setDetailsWrapperBox(detailsWrapperBox);
         setRemoveButton(removeButton);
-        setEditButton(editButton);
         setSearchBox(searchBox);
         setAddProductButton(addProductButton);
         setUnitPriceLabel(unitPriceLabel);
@@ -112,24 +110,9 @@ public class CashierPOSController extends POSController {
         setBarcodeImage();
         updateTables();
         updateTotalCashierLabel();
-        updateControls();
         updateDetailsBox();
 
-        removeButton.setOnMouseClicked(event -> {
-            for (ProductDao item : selectedProductsTableView.getSelectionModel().getSelectedItems()) {
-                item.setQuantity(0);
-            }
-            selectedProductsList.removeAll(selectedProductsTableView.getSelectionModel().getSelectedItems());
-            updateSelectedList();
-        });
-
-        cancelButton.setOnMouseClicked(event -> onCancelButton());
-
-        selectedProductsTableView.focusedProperty().addListener((observable) -> {
-            updateControls();
-            refreshDetailsBoxSelectable(false);
-        });
-
+        selectedProductsTableView.focusedProperty().addListener((observable) -> refreshDetailsBoxSelectable(false));
         qtdColumn.setOnEditCommit(editableItems -> {
             if (!editableItems.getTableView().getSelectionModel().isEmpty()) {
                 ProductDao product = editableItems.getTableView().getSelectionModel().getSelectedItem();
@@ -162,11 +145,24 @@ public class CashierPOSController extends POSController {
             handleKeyEvent();
         });
 
+        removeButton.setOnMouseClicked(event -> removeItem());
+        cancelButton.setOnMouseClicked(event -> onCancelButton());
         qtySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 1));
         finalizeSell.setOnMouseClicked(event -> this.onFinalizeOrder());
         clearButton.setOnMouseClicked(event -> clearShoppingBasket());
-        selectedProductsTableView.setOnMouseClicked((e) -> { updateControls(); refreshDetailsBoxSelectable(false); });
+        selectedProductsTableView.setOnMouseClicked(event -> refreshDetailsBoxSelectable(false));
         productsListView.focusedProperty().addListener((observable) -> refreshDetailsBoxSelectable(true));
-        productsListView.setOnMouseClicked((e) -> refreshDetailsBoxSelectable(true));
+        productsListView.setOnMouseClicked(event -> refreshDetailsBoxSelectable(true));
+    }
+
+    public void removeItem() {
+        if (!selectedProductsTableView.getSelectionModel().isEmpty()) {
+            ProductDao selected = selectedProductsTableView.getSelectionModel().getSelectedItem();
+            selected.setQuantity(0);
+            selectedProductsTableView.getItems().remove(selected);
+            selectedProductsList.remove(selected);
+            updateSelectedList();
+
+        }
     }
 }

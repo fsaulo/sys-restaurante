@@ -36,8 +36,7 @@ import java.util.ArrayList;
 public class POSController {
 
     private VBox detailsWrapperBox;
-    private VBox removeButton;
-    private VBox editButton;
+    private Button removeButton;
     private TextField searchBox;
     private Button addProductButton;
     private Label unitPriceLabel;
@@ -65,12 +64,8 @@ public class POSController {
         this.detailsWrapperBox = detailsWrapperBox;
     }
 
-    public void setRemoveButton(VBox removeButton) {
+    public void setRemoveButton(Button removeButton) {
         this.removeButton = removeButton;
-    }
-
-    public void setEditButton(VBox editButton) {
-        this.editButton = editButton;
     }
 
     public void setSearchBox(TextField searchBox) {
@@ -242,7 +237,6 @@ public class POSController {
                 case ESCAPE:
                     label.requestFocus();
                     selectedProductsTableView.getSelectionModel().clearSelection();
-                    updateControls();
                     break;
                 case DELETE:
                     selectedProductsList.remove(selectedProductsTableView.getSelectionModel().getSelectedItem());
@@ -303,7 +297,6 @@ public class POSController {
     public void updateTables() {
         productsListView.setItems(products);
         productsListView.setCellFactory(plv -> new ProductListViewCell());
-        selectedProductsTableView.setOnMouseClicked(event -> updateControls());
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         qtdColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("sellPrice"));
@@ -332,17 +325,6 @@ public class POSController {
             total += item.getTotal();
         }
         totalCashierLabel.setText(CurrencyField.getBRLCurrencyFormat().format(total));
-    }
-
-    public void updateControls() {
-        boolean empty;
-
-        if (selectedProductsTableView.isFocused()) {
-            empty = selectedProductsTableView.getSelectionModel().isEmpty();
-        } else empty = true;
-
-        removeButton.setDisable(empty);
-        editButton.setDisable(empty);
     }
 
     public void updateDetailsBox(ProductDao product) {
@@ -391,10 +373,6 @@ public class POSController {
             selectedProductsList.add(product);
         }
 
-        if (selectedProductsTableView.getSelectionModel().isEmpty()) {
-            updateControls();
-        }
-
         product.setTotal(product.getSellPrice());
         updateSelectedList();
     }
@@ -405,10 +383,6 @@ public class POSController {
         } else {
             product.setQuantity(qty);
             selectedProductsList.add(product);
-        }
-
-        if (selectedProductsTableView.getSelectionModel().isEmpty()) {
-            updateControls();
         }
 
         product.setTotal(product.getSellPrice());

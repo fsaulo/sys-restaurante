@@ -48,7 +48,7 @@
                               <Font name="Carlito Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label opacity="0.7" text="25">
+                        <Label fx:id="comandasCountLabel" opacity="0.7" text="25">
                            <font>
                               <Font name="Carlito" size="20.0" />
                            </font>
@@ -157,7 +157,7 @@
             <Separator />
          </children>
       </VBox>
-      <VBox fx:id="vBoxListView">
+      <VBox>
          <children>
             <ListView fx:id="tableListView" prefHeight="0.0" visible="false" />
          </children>

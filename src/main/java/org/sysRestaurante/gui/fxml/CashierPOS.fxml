@@ -326,43 +326,17 @@
             </TableView>
             <HBox fx:id="editableItems" prefHeight="30.0" spacing="5.0">
                <children>
-                  <VBox fx:id="removeButton" alignment="CENTER" prefWidth="90.0" styleClass="cashier-button">
-                     <children>
-                        <Label fx:id="openOrCloseCashierLabel111" styleClass="cashier-text" text="Remover" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Carlito Bold" size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                     </padding>
-                  </VBox>
-                  <VBox fx:id="editButton" alignment="CENTER" prefHeight="30.0" prefWidth="90.0" styleClass="cashier-button">
-                     <children>
-                        <Label fx:id="openOrCloseCashierLabel211" styleClass="cashier-text" text="Aplicar desc." textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Carlito Bold" size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                     </padding>
-                  </VBox>
+                  <Button fx:id="removeButton" mnemonicParsing="false" onMouseClicked="#removeItem" opacity="0.65" prefHeight="31.0" prefWidth="100.0" text="Remover">
+                     <font>
+                        <Font name="Carlito" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="clearButton" mnemonicParsing="false" opacity="0.65" prefHeight="31.0" prefWidth="100.0" text="Limpar">
+                     <font>
+                        <Font name="Carlito" size="15.0" />
+                     </font>
+                  </Button>
                   <Pane HBox.hgrow="ALWAYS" />
-                  <VBox fx:id="clearButton" alignment="CENTER" prefWidth="90.0" styleClass="cashier-button">
-                     <children>
-                        <Label fx:id="openOrCloseCashierLabel2111" styleClass="cashier-text" text="Limpar" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Carlito Bold" size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                     </padding>
-                  </VBox>
                </children>
             </HBox>
             <Separator />

@@ -168,11 +168,31 @@
                   <String fx:value="combo-box-view" />
                </styleClass>
             </Button>
-            <Label prefHeight="22.0" text="Ou faça uma pesquisa rápida digitando o código do produto">
+            <Pane HBox.hgrow="ALWAYS" />
+            <Button fx:id="removeButton" disable="true" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Remover">
                <font>
-                  <Font name="Carlito Bold" size="18.0" />
+                  <Font name="Carlito Bold" size="16.0" />
                </font>
-            </Label>
+               <tooltip>
+                  <Tooltip id="Voc" text="Você também pode pressionar o atalho F3 para abrir a lista de produtos" />
+               </tooltip>
+               <styleClass>
+                  <String fx:value="view" />
+                  <String fx:value="combo-box-view" />
+               </styleClass>
+            </Button>
+            <Button fx:id="clearButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Limpar">
+               <font>
+                  <Font name="Carlito Bold" size="16.0" />
+               </font>
+               <tooltip>
+                  <Tooltip id="Voc" text="Você também pode pressionar o atalho F3 para abrir a lista de produtos" />
+               </tooltip>
+               <styleClass>
+                  <String fx:value="view" />
+                  <String fx:value="combo-box-view" />
+               </styleClass>
+            </Button>
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

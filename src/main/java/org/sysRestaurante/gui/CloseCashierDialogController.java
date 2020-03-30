@@ -36,8 +36,6 @@ public class CloseCashierDialogController {
     @FXML
     private VBox vboxWrapper;
     @FXML
-    private VBox vBoxListView;
-    @FXML
     private Label withdrawalsLabel;
     @FXML
     private Label revenueLabel;
@@ -51,6 +49,8 @@ public class CloseCashierDialogController {
     private Label byCashLabel;
     @FXML
     private Label initialAmount;
+    @FXML
+    private Label comandasCountLabel;
     @FXML
     private ListView tableListView;
 
@@ -67,6 +67,7 @@ public class CloseCashierDialogController {
         cashierDao = AppFactory.getCashierDao();
         comandas = Order.getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
         continueButton.setOnMouseClicked(event -> closeCashier());
+        comandasCountLabel.setText(String.valueOf(comandas.size()));
 
         updateDetails();
         checkBusyTable();
