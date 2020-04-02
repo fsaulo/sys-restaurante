@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +82,9 @@ public class Order {
     }
 
     public void newComanda(int idTable, int idOrder, int idCashier, int idEmployee, int type) {
-        String query = "INSERT INTO comanda (id_caixa, data_abertura, id_mesa, id_categoria_pedido, hora_abertura, " +
-                "id_pedido, id_funcionario) VALUES (?,?,?,?,?,?,?)";
         PreparedStatement ps;
+        String query = "INSERT INTO comanda (id_caixa, data_abertura, id_mesa, id_categoria_pedido, hora_abertura, " +
+                "id_pedido, id_funcionario, is_aberto) VALUES (?,?,?,?,?,?,?,?)";
 
         try {
             Connection con = DBConnection.getConnection();
@@ -95,6 +96,7 @@ public class Order {
             ps.setTime(5, java.sql.Time.valueOf(LocalTime.now()));
             ps.setInt(6, idOrder);
             ps.setInt(7, idEmployee);
+            ps.setBoolean(8, true);
             ps.executeUpdate();
 
             LOGGER.info("Comanda was registered successfully.");
@@ -105,10 +107,57 @@ public class Order {
         }
     }
 
-    public void closeComanda(int idComanda, double total) {
-        String query = "UPDATE comanda SET data_fechamento = ?, hora_fechamento = ?, total = ?, " +
-                "id_categoria_pedido = ? WHERE id_comanda = ?";
+    public static List<ComandaDao> getComandasByIdCashier(int idCashier) {
+        String query = "SELECT * FROM comanda WHERE id_caixa = ?";
+        List<ComandaDao> tables = new ArrayList<>();
         PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idCashier);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ComandaDao comanda = new ComandaDao();
+                comanda.setIdCashier(idCashier);
+                comanda.setIdTable(rs.getInt("id_mesa"));
+                comanda.setIdComanda(rs.getInt("id_comanda"));
+                comanda.setIdOrder(rs.getInt("id_pedido"));
+                comanda.setTotal(rs.getDouble("total"));
+                comanda.setStatus(rs.getInt("id_categoria_pedido"));
+                comanda.setIdCategory(rs.getInt("id_categoria_pedido"));
+                comanda.setIdEmployee(rs.getInt("id_funcionario"));
+                comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
+                comanda.setDateOpening(rs.getDate("data_abertura").toLocalDate());
+                comanda.setOpen(rs.getBoolean("is_aberto"));
+
+                try {
+                    comanda.setDateClosing(rs.getDate("data_fechamento").toLocalDate());
+                    comanda.setTimeClosing(rs.getTime("hora_fechamento").toLocalTime());
+                } catch (NullPointerException ignored) {
+                    ExceptionHandler.doNothing();
+                }
+
+                tables.add(comanda);
+            }
+
+            ps.close();
+            rs.close();
+            con.close();
+            return tables;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public void closeComanda(int idComanda, double total) {
+        PreparedStatement ps;
+        String query = "UPDATE comanda " +
+                "SET data_fechamento = ?, hora_fechamento = ?, total = ?, id_categoria_pedido = ?, is_aberto = ? " +
+                "WHERE id_comanda = ?";
 
         try {
             Connection con = DBConnection.getConnection();
@@ -117,7 +166,8 @@ public class Order {
             ps.setTime(2, Time.valueOf(LocalTime.now()));
             ps.setDouble(3, total);
             ps.setInt(4, 6);
-            ps.setInt(5, idComanda);
+            ps.setBoolean(5, false);
+            ps.setInt(6, idComanda);
             ps.executeUpdate();
 
             ps.close();
@@ -428,43 +478,6 @@ public class Order {
                 table.setStatus(rs.getInt("id_categoria_mesa"));
                 table.setStatus(1);
                 tables.add(table);
-            }
-
-            ps.close();
-            rs.close();
-            con.close();
-            return tables;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public static List<ComandaDao> getComandasByIdCashier(int idCashier) {
-        String query = "SELECT * FROM comanda WHERE id_caixa = ?";
-        List<ComandaDao> tables = new ArrayList<>();
-        PreparedStatement ps;
-        ResultSet rs;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, idCashier);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                ComandaDao comanda = new ComandaDao();
-                comanda.setIdCashier(idCashier);
-                comanda.setIdTable(rs.getInt("id_mesa"));
-                comanda.setIdComanda(rs.getInt("id_comanda"));
-                comanda.setIdOrder(rs.getInt("id_pedido"));
-                comanda.setTotal(rs.getDouble("total"));
-                comanda.setStatus(rs.getInt("id_categoria_pedido"));
-                comanda.setIdCategory(rs.getInt("id_categoria_pedido"));
-                comanda.setIdEmployee(rs.getInt("id_funcionario"));
-                comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
-                comanda.setDateOpening(rs.getDate("data_abertura").toLocalDate());
-                tables.add(comanda);
             }
 
             ps.close();

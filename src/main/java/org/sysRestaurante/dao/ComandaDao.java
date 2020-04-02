@@ -8,10 +8,19 @@ public class ComandaDao extends OrderDao {
     private int idTable;
     private int idEmployee;
     private int idCashier;
+    private boolean isOpen;
     private LocalTime timeOpening;
     private LocalDate dateOpening;
     private LocalTime timeClosing;
     private LocalDate dateClosing;
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
 
     public int getIdCashier() {
         return idCashier;

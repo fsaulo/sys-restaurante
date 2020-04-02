@@ -67,7 +67,7 @@ public class CloseCashierDialogController {
         cashierDao = AppFactory.getCashierDao();
         comandas = Order.getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
         continueButton.setOnMouseClicked(event -> closeCashier());
-        comandasCountLabel.setText(String.valueOf(comandas.size()));
+        comandasCountLabel.setText(String.valueOf(getClosedComandasCount()));
 
         updateDetails();
         checkBusyTable();
@@ -148,5 +148,15 @@ public class CloseCashierDialogController {
             }
             customerPresent = false;
         }
+    }
+
+    public int getClosedComandasCount() {
+        int total = 0;
+        for (ComandaDao comanda : comandas) {
+            if (!comanda.isOpen()) {
+                total++;
+            }
+        }
+        return total;
     }
 }

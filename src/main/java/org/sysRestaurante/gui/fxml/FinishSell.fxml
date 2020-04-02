@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="wrapperVBox" minHeight="-Infinity" minWidth="-Infinity" prefWidth="415.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.FinishSellController">
+<VBox fx:id="wrapperVBox" minHeight="-Infinity" minWidth="-Infinity" prefWidth="420.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.FinishSellController">
    <children>
       <HBox alignment="CENTER_LEFT" prefWidth="390.0" style="-fx-background-color: white;" styleClass="box-content">
          <children>
@@ -48,20 +48,28 @@
                <children>
                   <HBox alignment="BOTTOM_LEFT" prefWidth="280.0" spacing="3.0">
                      <children>
-                        <Button fx:id="tc1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="150.0" text="Total em dinheiro" textAlignment="CENTER">
+                        <Button fx:id="tc1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Total" textAlignment="CENTER">
                            <font>
                               <Font name="Carlito" size="15.0" />
                            </font>
                            <tooltip>
-                              <Tooltip text="Pagamento do valor cheio a dinheiro" />
+                              <Tooltip text="Pagamento do valor cheio em dinheiro" />
                            </tooltip>
                         </Button>
-                        <Button fx:id="c1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="150.0" text="Limpar" textAlignment="CENTER">
+                        <Button fx:id="cc1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Completar" textAlignment="CENTER">
                            <font>
                               <Font name="Carlito" size="15.0" />
                            </font>
                            <tooltip>
-                              <Tooltip text="Limpar campo &quot;a dinheiro&quot;" />
+                              <Tooltip text="Completar o valor restante em dinheiro" />
+                           </tooltip>
+                        </Button>
+                        <Button fx:id="c1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Limpar" textAlignment="CENTER">
+                           <font>
+                              <Font name="Carlito" size="15.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Limpar valor definido em dinheiro" />
                            </tooltip>
                         </Button>
                      </children>
@@ -84,7 +92,7 @@
                <children>
                   <HBox alignment="BOTTOM_LEFT" prefWidth="280.0" spacing="3.0">
                      <children>
-                        <Button fx:id="tc2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="150.0" text="Total no cartão" textAlignment="CENTER">
+                        <Button fx:id="tc2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Total" textAlignment="CENTER">
                            <font>
                               <Font name="Carlito" size="15.0" />
                            </font>
@@ -92,12 +100,20 @@
                               <Tooltip text="Pagamento do valor cheio no cartão de crédito" />
                            </tooltip>
                         </Button>
-                        <Button fx:id="c2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="150.0" text="Limpar" textAlignment="CENTER">
+                        <Button fx:id="cc2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Completar" textAlignment="CENTER">
                            <font>
                               <Font name="Carlito" size="15.0" />
                            </font>
                            <tooltip>
-                              <Tooltip text="Limpar campo &quot;no cartão&quot;" />
+                              <Tooltip text="Completar o valor restante no cartão" />
+                           </tooltip>
+                        </Button>
+                        <Button fx:id="c2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Limpar" textAlignment="CENTER">
+                           <font>
+                              <Font name="Carlito" size="15.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="Limpar valor definido no cartão" />
                            </tooltip>
                         </Button>
                      </children>

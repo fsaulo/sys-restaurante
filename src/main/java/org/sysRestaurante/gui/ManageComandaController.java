@@ -114,8 +114,14 @@ public class ManageComandaController {
     }
 
     public void computeAverageTime(ComandaDao comanda) {
-        LocalDateTime dateTimeOpenned = comanda.getDateOpening().atTime(comanda.getTimeOpening());
-        permanencyDurationInMinutes += ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now());
+        LocalDateTime dateTimeOpen = comanda.getDateOpening().atTime(comanda.getTimeOpening());
+
+        if (comanda.isOpen()) {
+            permanencyDurationInMinutes += ChronoUnit.MINUTES.between(dateTimeOpen, LocalDateTime.now());
+        } else {
+            LocalDateTime dateTimeClose = comanda.getDateClosing().atTime(comanda.getTimeClosing());
+            permanencyDurationInMinutes += ChronoUnit.MINUTES.between(dateTimeOpen, dateTimeClose);
+        }
 
         if (comandas.size() > 0) {
             session.setAveragePermanencyInMinutes(permanencyDurationInMinutes / comandas.size());
@@ -195,7 +201,7 @@ public class ManageComandaController {
             durationText = ChronoUnit.HOURS.between(dateTimeOpenned, LocalDateTime.now()) + " horas";
         } else if (ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now()) > 60) {
             durationText = "mais de uma hora";
-        } else if (ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now()) < 1){
+        } else if (ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now()) < 1) {
             durationText = "menos de um minuto";
         } else {
             durationText = ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now()) + " minutos";

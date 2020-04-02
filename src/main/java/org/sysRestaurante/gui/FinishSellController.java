@@ -99,6 +99,10 @@ public class FinishSellController {
     private Button c1;
     @FXML
     private Button c2;
+    @FXML
+    private Button cc1;
+    @FXML
+    private Button cc2;
 
     private ArrayList<ProductDao> products;
     private CurrencyField payInCash;
@@ -326,6 +330,9 @@ public class FinishSellController {
             payByCard.setAmount(getTotal());
             payInCash.setAmount(0.0);
         });
+
+        cc1.setOnMouseClicked(e5 -> payInCash.setAmount(getTotal() - payByCard.getAmount()));
+        cc2.setOnMouseClicked(e5 -> payByCard.setAmount(getTotal() - payInCash.getAmount()));
     }
 
     public void handleKeyEvent() {
@@ -345,7 +352,6 @@ public class FinishSellController {
 
     public double getDiscount() {
         return getSubtotal() * percentageField1.getAmount();
-
     }
 
     public double getTax() {

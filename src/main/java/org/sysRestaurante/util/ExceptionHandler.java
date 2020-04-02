@@ -11,4 +11,7 @@ public class ExceptionHandler {
     public static int getGlobalExceptionsCount() {
         return ExceptionHandler.globalExceptionsCount;
     }
+
+    public static void doNothing() {
+    }
 }
