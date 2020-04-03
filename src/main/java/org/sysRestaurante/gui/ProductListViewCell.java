@@ -55,14 +55,12 @@ public class ProductListViewCell extends ListCell<ProductDao> {
             price.setText(brlCurrencyFormat.format(product.getSellPrice()));
             id.setText(String.valueOf(product.getIdProduct()));
             category.setText(product.getCategory());
-            category.setOnMouseClicked(event ->
-                AppFactory.getPosController().searchByCategory(category.getText())
-            );
+            category.setOnMouseClicked(event -> AppFactory.getPos().searchByCategory(category.getText()));
 
             wrapperBox.setOnMouseClicked(event -> {
                 if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                     if (product != null) {
-                        AppFactory.getPosController().addToSelectedProductsList(product);
+                        AppFactory.getPos().addToSelectedProductsList(product);
                     } else {
                         event.consume();
                     }

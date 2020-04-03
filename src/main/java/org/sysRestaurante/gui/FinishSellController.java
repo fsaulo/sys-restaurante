@@ -169,7 +169,7 @@ public class FinishSellController {
         if (alert.getResult() == ButtonType.OK) {
             wrapperVBox.getScene().getWindow().hide();
             AppFactory.setOrderDao(new OrderDao());
-            if (AppFactory.getPosController() != null) AppFactory.getPosController().getPOSWindow().hide();
+            if (AppFactory.getPos() != null) AppFactory.getPos().getPOSWindow().hide();
         }
     }
 

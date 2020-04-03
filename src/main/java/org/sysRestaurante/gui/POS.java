@@ -1,5 +1,6 @@
 package org.sysRestaurante.gui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -10,14 +11,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javafx.stage.Window;
@@ -28,24 +28,21 @@ import org.sysRestaurante.gui.formatter.CellFormatter;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.SpinnerCellFactory;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.text.Format;
 import java.util.ArrayList;
 
-public class POSController {
+public class POS {
 
     private VBox detailsWrapperBox;
-    private Button removeButton;
     private TextField searchBox;
     private Button addProductButton;
+    private Button removeButton;
+    private Button clearButton;
     private Label unitPriceLabel;
     private Label contentLabel;
     private Label codProductLabel;
     private Label categoryLabel;
-    private Label label;
-    private Label totalCashierLabel;
-    private HBox editableItems;
+    private Label subtotalLabel;
     private BorderPane wrapperBox;
     private ListView<ProductDao> productsListView;
     private TableView<ProductDao> selectedProductsTableView;
@@ -54,18 +51,20 @@ public class POSController {
     private TableColumn<ProductDao, Double> priceColumn;
     private TableColumn<ProductDao, Double> totalColumn;
     private Spinner<Integer> qtySpinner;
-    private ImageView barcodeImage;
     private ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
     private ObservableList<ProductDao> products = FXCollections.observableArrayList();
-    private static final String GENERIC_BARCODE = "src/main/resources/images/barcode.png";
     private double total = 0;
-
-    public void setDetailsWrapperBox(VBox detailsWrapperBox) {
-        this.detailsWrapperBox = detailsWrapperBox;
-    }
 
     public void setRemoveButton(Button removeButton) {
         this.removeButton = removeButton;
+    }
+
+    public void setClearButton(Button clearButton) {
+        this.clearButton = clearButton;
+    }
+
+    public void setDetailsWrapperBox(VBox detailsWrapperBox) {
+        this.detailsWrapperBox = detailsWrapperBox;
     }
 
     public void setSearchBox(TextField searchBox) {
@@ -92,16 +91,8 @@ public class POSController {
         this.categoryLabel = categoryLabel;
     }
 
-    public void setLabel(Label label) {
-        this.label = label;
-    }
-
-    public void setTotalCashierLabel(Label totalCashierLabel) {
-        this.totalCashierLabel = totalCashierLabel;
-    }
-
-    public void setEditableItems(HBox editableItems) {
-        this.editableItems = editableItems;
+    public void setSubtotalLabel(Label subtotalLabel) {
+        this.subtotalLabel = subtotalLabel;
     }
 
     public void setWrapperBox(BorderPane wrapperBox) {
@@ -136,20 +127,12 @@ public class POSController {
         this.qtySpinner = qtySpinner;
     }
 
-    public void setBarcodeImage(ImageView barcodeImage) {
-        this.barcodeImage = barcodeImage;
-    }
-
     public void setProducts(ObservableList<ProductDao> products){
         this.products = products;
     }
 
     public void setSelectedProductsList(ObservableList<ProductDao> selectedProductsList) {
         this.selectedProductsList = selectedProductsList;
-    }
-
-    public ObservableList<ProductDao> getSelectedProductsList() {
-        return selectedProductsList;
     }
 
     public void refreshProductsList() {
@@ -160,8 +143,7 @@ public class POSController {
             filteredData.setPredicate(null);
         }
         else {
-            filteredData.setPredicate(s ->
-                    s.getDescription().toUpperCase().contains(filter) ||
+            filteredData.setPredicate(s -> s.getDescription().toUpperCase().contains(filter) ||
                             s.getCategory().toUpperCase().contains(filter) ||
                             String.valueOf(s.getIdProduct()).contains(filter));
         }
@@ -169,59 +151,109 @@ public class POSController {
         productsListView.setItems(filteredData);
     }
 
+    public void startSearchControls() {
+        selectedProductsTableView.focusedProperty().addListener((observable) -> refreshDetailsBoxSelectable(false));
+        qtdColumn.setOnEditCommit(editableItems -> {
+            if (!editableItems.getTableView().getSelectionModel().isEmpty()) {
+                ProductDao product = editableItems.getTableView().getSelectionModel().getSelectedItem();
+                product.setQuantity(editableItems.getNewValue());
+                product.setTotal(product.getSellPrice());
+                updateSelectedList();
+            }
+        });
+
+        searchBox.textProperty().addListener((observable -> refreshProductsList()));
+        searchBox.setOnKeyPressed(event -> {
+            if (event.getCode().equals(KeyCode.ENTER) && !productsListView.getItems().isEmpty()) {
+                productsListView.getSelectionModel().selectFirst();
+                addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem());
+            } else if (event.getCode().equals(KeyCode.ESCAPE)) {
+                wrapperBox.requestFocus();
+            }
+        });
+
+
+        addProductButton.setOnAction(event -> {
+            if (!productsListView.getItems().isEmpty()) {
+                addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem(), qtySpinner.getValue());
+                qtySpinner.decrement(qtySpinner.getValue() - 1);
+            }
+        });
+
+        Platform.runLater( () -> {
+            wrapperBox.getScene().getWindow().setOnCloseRequest(event -> { if (!onCancelButton()) event.consume(); });
+            handleKeyEvent();
+        });
+    }
+
     public void handleKeyEvent() {
         Runnable run = () -> {
             searchBox.requestFocus();
             searchBox.selectAll();
         };
+        removeButton.setOnMouseClicked(event -> removeItem());
+        qtySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 999, 1));
+        clearButton.setOnMouseClicked(event -> clearShoppingBasket());
+        selectedProductsTableView.setOnMouseClicked(event -> refreshDetailsBoxSelectable(false));
+        productsListView.focusedProperty().addListener((observable) -> refreshDetailsBoxSelectable(true));
+        productsListView.setOnMouseClicked(event -> refreshDetailsBoxSelectable(true));
         wrapperBox.getScene().getAccelerators().clear();
         wrapperBox.getScene().getAccelerators().put(SceneNavigator.F3_SEARCH, run);
         wrapperBox.getScene().getAccelerators().put(SceneNavigator.F4_CANCEL, this::onCancelButton);
         productsListView.requestFocus();
         productsListView.setOnKeyPressed(keyEvent -> {
             switch (keyEvent.getCode()) {
-                case ENTER:
-                    ProductDao product = productsListView.getSelectionModel().getSelectedItem();
-                    if (product != null) addToSelectedProductsList(product);
-                    break;
                 case F2:
                     onFinalizeOrder();
                     break;
-                case DIGIT1: case NUMPAD1:
+                case DIGIT1:
+                case NUMPAD1:
                     productsListView.getSelectionModel().select(0);
                     break;
-                case DIGIT2: case NUMPAD2:
+                case DIGIT2:
+                case NUMPAD2:
                     productsListView.getSelectionModel().select(1);
                     break;
-                case DIGIT3: case NUMPAD3:
+                case DIGIT3:
+                case NUMPAD3:
                     productsListView.getSelectionModel().select(2);
                     break;
-                case DIGIT4: case NUMPAD4:
+                case DIGIT4:
+                case NUMPAD4:
                     productsListView.getSelectionModel().select(3);
                     break;
-                case DIGIT5: case NUMPAD5:
+                case DIGIT5:
+                case NUMPAD5:
                     productsListView.getSelectionModel().select(4);
                     break;
-                case DIGIT6: case NUMPAD6:
+                case DIGIT6:
+                case NUMPAD6:
                     productsListView.getSelectionModel().select(5);
                     break;
-                case DIGIT7: case NUMPAD7:
+                case DIGIT7:
+                case NUMPAD7:
                     productsListView.getSelectionModel().select(6);
                     break;
-                case DIGIT8: case NUMPAD8:
+                case DIGIT8:
+                case NUMPAD8:
                     productsListView.getSelectionModel().select(7);
                     break;
-                case DIGIT9: case NUMPAD9:
+                case DIGIT9:
+                case NUMPAD9:
                     productsListView.getSelectionModel().select(8);
                     break;
                 case ESCAPE:
                     wrapperBox.requestFocus();
                     productsListView.getSelectionModel().clearSelection();
                     break;
+                case ENTER:
+                    ProductDao product = productsListView.getSelectionModel().getSelectedItem();
+                    if (product != null) addToSelectedProductsList(product);
+                    break;
                 default:
                     searchBox.setText(searchBox.getText().concat(keyEvent.getText()));
                     if (keyEvent.getText() != null && !keyEvent.getText().isEmpty() &&
-                            keyEvent.getText().chars().allMatch(Character::isLetterOrDigit)) {
+                        keyEvent.getText().chars().allMatch(Character::isLetterOrDigit)) {
                         searchBox.requestFocus();
                     }
                     break;
@@ -235,7 +267,7 @@ public class POSController {
                     onFinalizeOrder();
                     break;
                 case ESCAPE:
-                    label.requestFocus();
+                    wrapperBox.requestFocus();
                     selectedProductsTableView.getSelectionModel().clearSelection();
                     break;
                 case DELETE:
@@ -244,7 +276,7 @@ public class POSController {
                 default:
                     searchBox.setText(searchBox.getText().concat(keyEvent.getText()));
                     if (keyEvent.getText() != null && !keyEvent.getText().isEmpty() &&
-                            keyEvent.getText().chars().allMatch(Character::isLetterOrDigit)) {
+                        keyEvent.getText().chars().allMatch(Character::isLetterOrDigit)) {
                         searchBox.requestFocus();
                     }
                     break;
@@ -265,11 +297,11 @@ public class POSController {
                 alert.showAndWait();
             } else {
                 AppFactory.setOrderDao(new OrderDao());
-                AppController.openFinishSell(AppFactory.getPosController().getPOSWindow(), detailsWrapperBox);
+                AppController.openFinishSell(AppFactory.getPos().getPOSWindow(), detailsWrapperBox);
                 if (AppFactory.getCashierController().isSellConfirmed()) {
                     AppFactory.getSelectedProducts().clear();
                     AppFactory.setOrderDao(new OrderDao());
-                    editableItems.getScene().getWindow().hide();
+                    wrapperBox.getScene().getWindow().hide();
                 }
             }
         } else {
@@ -324,7 +356,7 @@ public class POSController {
         for (ProductDao item : selectedProductsTableView.getItems()) {
             total += item.getTotal();
         }
-        totalCashierLabel.setText(CurrencyField.getBRLCurrencyFormat().format(total));
+        subtotalLabel.setText(CurrencyField.getBRLCurrencyFormat().format(total));
     }
 
     public void updateDetailsBox(ProductDao product) {
@@ -334,7 +366,6 @@ public class POSController {
         contentLabel.setText(product.getDescription());
         codProductLabel.setText(String.valueOf(product.getIdProduct()));
         categoryLabel.setText(product.getCategory());
-        barcodeImage.setVisible(true);
     }
 
     public void updateDetailsBox() {
@@ -344,7 +375,6 @@ public class POSController {
         contentLabel.setText("Nenhum produto selecionado");
         codProductLabel.setText("");
         categoryLabel.setText("Sem categoria");
-        barcodeImage.setVisible(false);
     }
 
     public void refreshDetailsBoxSelectable(boolean selectable) {
@@ -393,18 +423,6 @@ public class POSController {
         return total;
     }
 
-    public ObservableList<ProductDao> getItems() {
-        return selectedProductsTableView.getItems();
-    }
-
-    public void setBarcodeImage() {
-        try {
-            barcodeImage.setImage(new Image(new FileInputStream(GENERIC_BARCODE)));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void clearShoppingBasket() {
         if (!selectedProductsTableView.getItems().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -422,6 +440,16 @@ public class POSController {
                 selectedProductsList.clear();
                 updateSelectedList();
             }
+        }
+    }
+
+    public void removeItem() {
+        if (!selectedProductsTableView.getSelectionModel().isEmpty()) {
+            ProductDao selected = selectedProductsTableView.getSelectionModel().getSelectedItem();
+            selected.setQuantity(0);
+            selectedProductsTableView.getItems().remove(selected);
+            selectedProductsList.remove(selected);
+            updateSelectedList();
         }
     }
 

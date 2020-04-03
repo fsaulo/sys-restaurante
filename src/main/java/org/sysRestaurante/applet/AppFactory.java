@@ -9,11 +9,12 @@ import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.gui.AppController;
 import org.sysRestaurante.gui.CashierController;
 import org.sysRestaurante.gui.CashierPOSController;
+import org.sysRestaurante.gui.ComandaPOSController;
 import org.sysRestaurante.gui.DashboardController;
 import org.sysRestaurante.gui.LoginController;
 import org.sysRestaurante.gui.MainGUIController;
 import org.sysRestaurante.gui.ManageComandaController;
-import org.sysRestaurante.gui.POSController;
+import org.sysRestaurante.gui.POS;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,8 @@ public class AppFactory {
     private static CashierPOSController cashierPOSController;
     private static ArrayList<ProductDao> selectedProducts;
     private static ManageComandaController manageComandaController;
-    private static POSController posController;
+    private static ComandaPOSController ComandaPOSController;
+    private static POS pos;
 
     public static SessionDao getSessionDao() {
         return sessionDao;
@@ -49,12 +51,12 @@ public class AppFactory {
         AppFactory.comandaDao = comandaDao;
     }
 
-    public static POSController getPosController() {
-        return posController;
+    public static POS getPos() {
+        return pos;
     }
 
-    public static void setPosController(POSController posController) {
-        AppFactory.posController = posController;
+    public static void setPos(POS pos) {
+        AppFactory.pos = pos;
     }
 
     public static ManageComandaController getManageComandaController() {
@@ -145,4 +147,10 @@ public class AppFactory {
         AppFactory.appController = appController;
     }
 
+    public static void setComandaPOSController(ComandaPOSController comandaPOSController) {
+    }
+
+    public static ComandaPOSController getComadnaPOSController() {
+        return ComandaPOSController;
+    }
 }

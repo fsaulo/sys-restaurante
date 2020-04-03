@@ -11,8 +11,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -154,24 +152,6 @@
                                        </font>
                                     </Label>
                                  </children>
-                              </VBox>
-                              <Separator orientation="VERTICAL" />
-                              <VBox alignment="TOP_CENTER" prefWidth="172.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label text="Código de barras">
-                                       <font>
-                                          <Font name="Carlito Bold" size="18.0" />
-                                       </font>
-                                    </Label>
-                                    <ImageView fx:id="barcodeImage" fitHeight="59.0" fitWidth="133.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../../../resources/images/barcode.png" />
-                                       </image>
-                                    </ImageView>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" />
-                                 </padding>
                               </VBox>
                            </children>
                            <padding>
@@ -347,7 +327,7 @@
                         <Font name="Agency FB" size="26.0" />
                      </font>
                   </Label>
-                  <Label fx:id="totalCashierLabel" text="R$ 54,90" textFill="#78d34e">
+                  <Label fx:id="subtotalLabel" text="R$ 54,90" textFill="#78d34e">
                      <font>
                         <Font name="Agency FB" size="37.0" />
                      </font>

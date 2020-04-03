@@ -1,36 +1,52 @@
 package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.EmployeeDao;
+import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
+import org.sysRestaurante.model.Product;
 
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
-public class AddProductsToComandaController {
+public class ComandaPOSController extends POS {
 
     @FXML
     private Button exitButton;
     @FXML
     private Button finalizeOrderButton;
     @FXML
-    private VBox wrapperVBox;
+    private Button addProductButton;
+    @FXML
+    private Button removeButton;
+    @FXML
+    private Button clearButton;
+    @FXML
+    private Spinner<Integer> qtySpinner;
+    @FXML
+    private BorderPane wrapperBox;
     @FXML
     private Label tableLabel;
     @FXML
@@ -45,21 +61,54 @@ public class AddProductsToComandaController {
     private Label subtotalLabel;
     @FXML
     private Label timeLabel;
+    @FXML
+    private ListView<ProductDao> productsListView;
+    @FXML
+    private TableView<ProductDao> selectedProductsTableView;
+    @FXML
+    private TableColumn<ProductDao, String> descriptionColumn;
+    @FXML
+    private TableColumn<ProductDao, Integer> qtdColumn;
+    @FXML
+    private TableColumn<ProductDao, Double> priceColumn;
+    @FXML
+    private TableColumn<ProductDao, Double> totalColumn;
+    @FXML
+    private TextField searchBox;
+    @FXML
+    private Label unitPriceLabel;
+    @FXML
+    private Label contentLabel;
+    @FXML
+    private Label codProductLabel;
+    @FXML
+    private Label categoryLabel;
+    @FXML
+    private VBox detailsWrapperBox;
 
     private ComandaDao comanda = AppFactory.getComandaDao();
+    private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
+    private final ObservableList<ProductDao> products = new Product().getProducts();
 
     @FXML
     public void initialize() {
+        AppFactory.setPos(this);
         handleEmployeesComboBox();
         calculateTimePeriod();
         writeCustomer();
+        setStageControls();
+        updateTables();
+        updateDetailsBox();
+        startSearchControls();
 
         exitButton.setOnAction(e1 -> {
-            wrapperVBox.getScene().getWindow().hide();
+            wrapperBox.getScene().getWindow().hide();
             AppFactory.getManageComandaController().refreshTileList();
             setCustomer();
         });
 
+        productsListView.setItems(products);
+        productsListView.setCellFactory(plv -> new ProductListViewCell());
         employeeComboBox.setOnAction(event -> updateEmployee());
         finalizeOrderButton.setOnAction(e2 -> finalizeOrder());
         tableLabel.setText("MESA #" + this.comanda.getIdTable());
@@ -68,15 +117,30 @@ public class AddProductsToComandaController {
         customerBox.setOnKeyTyped(e-> customerLabel.setText(customerBox.getText()));
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
         subtotalLabel.setText(format.format(comanda.getTotal()));
-        Platform.runLater(this::handleKeyEvent);
+        Platform.runLater(this::updateEmployeeOnClose);
     }
 
-    public void handleKeyEvent() {
-        wrapperVBox.requestFocus();
-        wrapperVBox.getScene().getWindow().setOnCloseRequest(e1 -> {
-            setCustomer();
-            AppFactory.getManageComandaController().refreshTileList();
-        });
+    public void setStageControls() {
+        setDetailsWrapperBox(detailsWrapperBox);
+        setSearchBox(searchBox);
+        setAddProductButton(addProductButton);
+        setUnitPriceLabel(unitPriceLabel);
+        setContentLabel(contentLabel);
+        setCodProductLabel(codProductLabel);
+        setCategoryLabel(categoryLabel);
+        setSubtotalLabel(subtotalLabel);
+        setWrapperBox(wrapperBox);
+        setProductsListView(productsListView);
+        setSelectedProductsTableView(selectedProductsTableView);
+        setDescriptionColumn(descriptionColumn);
+        setQtdColumn(qtdColumn);
+        setPriceColumn(priceColumn);
+        setTotalColumn(totalColumn);
+        setQtySpinner(qtySpinner);
+        setSelectedProductsList(selectedProductsList);
+        setProducts(products);
+        setRemoveButton(removeButton);
+        setClearButton(clearButton);
     }
 
     public void setCustomer() {
@@ -98,6 +162,13 @@ public class AddProductsToComandaController {
         }
 
         Order.updateEmployee(comanda.getIdOrder(), idEmployee);
+    }
+
+    public void updateEmployeeOnClose() {
+        wrapperBox.getScene().getWindow().setOnCloseRequest(e1 -> {
+            setCustomer();
+            AppFactory.getManageComandaController().refreshTileList();
+        });
     }
 
     public void finalizeOrder() { }

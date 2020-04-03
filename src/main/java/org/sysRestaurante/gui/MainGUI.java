@@ -8,15 +8,12 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.dao.EmployeeDao;
-import org.sysRestaurante.model.Personnel;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.Encryption;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class MainGUI extends Application {
@@ -52,7 +49,7 @@ public class MainGUI extends Application {
         return wrapperPane;
     }
 
-    public static void clear() {
+    public static void closeStage() {
         Stage stage = (Stage) mainController.getScene().getWindow();
         stage.close();
     }
@@ -77,7 +74,7 @@ public class MainGUI extends Application {
     }
 
     public static void restartProgram() throws IOException {
-        clear();
+        closeStage();
         Stage stage = new Stage();
         stage.setHeight(450);
         stage.setWidth(550);
