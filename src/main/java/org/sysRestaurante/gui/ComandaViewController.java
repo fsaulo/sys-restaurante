@@ -60,7 +60,7 @@ public class ComandaViewController {
         closeComandaButton.setOnMouseClicked(event -> {
             AppFactory.setSelectedProducts(list);
             AppFactory.setOrderDao(comanda);
-            AppController.openFinishSell();
+            AppController.showPaymentDialog();
         });
 
         addOrder.setOnMouseClicked(event -> {

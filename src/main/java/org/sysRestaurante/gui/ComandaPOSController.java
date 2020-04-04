@@ -93,6 +93,7 @@ public class ComandaPOSController extends POS {
     @FXML
     public void initialize() {
         AppFactory.setPos(this);
+        AppFactory.setOrderDao(comanda);
         handleEmployeesComboBox();
         calculateTimePeriod();
         writeCustomer();
@@ -103,18 +104,17 @@ public class ComandaPOSController extends POS {
 
         exitButton.setOnAction(e1 -> {
             wrapperBox.getScene().getWindow().hide();
-            AppFactory.getManageComandaController().refreshTileList();
-            setCustomer();
+            saveChanges();
         });
 
         productsListView.setItems(products);
         productsListView.setCellFactory(plv -> new ProductListViewCell());
         employeeComboBox.setOnAction(event -> updateEmployee());
-        finalizeOrderButton.setOnAction(e2 -> finalizeOrder());
         tableLabel.setText("MESA #" + this.comanda.getIdTable());
         codOrderLabel.setText(String.valueOf(comanda.getIdOrder()));
         customerLabel.setText(Order.getCustomerName(comanda.getIdOrder()));
         customerBox.setOnKeyTyped(e-> customerLabel.setText(customerBox.getText()));
+        finalizeOrderButton.setOnMouseClicked(e -> onFinalizeOrder());
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
         subtotalLabel.setText(format.format(comanda.getTotal()));
         Platform.runLater(this::updateEmployeeOnClose);
@@ -165,13 +165,13 @@ public class ComandaPOSController extends POS {
     }
 
     public void updateEmployeeOnClose() {
-        wrapperBox.getScene().getWindow().setOnCloseRequest(e1 -> {
-            setCustomer();
-            AppFactory.getManageComandaController().refreshTileList();
-        });
+        wrapperBox.getScene().getWindow().setOnCloseRequest(e1 -> saveChanges());
     }
 
-    public void finalizeOrder() { }
+    public void saveChanges() {
+        setCustomer();
+        AppFactory.getManageComandaController().refreshTileList();
+    }
 
     public void handleEmployeesComboBox() {
         ArrayList<EmployeeDao> employees = new Personnel().list();

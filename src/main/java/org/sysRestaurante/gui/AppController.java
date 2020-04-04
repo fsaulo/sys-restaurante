@@ -184,40 +184,7 @@ public class AppController implements DateFormatter {
         }
     }
 
-    public static void showUndecoratedDialog(String fxml, Object owner) {
-        try {
-            Window parent = AppFactory.getAppController().borderPaneHolder.getScene().getWindow();
-            double centerPosX = parent.getX() + parent.getWidth()/2d;
-            double centerPosY = parent.getY() + parent.getHeight()/2d;
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setAlwaysOnTop(true);
-            stage.initOwner((Window) owner);
-            stage.initStyle(StageStyle.UNDECORATED);
-
-            AppFactory.getMainController().darkenScreen();
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(AppController.class.getResource(fxml));
-            VBox popPup = loader.load();
-            Scene scene = new Scene(popPup);
-
-            stage.setX(centerPosX - popPup.getPrefWidth()/2d);
-            stage.setY(centerPosY - popPup.getPrefHeight()/2d);
-
-            stage.setTitle("SysRestaurante: Dialog " + fxml);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.showAndWait();
-            AppFactory.getMainController().brightenScreen();
-        } catch (IOException e) {
-            LOGGER.severe("Couldn't create stage.");
-            ExceptionHandler.incrementGlobalExceptionsCount();
-            e.printStackTrace();
-        }
-    }
-
-    public static void openPOS() {
+    public static void showPOS() {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -238,7 +205,7 @@ public class AppController implements DateFormatter {
         }
     }
 
-    public static void openFinishSell() {
+    public static void showPaymentDialog() {
         try {
             Stage stage = new Stage();
             AppFactory.getMainController().darkenScreen();
@@ -252,13 +219,12 @@ public class AppController implements DateFormatter {
             stage.setResizable(false);
             stage.showAndWait();
             AppFactory.getMainController().brightenScreen();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    public static void openFinishSell(Object owner) {
+    public static void showPaymentDialog(Object owner) {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -270,13 +236,12 @@ public class AppController implements DateFormatter {
             stage.setTitle("SysRestaurante: Finalizando pedido");
             stage.setResizable(false);
             stage.showAndWait();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    public static void openFinishSell(Object owner, Node object) {
+    public static void showPaymentDialog(Object owner, Node object) {
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -284,7 +249,7 @@ public class AppController implements DateFormatter {
             ColorAdjust colorAdjust = new ColorAdjust();
             colorAdjust.setBrightness(-0.5);
             AppFactory.getMainController().darkenScreen();
-            object.getParent().getParent().setEffect(colorAdjust);
+            object.setEffect(colorAdjust);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.FINISH_SELL_DIALOG));
             Scene scene = new Scene(loader.load());
@@ -293,9 +258,8 @@ public class AppController implements DateFormatter {
             stage.setResizable(false);
             stage.showAndWait();
             colorAdjust.setBrightness(0);
-            object.getParent().getParent().setEffect(colorAdjust);
+            object.setEffect(colorAdjust);
             AppFactory.getMainController().brightenScreen();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }

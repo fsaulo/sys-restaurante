@@ -113,7 +113,7 @@ public class CashierController {
     @FXML
     public void onNewOrder() {
         newOrderBox.setDisable(true);
-        AppFactory.getAppController().openPOS();
+        AppFactory.getAppController().showPOS();
 
         if (isSellConfirmed()) {
             setSellConfirmed(false);

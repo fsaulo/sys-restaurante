@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Product;
 
@@ -66,6 +67,7 @@ public class CashierPOSController extends POS {
     public void initialize() {
         AppFactory.setPos(this);
         AppFactory.setCashierPOSController(this);
+        AppFactory.setOrderDao(new OrderDao());
         setStageControls();
         setStageObjects();
         startSearchControls();

@@ -175,7 +175,7 @@ public class FinishSellController {
 
     @FXML
     public void back() {
-        wrapperVBox.getScene().getWindow().hide();
+        box1.getScene().getWindow().hide();
     }
 
     @FXML

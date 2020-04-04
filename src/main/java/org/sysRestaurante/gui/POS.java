@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 
 import javafx.stage.Window;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CellFormatter;
@@ -288,7 +289,20 @@ public class POS {
     public void onFinalizeOrder() {
         ArrayList<ProductDao> products = new ArrayList<>(selectedProductsTableView.getItems());
         AppFactory.setSelectedProducts(products);
-        if (this instanceof CashierPOSController) {
+        OrderDao order = AppFactory.getOrderDao();
+        if (order instanceof ComandaDao) {
+            System.out.println("COMANDA");
+            if (selectedProductsTableView.getItems().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Alerta do sistema");
+                alert.setHeaderText("Atenção!");
+                alert.setContentText("Não é possível encerrar o pedido pois nenhum item foi adicionado a lista");
+                alert.showAndWait();
+            } else {
+                AppController.showPaymentDialog(AppFactory.getPos().getPOSWindow(), wrapperBox);
+            }
+        } else {
+            System.out.println("ORDER");
             if (selectedProductsTableView.getItems().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Alerta do sistema");
@@ -297,15 +311,13 @@ public class POS {
                 alert.showAndWait();
             } else {
                 AppFactory.setOrderDao(new OrderDao());
-                AppController.openFinishSell(AppFactory.getPos().getPOSWindow(), detailsWrapperBox);
+                AppController.showPaymentDialog(AppFactory.getPos().getPOSWindow(), wrapperBox);
                 if (AppFactory.getCashierController().isSellConfirmed()) {
                     AppFactory.getSelectedProducts().clear();
                     AppFactory.setOrderDao(new OrderDao());
                     wrapperBox.getScene().getWindow().hide();
                 }
             }
-        } else {
-            wrapperBox.getScene().getWindow().hide();
         }
     }
 
