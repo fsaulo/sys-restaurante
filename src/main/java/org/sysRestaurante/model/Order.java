@@ -292,7 +292,37 @@ public class Order {
         return null;
     }
 
-    public void addProductsToOrder(int idOrder, ArrayList<ProductDao> productsList) {
+    public static List<ProductDao> getProductsById(int idOrder) {
+        String query = "SELECT * FROM pedido_has_produtos WHERE id_produto = ?";
+        List<ProductDao> products = new ArrayList<>();
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idOrder);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ProductDao product = new ProductDao();
+                product.setQuantity(rs.getInt("qtd_pedido"));
+                product.setIdProduct(rs.getInt("id_pedido"));
+                product.setIdProduct(rs.getInt("id_produto"));
+                products.add(product);
+            }
+
+            ps.close();
+            rs.close();
+            con.close();
+            return products;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void addProductsToOrder(int idOrder, ArrayList<ProductDao> productsList) {
         String query = "INSERT INTO pedido_has_produtos (id_produto, id_pedido, qtd_pedido) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
         LOGGER.setLevel(Level.ALL);
@@ -300,7 +330,7 @@ public class Order {
         try {
             Connection con = DBConnection.getConnection();
             for (ProductDao item : productsList) {
-                LOGGER.config("Adding products. Product id: " + item.getIdProduct());
+                LOGGER.config("Adding product, cod.: " + item.getIdProduct());
                 ps = con.prepareStatement(query);
                 ps.setInt(1, item.getIdProduct());
                 ps.setInt(2, idOrder);
@@ -311,6 +341,25 @@ public class Order {
             ps.close();
             con.close();
             LOGGER.info("Products added.");
+        } catch (SQLException ex) {
+            LOGGER.severe("Error trying to register products in order.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            ex.printStackTrace();
+        }
+    }
+
+    public static void removeProductsFromOrder(int idOrder) {
+        String query = "DELETE FROM pedido_has_produtos WHERE id_produto = ?";
+        PreparedStatement ps = null;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idOrder);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
         } catch (SQLException ex) {
             LOGGER.severe("Error trying to register products in order.");
             ExceptionHandler.incrementGlobalExceptionsCount();

@@ -79,7 +79,6 @@ public class CashierController {
         updateOrderTableList();
         updateCashierElements();
         handleKeyEvent();
-        LOGGER.info("At cashier page");
     }
 
     @FXML

@@ -26,10 +26,13 @@ import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
 import org.sysRestaurante.model.Product;
 
+import javax.swing.plaf.SeparatorUI;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+
+import static javafx.collections.FXCollections.*;
 
 public class ComandaPOSController extends POS {
 
@@ -87,7 +90,7 @@ public class ComandaPOSController extends POS {
     private VBox detailsWrapperBox;
 
     private ComandaDao comanda = AppFactory.getComandaDao();
-    private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
+    private final ObservableList<ProductDao> selectedProductsList = observableArrayList();
     private final ObservableList<ProductDao> products = new Product().getProducts();
 
     @FXML
@@ -97,6 +100,7 @@ public class ComandaPOSController extends POS {
         handleEmployeesComboBox();
         calculateTimePeriod();
         writeCustomer();
+        updateSelectedItems();
         setStageControls();
         updateTables();
         updateDetailsBox();
@@ -164,12 +168,32 @@ public class ComandaPOSController extends POS {
         Order.updateEmployee(comanda.getIdOrder(), idEmployee);
     }
 
+    public void updateSelectedItems() {
+        selectedProductsList.addAll(Order.getProductsById(comanda.getIdOrder()));
+        for (ProductDao p : selectedProductsList) {
+            System.out.println(p.getDescription());
+        }
+    }
+
     public void updateEmployeeOnClose() {
         wrapperBox.getScene().getWindow().setOnCloseRequest(e1 -> saveChanges());
     }
 
+    public void saveProductList() {
+        if (!selectedProductsTableView.getItems().isEmpty()) {
+            ArrayList<ProductDao> items = new ArrayList<>(selectedProductsTableView.getItems());
+            Order.addProductsToOrder(comanda.getIdOrder(), items);
+        }
+    }
+
+    public void clearOldProductList() {
+        Order.removeProductsFromOrder(comanda.getIdOrder());
+    }
+
     public void saveChanges() {
         setCustomer();
+        clearOldProductList();
+        saveProductList();
         AppFactory.getManageComandaController().refreshTileList();
     }
 
