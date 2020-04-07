@@ -16,6 +16,7 @@ import org.sysRestaurante.dao.EmployeeDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
+import org.sysRestaurante.model.Product;
 
 import java.util.ArrayList;
 
@@ -46,21 +47,14 @@ public class ComandaViewController {
         handleEmployeesComboBox();
         tableLabel.setText("MESA " + comanda.getIdTable());
         comandaLabel.setText("#" + comanda.getIdComanda());
-        ArrayList<ProductDao> list = new ArrayList<>();
-
-        ProductDao productDao = new ProductDao();
-        productDao.setIdProduct(1);
-        productDao.setQuantity(1);
-        productDao.setSellPrice(5.0);
-        productDao.setTotal(5.0);
-        productDao.setDescription("Dummy product");
-        list.add(productDao);
+        ArrayList<ProductDao> list = new ArrayList<>(Order.getItemsByOrderId(comanda.getIdOrder()));
 
         employeeComboBox.setOnAction(event -> updateEmployee());
         closeComandaButton.setOnMouseClicked(event -> {
             AppFactory.setSelectedProducts(list);
             AppFactory.setOrderDao(comanda);
             AppController.showPaymentDialog();
+            AppFactory.getManageComandaController().refreshTileList();
         });
 
         addOrder.setOnMouseClicked(event -> {

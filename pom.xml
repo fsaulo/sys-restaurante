@@ -23,6 +23,7 @@
                 <configuration>
                     <release>13</release>
         	        <target>13</target>
+                    <source>13</source>
                 </configuration>
             </plugin>
 

@@ -32,7 +32,8 @@ public class Order {
 
     public OrderDao newOrder(int idCashier, double inCash, double byCard, int type, double discount, String note) {
         String query = "INSERT INTO pedido (id_usuario, id_caixa, data_pedido, observacao, " +
-                "valor_cartao, valor_avista, id_categoria_pedido, hora_pedido, descontos) VALUES (?,?,?,?,?,?,?,?,?)";
+                "valor_cartao, valor_avista, id_categoria_pedido, hora_pedido, descontos, status) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         int idUser = AppFactory.getUserDao().getIdUser();
         int idOrder;
@@ -52,6 +53,7 @@ public class Order {
             ps.setInt(7, type);
             ps.setTime(8, java.sql.Time.valueOf(LocalTime.now()));
             ps.setDouble(9, discount * 100);
+            ps.setInt(10, type);
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
 
@@ -153,7 +155,7 @@ public class Order {
         return null;
     }
 
-    public void closeComanda(int idComanda, double total) {
+    public void closeComanda(ComandaDao comanda, double total) {
         PreparedStatement ps;
         String query = "UPDATE comanda " +
                 "SET data_fechamento = ?, hora_fechamento = ?, total = ?, id_categoria_pedido = ?, is_aberto = ? " +
@@ -167,7 +169,7 @@ public class Order {
             ps.setDouble(3, total);
             ps.setInt(4, 6);
             ps.setBoolean(5, false);
-            ps.setInt(6, idComanda);
+            ps.setInt(6, comanda.getIdComanda());
             ps.executeUpdate();
 
             ps.close();
@@ -177,13 +179,20 @@ public class Order {
         }
     }
 
-    public void updateOrderStatus(int idOrder, int idStatus) {
-        String query = "UPDATE pedido SET id_categoria_pedido = ? WHERE id_pedido = ?";
+    public static void updateOrderStatus(int idComanda, int idStatus) {
+        String query1 = "SELECT id_pedido FROM comanda WHERE id_comanda = ?";
+        String query2 = "UPDATE pedido SET status = ? WHERE id_pedido = ?";
         PreparedStatement ps;
+        ResultSet rs;
+        int idOrder = 0;
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = con.prepareStatement(query1);
+            ps.setInt(1, idComanda);
+            rs = ps.executeQuery();
+            if (rs.next()) idOrder = rs.getInt("id_pedido");
+            ps = con.prepareStatement(query2);
             ps.setInt(1, idStatus);
             ps.setInt(2, idOrder);
             ps.executeUpdate();
@@ -195,13 +204,20 @@ public class Order {
         }
     }
 
-    public void updateOrderAmount(int idOrder, double totalCash, double totalByCard, double discounts) {
-        String query = "UPDATE pedido SET valor_cartao = ?, valor_avista = ?, descontos = ? WHERE id_pedido = ?";
+    public void updateOrderAmount(int idComanda, double totalCash, double totalByCard, double discounts) {
+        String query1 = "SELECT id_pedido FROM comanda WHERE id_comanda = ?";
+        String query2 = "UPDATE pedido SET valor_cartao = ?, valor_avista = ?, descontos = ? WHERE id_pedido = ?";
         PreparedStatement ps;
+        ResultSet rs;
+        int idOrder = 0;
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = con.prepareStatement(query1);
+            ps.setInt(1, idComanda);
+            rs = ps.executeQuery();
+            if (rs.next()) idOrder = rs.getInt("id_pedido");
+            ps = con.prepareStatement(query2);
             ps.setDouble(1, totalByCard);
             ps.setDouble(2, totalCash);
             ps.setDouble(3, discounts);
@@ -292,8 +308,10 @@ public class Order {
         return null;
     }
 
-    public static List<ProductDao> getProductsById(int idOrder) {
-        String query = "SELECT * FROM pedido_has_produtos WHERE id_produto = ?";
+    public static List<ProductDao> getItemsByOrderId(int idOrder) {
+        String query = "SELECT * FROM pedido_has_produtos AS selecionado " +
+                "JOIN produto ON produto.id_produto = selecionado.id_produto " +
+                "WHERE selecionado.id_pedido = ?";
         List<ProductDao> products = new ArrayList<>();
         PreparedStatement ps;
         ResultSet rs;
@@ -307,8 +325,11 @@ public class Order {
             while (rs.next()) {
                 ProductDao product = new ProductDao();
                 product.setQuantity(rs.getInt("qtd_pedido"));
-                product.setIdProduct(rs.getInt("id_pedido"));
                 product.setIdProduct(rs.getInt("id_produto"));
+                product.setDescription(rs.getString("descricao"));
+                product.setSellPrice(rs.getDouble("preco_venda"));
+                product.setBuyPrice(rs.getDouble("preco_varejo"));
+                product.setTotal(product.getSellPrice() * product.getQuantity());
                 products.add(product);
             }
 
@@ -329,15 +350,14 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
             for (ProductDao item : productsList) {
-                LOGGER.config("Adding product, cod.: " + item.getIdProduct());
-                ps = con.prepareStatement(query);
                 ps.setInt(1, item.getIdProduct());
                 ps.setInt(2, idOrder);
                 ps.setInt(3, item.getQuantity());
-                ps.executeUpdate();
+                ps.addBatch();
             }
-
+            ps.executeBatch();
             ps.close();
             con.close();
             LOGGER.info("Products added.");
@@ -349,7 +369,7 @@ public class Order {
     }
 
     public static void removeProductsFromOrder(int idOrder) {
-        String query = "DELETE FROM pedido_has_produtos WHERE id_produto = ?";
+        String query = "DELETE FROM pedido_has_produtos WHERE id_pedido = ?";
         PreparedStatement ps = null;
 
         try {
@@ -422,7 +442,7 @@ public class Order {
                 orderDao.setNote(rs.getString("observacao"));
                 orderDao.setDetails(rs.getInt("id_categoria_pedido"));
                 orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
-                orderDao.setStatus(rs.getInt("id_categoria_pedido"));
+                orderDao.setStatus(rs.getInt("status"));
                 orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
                 orderList.add(orderDao);
             }

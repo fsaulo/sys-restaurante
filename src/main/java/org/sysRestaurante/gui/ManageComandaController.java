@@ -17,6 +17,7 @@ import javafx.scene.shape.Circle;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
+import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.dao.SessionDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Cashier;
@@ -102,6 +103,7 @@ public class ManageComandaController {
         for (ComandaDao item : comandas) {
             computeAverageTime(item);
             computeTotalIncome(item);
+            computeTotalComanda(item);
 
             if (item.getIdCategory() != 6) {
                 try {
@@ -130,6 +132,14 @@ public class ManageComandaController {
         }
     }
 
+    public void computeTotalComanda(ComandaDao comanda) {
+        double total = 0;
+        List<ProductDao> list = Order.getItemsByOrderId(comanda.getIdOrder());
+        for (ProductDao product : list) {
+            total += product.getQuantity() * product.getSellPrice();
+            comanda.setTotal(total);
+        }
+    }
 
     public void computeTotalIncome(ComandaDao comada) {
         totalIncome += comada.getTotal();
@@ -174,7 +184,10 @@ public class ManageComandaController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.COMANDA_VIEW));
         loader.setController(new ComandaViewController(comanda));
         PopOver popOver = new PopOver(loader.load());
-        tile.setOnMouseClicked(event -> popOver.show(tile));
+        tile.setOnMouseClicked(event -> {
+            AppFactory.setOrderDao(comanda);
+            popOver.show(tile);
+        });
     }
 
     public void setSelectedLabels(boolean isSelected, Label... labels) {

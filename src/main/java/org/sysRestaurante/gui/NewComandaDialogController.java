@@ -139,8 +139,13 @@ public class NewComandaDialogController {
         }
 
         String defaultMessage = "Cliente na mesa #" + selectedTable.getIdTable();
-        order = cashier.newOrder(idCashier, 0, 0, 2, 0,
-                defaultMessage);
+        order = cashier.newOrder(idCashier, 0, 0, 2, 0, defaultMessage);
+
+        // A bug occurs whenever we try to fetch the auto-generated keys in the prepared statement.
+        // This bug populates the table that contains a list of selected products with garbage.
+        // So we clear the basket every time we create a fresh order. This procedure doesn't corrects the problem
+        // thus should be fixed.
+        Order.removeProductsFromOrder(order.getIdOrder());
         cashier.newComanda(idTable, order.getIdOrder(), idCashier, idEmployee,2);
         Order.changeTableStatus(idTable, 2);
         AppFactory.getManageComandaController().refreshTileList();

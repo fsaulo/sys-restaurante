@@ -49,7 +49,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" styleClass="box-content">
                            <children>
-                              <Label opacity="0.8" text="Histórico do caixa">
+                              <Label opacity="0.8" text="Gerenciar balcão">
                                  <font>
                                     <Font name="Carlito Bold" size="22.0" />
                                  </font>
@@ -62,9 +62,9 @@
                         <TableView fx:id="orderListTableView" VBox.vgrow="ALWAYS">
                            <placeholder>
                               <HBox alignment="CENTER">
-                                 <Label text="Nenhum registro encontrado" textAlignment="CENTER" wrapText="true" opacity="0.7">
+                                 <Label opacity="0.7" text="Nenhum registro encontrado" textAlignment="CENTER" wrapText="true">
                                     <font>
-                                       <Font name="Carlito Bold" size="20"/>
+                                       <Font name="Carlito Bold" size="20" />
                                     </font>
                                  </Label>
                               </HBox>

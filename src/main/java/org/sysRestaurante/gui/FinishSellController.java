@@ -224,11 +224,10 @@ public class FinishSellController {
 
             if (orderDao instanceof ComandaDao || orderDao == null) {
                 LOGGER.info("Instance of 'Comanda' Data Access Object");
-                int idComanda = ((ComandaDao) orderDao).getIdComanda();
-                order.closeComanda(idComanda, payByCard + payInCash);
+                order.closeComanda((ComandaDao) orderDao, payByCard + payInCash);
                 order.addProductsToOrder(orderDao.getIdOrder(), items);
-                order.updateOrderStatus(orderDao.getIdOrder(), 1);
-                order.updateOrderAmount(orderDao.getIdOrder(), payInCash, payByCard, discount);
+                order.updateOrderStatus(((ComandaDao) orderDao).getIdComanda(), 1);
+                order.updateOrderAmount(((ComandaDao) orderDao).getIdComanda(), payInCash, payByCard, discount);
                 order.closeTable(((ComandaDao) orderDao).getIdTable());
                 new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
                 AppFactory.getManageComandaController().refreshTileList();

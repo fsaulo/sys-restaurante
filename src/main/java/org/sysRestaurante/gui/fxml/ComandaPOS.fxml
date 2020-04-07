@@ -202,8 +202,20 @@
                         <String fx:value="combo-box-view" />
                      </styleClass>
                   </Button>
-                  <Pane HBox.hgrow="ALWAYS" />
                   <Button fx:id="clearButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Limpar">
+                     <font>
+                        <Font name="Carlito" size="16.0" />
+                     </font>
+                     <tooltip>
+                        <Tooltip id="Voc" text="Você também pode pressionar o atalho F3 para abrir a lista de produtos" />
+                     </tooltip>
+                     <styleClass>
+                        <String fx:value="view" />
+                        <String fx:value="combo-box-view" />
+                     </styleClass>
+                  </Button>
+                  <Pane HBox.hgrow="ALWAYS" />
+                  <Button fx:id="updateButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Atualizar lista">
                      <font>
                         <Font name="Carlito" size="16.0" />
                      </font>

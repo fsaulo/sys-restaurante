@@ -1,7 +1,6 @@
 package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,7 +25,6 @@ import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
 import org.sysRestaurante.model.Product;
 
-import javax.swing.plaf.SeparatorUI;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -40,6 +38,8 @@ public class ComandaPOSController extends POS {
     private Button exitButton;
     @FXML
     private Button finalizeOrderButton;
+    @FXML
+    private Button updateButton;
     @FXML
     private Button addProductButton;
     @FXML
@@ -100,19 +100,20 @@ public class ComandaPOSController extends POS {
         handleEmployeesComboBox();
         calculateTimePeriod();
         writeCustomer();
-        updateSelectedItems();
         setStageControls();
         updateTables();
         updateDetailsBox();
         startSearchControls();
+        updateComandaItems();
 
         exitButton.setOnAction(e1 -> {
             wrapperBox.getScene().getWindow().hide();
-            saveChanges();
+            Platform.runLater(this::saveChanges);
         });
 
         productsListView.setItems(products);
         productsListView.setCellFactory(plv -> new ProductListViewCell());
+        updateButton.setOnMouseClicked(ac -> updateComandaItems());
         employeeComboBox.setOnAction(event -> updateEmployee());
         tableLabel.setText("MESA #" + this.comanda.getIdTable());
         codOrderLabel.setText(String.valueOf(comanda.getIdOrder()));
@@ -121,10 +122,14 @@ public class ComandaPOSController extends POS {
         finalizeOrderButton.setOnMouseClicked(e -> onFinalizeOrder());
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
         subtotalLabel.setText(format.format(comanda.getTotal()));
-        Platform.runLater(this::updateEmployeeOnClose);
+        Platform.runLater(() -> {
+            updateEmployeeOnClose();
+            selectedProductsTableView.refresh();
+        });
     }
 
     public void setStageControls() {
+        setFromPOS(true);
         setDetailsWrapperBox(detailsWrapperBox);
         setSearchBox(searchBox);
         setAddProductButton(addProductButton);
@@ -168,13 +173,6 @@ public class ComandaPOSController extends POS {
         Order.updateEmployee(comanda.getIdOrder(), idEmployee);
     }
 
-    public void updateSelectedItems() {
-        selectedProductsList.addAll(Order.getProductsById(comanda.getIdOrder()));
-        for (ProductDao p : selectedProductsList) {
-            System.out.println(p.getDescription());
-        }
-    }
-
     public void updateEmployeeOnClose() {
         wrapperBox.getScene().getWindow().setOnCloseRequest(e1 -> saveChanges());
     }
@@ -186,13 +184,13 @@ public class ComandaPOSController extends POS {
         }
     }
 
-    public void clearOldProductList() {
+    public void clear() {
         Order.removeProductsFromOrder(comanda.getIdOrder());
     }
 
     public void saveChanges() {
         setCustomer();
-        clearOldProductList();
+        clear();
         saveProductList();
         AppFactory.getManageComandaController().refreshTileList();
     }

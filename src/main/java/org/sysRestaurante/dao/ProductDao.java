@@ -106,4 +106,8 @@ public class ProductDao {
     public void incrementsQuantity() {
         this.quantity += 1;
     }
+
+    public void incrementsQuantity(int qty) {
+        this.quantity += qty;
+    }
 }

@@ -1,5 +1,6 @@
 package org.sysRestaurante.gui;
 
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,9 +29,13 @@ import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CellFormatter;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.SpinnerCellFactory;
+import org.sysRestaurante.model.Order;
+import org.sysRestaurante.util.NotificationHandler;
 
 import java.text.Format;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class POS {
 
@@ -55,6 +60,11 @@ public class POS {
     private ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
     private ObservableList<ProductDao> products = FXCollections.observableArrayList();
     private double total = 0;
+    private boolean fromPOS = false;
+
+    public void setFromPOS(boolean fromPOS) {
+        this.fromPOS = fromPOS;
+    }
 
     public void setRemoveButton(Button removeButton) {
         this.removeButton = removeButton;
@@ -300,6 +310,9 @@ public class POS {
                 alert.showAndWait();
             } else {
                 AppController.showPaymentDialog(AppFactory.getPos().getPOSWindow(), wrapperBox);
+                System.out.println(order.getIdOrder());
+                if (fromPOS) getPOSWindow().hide();
+                NotificationHandler.showInfo("Pedido realizado com sucesso");
             }
         } else {
             System.out.println("ORDER");
@@ -407,9 +420,17 @@ public class POS {
         qtySpinner.setDisable(!selectable);
     }
 
+    public boolean containsId(final ObservableList<ProductDao> list, final int id) {
+        return list.stream().anyMatch(o -> o.getIdProduct() == id);
+    }
+
     public void addToSelectedProductsList(ProductDao product) {
         if (selectedProductsList.contains(product)) {
             product.incrementsQuantity();
+        } else if (containsId(selectedProductsList, product.getIdProduct())) {
+            selectedProductsList.stream().filter(pr -> pr.getDescription()
+                    .equals(product.getDescription()))
+                    .collect(Collectors.toList()).get(0).incrementsQuantity();
         } else {
             product.setQuantity(1);
             selectedProductsList.add(product);
@@ -422,6 +443,10 @@ public class POS {
     public void addToSelectedProductsList(ProductDao product, int qty) {
         if (selectedProductsList.contains(product)) {
             product.setQuantity(product.getQuantity() + qty);
+        } else if (containsId(selectedProductsList, product.getIdProduct())) {
+            selectedProductsList.stream().filter(pr -> pr.getDescription()
+                    .equals(product.getDescription()))
+                    .collect(Collectors.toList()).get(0).incrementsQuantity(qty);
         } else {
             product.setQuantity(qty);
             selectedProductsList.add(product);
@@ -452,6 +477,14 @@ public class POS {
                 selectedProductsList.clear();
                 updateSelectedList();
             }
+        }
+    }
+
+    public void updateComandaItems() {
+        OrderDao order = AppFactory.getOrderDao();
+        List<ProductDao> products = Order.getItemsByOrderId(order.getIdOrder());
+        for (ProductDao product : products) {
+            addToSelectedProductsList(product, product.getQuantity());
         }
     }
 
