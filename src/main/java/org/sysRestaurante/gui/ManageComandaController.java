@@ -47,6 +47,8 @@ public class ManageComandaController {
     private Label availableTables;
     @FXML
     private Label averageIncome;
+    @FXML
+    private VBox registerTableButton;
 
     private SessionDao session;
     private List<ComandaDao> comandas;
@@ -69,6 +71,7 @@ public class ManageComandaController {
 
         try {
             handleAddComanda();
+            handleRegisterTable();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -89,6 +92,14 @@ public class ManageComandaController {
         PopOver popOver = new PopOver(node);
         popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_LEFT);
         newComandaButton.setOnMouseClicked(e1 -> popOver.show(newComandaButton));
+    }
+
+    public void handleRegisterTable() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.REGISTER_TABLE_VIEW));
+        VBox node = loader.load();
+        PopOver popOver = new PopOver(node);
+        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_LEFT);
+        registerTableButton.setOnMouseClicked(e1 -> popOver.show(registerTableButton));
     }
 
     public void initSessionDetails() {

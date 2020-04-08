@@ -348,26 +348,7 @@
                            </HBox.margin>
                         </VBox>
                         <Separator orientation="VERTICAL" />
-                        <VBox alignment="CENTER" opacity="0.8" prefWidth="80.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="comanda-button">
-                           <children>
-                              <Label text="Listar mesas" textAlignment="CENTER" wrapText="true">
-                                 <font>
-                                    <Font name="Carlito Bold" size="15.0" />
-                                 </font>
-                                 <tooltip>
-                                    <Tooltip style="-fx-background-color: black;" text="Listar todas as mesas cadastradas (disponíveis e ocupadas)">
-                                       <font>
-                                          <Font name="Carlito" size="14.0" />
-                                       </font>
-                                    </Tooltip>
-                                 </tooltip>
-                              </Label>
-                           </children>
-                           <HBox.margin>
-                              <Insets bottom="5.0" left="2.0" right="3.0" top="5.0" />
-                           </HBox.margin>
-                        </VBox>
-                        <VBox alignment="CENTER" opacity="0.8" prefWidth="80.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="comanda-button">
+                        <VBox fx:id="registerTableButton" alignment="CENTER" opacity="0.8" prefWidth="80.0" style="-fx-border-color: gray; -fx-border-width: 2;" styleClass="comanda-button">
                            <children>
                               <Label text=" Registrar mesa" textAlignment="CENTER" wrapText="true">
                                  <font>

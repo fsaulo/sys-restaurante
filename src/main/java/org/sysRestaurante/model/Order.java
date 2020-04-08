@@ -345,7 +345,7 @@ public class Order {
 
     public static void addProductsToOrder(int idOrder, ArrayList<ProductDao> productsList) {
         String query = "INSERT INTO pedido_has_produtos (id_produto, id_pedido, qtd_pedido) VALUES (?, ?, ?)";
-        PreparedStatement ps = null;
+        PreparedStatement ps;
         LOGGER.setLevel(Level.ALL);
 
         try {

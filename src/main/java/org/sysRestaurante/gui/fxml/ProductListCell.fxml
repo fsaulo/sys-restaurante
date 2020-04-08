@@ -15,7 +15,7 @@
             <Font name="Carlito" size="16.0" />
          </font>
       </Label>
-      <Separator orientation="VERTICAL">
+      <Separator fx:id="sep" orientation="VERTICAL">
          <HBox.margin>
             <Insets bottom="5.0" top="5.0" />
          </HBox.margin>

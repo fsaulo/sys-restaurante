@@ -41,7 +41,7 @@ public class NewComandaDialogController {
     @FXML
     private TextField searchBox;
 
-    private final ObservableList<TableDao> tables = FXCollections.observableArrayList(new Order().getTables());
+    private final ObservableList<TableDao> tables = FXCollections.observableArrayList(Order.getTables());
 
     @FXML
     public void initialize() {

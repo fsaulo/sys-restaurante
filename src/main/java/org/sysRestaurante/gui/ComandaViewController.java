@@ -1,6 +1,8 @@
 package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -34,6 +36,8 @@ public class ComandaViewController {
     private VBox popOverVbox;
     @FXML
     private ComboBox<EmployeeDao> employeeComboBox;
+    @FXML
+    private ListView<ProductDao> productsListView;
 
     private ComandaDao comanda;
 
@@ -42,13 +46,15 @@ public class ComandaViewController {
     }
 
     public void initialize() {
-        Platform.runLater(() -> tableLabel.requestFocus());
 
         handleEmployeesComboBox();
         tableLabel.setText("MESA " + comanda.getIdTable());
         comandaLabel.setText("#" + comanda.getIdComanda());
         ArrayList<ProductDao> list = new ArrayList<>(Order.getItemsByOrderId(comanda.getIdOrder()));
 
+        productsListView.setItems(FXCollections.observableList(list));
+        productsListView.setCellFactory(plv -> new ProductListViewCell(false));
+        productsListView.setFocusTraversable(true);
         employeeComboBox.setOnAction(event -> updateEmployee());
         closeComandaButton.setOnMouseClicked(event -> {
             AppFactory.setSelectedProducts(list);
@@ -62,6 +68,7 @@ public class ComandaViewController {
             AppController.showDialog(SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
                     AppFactory.getMainController().getScene().getWindow());
         });
+        Platform.runLater(() -> tableLabel.requestFocus());
     }
 
     public void updateEmployee() {
