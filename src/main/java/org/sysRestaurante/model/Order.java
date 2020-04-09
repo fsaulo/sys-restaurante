@@ -362,7 +362,7 @@ public class Order {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            LOGGER.severe("Error trying to register products in order.");
+            LOGGER.severe("Error trying to delete a product from order.");
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
         }

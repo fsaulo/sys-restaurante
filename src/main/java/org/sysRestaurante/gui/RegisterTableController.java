@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ListView;
 
@@ -46,6 +47,7 @@ public class RegisterTableController {
         tableCodTextField = new TextField();
         tableCodTextField.setPrefHeight(35);
         tableCodTextField.setPromptText("Digite o código da mesa");
+        removeButton.setOnMouseClicked(event -> onRemoveTableClicked());
         fieldVBox.getChildren().add(tableCodTextField);
         Platform.runLater(() -> {
             fieldVBox.requestFocus();
@@ -88,6 +90,31 @@ public class RegisterTableController {
             alert.setContentText("O código da mesa deve ser um número!");
             alert.initOwner(owner);
             alert.showAndWait();
+        }
+    }
+
+    public void onRemoveTableClicked() {
+        Window owner = AppFactory.getMainController().getScene().getWindow();
+        if (!tableListView.getSelectionModel().isEmpty()) {
+            if (tableListView.getSelectionModel().getSelectedItem().getIdStatus() == 1) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmação do Sistema");
+                alert.setContentText("Tem certeza que deseja remover essa mesa?");
+                alert.initOwner(owner);
+                alert.showAndWait();
+
+                if (alert.getResult() == ButtonType.OK) {
+                    Management.deleteTable(tableListView.getSelectionModel().getSelectedItem().getIdTable());
+                    tableListView.getSelectionModel().clearSelection();
+                    AppFactory.getManageComandaController().refreshTileList();
+                }
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Alerta do sistema");
+                alert.setHeaderText("Você não pode remover uma mesa ocupada");
+                alert.setContentText("Finalize o pedido antes de remover a mesa do banco de dados.");
+                alert.showAndWait();
+            }
         }
     }
 }

@@ -130,6 +130,25 @@ public class Management {
         return null;
     }
 
+    public static void deleteTable(int idTable) {
+        String query = "DELETE FROM mesa WHERE id_mesa = ?";
+        PreparedStatement ps = null;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idTable);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            LOGGER.severe("Error trying to delete a table.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            ex.printStackTrace();
+        }
+    }
+
     public static String getTableCategoryById(int idCategory) {
         String query = "SELECT descricao FROM categoria_mesa WHERE id_categoria_mesa = ?";
         String category = "Sem categoria";

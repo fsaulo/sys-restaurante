@@ -71,21 +71,11 @@ public class ManageComandaController {
             newComandaButton.setDisable(true);
         }
 
-        try {
-            handleAddComanda();
-            handleRegisterTable();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
+        setController();
         initSessionDetails();
+        updateInfo();
 
         Platform.runLater(this::listBusyTable);
-        NumberFormat format = CurrencyField.getBRLCurrencyFormat();
-        averageTime.setText(session.getAveragePermanencyInMinutes() + " minutos");
-        busyTables.setText(String.valueOf(session.getBusyTablesCount()));
-        availableTables.setText(String.valueOf(session.getAvailableTablesCount()));
-        averageIncome.setText(format.format(averageIncome()));
     }
 
     public void handleAddComanda() throws IOException {
@@ -104,6 +94,15 @@ public class ManageComandaController {
         registerTableButton.setOnMouseClicked(e1 -> popOver.show(registerTableButton));
     }
 
+    public void setController() {
+        try {
+            handleAddComanda();
+            handleRegisterTable();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public void initSessionDetails() {
         int busy = Management.getBusyTables().size();
         session = AppFactory.getSessionDao();
@@ -112,7 +111,16 @@ public class ManageComandaController {
         session.setAvailableTablesCount(Management.getTables().size() - busy);
     }
 
+    public void updateInfo() {
+        NumberFormat format = CurrencyField.getBRLCurrencyFormat();
+        averageTime.setText(session.getAveragePermanencyInMinutes() + " minutos");
+        busyTables.setText(String.valueOf(session.getBusyTablesCount()));
+        availableTables.setText(String.valueOf(session.getAvailableTablesCount()));
+        averageIncome.setText(format.format(averageIncome()));
+    }
+
     public void listBusyTable() {
+        tilePane.getChildren().clear();
         for (ComandaDao item : comandas) {
             computeAverageTime(item);
             computeTotalIncome(item);
@@ -160,6 +168,7 @@ public class ManageComandaController {
     }
 
     public double averageIncome() {
+        System.out.println(comandas.size());
         if (comandas.size() <= 0) return (0);
         else return session.getTotalComandaIncome() / comandas.size();
     }
@@ -214,8 +223,11 @@ public class ManageComandaController {
     }
 
     public void refreshTileList() {
+        comandas = Order.getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
+        setController();
         initSessionDetails();
         listBusyTable();
+        updateInfo();
     }
 
     public String calculateTimePeriod(ComandaDao comanda) {
