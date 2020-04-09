@@ -1,5 +1,6 @@
 package org.sysRestaurante.gui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -22,6 +23,7 @@ import org.sysRestaurante.dao.SessionDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
+import org.sysRestaurante.model.Management;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -77,8 +79,8 @@ public class ManageComandaController {
         }
 
         initSessionDetails();
-        listBusyTable();
 
+        Platform.runLater(this::listBusyTable);
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
         averageTime.setText(session.getAveragePermanencyInMinutes() + " minutos");
         busyTables.setText(String.valueOf(session.getBusyTablesCount()));
@@ -103,11 +105,11 @@ public class ManageComandaController {
     }
 
     public void initSessionDetails() {
-        int busy = Order.getBusyTables().size();
+        int busy = Management.getBusyTables().size();
         session = AppFactory.getSessionDao();
         session.setIdCashier(AppFactory.getCashierDao().getIdCashier());
         session.setBusyTablesCount(busy);
-        session.setAvailableTablesCount(Order.getTables().size() - busy);
+        session.setAvailableTablesCount(Management.getTables().size() - busy);
     }
 
     public void listBusyTable() {
@@ -212,7 +214,8 @@ public class ManageComandaController {
     }
 
     public void refreshTileList() {
-        initialize();
+        initSessionDetails();
+        listBusyTable();
     }
 
     public String calculateTimePeriod(ComandaDao comanda) {

@@ -57,8 +57,8 @@ public class ComandaViewController {
         productsListView.setFocusTraversable(true);
         employeeComboBox.setOnAction(event -> updateEmployee());
         closeComandaButton.setOnMouseClicked(event -> {
-            AppFactory.setSelectedProducts(list);
             AppFactory.setOrderDao(comanda);
+            AppFactory.setSelectedProducts(list);
             AppController.showPaymentDialog();
             AppFactory.getManageComandaController().refreshTileList();
         });

@@ -26,6 +26,7 @@ import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.model.Management;
 import org.sysRestaurante.util.PercentageField;
 
 import java.io.IOException;
@@ -228,7 +229,7 @@ public class FinishSellController {
                 order.addProductsToOrder(orderDao.getIdOrder(), items);
                 order.updateOrderStatus(((ComandaDao) orderDao).getIdComanda(), 1);
                 order.updateOrderAmount(((ComandaDao) orderDao).getIdComanda(), payInCash, payByCard, discount);
-                order.closeTable(((ComandaDao) orderDao).getIdTable());
+                Management.closeTable(((ComandaDao) orderDao).getIdTable());
                 new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
                 AppFactory.getManageComandaController().refreshTileList();
             } else {
@@ -344,7 +345,7 @@ public class FinishSellController {
     public double getSubtotal() {
         double total = 0;
         for (ProductDao item : AppFactory.getSelectedProducts()) {
-            total += item.getTotal();
+            total += item.getSellPrice() * item.getQuantity();
         }
         return total;
     }

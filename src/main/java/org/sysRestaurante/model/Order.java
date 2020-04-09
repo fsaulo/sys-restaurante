@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -249,24 +248,6 @@ public class Order {
         }
     }
 
-    public void closeTable(int idTable) {
-        String query = "UPDATE mesa SET id_categoria_mesa = ? WHERE id_mesa = ?";
-        PreparedStatement ps;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, 1);
-            ps.setInt(2, idTable);
-            ps.executeUpdate();
-
-            ps.close();
-            con.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public static void insertCustomerName(int idOrder, String customerName) {
         String query = "UPDATE pedido SET nome_cliente = ? WHERE id_pedido = ?";
         PreparedStatement ps;
@@ -482,83 +463,6 @@ public class Order {
         return 0;
     }
 
-    public static List<TableDao> getTables() {
-        String query = "SELECT * FROM mesa";
-        List<TableDao> tables = new ArrayList<>();
-        PreparedStatement ps;
-        ResultSet rs;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                TableDao table = new TableDao();
-                table.setIdTable(rs.getInt("id_mesa"));
-                table.setStatus(rs.getInt("id_categoria_mesa"));
-                tables.add(table);
-            }
-
-            ps.close();
-            rs.close();
-            con.close();
-            return tables;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public static void changeTableStatus(int idTable, int type) {
-        String query = "UPDATE mesa SET id_categoria_mesa = ? WHERE id_mesa = ?";
-        PreparedStatement ps;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, type);
-            ps.setInt(2, idTable);
-            ps.executeUpdate();
-
-            ps.close();
-            con.close();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static List<TableDao> getBusyTables() {
-        String query = "SELECT * FROM mesa WHERE id_categoria_mesa = ? OR id_categoria_mesa = ?";
-        List<TableDao> tables = new ArrayList<>();
-        PreparedStatement ps;
-        ResultSet rs;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, 2);
-            ps.setInt(2, 3);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                TableDao table = new TableDao();
-                table.setIdTable(rs.getInt("id_mesa"));
-                table.setStatus(rs.getInt("id_categoria_mesa"));
-                table.setStatus(1);
-                tables.add(table);
-            }
-
-            ps.close();
-            rs.close();
-            con.close();
-            return tables;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
     public String getOrderCategoryById(int idCategory) {
         String query = "SELECT descricao FROM categoria_pedido WHERE id_categoria_pedido = ?";
         String category = "Sem categoria";
@@ -574,32 +478,6 @@ public class Order {
             if (rs.next()) {
                 category = rs.getString("descricao");
             }
-            return category;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public String getTableCategoryById(int idCategory) {
-        String query = "SELECT descricao FROM categoria_mesa WHERE id_categoria_mesa = ?";
-        String category = "Sem categoria";
-        PreparedStatement ps;
-        ResultSet rs;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, idCategory);
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                category = rs.getString("descricao");
-            }
-
-            ps.close();
-            rs.close();
-            con.close();
             return category;
         } catch (SQLException ex) {
             ex.printStackTrace();

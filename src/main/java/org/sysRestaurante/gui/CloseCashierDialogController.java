@@ -19,8 +19,8 @@ import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.model.Management;
 
-import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -57,7 +57,7 @@ public class CloseCashierDialogController {
     private boolean customerPresent = false;
     private List<ComandaDao> comandas;
     CashierDao cashierDao;
-    private ObservableList<TableDao> tables = FXCollections.observableArrayList(Order.getBusyTables());
+    private ObservableList<TableDao> tables = FXCollections.observableArrayList(Management.getBusyTables());
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(
             CloseCashierDialogController.class.getName());
 

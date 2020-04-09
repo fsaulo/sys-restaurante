@@ -22,6 +22,7 @@ import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.TableDao;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
+import org.sysRestaurante.model.Management;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class NewComandaDialogController {
     @FXML
     private TextField searchBox;
 
-    private final ObservableList<TableDao> tables = FXCollections.observableArrayList(Order.getTables());
+    private final ObservableList<TableDao> tables = FXCollections.observableArrayList(Management.getTables());
 
     @FXML
     public void initialize() {
@@ -147,7 +148,7 @@ public class NewComandaDialogController {
         // thus should be fixed.
         Order.removeProductsFromOrder(order.getIdOrder());
         cashier.newComanda(idTable, order.getIdOrder(), idCashier, idEmployee,2);
-        Order.changeTableStatus(idTable, 2);
+        Management.changeTableStatus(idTable, 2);
         AppFactory.getManageComandaController().refreshTileList();
         ((Node) event.getSource()).getScene().getWindow().hide();
 

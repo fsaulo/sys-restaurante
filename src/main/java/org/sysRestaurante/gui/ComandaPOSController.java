@@ -174,7 +174,7 @@ public class ComandaPOSController extends POS {
     }
 
     public void updateEmployeeOnClose() {
-        wrapperBox.getScene().getWindow().setOnCloseRequest(e1 -> saveChanges());
+        wrapperBox.getScene().getWindow().setOnCloseRequest(e1 -> Platform.runLater(this::saveChanges));
     }
 
     public void saveProductList() {

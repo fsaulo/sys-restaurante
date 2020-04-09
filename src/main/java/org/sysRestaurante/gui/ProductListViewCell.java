@@ -79,6 +79,8 @@ public class ProductListViewCell extends ListCell<ProductDao> {
                     }
                 });
             } else {
+                description.setText(product.getQuantity() + " x " + product.getDescription());
+                price.setText(brlCurrencyFormat.format(product.getSellPrice()*product.getQuantity()));
                 wrapperBox.getChildren().removeAll(category, id, sep);
             }
 
