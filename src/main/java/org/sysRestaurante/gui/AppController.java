@@ -47,6 +47,7 @@ public class AppController implements DateFormatter {
     private static long timerInMillies;
     private final Authentication certs = new Authentication();
     private Label sessionTimer;
+    private static boolean sellConfirmed;
 
     @FXML
     private BorderPane borderPaneHolder;
@@ -263,5 +264,13 @@ public class AppController implements DateFormatter {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static boolean isSellConfirmed() {
+        return sellConfirmed;
+    }
+
+    public static void setSellConfirmed(boolean sell) {
+        sellConfirmed = sell;
     }
 }

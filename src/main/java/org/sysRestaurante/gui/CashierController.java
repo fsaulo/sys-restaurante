@@ -114,8 +114,8 @@ public class CashierController {
         newOrderBox.setDisable(true);
         AppFactory.getAppController().showPOS();
 
-        if (isSellConfirmed()) {
-            setSellConfirmed(false);
+        if (AppController.isSellConfirmed()) {
+            AppController.setSellConfirmed(false);
             NotificationHandler.showInfo("Pedido realizado com sucesso");
         }
 
@@ -213,13 +213,5 @@ public class CashierController {
             message.setStyle("-fx-font-family: carlito; -fx-font-size: 15; -fx-font-weight: bold");
             cashierDateDetailsBox.getChildren().add(message);
         }
-    }
-
-    public void setSellConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
-
-    public boolean isSellConfirmed() {
-        return confirmed;
     }
 }

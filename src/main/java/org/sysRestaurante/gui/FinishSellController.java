@@ -119,6 +119,7 @@ public class FinishSellController {
         triggerActions();
 
         Format format = CurrencyField.getBRLCurrencyFormat();
+        AppController.setSellConfirmed(false);
         percentageField1.textProperty().addListener(observable -> {
             totalLabel.setText(format.format(getTotal()));
             changeLabel.setText(format.format(getChange()));
@@ -232,6 +233,7 @@ public class FinishSellController {
                 Management.closeTable(((ComandaDao) orderDao).getIdTable());
                 new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
                 AppFactory.getManageComandaController().refreshTileList();
+                AppController.setSellConfirmed(true);
             } else {
                 LOGGER.info("Instance of 'Order' Data Access Object");
                 orderDao = order.newOrder(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 1,
@@ -239,7 +241,7 @@ public class FinishSellController {
                 new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
                 order.addProductsToOrder(orderDao.getIdOrder(), items);
                 AppFactory.getCashierController().updateCashierElements();
-                AppFactory.getCashierController().setSellConfirmed(true);
+                AppController.setSellConfirmed(true);
             }
 
             AppFactory.setOrderDao(null);

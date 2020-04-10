@@ -1,6 +1,5 @@
 package org.sysRestaurante.gui;
 
-import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -183,7 +182,6 @@ public class POS {
             }
         });
 
-
         addProductButton.setOnAction(event -> {
             if (!productsListView.getItems().isEmpty()) {
                 addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem(), qtySpinner.getValue());
@@ -301,7 +299,6 @@ public class POS {
         AppFactory.setSelectedProducts(products);
         OrderDao order = AppFactory.getOrderDao();
         if (order instanceof ComandaDao) {
-            System.out.println("COMANDA");
             if (selectedProductsTableView.getItems().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Alerta do sistema");
@@ -310,12 +307,15 @@ public class POS {
                 alert.showAndWait();
             } else {
                 AppController.showPaymentDialog(AppFactory.getPos().getPOSWindow(), wrapperBox);
-                System.out.println(order.getIdOrder());
-                if (fromPOS) getPOSWindow().hide();
-                NotificationHandler.showInfo("Pedido realizado com sucesso");
+
+                if (AppController.isSellConfirmed()) {
+                    NotificationHandler.showInfo("Comanda finalizada com sucesso!");
+                    AppController.setSellConfirmed(false);
+                    if (fromPOS) getPOSWindow().hide();
+                }
+
             }
         } else {
-            System.out.println("ORDER");
             if (selectedProductsTableView.getItems().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Alerta do sistema");
@@ -325,7 +325,8 @@ public class POS {
             } else {
                 AppFactory.setOrderDao(new OrderDao());
                 AppController.showPaymentDialog(AppFactory.getPos().getPOSWindow(), wrapperBox);
-                if (AppFactory.getCashierController().isSellConfirmed()) {
+                if (AppController.isSellConfirmed()) {
+                    AppController.setSellConfirmed(false);
                     AppFactory.getSelectedProducts().clear();
                     AppFactory.setOrderDao(new OrderDao());
                     wrapperBox.getScene().getWindow().hide();

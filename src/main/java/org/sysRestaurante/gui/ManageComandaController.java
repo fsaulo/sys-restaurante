@@ -168,7 +168,6 @@ public class ManageComandaController {
     }
 
     public double averageIncome() {
-        System.out.println(comandas.size());
         if (comandas.size() <= 0) return (0);
         else return session.getTotalComandaIncome() / comandas.size();
     }

@@ -2,7 +2,6 @@ package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -12,13 +11,13 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.EmployeeDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
-import org.sysRestaurante.model.Product;
 
 import java.util.ArrayList;
 
