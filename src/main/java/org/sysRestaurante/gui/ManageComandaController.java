@@ -121,10 +121,11 @@ public class ManageComandaController {
 
     public void listBusyTable() {
         tilePane.getChildren().clear();
+        totalIncome = 0;
         for (ComandaDao item : comandas) {
             computeAverageTime(item);
-            computeTotalIncome(item);
             computeTotalComanda(item);
+            computeTotalIncome(item);
 
             if (item.getIdCategory() != 6) {
                 try {

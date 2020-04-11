@@ -258,7 +258,6 @@ public class FinishSellController {
         orderDao.setIdOrder(new Order().getLastOrderId() + 1);
         AppFactory.setOrderDao(orderDao);
         products = AppFactory.getSelectedProducts();
-        AppFactory.setSelectedProducts(products);
     }
 
     public PopOver viewReceipt() {

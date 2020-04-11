@@ -20,6 +20,7 @@ public class MainGUI extends Application {
 
     private static final Logger LOGGER = new LoggerHandler().getGenericConsoleHandler(MainGUI.class.getName());
     private static MainGUIController mainController;
+    private static final String KEY = "Jaguaric@3105";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -29,7 +30,7 @@ public class MainGUI extends Application {
         final String JAVAFX_VERSION = System.getProperties().get("javafx.runtime.version").toString();
         LOGGER.info("Java JDK Runtime Version: " + JAVA_VERSION);
         LOGGER.info("JavaFX Runtime Version: " + JAVAFX_VERSION);
-        Encryption.setKey("Jaguaric@3105");
+        Encryption.setKey(KEY);
         startProgram(primaryStage);
 
         LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");

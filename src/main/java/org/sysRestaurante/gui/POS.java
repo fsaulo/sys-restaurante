@@ -295,8 +295,8 @@ public class POS {
     }
 
     public void onFinalizeOrder() {
-        ArrayList<ProductDao> products = new ArrayList<>(selectedProductsTableView.getItems());
-        AppFactory.setSelectedProducts(products);
+        ArrayList<ProductDao> selectedProducts = new ArrayList<>(selectedProductsTableView.getItems());
+        AppFactory.setSelectedProducts(selectedProducts);
         OrderDao order = AppFactory.getOrderDao();
         if (order instanceof ComandaDao) {
             if (selectedProductsTableView.getItems().isEmpty()) {
@@ -313,7 +313,6 @@ public class POS {
                     AppController.setSellConfirmed(false);
                     if (fromPOS) getPOSWindow().hide();
                 }
-
             }
         } else {
             if (selectedProductsTableView.getItems().isEmpty()) {

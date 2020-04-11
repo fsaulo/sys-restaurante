@@ -341,7 +341,6 @@ public class Order {
             ps.executeBatch();
             ps.close();
             con.close();
-            LOGGER.info("Products added.");
         } catch (SQLException ex) {
             LOGGER.severe("Error trying to register products in order.");
             ExceptionHandler.incrementGlobalExceptionsCount();

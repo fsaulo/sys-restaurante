@@ -88,6 +88,8 @@ public class ComandaPOSController extends POS {
     private Label categoryLabel;
     @FXML
     private VBox detailsWrapperBox;
+    @FXML
+    private Label totalLabel;
 
     private ComandaDao comanda = AppFactory.getComandaDao();
     private final ObservableList<ProductDao> selectedProductsList = observableArrayList();
@@ -113,15 +115,25 @@ public class ComandaPOSController extends POS {
 
         productsListView.setItems(products);
         productsListView.setCellFactory(plv -> new ProductListViewCell());
-        updateButton.setOnMouseClicked(ac -> updateComandaItems());
         employeeComboBox.setOnAction(event -> updateEmployee());
         tableLabel.setText("MESA #" + this.comanda.getIdTable());
         codOrderLabel.setText(String.valueOf(comanda.getIdOrder()));
         customerLabel.setText(Order.getCustomerName(comanda.getIdOrder()));
         customerBox.setOnKeyTyped(e-> customerLabel.setText(customerBox.getText()));
-        finalizeOrderButton.setOnMouseClicked(e -> onFinalizeOrder());
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
         subtotalLabel.setText(format.format(comanda.getTotal()));
+        totalLabel.setText(format.format(comanda.getTotal()));
+
+        updateButton.setOnMouseClicked(ac -> {
+            updateComandaItems();
+            saveChanges();
+        });
+
+        finalizeOrderButton.setOnMouseClicked(e -> {
+            saveChanges();
+            onFinalizeOrder();
+        });
+
         Platform.runLater(() -> {
             updateEmployeeOnClose();
             selectedProductsTableView.refresh();
