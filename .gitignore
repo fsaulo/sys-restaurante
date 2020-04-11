@@ -11,3 +11,6 @@
 
 # Ignore binaries
 *.class
+
+# Ignore configuration folder
+.idea

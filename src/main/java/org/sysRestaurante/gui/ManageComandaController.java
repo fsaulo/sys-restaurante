@@ -15,6 +15,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 
+import javafx.stage.Window;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
@@ -247,5 +248,9 @@ public class ManageComandaController {
         }
 
         return durationText;
+    }
+
+    public Window getWindow() {
+        return scrollPane.getScene().getWindow();
     }
 }

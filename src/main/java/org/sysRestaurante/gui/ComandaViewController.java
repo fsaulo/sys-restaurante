@@ -3,6 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -39,6 +40,7 @@ public class ComandaViewController {
     private ListView<ProductDao> productsListView;
 
     private ComandaDao comanda;
+    private ArrayList<ProductDao> list;
 
     public ComandaViewController(ComandaDao comanda) {
         this.comanda = comanda;
@@ -49,18 +51,13 @@ public class ComandaViewController {
         handleEmployeesComboBox();
         tableLabel.setText("MESA " + comanda.getIdTable());
         comandaLabel.setText("#" + comanda.getIdComanda());
-        ArrayList<ProductDao> list = new ArrayList<>(Order.getItemsByOrderId(comanda.getIdOrder()));
+        list = new ArrayList<>(Order.getItemsByOrderId(comanda.getIdOrder()));
 
         productsListView.setItems(FXCollections.observableList(list));
         productsListView.setCellFactory(plv -> new ProductListViewCell(false));
         productsListView.setFocusTraversable(true);
         employeeComboBox.setOnAction(event -> updateEmployee());
-        closeComandaButton.setOnMouseClicked(event -> {
-            AppFactory.setOrderDao(comanda);
-            AppFactory.setSelectedProducts(list);
-            AppController.showPaymentDialog();
-            AppFactory.getManageComandaController().refreshTileList();
-        });
+        closeComandaButton.setOnMouseClicked(event -> handleCloseComanda());
 
         addOrder.setOnMouseClicked(event -> {
             AppFactory.setComandaDao(comanda);
@@ -68,6 +65,22 @@ public class ComandaViewController {
                     AppFactory.getMainController().getScene().getWindow());
         });
         Platform.runLater(() -> tableLabel.requestFocus());
+    }
+
+    public void handleCloseComanda() {
+        if (list.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta do sistema");
+            alert.setHeaderText("Atenção!");
+            alert.setContentText("Não foi possível finalizar pedido, não há nenhum produto na lista.");
+            alert.initOwner(AppFactory.getManageComandaController().getWindow());
+            alert.showAndWait();
+        } else {
+            AppFactory.setOrderDao(comanda);
+            AppFactory.setSelectedProducts(list);
+            AppController.showPaymentDialog();
+            AppFactory.getManageComandaController().refreshTileList();
+        }
     }
 
     public void updateEmployee() {
