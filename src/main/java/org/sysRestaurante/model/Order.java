@@ -6,7 +6,6 @@ import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
-import org.sysRestaurante.dao.TableDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -482,5 +481,23 @@ public class Order {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static void changeTable(int idComanda, int idTable) {
+        PreparedStatement ps;
+        String query = "UPDATE comanda SET id_mesa = ? WHERE id_comanda = ?";
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idTable);
+            ps.setInt(2, idComanda);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

@@ -32,7 +32,7 @@ public class AppFactory {
     private static CashierPOSController cashierPOSController;
     private static ArrayList<ProductDao> selectedProducts;
     private static ManageComandaController manageComandaController;
-    private static ComandaPOSController ComandaPOSController;
+    private static ComandaPOSController comandaPOSController;
     private static POS pos;
 
     public static SessionDao getSessionDao() {
@@ -148,9 +148,10 @@ public class AppFactory {
     }
 
     public static void setComandaPOSController(ComandaPOSController comandaPOSController) {
+        AppFactory.comandaPOSController = comandaPOSController;
     }
 
-    public static ComandaPOSController getComadnaPOSController() {
-        return ComandaPOSController;
+    public static ComandaPOSController getComandaPOSController() {
+        return comandaPOSController;
     }
 }

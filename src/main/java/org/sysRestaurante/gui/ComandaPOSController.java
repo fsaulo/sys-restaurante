@@ -3,6 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -12,10 +13,12 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
+import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.EmployeeDao;
@@ -24,7 +27,9 @@ import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
 import org.sysRestaurante.model.Product;
+import org.sysRestaurante.util.ExceptionHandler;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -46,6 +51,8 @@ public class ComandaPOSController extends POS {
     private Button removeButton;
     @FXML
     private Button clearButton;
+    @FXML
+    private Button changeTableButton;
     @FXML
     private Spinner<Integer> qtySpinner;
     @FXML
@@ -91,22 +98,24 @@ public class ComandaPOSController extends POS {
     @FXML
     private Label totalLabel;
 
-    private ComandaDao comanda = AppFactory.getComandaDao();
+    private final ComandaDao comanda = AppFactory.getComandaDao();
     private final ObservableList<ProductDao> selectedProductsList = observableArrayList();
     private final ObservableList<ProductDao> products = new Product().getProducts();
 
     @FXML
     public void initialize() {
+        AppFactory.setComandaPOSController(this);
         AppFactory.setPos(this);
         AppFactory.setOrderDao(comanda);
+
         handleEmployeesComboBox();
         calculateTimePeriod();
-        writeCustomer();
         setStageControls();
         updateTables();
         updateDetailsBox();
         startSearchControls();
         updateComandaItems();
+        handleChangeTable();
 
         exitButton.setOnAction(e1 -> {
             wrapperBox.getScene().getWindow().hide();
@@ -119,15 +128,17 @@ public class ComandaPOSController extends POS {
         tableLabel.setText("MESA #" + this.comanda.getIdTable());
         codOrderLabel.setText(String.valueOf(comanda.getIdOrder()));
         customerLabel.setText(Order.getCustomerName(comanda.getIdOrder()));
-        customerBox.setOnKeyTyped(e-> customerLabel.setText(customerBox.getText()));
+        customerBox.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.ENTER)) {
+                Order.insertCustomerName(comanda.getIdOrder(), customerBox.getText());
+                customerLabel.setText(customerBox.getText());
+                customerBox.clear();
+            }
+        });
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
         subtotalLabel.setText(format.format(comanda.getTotal()));
         totalLabel.setText(format.format(comanda.getTotal()));
-
-        updateButton.setOnMouseClicked(ac -> {
-            updateComandaItems();
-            saveChanges();
-        });
+        updateButton.setOnMouseClicked(ac -> updateComandaItems());
 
         finalizeOrderButton.setOnMouseClicked(e -> {
             saveChanges();
@@ -138,6 +149,20 @@ public class ComandaPOSController extends POS {
             updateEmployeeOnClose();
             selectedProductsTableView.refresh();
         });
+    }
+
+    public void handleChangeTable() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.SELEC_NEW_TABLE_VIEW));
+        PopOver popOver = null;
+        try {
+            popOver = new PopOver(loader.load());
+            popOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+            PopOver finalPopOver = popOver;
+            changeTableButton.setOnMouseClicked(e -> finalPopOver.show(changeTableButton));
+        } catch (IOException e) {
+            e.printStackTrace();
+            ExceptionHandler.incrementGlobalExceptionsCount();
+        }
     }
 
     public void setStageControls() {
@@ -162,14 +187,6 @@ public class ComandaPOSController extends POS {
         setProducts(products);
         setRemoveButton(removeButton);
         setClearButton(clearButton);
-    }
-
-    public void setCustomer() {
-        Order.insertCustomerName(comanda.getIdOrder(), customerBox.getText());
-    }
-
-    public void writeCustomer() {
-        customerBox.setText(Order.getCustomerName(comanda.getIdOrder()));
     }
 
     public void updateEmployee() {
@@ -201,7 +218,6 @@ public class ComandaPOSController extends POS {
     }
 
     public void saveChanges() {
-        setCustomer();
         clear();
         saveProductList();
         AppFactory.getManageComandaController().refreshTileList();
@@ -244,6 +260,10 @@ public class ComandaPOSController extends POS {
         if (selectedEmployee != null ) {
             employeeComboBox.getSelectionModel().select(selectedEmployee);
         }
+    }
+
+    public void updateTableCod() {
+        tableLabel.setText("MESA #" + AppFactory.getComandaDao().getIdTable());
     }
 
     public void calculateTimePeriod() {
