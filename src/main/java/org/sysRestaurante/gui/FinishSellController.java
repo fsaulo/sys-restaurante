@@ -225,25 +225,28 @@ public class FinishSellController {
             OrderDao orderDao = AppFactory.getOrderDao();
 
             if (orderDao instanceof ComandaDao || orderDao == null) {
+                int idComanda = ((ComandaDao) orderDao).getIdComanda();
                 LOGGER.info("Instance of 'Comanda' Data Access Object");
-                order.closeComanda((ComandaDao) orderDao, payByCard + payInCash);
-                order.addProductsToOrder(orderDao.getIdOrder(), items);
-                order.updateOrderStatus(((ComandaDao) orderDao).getIdComanda(), 1);
-                order.updateOrderAmount(((ComandaDao) orderDao).getIdComanda(), payInCash, payByCard, discount);
-                Management.closeTable(((ComandaDao) orderDao).getIdTable());
-                new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+                Order.closeComanda(idComanda, payByCard + payInCash);
+                Order.addProductsToOrder(orderDao.getIdOrder(), items);
+                Order.updateOrderStatus(idComanda, 1);
+                Order.updateOrderAmount(idComanda, payInCash, payByCard, discount);
+                Management.closeTable(idComanda);
+                Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
                 AppFactory.getManageComandaController().refreshTileList();
-                AppController.setSellConfirmed(true);
             } else {
                 LOGGER.info("Instance of 'Order' Data Access Object");
-                orderDao = order.newOrder(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 1,
-                        discount, note.toString());
-                new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
-                order.addProductsToOrder(orderDao.getIdOrder(), items);
+                Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+                orderDao = Order.newOrder(AppFactory.getCashierDao().getIdCashier(),
+                        payInCash,
+                        payByCard,
+                        1,
+                        discount,
+                        note.toString());
+                Order.addProductsToOrder(orderDao.getIdOrder(), items);
                 AppFactory.getCashierController().updateCashierElements();
-                AppController.setSellConfirmed(true);
             }
-
+            AppController.setSellConfirmed(true);
             AppFactory.setOrderDao(null);
             wrapperVBox.getScene().getWindow().hide();
         }

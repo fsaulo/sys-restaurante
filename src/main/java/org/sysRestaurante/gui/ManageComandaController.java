@@ -83,7 +83,7 @@ public class ManageComandaController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.NEW_COMANDA_DIALOG));
         VBox node = loader.load();
         PopOver popOver = new PopOver(node);
-        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_LEFT);
+        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_CENTER);
         newComandaButton.setOnMouseClicked(e1 -> popOver.show(newComandaButton));
     }
 
@@ -91,7 +91,7 @@ public class ManageComandaController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.REGISTER_TABLE_VIEW));
         VBox node = loader.load();
         PopOver popOver = new PopOver(node);
-        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_LEFT);
+        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_CENTER);
         registerTableButton.setOnMouseClicked(e1 -> popOver.show(registerTableButton));
     }
 

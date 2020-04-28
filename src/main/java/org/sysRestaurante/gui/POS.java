@@ -367,10 +367,7 @@ public class POS {
     }
 
     protected void updateSelectedList() {
-        if (selectedProductsTableView.getItems().isEmpty()) {
-            selectedProductsTableView.setEditable(false);
-        } else selectedProductsTableView.setEditable(true);
-
+        selectedProductsTableView.setEditable(!selectedProductsTableView.getItems().isEmpty());
         selectedProductsTableView.setItems(selectedProductsList);
         selectedProductsTableView.refresh();
         updateTotalCashierLabel();

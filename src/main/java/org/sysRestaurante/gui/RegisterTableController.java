@@ -47,16 +47,15 @@ public class RegisterTableController {
         tableCodTextField.setPromptText("Digite o código da mesa");
         removeButton.setOnMouseClicked(event -> onRemoveTableClicked());
         fieldVBox.getChildren().add(tableCodTextField);
-        Platform.runLater(() -> {
-            fieldVBox.requestFocus();
-            tableListView.focusModelProperty().addListener(event -> {
-                if (tableListView.getSelectionModel().isEmpty()) {
-                    removeButton.setDisable(true);
-                } else removeButton.setDisable(false);
-            });
-        });
         confirmButton.setOnMouseClicked(event -> onNewTableClicked());
         cancelButton.setOnMouseClicked(event -> fieldVBox.getScene().getWindow().hide());
+
+        Platform.runLater(() -> {
+            fieldVBox.requestFocus();
+            tableListView.focusModelProperty().addListener(event -> removeButton.setDisable(tableListView
+                    .getSelectionModel()
+                    .isEmpty()));
+        });
     }
 
     public void onNewTableClicked() {
@@ -97,7 +96,8 @@ public class RegisterTableController {
             if (tableListView.getSelectionModel().getSelectedItem().getIdStatus() == 1) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmação do Sistema");
-                alert.setContentText("Tem certeza que deseja remover essa mesa?");
+                alert.setHeaderText("Tem certeza que deseja remover essa mesa?");
+                alert.setContentText("Essa operação não poderá ser desfeita.");
                 alert.initOwner(owner);
                 alert.showAndWait();
 

@@ -41,7 +41,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Label minWidth="90.0" prefWidth="90.0" text="Tempo:">
+                              <Label minWidth="125.0" prefWidth="125.0" text="Tempo:">
                                  <font>
                                     <Font name="Carlito Bold" size="18.0" />
                                  </font>
@@ -56,12 +56,12 @@
                               <Insets left="5.0" right="5.0" />
                            </padding>
                            <VBox.margin>
-                              <Insets top="35.0" />
+                              <Insets />
                            </VBox.margin>
                         </HBox>
                         <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Label minWidth="90.0" prefWidth="90.0" text="Cliente:">
+                              <Label minWidth="90.0" prefWidth="125.0" text="Cliente:">
                                  <font>
                                     <Font name="Carlito Bold" size="18.0" />
                                  </font>
@@ -78,7 +78,24 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Label minWidth="90.0" prefWidth="90.0" text="SUBTOTAL:">
+                              <Label minWidth="125.0" prefWidth="125.0" text="Cod. comanda:">
+                                 <font>
+                                    <Font name="Carlito Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="codComandaLabel" text="--">
+                                 <font>
+                                    <Font name="Carlito Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Label minWidth="125.0" prefWidth="125.0" text="Subtotal:">
                                  <font>
                                     <Font name="Carlito Bold" size="18.0" />
                                  </font>

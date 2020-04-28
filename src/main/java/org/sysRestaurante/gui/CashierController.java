@@ -68,7 +68,6 @@ public class CashierController {
     private TableView<OrderDao> orderListTableView;
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(CashierController.class.getName());
-    private boolean confirmed = false;
 
     @FXML
     public void initialize() {

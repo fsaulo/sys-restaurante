@@ -28,7 +28,8 @@ public class Order {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Order.class.getName());
 
-    public OrderDao newOrder(int idCashier, double inCash, double byCard, int type, double discount, String note) {
+    public static OrderDao newOrder(int idCashier, double inCash, double byCard, int type, double discount,
+                                   String note) {
         String query = "INSERT INTO pedido (id_usuario, id_caixa, data_pedido, observacao, " +
                 "valor_cartao, valor_avista, id_categoria_pedido, hora_pedido, descontos, status) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?)";
@@ -126,7 +127,6 @@ public class Order {
                 comanda.setIdComanda(rs.getInt("id_comanda"));
                 comanda.setIdOrder(rs.getInt("id_pedido"));
                 comanda.setTotal(rs.getDouble("total"));
-                comanda.setStatus(rs.getInt("id_categoria_pedido"));
                 comanda.setIdCategory(rs.getInt("id_categoria_pedido"));
                 comanda.setIdEmployee(rs.getInt("id_funcionario"));
                 comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
@@ -153,7 +153,7 @@ public class Order {
         return null;
     }
 
-    public void closeComanda(ComandaDao comanda, double total) {
+    public static void closeComanda(int idComanda, double total) {
         PreparedStatement ps;
         String query = "UPDATE comanda " +
                 "SET data_fechamento = ?, hora_fechamento = ?, total = ?, id_categoria_pedido = ?, is_aberto = ? " +
@@ -167,11 +167,31 @@ public class Order {
             ps.setDouble(3, total);
             ps.setInt(4, 6);
             ps.setBoolean(5, false);
-            ps.setInt(6, comanda.getIdComanda());
+            ps.setInt(6, idComanda);
             ps.executeUpdate();
 
             ps.close();
             con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void cancel(int idOrder) {
+        String query = "UPDATE pedido SET status = ? WHERE id_pedido = ?";
+        PreparedStatement ps;
+        int CANCELED = 3;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, CANCELED);
+            ps.setInt(2, idOrder);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+            LOGGER.info("Order successfully canceled.");
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -202,7 +222,7 @@ public class Order {
         }
     }
 
-    public void updateOrderAmount(int idComanda, double totalCash, double totalByCard, double discounts) {
+    public static void updateOrderAmount(int idComanda, double totalCash, double totalByCard, double discounts) {
         String query1 = "SELECT id_pedido FROM comanda WHERE id_comanda = ?";
         String query2 = "UPDATE pedido SET valor_cartao = ?, valor_avista = ?, descontos = ? WHERE id_pedido = ?";
         PreparedStatement ps;
