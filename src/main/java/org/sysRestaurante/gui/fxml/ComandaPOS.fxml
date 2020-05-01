@@ -451,7 +451,7 @@
             <Pane HBox.hgrow="ALWAYS" />
             <Button fx:id="finalizeOrderButton" defaultButton="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" text="Fechar conta (F2)">
                <font>
-                  <Font name="Carlito" size="16.0" />
+                  <Font name="Carlito Bold" size="16.0" />
                </font>
                <styleClass>
                   <String fx:value="view" />

@@ -73,9 +73,7 @@ public class AppController implements DateFormatter {
     public void setFullScreenShortcut() {
         Stage stage = (Stage) borderPaneHolder.getParent().getScene().getWindow();
         stage.setFullScreenExitHint("Você entrou em modo tela cheia.\nPara sair pressione ESC ou F11");
-        Runnable maximize = () -> {
-            if (stage.isFullScreen()) stage.setFullScreen(false);
-            else stage.setFullScreen(true); };
+        Runnable maximize = () -> stage.setFullScreen(!stage.isFullScreen());
         AppFactory.getMainController().getScene().getAccelerators().put(SceneNavigator.F11_FULLSCREEN_MODE, maximize);
     }
 
@@ -220,23 +218,6 @@ public class AppController implements DateFormatter {
             stage.setResizable(false);
             stage.showAndWait();
             AppFactory.getMainController().brightenScreen();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static void showPaymentDialog(Object owner) {
-        try {
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initOwner((Window) owner);
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(AppController.class.getResource(SceneNavigator.FINISH_SELL_DIALOG));
-            Scene scene = new Scene(loader.load());
-            stage.setScene(scene);
-            stage.setTitle("SysRestaurante: Finalizando pedido");
-            stage.setResizable(false);
-            stage.showAndWait();
         } catch (IOException ex) {
             ex.printStackTrace();
         }

@@ -1,14 +1,20 @@
 package org.sysRestaurante.gui;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
+import javafx.util.Callback;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.OrderDao;
@@ -21,6 +27,7 @@ import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.gui.formatter.StatusCellFormatter;
 import org.sysRestaurante.util.NotificationHandler;
 
+import java.lang.management.MemoryUsage;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -67,8 +74,6 @@ public class CashierController {
     @FXML
     private TableView<OrderDao> orderListTableView;
 
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(CashierController.class.getName());
-
     @FXML
     public void initialize() {
         AppFactory.setCashierController(this);
@@ -78,6 +83,23 @@ public class CashierController {
         updateOrderTableList();
         updateCashierElements();
         handleKeyEvent();
+
+        orderListTableView.setRowFactory(orderDaoTableView -> {
+            final TableRow<OrderDao> row = new TableRow<>();
+            final ContextMenu contextMenu = new ContextMenu();
+
+            SeparatorMenuItem separator = new SeparatorMenuItem();
+            MenuItem optionDeleteOrder = new MenuItem("Cancelar pedido");
+            MenuItem optionDetailsOrder = new MenuItem("Detalhes");
+            MenuItem optionSeeReceipt = new MenuItem("Recibo");
+            contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
+
+            row.contextMenuProperty().bind(Bindings.when(row.emptyProperty().not())
+            .then(contextMenu)
+            .otherwise((ContextMenu) null));
+
+            return row;
+        });
     }
 
     @FXML
