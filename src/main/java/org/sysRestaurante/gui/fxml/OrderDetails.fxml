@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox prefHeight="554.0" prefWidth="568.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="554.0" prefWidth="568.0" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.OrderDetailsController">
    <children>
       <HBox prefHeight="165.0" prefWidth="670.0" spacing="5.0">
          <children>
@@ -23,7 +15,7 @@
                <children>
                   <HBox style="-fx-background-color: #dddddd;">
                      <children>
-                        <Label fx:id="tableLabel" text="MESA #012">
+                        <Label fx:id="tableLabel" text="Pedido no caixa">
                            <font>
                               <Font name="Carlito Bold" size="22.0" />
                            </font>
@@ -35,9 +27,80 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                        <Label minWidth="125.0" prefWidth="125.0" text="Tempo:">
+                        <Label minWidth="125.0" prefWidth="125.0" text="Cod. comanda:">
+                           <font>
+                              <Font name="Carlito" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="codComandaLabel" text="--">
                            <font>
                               <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label minWidth="125.0" prefWidth="125.0" text="Subtotal:">
+                           <font>
+                              <Font name="Carlito" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="totalLabel" maxHeight="200.0" text="--">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label minWidth="125.0" prefHeight="22.0" prefWidth="125.0" text="Atendente:">
+                           <font>
+                              <Font name="Carlito" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="employeeLabel" maxHeight="200.0" text="--">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label minWidth="90.0" prefWidth="125.0" text="Cliente:">
+                           <font>
+                              <Font name="Carlito" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="customerLabel" maxWidth="200.0" text="--">
+                           <font>
+                              <Font name="Carlito Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label minWidth="125.0" prefHeight="22.0" prefWidth="125.0" text="Tempo de per.:">
+                           <font>
+                              <Font name="Carlito" size="18.0" />
                            </font>
                         </Label>
                         <Label fx:id="timeLabel" maxHeight="200.0" text="--">
@@ -55,29 +118,12 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT">
                      <children>
-                        <Label minWidth="90.0" prefWidth="125.0" text="Cliente:">
+                        <Label minWidth="125.0" prefWidth="125.0" text="Data do pedido:">
                            <font>
-                              <Font name="Carlito Bold" size="18.0" />
+                              <Font name="Carlito" size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="customerLabel" maxWidth="200.0" text="--">
-                           <font>
-                              <Font name="Carlito Bold" size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="5.0" right="5.0" />
-                     </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT">
-                     <children>
-                        <Label minWidth="125.0" prefWidth="125.0" text="Cod. comanda:">
-                           <font>
-                              <Font name="Carlito Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="codComandaLabel" text="--">
+                        <Label fx:id="dateLabel" maxHeight="200.0" text="--">
                            <font>
                               <Font name="Carlito Bold" size="18.0" />
                            </font>
@@ -86,26 +132,6 @@
                      <padding>
                         <Insets left="5.0" right="5.0" />
                      </padding>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT">
-                     <children>
-                        <Label minWidth="125.0" prefWidth="125.0" text="Subtotal:">
-                           <font>
-                              <Font name="Carlito Bold" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="totalLabel" maxHeight="200.0" text="--">
-                           <font>
-                              <Font name="Carlito Bold" size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="5.0" right="5.0" />
-                     </padding>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
                   </HBox>
                </children>
             </VBox>
@@ -128,7 +154,7 @@
                         <Insets left="5.0" right="5.0" />
                      </padding>
                   </HBox>
-                  <ComboBox fx:id="employeeComboBox" prefHeight="35.0" prefWidth="1000.0" promptText="Atendente">
+                  <ComboBox fx:id="employeeComboBox" disable="true" prefHeight="35.0" prefWidth="1000.0" promptText="Atendente">
                      <VBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </VBox.margin>
@@ -137,14 +163,14 @@
                         <String fx:value="view" />
                      </styleClass>
                   </ComboBox>
-                  <TextField fx:id="customerBox" prefHeight="35.0" promptText="Nome do cliente" styleClass="combo-box-view">
+                  <TextField fx:id="customerBox" disable="true" editable="false" prefHeight="35.0" promptText="Nome do cliente" styleClass="combo-box-view">
                      <VBox.margin>
                         <Insets left="5.0" right="5.0" top="3.0" />
                      </VBox.margin>
                   </TextField>
                   <HBox spacing="5.0">
                      <children>
-                        <Button fx:id="changeTableButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="600.0" text="Trocar mesa" HBox.hgrow="ALWAYS">
+                        <Button fx:id="changeTableButton" disable="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="600.0" text="Trocar mesa" HBox.hgrow="ALWAYS">
                            <font>
                               <Font name="Carlito" size="16.0" />
                            </font>
@@ -178,7 +204,8 @@
          <children>
             <TableView fx:id="selectedProductsTableView" editable="true" prefHeight="144.0" VBox.vgrow="ALWAYS">
                <placeholder>
-                  <Label opacity="0.7" text="O carrinho está vazio" textAlignment="CENTER" wrapText="true">
+                  <Label opacity="0.7" text="Nenhum produto foi adicionado a este pedido" textAlignment="CENTER"
+                         wrapText="true">
                      <font>
                         <Font name="Carlito Bold" size="20" />
                      </font>
@@ -218,50 +245,20 @@
       </VBox>
       <HBox alignment="CENTER_LEFT" prefWidth="670.0" spacing="5.0" style="-fx-border-color: #dddddd;">
          <children>
-            <Button fx:id="removeButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Sair">
+            <Button fx:id="exitButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Sair">
                <font>
                   <Font name="Carlito" size="16.0" />
                </font>
-               <tooltip>
-                  <Tooltip id="Voc" text="Você também pode pressionar o atalho F3 para abrir a lista de produtos" />
-               </tooltip>
                <styleClass>
                   <String fx:value="view" />
                   <String fx:value="combo-box-view" />
                </styleClass>
             </Button>
             <Pane HBox.hgrow="ALWAYS" />
-            <Button fx:id="clearButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Salvar">
+            <Button fx:id="receiptButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Recibo">
                <font>
                   <Font name="Carlito" size="16.0" />
                </font>
-               <tooltip>
-                  <Tooltip id="Voc" text="Você também pode pressionar o atalho F3 para abrir a lista de produtos" />
-               </tooltip>
-               <styleClass>
-                  <String fx:value="view" />
-                  <String fx:value="combo-box-view" />
-               </styleClass>
-            </Button>
-            <Button fx:id="removeButton1" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Recibo">
-               <font>
-                  <Font name="Carlito" size="16.0" />
-               </font>
-               <tooltip>
-                  <Tooltip id="Voc" text="Você também pode pressionar o atalho F3 para abrir a lista de produtos" />
-               </tooltip>
-               <styleClass>
-                  <String fx:value="view" />
-                  <String fx:value="combo-box-view" />
-               </styleClass>
-            </Button>
-            <Button fx:id="clearButton1" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Imprimir">
-               <font>
-                  <Font name="Carlito" size="16.0" />
-               </font>
-               <tooltip>
-                  <Tooltip id="Voc" text="Você também pode pressionar o atalho F3 para abrir a lista de produtos" />
-               </tooltip>
                <styleClass>
                   <String fx:value="view" />
                   <String fx:value="combo-box-view" />

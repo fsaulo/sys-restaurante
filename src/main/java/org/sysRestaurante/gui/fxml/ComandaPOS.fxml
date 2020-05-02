@@ -441,7 +441,7 @@
          <children>
             <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Sair (Esc)">
                <font>
-                  <Font name="Carlito" size="16.0" />
+                  <Font name="Carlito Bold" size="16.0" />
                </font>
                <styleClass>
                   <String fx:value="view" />

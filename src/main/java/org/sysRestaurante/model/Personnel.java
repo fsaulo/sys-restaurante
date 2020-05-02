@@ -5,6 +5,7 @@ import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.Encryption;
+import org.sysRestaurante.util.NotificationHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,6 +43,34 @@ public class Personnel {
             if (ps != null) ps.close();
             if (con != null) con.close();
         }
+    }
+
+    public static String getEmployeeNameById(int idEmployee) {
+        String name = "Nenhum";
+        String query = "SELECT nome FROM funcionario WHERE id_funcionario = ?";
+        PreparedStatement ps;
+        Connection con;
+        ResultSet rs;
+
+        try {
+            con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idEmployee);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                name = rs.getString("nome");
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+            return name;
+        } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public ArrayList<EmployeeDao> list() {

@@ -110,7 +110,7 @@ public class FinishSellController {
     private CurrencyField payByCard;
     private PercentageField percentageField1;
     private PercentageField percentageField2;
-    private static String GREEN = "#4a8d2c";
+    private static final String GREEN = "#4a8d2c";
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(FinishSellController.class.getName());
 
     @FXML
@@ -197,7 +197,6 @@ public class FinishSellController {
     }
 
     public void confirm() {
-        Order order = new Order();
         ArrayList<ProductDao> items = AppFactory.getSelectedProducts();
 
         double discount = this.percentageField1.getAmount();
@@ -227,26 +226,32 @@ public class FinishSellController {
             if (orderDao instanceof ComandaDao || orderDao == null) {
                 int idComanda = ((ComandaDao) orderDao).getIdComanda();
                 int idTable = ((ComandaDao) orderDao).getIdTable();
+
                 LOGGER.info("Instance of 'Comanda' Data Access Object");
+
                 Order.closeComanda(idComanda, payByCard + payInCash);
                 Order.addProductsToOrder(orderDao.getIdOrder(), items);
                 Order.updateOrderStatus(idComanda, 1);
                 Order.updateOrderAmount(idComanda, payInCash, payByCard, discount);
                 Management.closeTable(idTable);
                 Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+
                 AppFactory.getManageComandaController().refreshTileList();
             } else {
                 LOGGER.info("Instance of 'Order' Data Access Object");
                 Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+
                 orderDao = Order.newOrder(AppFactory.getCashierDao().getIdCashier(),
                         payInCash,
                         payByCard,
                         1,
                         discount,
                         note.toString());
+
                 Order.addProductsToOrder(orderDao.getIdOrder(), items);
                 AppFactory.getCashierController().updateCashierElements();
             }
+
             AppController.setSellConfirmed(true);
             AppFactory.setOrderDao(null);
             wrapperVBox.getScene().getWindow().hide();

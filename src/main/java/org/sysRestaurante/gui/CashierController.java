@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
+import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
@@ -92,8 +93,13 @@ public class CashierController {
             MenuItem optionDeleteOrder = new MenuItem("Cancelar pedido");
             MenuItem optionDetailsOrder = new MenuItem("Detalhes");
             MenuItem optionSeeReceipt = new MenuItem("Recibo");
-            contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
 
+            optionDetailsOrder.setOnAction(actionEvent -> {
+                AppFactory.setOrderDao(row.getItem());
+                AppController.showDialog(SceneNavigator.ORDER_DETAILS_DIALOG, true);
+            });
+
+            contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
             row.contextMenuProperty().bind(Bindings.when(row.emptyProperty().not())
             .then(contextMenu)
             .otherwise((ContextMenu) null));
@@ -196,7 +202,7 @@ public class CashierController {
     }
 
     public void updateOrderTableList() {
-        orderListTableView.setItems(new Order().getOrderByIdCashier(AppFactory.getCashierDao().getIdCashier()));
+        orderListTableView.setItems(Order.getOrderByIdCashier(AppFactory.getCashierDao().getIdCashier()));
         codOrder.setCellValueFactory(new PropertyValueFactory<>("idOrder"));
         total.setCellValueFactory(new PropertyValueFactory<>("total"));
         details.setCellValueFactory(new PropertyValueFactory<>("details"));

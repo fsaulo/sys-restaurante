@@ -19,13 +19,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
@@ -57,12 +55,17 @@ public class AppController implements DateFormatter {
         SessionDao session = new SessionDao();
         AppFactory.setAppController(this);
         AppFactory.setSessionDao(session);
+
+
         borderPaneHolder.leftProperty().setValue(
                 FXMLLoader.load(AppController.class.getResource(SceneNavigator.MENU_TOOL_BAR)));
+
         borderPaneHolder.centerProperty().setValue(
                 FXMLLoader.load(AppController.class.getResource(SceneNavigator.DASHBOARD)));
-        SceneNavigator.loadScene(borderPaneHolder);
+
         borderPaneHolder.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
+
+        SceneNavigator.loadScene(borderPaneHolder);
         Stage stage = (Stage) borderPaneHolder.getScene().getWindow();
         stage.setWidth(1215);
         stage.setHeight(700);
@@ -80,13 +83,18 @@ public class AppController implements DateFormatter {
     public HBox getFooter() {
         String lastSessionDate = DATE_FORMAT.format(certs.getLastSessionDate());
         Label timeStatusLabel = new Label("Logado em: " + lastSessionDate);
+
         timeStatusLabel.setStyle("-fx-font: Carlito 14");
         timeStatusLabel.setOpacity(0.6);
+
         Label copyleftLabel = new Label("(C) 2020 Saulo Felix GNU SysRestaurante");
+
         copyleftLabel.setStyle("-fx-font: Carlito 14");
         copyleftLabel.setOpacity(0.6);
+
         Pane growPane = new Pane();
         HBox footer = new HBox();
+
         footer.setSpacing(3);
         footer.setPadding(new Insets(2, 3, 1, 3));
         footer.setStyle("-fx-border-color: #CBCBCC");
@@ -95,8 +103,9 @@ public class AppController implements DateFormatter {
         footer.getChildren().addAll(timeStatusLabel,
                 new Separator(Orientation.VERTICAL),
                 sessionTimer,
-                new Separator(Orientation.VERTICAL));
-        footer.getChildren().addAll(growPane, copyleftLabel);
+                new Separator(Orientation.VERTICAL),
+                growPane,
+                copyleftLabel);
         return footer;
     }
 
@@ -113,6 +122,7 @@ public class AppController implements DateFormatter {
         LocalDateTime initialTime = LocalDateTime.now();
         timerInMillies = 0L;
         sessionTimer = new Label();
+
         Timeline chronometer = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(initialTime, LocalDateTime.now());
             String elapsedTime = LocalTime.ofSecondOfDay(elapsedTimeInSeconds).toString();
@@ -149,16 +159,25 @@ public class AppController implements DateFormatter {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(AppFactory.getMainController().getScene().getWindow());
-            if (main) AppFactory.getMainController().darkenScreen();
+
+            if (main) {
+                AppFactory.getMainController().darkenScreen();
+            }
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(fxml));
-            Scene scene = new Scene(loader.load());
-            stage.setTitle("SysRestaurante: Dialog " + fxml);
-            stage.setScene(scene);
-            stage.setResizable(false);
-            stage.showAndWait();
+            Scene scene = null;
 
-            if (main) AppFactory.getMainController().brightenScreen();
+            try {
+                scene = new Scene(loader.load());
+                stage.setTitle("SysRestaurante: Dialog " + fxml);
+                stage.setScene(scene);
+                stage.setResizable(false);
+                stage.showAndWait();
+            } finally {
+                AppFactory.getMainController().brightenScreen();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -169,8 +188,10 @@ public class AppController implements DateFormatter {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner((Window) owner);
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(fxml));
+
             Scene scene = new Scene(loader.load());
             stage.setTitle("SysRestaurante: Dialog " + fxml);
             stage.setScene(scene);
@@ -188,8 +209,10 @@ public class AppController implements DateFormatter {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(AppFactory.getMainController().getScene().getWindow());
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.CASHIER_POS));
+
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setTitle("SysRestaurante: Point of Sale");
@@ -208,15 +231,19 @@ public class AppController implements DateFormatter {
         try {
             Stage stage = new Stage();
             AppFactory.getMainController().darkenScreen();
+
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(AppFactory.getMainController().getScene().getWindow());
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.FINISH_SELL_DIALOG));
+
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setTitle("SysRestaurante: Finalizando pedido");
             stage.setResizable(false);
             stage.showAndWait();
+
             AppFactory.getMainController().brightenScreen();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -228,17 +255,21 @@ public class AppController implements DateFormatter {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner((Window) owner);
+
             ColorAdjust colorAdjust = new ColorAdjust();
             colorAdjust.setBrightness(-0.5);
             AppFactory.getMainController().darkenScreen();
             object.setEffect(colorAdjust);
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(SceneNavigator.FINISH_SELL_DIALOG));
+
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setTitle("SysRestaurante: Finalizando pedido");
             stage.setResizable(false);
             stage.showAndWait();
+
             colorAdjust.setBrightness(0);
             object.setEffect(colorAdjust);
             AppFactory.getMainController().brightenScreen();

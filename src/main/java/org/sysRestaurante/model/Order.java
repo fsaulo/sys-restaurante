@@ -9,6 +9,7 @@ import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.util.NotificationHandler;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -77,6 +78,7 @@ public class Order {
             rs.close();
             return orderDao;
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
         return null;
@@ -104,6 +106,7 @@ public class Order {
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
     }
@@ -148,6 +151,51 @@ public class Order {
             con.close();
             return tables;
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ComandaDao getComandaByOrderId(int idOrder) {
+        String query = "SELECT * FROM comanda WHERE id_pedido = ?";
+        ComandaDao comanda = null;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setInt(1, idOrder);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                comanda = new ComandaDao();
+                comanda.setIdCashier(idOrder);
+                comanda.setIdTable(rs.getInt("id_mesa"));
+                comanda.setIdComanda(rs.getInt("id_comanda"));
+                comanda.setIdOrder(rs.getInt("id_pedido"));
+                comanda.setTotal(rs.getDouble("total"));
+                comanda.setIdCategory(rs.getInt("id_categoria_pedido"));
+                comanda.setIdEmployee(rs.getInt("id_funcionario"));
+                comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
+                comanda.setDateOpening(rs.getDate("data_abertura").toLocalDate());
+                comanda.setOpen(rs.getBoolean("is_aberto"));
+
+                try {
+                    comanda.setDateClosing(rs.getDate("data_fechamento").toLocalDate());
+                    comanda.setTimeClosing(rs.getTime("hora_fechamento").toLocalTime());
+                } catch (NullPointerException ignored) {
+                    ExceptionHandler.doNothing();
+                }
+            }
+
+            ps.close();
+            rs.close();
+            con.close();
+            return comanda;
+        } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
         return null;
@@ -173,6 +221,7 @@ public class Order {
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
     }
@@ -193,6 +242,7 @@ public class Order {
             con.close();
             LOGGER.info("Order successfully canceled.");
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
     }
@@ -218,6 +268,7 @@ public class Order {
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
     }
@@ -245,6 +296,7 @@ public class Order {
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
     }
@@ -263,6 +315,7 @@ public class Order {
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
     }
@@ -281,6 +334,7 @@ public class Order {
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
     }
@@ -303,6 +357,7 @@ public class Order {
             con.close();
             return name;
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
         return null;
@@ -338,6 +393,7 @@ public class Order {
             con.close();
             return products;
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
         return null;
@@ -363,6 +419,7 @@ public class Order {
         } catch (SQLException ex) {
             LOGGER.severe("Error trying to register products in order.");
             ExceptionHandler.incrementGlobalExceptionsCount();
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
     }
@@ -382,45 +439,12 @@ public class Order {
         } catch (SQLException ex) {
             LOGGER.severe("Error trying to delete a product from order.");
             ExceptionHandler.incrementGlobalExceptionsCount();
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
     }
 
-    public OrderDao getOrderById(int idOrder) {
-        String query = "SELECT * FROM pedido where id_pedido = ?";
-        OrderDao orderDao = new OrderDao();
-        PreparedStatement ps;
-        ResultSet rs;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, idOrder);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                orderDao.setIdOrder(rs.getInt("id_pedido"));
-                orderDao.setInCash(rs.getDouble("valor_avista"));
-                orderDao.setByCard(rs.getDouble("valor_cartao"));
-                orderDao.setNote(rs.getString("observacao"));
-                orderDao.setDiscount(rs.getInt("descontos"));
-                orderDao.setDetails(rs.getInt("id_categoria_pedido"));
-                orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
-                orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
-                orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
-            }
-
-            ps.close();
-            rs.close();
-            con.close();
-            return orderDao;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    public ObservableList<OrderDao> getOrderByIdCashier(int idCashier) {
+    public static ObservableList<OrderDao> getOrderByIdCashier(int idCashier) {
         String query = "SELECT * FROM pedido where id_caixa = ?";
         ObservableList<OrderDao> orderList = FXCollections.observableArrayList();
         OrderDao orderDao;
@@ -441,6 +465,7 @@ public class Order {
                 orderDao.setNote(rs.getString("observacao"));
                 orderDao.setDetails(rs.getInt("id_categoria_pedido"));
                 orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
+                orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
                 orderDao.setStatus(rs.getInt("status"));
                 orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
                 orderList.add(orderDao);
@@ -451,6 +476,7 @@ public class Order {
             con.close();
             return orderList;
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
         return null;
@@ -477,30 +503,9 @@ public class Order {
             return idOrder;
         } catch (SQLException ex) {
             ex.printStackTrace();
+            NotificationHandler.errorDialog(ex);
         }
         return 0;
-    }
-
-    public String getOrderCategoryById(int idCategory) {
-        String query = "SELECT descricao FROM categoria_pedido WHERE id_categoria_pedido = ?";
-        String category = "Sem categoria";
-        PreparedStatement ps;
-        ResultSet rs;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, idCategory);
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                category = rs.getString("descricao");
-            }
-            return category;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return null;
     }
 
     public static void changeTable(int idComanda, int idTable) {
@@ -517,6 +522,7 @@ public class Order {
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
     }

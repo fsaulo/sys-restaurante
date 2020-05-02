@@ -167,7 +167,7 @@ public class POS {
             if (!editableItems.getTableView().getSelectionModel().isEmpty()) {
                 ProductDao product = editableItems.getTableView().getSelectionModel().getSelectedItem();
                 product.setQuantity(editableItems.getNewValue());
-                product.setTotal(product.getSellPrice());
+                product.setTotal(product.getSellPrice() * product.getQuantity());
                 updateSelectedList();
             }
         });
@@ -425,15 +425,18 @@ public class POS {
         if (selectedProductsList.contains(product)) {
             product.incrementsQuantity();
         } else if (containsId(selectedProductsList, product.getIdProduct())) {
-            selectedProductsList.stream().filter(pr -> pr.getDescription()
-                    .equals(product.getDescription()))
-                    .collect(Collectors.toList()).get(0).incrementsQuantity();
+            final ProductDao selectedProduct = product;
+            product = selectedProductsList.stream().filter(pr -> pr.getDescription()
+                    .equals(selectedProduct.getDescription()))
+                    .collect(Collectors.toList())
+                    .get(0);
+            product.incrementsQuantity();
         } else {
             product.setQuantity(1);
             selectedProductsList.add(product);
         }
 
-        product.setTotal(product.getSellPrice());
+        product.setTotal(product.getSellPrice() * product.getQuantity());
         updateSelectedList();
     }
 
@@ -441,15 +444,18 @@ public class POS {
         if (selectedProductsList.contains(product)) {
             product.setQuantity(product.getQuantity() + qty);
         } else if (containsId(selectedProductsList, product.getIdProduct())) {
-            selectedProductsList.stream().filter(pr -> pr.getDescription()
-                    .equals(product.getDescription()))
-                    .collect(Collectors.toList()).get(0).incrementsQuantity(qty);
+            final ProductDao selectedProduct = product;
+            product = selectedProductsList.stream().filter(pr -> pr.getDescription()
+                    .equals(selectedProduct.getDescription()))
+                    .collect(Collectors.toList())
+                    .get(0);
+            product.incrementsQuantity(qty);
         } else {
             product.setQuantity(qty);
             selectedProductsList.add(product);
         }
 
-        product.setTotal(product.getSellPrice());
+        product.setTotal(product.getSellPrice() * product.getQuantity());
         updateSelectedList();
     }
 

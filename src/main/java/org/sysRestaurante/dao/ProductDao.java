@@ -13,7 +13,7 @@ public class ProductDao {
 
     public ProductDao() {
         quantity = 1;
-        total = 0;
+        total = 0.0;
     }
 
     public void setCategory(int idCategory) {
@@ -39,8 +39,8 @@ public class ProductDao {
         return this.category;
     }
 
-    public void setTotal(double price) {
-        this.total = price * quantity;
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public double getTotal() {
