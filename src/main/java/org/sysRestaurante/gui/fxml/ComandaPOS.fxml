@@ -43,7 +43,7 @@
                            <children>
                               <Label minWidth="125.0" prefWidth="125.0" text="Tempo:">
                                  <font>
-                                    <Font name="Carlito Bold" size="18.0" />
+                                    <Font name="Carlito" size="18.0" />
                                  </font>
                               </Label>
                               <Label fx:id="timeLabel" maxHeight="200.0" text="--">
@@ -63,7 +63,7 @@
                            <children>
                               <Label minWidth="90.0" prefWidth="125.0" text="Cliente:">
                                  <font>
-                                    <Font name="Carlito Bold" size="18.0" />
+                                    <Font name="Carlito" size="18.0" />
                                  </font>
                               </Label>
                               <Label fx:id="customerLabel" maxWidth="200.0" text="--">
@@ -80,7 +80,7 @@
                            <children>
                               <Label minWidth="125.0" prefWidth="125.0" text="Cod. comanda:">
                                  <font>
-                                    <Font name="Carlito Bold" size="18.0" />
+                                    <Font name="Carlito" size="18.0" />
                                  </font>
                               </Label>
                               <Label fx:id="codComandaLabel" text="--">
@@ -97,7 +97,7 @@
                            <children>
                               <Label minWidth="125.0" prefWidth="125.0" text="Subtotal:">
                                  <font>
-                                    <Font name="Carlito Bold" size="18.0" />
+                                    <Font name="Carlito" size="18.0" />
                                  </font>
                               </Label>
                               <Label fx:id="totalLabel" maxHeight="200.0" text="--">
