@@ -15,6 +15,8 @@ import org.sysRestaurante.gui.LoginController;
 import org.sysRestaurante.gui.MainGUIController;
 import org.sysRestaurante.gui.ManageComandaController;
 import org.sysRestaurante.gui.POS;
+import org.sysRestaurante.gui.ReceiptViewController;
+import org.sysRestaurante.model.Receipt;
 
 import java.util.ArrayList;
 
@@ -34,6 +36,7 @@ public class AppFactory {
     private static ManageComandaController manageComandaController;
     private static ComandaPOSController comandaPOSController;
     private static POS pos;
+    private static ReceiptViewController receiptViewController;
 
     public static SessionDao getSessionDao() {
         return sessionDao;
@@ -153,5 +156,13 @@ public class AppFactory {
 
     public static ComandaPOSController getComandaPOSController() {
         return comandaPOSController;
+    }
+
+    public static ReceiptViewController getReceiptViewController() {
+        return receiptViewController;
+    }
+
+    public static void setReceiptViewController(ReceiptViewController receiptViewController) {
+        AppFactory.receiptViewController = receiptViewController;
     }
 }

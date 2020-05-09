@@ -125,7 +125,6 @@ public class ComandaPOSController extends POS {
         handleChangeTable();
 
         exitButton.setOnAction(e1 -> exit());
-
         productsListView.setItems(products);
         productsListView.setCellFactory(plv -> new ProductListViewCell());
         employeeComboBox.setOnAction(event -> updateEmployee());

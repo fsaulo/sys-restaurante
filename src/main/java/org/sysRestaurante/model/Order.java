@@ -30,10 +30,10 @@ public class Order {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Order.class.getName());
 
     public static OrderDao newOrder(int idCashier, double inCash, double byCard, int type, double discount,
-                                   String note) {
+                                    double taxes, String note) {
         String query = "INSERT INTO pedido (id_usuario, id_caixa, data_pedido, observacao, " +
-                "valor_cartao, valor_avista, id_categoria_pedido, hora_pedido, descontos, status) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?)";
+                "valor_cartao, valor_avista, id_categoria_pedido, hora_pedido, descontos, status, taxas) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
         int idUser = AppFactory.getUserDao().getIdUser();
         int idOrder;
@@ -52,8 +52,9 @@ public class Order {
             ps.setDouble(6, inCash);
             ps.setInt(7, type);
             ps.setTime(8, java.sql.Time.valueOf(LocalTime.now()));
-            ps.setDouble(9, discount * 100);
+            ps.setDouble(9, discount);
             ps.setInt(10, type);
+            ps.setDouble(11, taxes);
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
 
@@ -71,6 +72,7 @@ public class Order {
             orderDao.setDiscount(discount);
             orderDao.setOrderDate(LocalDate.now());
             orderDao.setOrderTime(LocalTime.now());
+            orderDao.setTaxes(taxes);
 
             LOGGER.info("Sell was registered successfully.");
             ps.close();
@@ -468,6 +470,8 @@ public class Order {
                 orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
                 orderDao.setStatus(rs.getInt("status"));
                 orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
+                orderDao.setTaxes(rs.getDouble("taxas"));
+                orderDao.setDiscount(rs.getDouble("descontos"));
                 orderList.add(orderDao);
             }
 
@@ -482,7 +486,7 @@ public class Order {
         return null;
     }
 
-    public int getLastOrderId() {
+    public static int getLastOrderId() {
         String query = "SELECT id_pedido FROM pedido ORDER BY id_pedido DESC LIMIT 1";
         PreparedStatement ps;
         ResultSet rs;
@@ -517,6 +521,44 @@ public class Order {
             ps = con.prepareStatement(query);
             ps.setInt(1, idTable);
             ps.setInt(2, idComanda);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setDiscounts(int idOrder, double value) {
+        PreparedStatement ps;
+        String query = "UPDATE pedido SET descontos = ? WHERE id_pedido = ?";
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setDouble(1, value);
+            ps.setInt(2, idOrder);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setTaxes(int idOrder, double value) {
+        PreparedStatement ps;
+        String query = "UPDATE pedido SET taxas = ? WHERE id_pedido = ?";
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            ps.setDouble(1, value);
+            ps.setInt(2, idOrder);
             ps.executeUpdate();
 
             ps.close();

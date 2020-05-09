@@ -244,19 +244,20 @@ public class AppController implements DateFormatter {
             stage.setResizable(false);
             stage.showAndWait();
 
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } finally {
             AppFactory.getMainController().brightenScreen();
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }
 
     public static void showPaymentDialog(Object owner, Node object) {
+            ColorAdjust colorAdjust = new ColorAdjust();
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner((Window) owner);
 
-            ColorAdjust colorAdjust = new ColorAdjust();
             colorAdjust.setBrightness(-0.5);
             AppFactory.getMainController().darkenScreen();
             object.setEffect(colorAdjust);
@@ -270,11 +271,12 @@ public class AppController implements DateFormatter {
             stage.setResizable(false);
             stage.showAndWait();
 
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } finally {
+            AppFactory.getMainController().brightenScreen();
             colorAdjust.setBrightness(0);
             object.setEffect(colorAdjust);
-            AppFactory.getMainController().brightenScreen();
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }
 

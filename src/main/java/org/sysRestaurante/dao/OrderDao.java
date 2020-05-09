@@ -13,6 +13,7 @@ public class OrderDao {
     private double inCash;
     private double total = byCard + inCash;
     private double discount;
+    private double taxes;
     private LocalDate orderDate;
     private LocalTime orderTime;
     private LocalDateTime orderDateTime;
@@ -70,6 +71,14 @@ public class OrderDao {
                 status = "Desconhecido";
                 break;
         }
+    }
+
+    public double getTaxes() {
+        return taxes;
+    }
+
+    public void setTaxes(double taxes) {
+        this.taxes = taxes;
     }
 
     public String getCustumerName() {

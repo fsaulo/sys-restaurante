@@ -14,25 +14,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-import javafx.util.Callback;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
-import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.gui.formatter.CellFormatter;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.DateFormatter;
-import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.gui.formatter.StatusCellFormatter;
 import org.sysRestaurante.util.NotificationHandler;
 
-import java.lang.management.MemoryUsage;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Logger;
 
 public class CashierController {
 
