@@ -46,8 +46,8 @@ public class Receipt {
     public Receipt(OrderDao order, ArrayList<ProductDao> productList) {
         UserDao func = AppFactory.getUserDao();
         double subtotal = order.getTotal();
-        double discount = subtotal * order.getDiscount();
-        double taxes = subtotal * order.getTaxes();
+        double discount = order.getDiscount();
+        double taxes = order.getTaxes();
         double total = subtotal - discount + taxes;
         this.productList = productList;
         strCompanyName = center("NOME DA EMPRESA");

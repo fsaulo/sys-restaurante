@@ -203,8 +203,8 @@ public class FinishSellController {
         order.setOrderTime(LocalTime.now());
         order.setTotal(getSubtotal());
         order.setIdOrder(Order.getLastOrderId() + 1);
-        order.setDiscount(percentageField1.getAmount());
-        order.setTaxes(percentageField2.getAmount());
+        order.setDiscount(percentageField1.getAmount() * getSubtotal());
+        order.setTaxes(percentageField2.getAmount() * getSubtotal());
         AppFactory.setOrderDao(order);
     }
 
@@ -233,11 +233,12 @@ public class FinishSellController {
     public void confirm() {
         ArrayList<ProductDao> items = AppFactory.getSelectedProducts();
 
-        double discount = this.percentageField1.getAmount();
-        double taxes = this.percentageField2.getAmount();
+        double discount = this.percentageField1.getAmount() * getSubtotal();
+        double taxes = this.percentageField2.getAmount() * getSubtotal();
         double change = getChange();
+
         StringBuilder note = new StringBuilder();
-        note.append((discount > 0) ? "Descontos aplicados: " + (int) (100 * discount) + "%" : "");
+        note.append((discount > 0) ? "Descontos aplicados: " + (int) (100 * percentageField1.getAmount()) + "%" : "");
 
         if (note.toString().equals("") && noteTextArea.getText().isBlank()) {
             note.append("Sem observações");

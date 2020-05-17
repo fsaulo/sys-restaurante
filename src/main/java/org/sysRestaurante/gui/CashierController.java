@@ -3,6 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -16,8 +17,10 @@ import javafx.scene.layout.VBox;
 
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
+import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.model.Cashier;
+import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.gui.formatter.CellFormatter;
 import org.sysRestaurante.gui.formatter.CurrencyField;
@@ -75,6 +78,12 @@ public class CashierController {
         AppFactory.setCashierController(this);
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
+        cancelOrderBox.setOnMouseClicked(mouseEvent -> {
+            if (orderListTableView.getSelectionModel().getSelectedItem() != null) {
+                OrderDao orderDao = orderListTableView.getSelectionModel().getSelectedItem();
+                onCancelOrder(orderDao);
+            }
+        });
 
         updateOrderTableList();
         updateCashierElements();
@@ -94,6 +103,7 @@ public class CashierController {
                 AppController.showDialog(SceneNavigator.ORDER_DETAILS_DIALOG, true);
             });
 
+            optionDeleteOrder.setOnAction(actionEvent -> onCancelOrder(row.getItem()));
             contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
             row.contextMenuProperty().bind(Bindings.when(row.emptyProperty().not())
             .then(contextMenu)
@@ -142,6 +152,53 @@ public class CashierController {
         }
 
         newOrderBox.setDisable(false);
+    }
+
+    public void onCancelOrder(OrderDao order) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Alerta do sistema");
+
+        if (order.getStatus().equals("Cancelado")) {
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText("Não foi possível cancelar o pedido!");
+            alert.setContentText("Esse pedido já foi cancelado.");
+            alert.initOwner(borderPaneHolder.getScene().getWindow());
+            alert.showAndWait();
+            return;
+        } else {
+            alert.setHeaderText("Tem certeza que deseja cancelar o pedido?");
+            alert.setContentText("Essa operação não poderá ser desfeita.");
+            alert.initOwner(borderPaneHolder.getScene().getWindow());
+            alert.showAndWait();
+        }
+
+        if (alert.getResult() == ButtonType.OK) {
+            final int CANCELED = 3;
+            int idOrder = order.getIdOrder();
+            int idCashier = AppFactory.getCashierDao().getIdCashier();
+            double total = order.getTotal();
+
+            if (order.getDetails().equals("Pedido em comanda")) {
+                ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
+                int idComanda = comanda.getIdComanda();
+                int idTable = comanda.getIdTable();
+                Order.closeComanda(idComanda, total);
+                Order.updateOrderStatus(idComanda, CANCELED);
+                Order.updateOrderAmount(idComanda, total, 0, 0);
+                Management.closeTable(idTable);
+            }
+
+            if (order.getStatus().equals("Concluído")) {
+                double inCash = order.getInCash();
+                double byCard = order.getByCard();
+                Cashier.setRevenue(idCashier, -inCash, -byCard, 0);
+            }
+
+            Order.cancel(idOrder);
+            order.setStatus(CANCELED);
+            NotificationHandler.showInfo("Pedido cancelado com sucesso!");
+            initialize();
+        }
     }
 
     public void handleKeyEvent() {
