@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -57,50 +58,23 @@
                               <Insets left="5.0" right="5.0" />
                            </padding>
                         </HBox>
-                        <HBox prefWidth="749.0" spacing="10.0" styleClass="tile-info">
+                        <HBox prefWidth="749.0" spacing="10.0" styleClass="tile-info" VBox.vgrow="ALWAYS">
                            <children>
-                              <LineChart animated="false" legendSide="RIGHT" prefHeight="418.0" prefWidth="772.0" HBox.hgrow="ALWAYS">
+                              <LineChart fx:id="lineChart" legendSide="RIGHT" legendVisible="false" prefHeight="418.0" prefWidth="772.0" HBox.hgrow="ALWAYS">
                                  <xAxis>
-                                    <CategoryAxis side="BOTTOM" />
+                                    <CategoryAxis gapStartAndEnd="false" side="BOTTOM" />
                                  </xAxis>
                                  <yAxis>
-                                    <NumberAxis minorTickCount="0" prefHeight="199.0" prefWidth="13.0" side="LEFT" tickLabelGap="5.0" tickMarkVisible="false" />
+                                    <NumberAxis minorTickCount="0" prefHeight="199.0" prefWidth="13.0" side="LEFT" tickLabelGap="5.0" tickMarkVisible="false">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor></NumberAxis>
                                  </yAxis>
                               </LineChart>
                            </children>
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
-                        </HBox>
-                        <HBox spacing="10.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <VBox alignment="TOP_CENTER" minWidth="200.0" styleClass="tile-info" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label maxWidth="-Infinity" text="Resumo financeiro">
-                                       <font>
-                                          <Font name="Carlito" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <VBox alignment="CENTER" prefHeight="212.0" prefWidth="381.0" style="-fx-background-color: white; -fx-border-color: #C8C8C8;" VBox.vgrow="ALWAYS" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </VBox>
-                              <VBox alignment="TOP_CENTER" minWidth="140.0" prefHeight="211.0" prefWidth="382.0" styleClass="tile-info" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Label text="Registros">
-                                       <font>
-                                          <Font name="Carlito" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <VBox alignment="CENTER" style="-fx-background-color: white; -fx-border-color: #C8C8C8;" VBox.vgrow="ALWAYS" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </VBox>
-                           </children>
                         </HBox>
                      </children>
                   </VBox>

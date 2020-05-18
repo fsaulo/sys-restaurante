@@ -3,6 +3,9 @@ package org.sysRestaurante.gui;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -13,6 +16,7 @@ import javafx.scene.layout.VBox;
 
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.NoteDao;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Reminder;
@@ -21,7 +25,9 @@ import org.sysRestaurante.util.LoggerHandler;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class DashboardController {
@@ -41,6 +47,8 @@ public class DashboardController {
     private VBox statusCashierBox;
     @FXML
     private Label statusCashierLabel;
+    @FXML
+    private LineChart<String, Number> lineChart;
 
     public void initialize() {
         AppFactory.setDashboardController(this);
@@ -49,6 +57,7 @@ public class DashboardController {
         clearNotesButton.setOnMouseClicked(e -> showClearAlertWindow());
         reloadNotes();
         updateCashierStatus();
+        buildChart();
         Platform.runLater(this::handleKeyEvent);
 
         try {
@@ -148,5 +157,20 @@ public class DashboardController {
 
     public void addNoteToList(NoteDao noteDao) {
         notesList.add(noteDao);
+    }
+
+    public void buildChart() {
+        XYChart.Series series = new XYChart.Series();
+
+        List<CashierDao> data = Cashier.getCashier();
+        data = data.subList(data.size() - 11, data.size() - 1);
+
+        for (CashierDao value : data) {
+            final String date = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(value.getDateOpening());
+            final XYChart.Data<String, Number> d1 = new XYChart.Data(date, value.getRevenue());
+            series.getData().add(d1);
+        }
+
+        lineChart.getData().add(series);
     }
 }
