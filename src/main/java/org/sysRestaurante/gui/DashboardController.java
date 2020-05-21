@@ -1,23 +1,30 @@
 package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import javafx.scene.paint.Color;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.NoteDao;
+import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Reminder;
 import org.sysRestaurante.gui.formatter.DateFormatter;
@@ -159,6 +166,17 @@ public class DashboardController {
         notesList.add(noteDao);
     }
 
+    public static void wait(int ms){
+        try
+        {
+            Thread.sleep(ms);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     public void buildChart() {
         XYChart.Series series = new XYChart.Series();
 
@@ -168,6 +186,34 @@ public class DashboardController {
         for (CashierDao value : data) {
             final String date = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(value.getDateOpening());
             final XYChart.Data<String, Number> d1 = new XYChart.Data(date, value.getRevenue());
+
+            StackPane stackPane = new StackPane();
+            VBox box = new VBox();
+            box.setPadding(new Insets(15));
+
+            Label label1 = new Label(CurrencyField.getBRLCurrencyFormat().format(value.getRevenue()));
+            Label label2 = new Label(date);
+
+            label1.setStyle("-fx-font-weight: bold; -fx-font-size: 13");
+            label2.setStyle("-fx-font-size: 13");
+            box.getChildren().addAll(label1, label2);
+
+            PopOver legend = new PopOver(box);
+            legend.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+            legend.setDetachable(false);
+
+            stackPane.setOnMouseEntered(mouseDragEvent -> {
+                legend.show(stackPane);
+                stackPane.setCursor(Cursor.HAND);
+
+            });
+            box.setOnMouseExited(mouseEvent -> {
+                stackPane.setCursor(Cursor.DEFAULT);
+                legend.hide();
+            });
+
+
+            d1.setNode(stackPane);
             series.getData().add(d1);
         }
 
