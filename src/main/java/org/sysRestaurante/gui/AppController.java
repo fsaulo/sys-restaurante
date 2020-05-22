@@ -113,7 +113,7 @@ public class AppController implements DateFormatter {
         Label titleLabel = new Label("Bar & Restaurante Frutos do Mar");
         titleLabel.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 30));
         HBox header = new HBox();
-        header.setPadding(new Insets(1, 1, 1, 1));
+        header.setPadding(new Insets(1));
         header.getChildren().add(titleLabel);
         return header;
     }

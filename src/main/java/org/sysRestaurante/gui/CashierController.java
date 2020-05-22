@@ -1,20 +1,30 @@
 package org.sysRestaurante.gui;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.ComandaDao;
@@ -26,6 +36,7 @@ import org.sysRestaurante.gui.formatter.CellFormatter;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.gui.formatter.StatusCellFormatter;
+import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.text.NumberFormat;
@@ -72,6 +83,10 @@ public class CashierController {
     private TableColumn<OrderDao, Double> total;
     @FXML
     private TableView<OrderDao> orderListTableView;
+    @FXML
+    private HBox wrapperBoxPicker;
+
+    private DatePicker datePicker;
 
     @FXML
     public void initialize() {
@@ -85,6 +100,7 @@ public class CashierController {
             }
         });
 
+        setSearchProperties();
         updateOrderTableList();
         updateCashierElements();
         handleKeyEvent();
@@ -103,6 +119,7 @@ public class CashierController {
                 AppController.showDialog(SceneNavigator.ORDER_DETAILS_DIALOG, true);
             });
 
+            optionSeeReceipt.setDisable(true);
             optionDeleteOrder.setOnAction(actionEvent -> onCancelOrder(row.getItem()));
             contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
             row.contextMenuProperty().bind(Bindings.when(row.emptyProperty().not())
@@ -111,6 +128,40 @@ public class CashierController {
 
             return row;
         });
+    }
+
+    private void setSearchProperties() {
+        VBox wrapper = new VBox();
+        Label dateLabel = new Label("Filtrar pedido");
+        TextField codField = new TextField();
+        Button buttonSearch = new Button("Pesquisar");
+        HBox byCodFilterBox = new HBox();
+
+        datePicker = new DatePicker();
+        datePicker.setPrefWidth(220);
+        datePicker.setPromptText("Filtrar por data");
+
+        buttonSearch.setOnAction(actionEvent -> {
+            try {
+                int cod = Integer.parseInt(codField.getText());
+                setFilterByCod(cod);
+            } catch(NumberFormatException ex) {
+                setFilterByDate();
+            }
+        });
+
+        dateLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+        byCodFilterBox.getChildren().addAll(codField, buttonSearch);
+        byCodFilterBox.setSpacing(5);
+        codField.setPromptText("Código do pedido");
+        wrapper.setSpacing(5);
+        wrapper.setPadding(new Insets(10));
+        wrapper.getChildren().addAll(dateLabel, datePicker, byCodFilterBox);
+
+        PopOver datePopOver = new PopOver(wrapper);
+        datePopOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+        datePopOver.setDetachable(false);
+        searchOrderBox.setOnMouseClicked(mouseEvent -> datePopOver.show(wrapperBoxPicker));
     }
 
     @FXML
@@ -254,7 +305,7 @@ public class CashierController {
     }
 
     public void updateOrderTableList() {
-        orderListTableView.setItems(Order.getOrderByIdCashier(AppFactory.getCashierDao().getIdCashier()));
+        setFilterByDate();
         codOrder.setCellValueFactory(new PropertyValueFactory<>("idOrder"));
         total.setCellValueFactory(new PropertyValueFactory<>("total"));
         details.setCellValueFactory(new PropertyValueFactory<>("details"));
@@ -268,6 +319,40 @@ public class CashierController {
                 .format(value));
         orderListTableView.refresh();
     }
+
+    public void setFilterByDate() {
+        int idCashier = AppFactory.getCashierDao().getIdCashier();
+        ObservableList<OrderDao> data = Order.getOrderByIdCashier(idCashier);
+        FilteredList<OrderDao> filteredList = new FilteredList<>(data);
+        datePicker.valueProperty().addListener((newValue) ->
+            filteredList.setPredicate(orderDao -> {
+                if (newValue == null) {
+                    return true;
+                }
+                return orderDao.getOrderDate().isEqual(datePicker.getValue());
+            }));
+
+        SortedList<OrderDao> sortedData = new SortedList<>(filteredList);
+        sortedData.comparatorProperty().bind(orderListTableView.comparatorProperty());
+        orderListTableView.setItems(sortedData);
+    }
+
+    public void setFilterByCod(Number cod) {
+        int idCashier = AppFactory.getCashierDao().getIdCashier();
+        ObservableList<OrderDao> data = Order.getOrderByIdCashier(idCashier);
+        FilteredList<OrderDao> filteredList = new FilteredList<>(data);
+        filteredList.setPredicate(orderDao -> {
+            if (cod == null) {
+                return true;
+            }
+            return orderDao.getIdOrder() == cod.intValue();
+        });
+
+        SortedList<OrderDao> sortedData = new SortedList<>(filteredList);
+        sortedData.comparatorProperty().bind(orderListTableView.comparatorProperty());
+        orderListTableView.setItems(sortedData);
+    }
+
 
     public void setDisableCashierOptions(boolean status) {
         searchOrderBox.setDisable(status);
