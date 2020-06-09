@@ -263,23 +263,27 @@
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </VBox>
-                              <VBox fx:id="searchOrderBox" alignment="CENTER" styleClass="cashier-button">
+                              <HBox fx:id="wrapperBoxPicker">
                                  <children>
-                                    <Label text="Pesquisar venda" textAlignment="CENTER" wrapText="true">
-                                       <font>
-                                          <Font name="Carlito Bold" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="(F6)">
-                                       <font>
-                                          <Font name="Carlito Bold" size="16.0" />
-                                       </font>
-                                    </Label>
+                                    <VBox fx:id="searchOrderBox" alignment="CENTER" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label text="Pesquisar venda" textAlignment="CENTER" wrapText="true">
+                                             <font>
+                                                <Font name="Carlito Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="(F6)">
+                                             <font>
+                                                <Font name="Carlito Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
                                  </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </VBox>
+                              </HBox>
                               <Separator layoutX="15.0" layoutY="502.0" prefWidth="200.0" />
                               <Label layoutX="61.0" layoutY="510.0" text="Opçes de comandas">
                                  <font>

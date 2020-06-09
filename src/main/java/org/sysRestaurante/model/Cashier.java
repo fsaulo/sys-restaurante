@@ -15,6 +15,8 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class Cashier {
@@ -245,6 +247,41 @@ public class Cashier {
             rs.close();
             con.close();
             return cashierDao;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<CashierDao> getCashier() {
+        String query = "SELECT * FROM caixa";
+        PreparedStatement ps;
+        ResultSet rs;
+        List<CashierDao> list = new ArrayList<>();
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                CashierDao cashierDao = new CashierDao();
+                cashierDao.setIdCashier(rs.getInt("id_caixa"));
+                cashierDao.setIdUser(rs.getInt("id_usuario"));
+                cashierDao.setDateOpening(rs.getDate("data_abertura").toLocalDate());
+                cashierDao.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
+                cashierDao.setRevenue(rs.getDouble("balanco"));
+                cashierDao.setWithdrawal(rs.getDouble("total_retiradas"));
+                cashierDao.setInCash(rs.getDouble("total_avista"));
+                cashierDao.setByCard(rs.getDouble("total_acartao"));
+                cashierDao.setInitialAmount(rs.getDouble("balanco_inicial"));
+                list.add(cashierDao);
+            }
+
+            ps.close();
+            rs.close();
+            con.close();
+            return list;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

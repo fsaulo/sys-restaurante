@@ -110,7 +110,8 @@ public class FinishSellController {
     private CurrencyField payByCard;
     private PercentageField percentageField1;
     private PercentageField percentageField2;
-    private static String GREEN = "#4a8d2c";
+    private final OrderDao order = AppFactory.getOrderDao();
+    private static final String GREEN = "#4a8d2c";
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(FinishSellController.class.getName());
 
     @FXML
@@ -141,14 +142,15 @@ public class FinishSellController {
         });
 
         if (AppFactory.getOrderDao() instanceof ComandaDao) cancelButton.setDisable(true);
-        PopOver popOver = viewReceipt();
+        buildReceiptContent();
 
         seeReceiptBox.setOnMouseClicked(event -> {
-            popOver.show(seeReceiptBox);
+            PopOver popOver = viewReceipt();
             hBoxControl.setDisable(true);
+            popOver.setOnHidden(e1 -> hBoxControl.setDisable(false));
+            popOver.show(seeReceiptBox);
         });
 
-        popOver.setOnHidden(e1 -> hBoxControl.setDisable(false));
         totalLabel.setText(format.format(getTotal()));
         subtotalLabel.setText(format.format(getSubtotal()));
         discountLabel.setText(format.format(getDiscount()));
@@ -183,8 +185,8 @@ public class FinishSellController {
     @FXML
     public void saveReceipt() {
         try {
-            receiptContentConstructor();
-            Receipt receipt = new Receipt(AppFactory.getSelectedProducts(), AppFactory.getOrderDao());
+            buildReceiptContent();
+            Receipt receipt = new Receipt(AppFactory.getOrderDao(), AppFactory.getSelectedProducts());
             receipt.saveReceiptAsPng(saveReceipt.getScene().getWindow());
         } catch (MalformedURLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -196,14 +198,47 @@ public class FinishSellController {
         }
     }
 
+    public void buildReceiptContent() {
+        order.setOrderDate(LocalDate.now());
+        order.setOrderTime(LocalTime.now());
+        order.setTotal(getSubtotal());
+        order.setIdOrder(Order.getLastOrderId() + 1);
+        order.setDiscount(percentageField1.getAmount() * getSubtotal());
+        order.setTaxes(percentageField2.getAmount() * getSubtotal());
+        AppFactory.setOrderDao(order);
+    }
+
+    public PopOver viewReceipt() {
+        buildReceiptContent();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.RECEIPT_VIEW));
+        VBox node = null;
+
+        try {
+            node = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        PopOver popOver = new PopOver(node);
+        popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+        products = AppFactory.getSelectedProducts();
+
+        if (products.size() >= 15) {
+            popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
+        }
+
+        return popOver;
+    }
+
     public void confirm() {
-        Order order = new Order();
         ArrayList<ProductDao> items = AppFactory.getSelectedProducts();
 
-        double discount = this.percentageField1.getAmount();
+        double discount = this.percentageField1.getAmount() * getSubtotal();
+        double taxes = this.percentageField2.getAmount() * getSubtotal();
         double change = getChange();
+
         StringBuilder note = new StringBuilder();
-        note.append((discount > 0) ? "Descontos aplicados: " + (int) (100 * discount) + "%" : "");
+        note.append((discount > 0) ? "Descontos aplicados: " + (int) (100 * percentageField1.getAmount()) + "%" : "");
 
         if (note.toString().equals("") && noteTextArea.getText().isBlank()) {
             note.append("Sem observações");
@@ -225,61 +260,44 @@ public class FinishSellController {
             OrderDao orderDao = AppFactory.getOrderDao();
 
             if (orderDao instanceof ComandaDao || orderDao == null) {
+                int idOrder = orderDao.getIdOrder();
+                int idComanda = ((ComandaDao) orderDao).getIdComanda();
+                int idTable = ((ComandaDao) orderDao).getIdTable();
+
                 LOGGER.info("Instance of 'Comanda' Data Access Object");
-                order.closeComanda((ComandaDao) orderDao, payByCard + payInCash);
-                order.addProductsToOrder(orderDao.getIdOrder(), items);
-                order.updateOrderStatus(((ComandaDao) orderDao).getIdComanda(), 1);
-                order.updateOrderAmount(((ComandaDao) orderDao).getIdComanda(), payInCash, payByCard, discount);
-                Management.closeTable(((ComandaDao) orderDao).getIdTable());
-                new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+
+                Order.closeComanda(idComanda, payByCard + payInCash);
+                Order.addProductsToOrder(orderDao.getIdOrder(), items);
+                Order.updateOrderStatus(idComanda, 1);
+                Order.updateOrderAmount(idComanda, payInCash, payByCard, discount);
+                Order.setDiscounts(idOrder, discount);
+                Order.setTaxes(idOrder, taxes);
+                Management.closeTable(idTable);
+                Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+
                 AppFactory.getManageComandaController().refreshTileList();
-                AppController.setSellConfirmed(true);
             } else {
                 LOGGER.info("Instance of 'Order' Data Access Object");
-                orderDao = order.newOrder(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 1,
-                        discount, note.toString());
-                new Cashier().setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
-                order.addProductsToOrder(orderDao.getIdOrder(), items);
+                Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
+
+                orderDao = Order.newOrder(AppFactory.getCashierDao().getIdCashier(),
+                        payInCash,
+                        payByCard,
+                        1,
+                        discount,
+                        taxes,
+                        note.toString());
+
+                Order.addProductsToOrder(orderDao.getIdOrder(), items);
                 AppFactory.getCashierController().updateCashierElements();
-                AppController.setSellConfirmed(true);
             }
 
+            AppController.setSellConfirmed(true);
             AppFactory.setOrderDao(null);
             wrapperVBox.getScene().getWindow().hide();
         }
     }
 
-    public void receiptContentConstructor() {
-        OrderDao orderDao = AppFactory.getOrderDao();
-        orderDao.setOrderDate(LocalDate.now());
-        orderDao.setOrderTime(LocalTime.now());
-        orderDao.setTotal(getSubtotal());
-        orderDao.setDiscount(percentageField1.getAmount() * 100);
-        orderDao.setIdOrder(new Order().getLastOrderId() + 1);
-        AppFactory.setOrderDao(orderDao);
-        products = AppFactory.getSelectedProducts();
-    }
-
-    public PopOver viewReceipt() {
-        receiptContentConstructor();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.RECEIPT_VIEW));
-        VBox node = null;
-
-        try {
-            node = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        PopOver popOver = new PopOver(node);
-        popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
-
-        if (products.size() >= 15) {
-            popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
-        }
-
-        return popOver;
-    }
 
     public void setInputFilds() {
         Font font = Font.font("consolas", FontWeight.BOLD, FontPosture.REGULAR, 20);

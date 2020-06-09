@@ -2,10 +2,8 @@ package org.sysRestaurante.model;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Dialog;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -13,8 +11,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.OrderDao;
@@ -33,24 +29,26 @@ import java.util.ArrayList;
 public class Receipt {
 
     private StringBuilder receipt;
-    private String strSubtotal;
-    private String strDiscount;
-    private String strTotal;
-    private String strFuncName;
-    private String strDate;
-    private String strTime;
-    private String strCompanyName;
-    private String strCompanyAddress;
-    private String strCompanyTel;
-    private String strCompanyCNPJ;
+    private final String strSubtotal;
+    private final String strDiscount;
+    private final String strTotal;
+    private final String strFuncName;
+    private final String strDate;
+    private final String strTime;
+    private final String strCompanyName;
+    private final String strCompanyAddress;
+    private final String strCompanyTel;
+    private final String strCompanyCNPJ;
+    private final String strTaxes;
     private ArrayList<ProductDao> productList;
     private final static String NON_THIN = "[^iIl1\\.,']";
 
-    public Receipt(ArrayList<ProductDao> productList, OrderDao order) {
+    public Receipt(OrderDao order, ArrayList<ProductDao> productList) {
         UserDao func = AppFactory.getUserDao();
         double subtotal = order.getTotal();
         double discount = order.getDiscount();
-        double total = subtotal * (1 - discount/100);
+        double taxes = order.getTaxes();
+        double total = subtotal - discount + taxes;
         this.productList = productList;
         strCompanyName = center("NOME DA EMPRESA");
         strCompanyAddress = center("Av. Brasil, 2113, Aracaju-SE");
@@ -61,7 +59,8 @@ public class Receipt {
         strTime = DateTimeFormatter.ofPattern("HH:mm:ss").format(order.getOrderTime());
         strSubtotal = CurrencyField.getBRLCurrencyFormat().format(subtotal);
         strTotal = CurrencyField.getBRLCurrencyFormat().format(total);
-        strDiscount = (int) discount + "%";
+        strTaxes = CurrencyField.getBRLCurrencyFormat().format(taxes);
+        strDiscount = CurrencyField.getBRLCurrencyFormat().format(discount);
         buildReceipt();
     }
 
@@ -76,6 +75,7 @@ public class Receipt {
         strFuncName = "";
         strDate = "01/01/2020";
         strTime = "00:00:00";
+        strTaxes = "";
         buildReceipt();
     }
 
@@ -160,12 +160,14 @@ public class Receipt {
         String subtotal = String.format("%-24s %25s", "SUBTOTAL:", strSubtotal);
         String total = String.format("%-24s %25s", "TOTAL:", strTotal);
         String discount = String.format("%-24s %25s", "DESCONTOS APLICADOS:", strDiscount);
+        String taxes = String.format("%-24s %25s", "TAXA DE SERVICO: ", strTaxes);
         String msg1 = center("OBRIGADO PELA PREFERÊNCIA.");
         String msg2 = center("VOLTE SEMPRE!");
         String dateTime = String.format("%-24s %25s", "DATA: " + strDate, "HORA: " + strTime);
         String footer = "\n\n" + sep2 + "\n" +
                         subtotal + "\n" +
                         discount + "\n" +
+                        taxes + "\n" +
                         total + "\n" +
                         sep1 + "\n" +
                         "NOME FUNC. " + strFuncName + "\n" +
@@ -196,7 +198,7 @@ public class Receipt {
         fileChooser.setInitialFileName("SysRecibo_Caixa_Cod" + idOrder + "_" + LocalDate.now() + ".png");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
         fileChooser.setTitle("Salvar recibo");
-        File file = fileChooser.showSaveDialog(owner);
+        var file = fileChooser.showSaveDialog(owner);
 
         if (file != null) {
             if(!file.getName().contains(".")) {

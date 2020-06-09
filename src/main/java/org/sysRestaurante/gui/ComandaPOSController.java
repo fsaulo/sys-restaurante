@@ -4,7 +4,9 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -24,6 +26,7 @@ import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.EmployeeDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
 import org.sysRestaurante.model.Product;
@@ -52,6 +55,8 @@ public class ComandaPOSController extends POS {
     @FXML
     private Button clearButton;
     @FXML
+    private Button cancelOrderButton;
+    @FXML
     private Button changeTableButton;
     @FXML
     private Spinner<Integer> qtySpinner;
@@ -61,6 +66,8 @@ public class ComandaPOSController extends POS {
     private Label tableLabel;
     @FXML
     private Label codOrderLabel;
+    @FXML
+    private Label codComandaLabel;
     @FXML
     private ComboBox<EmployeeDao> employeeComboBox;
     @FXML
@@ -117,17 +124,15 @@ public class ComandaPOSController extends POS {
         updateComandaItems();
         handleChangeTable();
 
-        exitButton.setOnAction(e1 -> {
-            wrapperBox.getScene().getWindow().hide();
-            Platform.runLater(this::saveChanges);
-        });
-
+        exitButton.setOnAction(e1 -> exit());
         productsListView.setItems(products);
         productsListView.setCellFactory(plv -> new ProductListViewCell());
         employeeComboBox.setOnAction(event -> updateEmployee());
         tableLabel.setText("MESA #" + this.comanda.getIdTable());
         codOrderLabel.setText(String.valueOf(comanda.getIdOrder()));
+        codComandaLabel.setText(String.valueOf(comanda.getIdComanda()));
         customerLabel.setText(Order.getCustomerName(comanda.getIdOrder()));
+
         customerBox.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.ENTER)) {
                 Order.insertCustomerName(comanda.getIdOrder(), customerBox.getText());
@@ -135,10 +140,12 @@ public class ComandaPOSController extends POS {
                 customerBox.clear();
             }
         });
+
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
         subtotalLabel.setText(format.format(comanda.getTotal()));
         totalLabel.setText(format.format(comanda.getTotal()));
         updateButton.setOnMouseClicked(ac -> updateComandaItems());
+        cancelOrderButton.setOnMouseClicked(e -> onCancelOrder());
 
         finalizeOrderButton.setOnMouseClicked(e -> {
             saveChanges();
@@ -217,6 +224,11 @@ public class ComandaPOSController extends POS {
         Order.removeProductsFromOrder(comanda.getIdOrder());
     }
 
+    public void exit() {
+        wrapperBox.getScene().getWindow().hide();
+        Platform.runLater(this::saveChanges);
+    }
+
     public void saveChanges() {
         clear();
         saveProductList();
@@ -276,6 +288,29 @@ public class ComandaPOSController extends POS {
             timeLabel.setText("Mais de uma hora");
         } else {
             timeLabel.setText(ChronoUnit.MINUTES.between(dateTimeOpenned, LocalDateTime.now()) + " minutos");
+        }
+    }
+
+    public void onCancelOrder() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Alerta do sistema");
+        alert.setHeaderText("Tem certeza que deseja cancelar o pedido?");
+        alert.setContentText("Essa operação não poderá ser desfeita.");
+        alert.initOwner(wrapperBox.getScene().getWindow());
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.OK) {
+            double total = getTotal();
+            int idComanda = comanda.getIdComanda();
+            int idOrder = comanda.getIdOrder();
+            int idTable = comanda.getIdTable();
+            final int CANCELED = 3;
+            Order.cancel(idOrder);
+            Order.closeComanda(idComanda, total);
+            Order.updateOrderStatus(idComanda, CANCELED);
+            Order.updateOrderAmount(idComanda, total, 0, 0);
+            Management.closeTable(idTable);
+            exit();
         }
     }
 }
