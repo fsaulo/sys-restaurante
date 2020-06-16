@@ -57,8 +57,8 @@
                                  </toggleGroup>
                               </ToggleButton>
                               <ToggleButton fx:id="toggleComandas" alignment="CENTER_LEFT" mnemonicParsing="false" onMouseClicked="#submenuComandas" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Mesas/Comandas" toggleGroup="$submenuGroup" />
-                              <ToggleButton fx:id="togglePedidos" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#submenuPedidos" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Pedidos" toggleGroup="$submenuGroup" />
                               <ToggleButton fx:id="toggleHistoricoCaixa" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#submenuHistoricoCaixa" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Histórico do caixa" toggleGroup="$submenuGroup" />
+                              <ToggleButton fx:id="togglePedidos" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#submenuPedidos" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Pedidos" toggleGroup="$submenuGroup" />
                               <ToggleButton fx:id="togglePainelCardapio" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#submenuPainelCardapio" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Painel de cardápio" toggleGroup="$submenuGroup" />
                            </children>
                            <VBox.margin>

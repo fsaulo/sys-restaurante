@@ -36,7 +36,6 @@ import org.sysRestaurante.gui.formatter.CellFormatter;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.gui.formatter.StatusCellFormatter;
-import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.text.NumberFormat;

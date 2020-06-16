@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<GridPane fx:id="gridWrapper" prefHeight="766.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierHistoryController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="0.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <BorderPane fx:id="borderPaneHolder">
+         <center>
+            <VBox spacing="5.0" styleClass="box-content" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <children>
+                  <VBox alignment="TOP_RIGHT">
+                     <children>
+                        <Label opacity="0.9" text="Histórico do caixa">
+                           <font>
+                              <Font name="Carlito Bold" size="39.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+                  <Separator prefWidth="200.0" />
+                  <TabPane VBox.vgrow="ALWAYS">
+                     <tabs>
+                        <Tab closable="false">
+                           <content>
+                              <VBox spacing="5.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" styleClass="box-content">
+                                       <children>
+                                          <Label opacity="0.8" text="Gerenciar balcão">
+                                             <font>
+                                                <Font name="Carlito Bold" size="22.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" />
+                                       </padding>
+                                    </HBox>
+                                    <TableView fx:id="orderListTableView" VBox.vgrow="ALWAYS">
+                                       <placeholder>
+                                          <HBox alignment="CENTER">
+                                             <children>
+                                                <Label opacity="0.7" text="Nenhum registro encontrado" textAlignment="CENTER" wrapText="true">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="20" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </placeholder>
+                                       <columns>
+                                          <TableColumn fx:id="codOrder" editable="false" maxWidth="78.0" minWidth="50.0" prefWidth="-1.0" text="Cod." />
+                                          <TableColumn fx:id="revenue" editable="false" minWidth="100.0" prefWidth="-1.0" text="Balanço do caixa" />
+                                          <TableColumn fx:id="withdrawals" editable="false" minWidth="20.0" prefWidth="81.0" text="Retiradas" />
+                                          <TableColumn fx:id="dateOpenning" editable="false" minWidth="100.0" prefWidth="183.0" text="Data de abertura" />
+                                          <TableColumn fx:id="dateClosing" editable="false" minWidth="20.0" prefWidth="114.0" text="Data de fechamento" />
+                                       </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                    <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" styleClass="box-content">
+                                       <children>
+                                          <VBox fx:id="cashierDateDetailsBox" alignment="CENTER_RIGHT" opacity="0.6">
+                                             <children>
+                                                <Label text="Caixa aberto em">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="02/01/2020 01:22">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="15.0" />
+                                                   </font>
+                                                   <tooltip>
+                                                      <Tooltip text="Caixa aberto em {data} por {pessoa}" />
+                                                   </tooltip>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                          <Separator orientation="VERTICAL" />
+                                          <Pane opacity="0.0" HBox.hgrow="ALWAYS" />
+                                          <VBox alignment="TOP_RIGHT" opacity="0.6">
+                                             <children>
+                                                <Label text="Total retiradas">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="withdrawalLabel" text="R$ 10,00" textFill="RED">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="20.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                          <Separator orientation="VERTICAL" />
+                                          <VBox alignment="TOP_RIGHT" opacity="0.6">
+                                             <children>
+                                                <Label text="Total à vista">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="inCashLabel" text="R$ 54,01" textFill="#289e2c">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="20.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                          <Separator orientation="VERTICAL" />
+                                          <VBox alignment="TOP_RIGHT" opacity="0.6">
+                                             <children>
+                                                <Label text="Total no cartão">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="byCardLabel" text="R$ 100,10" textFill="#289e2c">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="20.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                          <Separator orientation="VERTICAL" />
+                                          <VBox alignment="TOP_RIGHT">
+                                             <children>
+                                                <Label opacity="0.7" text="Balanço do dia">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="revenueLabel" text="R$ 144,21" textFill="#289e2c">
+                                                   <font>
+                                                      <Font name="Carlito Bold" size="20.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets top="5.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="3.0" />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+         <right>
+            <VBox alignment="CENTER" spacing="5.0" styleClass="box-content" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <BorderPane.margin>
+                  <Insets bottom="3.0" left="3.0" />
+               </BorderPane.margin>
+               <children>
+                  <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefWidth="230.0" styleClass="scroll" VBox.vgrow="ALWAYS">
+                     <content>
+                        <VBox alignment="CENTER" spacing="5.0">
+                           <children>
+                              <Label text="Controle de caixa">
+                                 <font>
+                                    <Font name="Carlito Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Separator prefWidth="200.0" />
+                              <VBox fx:id="openOrCloseCashierButton" alignment="CENTER" disable="true" prefHeight="50.0" styleClass="cashier-button">
+                                 <children>
+                                    <Label fx:id="openOrCloseCashierLabel" styleClass="cashier-text" text="Abrir/fechar caixa" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font name="Carlito Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(F10)">
+                                       <font>
+                                          <Font name="Carlito Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                              <Separator prefWidth="200.0" />
+                              <Label text="Opções de caixa">
+                                 <font>
+                                    <Font name="Carlito Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Separator prefWidth="200.0" />
+                              <VBox fx:id="newOrderBox" alignment="CENTER" disable="true" prefHeight="50.0" styleClass="cashier-button">
+                                 <children>
+                                    <Label text="Novo pedido no caixa" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font name="Carlito Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(F2)">
+                                       <font>
+                                          <Font name="Carlito Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox fx:id="cancelOrderBox" alignment="CENTER" disable="true" prefWidth="200.0" styleClass="cashier-button">
+                                 <children>
+                                    <Label text="Cancelar pedido" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font name="Carlito Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(F4)">
+                                       <font>
+                                          <Font name="Carlito Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                              <HBox fx:id="wrapperBoxPicker">
+                                 <children>
+                                    <VBox fx:id="searchOrderBox" alignment="CENTER" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label text="Pesquisar venda" textAlignment="CENTER" wrapText="true">
+                                             <font>
+                                                <Font name="Carlito Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="(F6)">
+                                             <font>
+                                                <Font name="Carlito Bold" size="16.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <Separator layoutX="15.0" layoutY="502.0" prefWidth="200.0" />
+                              <Label text="Opçes de registros">
+                                 <font>
+                                    <Font name="Carlito Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Separator prefWidth="200.0" />
+                              <HBox prefHeight="50.0" spacing="5.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label fx:id="openOrCloseCashierLabel11" styleClass="cashier-text" text="Consulta" textAlignment="CENTER" wrapText="true">
+                                             <font>
+                                                <Font name="Carlito Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label fx:id="openOrCloseCashierLabel21" styleClass="cashier-text" text="Exibição" textAlignment="CENTER" wrapText="true">
+                                             <font>
+                                                <Font name="Carlito Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <HBox disable="true" prefHeight="50.0" spacing="5.0">
+                                 <children>
+                                    <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label fx:id="openOrCloseCashierLabel1" styleClass="cashier-text" text="Detalhes" textAlignment="CENTER" wrapText="true">
+                                             <font>
+                                                <Font name="Carlito Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                                       <children>
+                                          <Label fx:id="openOrCloseCashierLabel2" styleClass="cashier-text" text="Editar" textAlignment="CENTER" wrapText="true">
+                                             <font>
+                                                <Font name="Carlito Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <VBox alignment="CENTER" disable="true" prefHeight="50.0" styleClass="cashier-button">
+                                 <children>
+                                    <Label text="Emitir nota fiscal" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font name="Carlito Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(F7)" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font name="Carlito Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="50.0" styleClass="cashier-button">
+                                 <children>
+                                    <Label text="Atualizar registros" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font name="Carlito Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="(F5)" textAlignment="CENTER" wrapText="true">
+                                       <font>
+                                          <Font name="Carlito Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <VBox fx:id="statusCashierBox" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" style="-fx-background-radius: 5; -fx-background-color: #58996A;">
+                     <children>
+                        <Label fx:id="statusCashierLabel" text="CAIXA LIVRE" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                           <font>
+                              <Font name="Carlito Bold" size="25.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </VBox>
+         </right>
+      </BorderPane>
+   </children>
+   <stylesheets>
+      <URL value="@../css/menu.css" />
+      <URL value="@../css/controls.css" />
+   </stylesheets>
+   <padding>
+      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+   </padding>
+</GridPane>

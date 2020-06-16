@@ -124,7 +124,10 @@ public class ToolBarController extends AppFactory {
     }
 
     public void submenuGerenciarBalcao(MouseEvent event) {
-        if (!toggleGerenciarBalcao.isSelected()) toggleGerenciarBalcao.setSelected(true);
+        if (!toggleGerenciarBalcao.isSelected()) {
+            toggleGerenciarBalcao.setSelected(true);
+        }
+
         selectMenuPrincipal();
         AppFactory.getAppController().loadPage(event, SceneNavigator.CASHIER);
     }
@@ -134,11 +137,12 @@ public class ToolBarController extends AppFactory {
         AppFactory.getAppController().loadPage(event, SceneNavigator.MANAGE_COMANDA);
     }
 
-    public void submenuPedidos() {
+    public void submenuHistoricoCaixa(Event event) {
         selectMenuPrincipal();
+        AppFactory.getAppController().loadPage(event, SceneNavigator.CASHIER_HISTORY_VIEW);
     }
 
-    public void submenuHistoricoCaixa() {
+    public void submenuPedidos() {
         selectMenuPrincipal();
     }
 

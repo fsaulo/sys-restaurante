@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -143,7 +144,7 @@ public class AppController implements DateFormatter {
         return timerInMillies;
     }
 
-    public void loadPage(MouseEvent e, String fxml) {
+    public void loadPage(Event e, String fxml) {
         try {
             borderPaneHolder.centerProperty().setValue(FXMLLoader.load(AppController.class.getResource(fxml)));
             e.consume();
