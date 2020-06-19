@@ -11,6 +11,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.util.Animation;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -82,9 +83,26 @@ public class ToolBarController extends AppFactory {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ToolBarController.class.getName());
 
     public void initialize() {
+        UserDao user = null;
+        String adminAccessString = "SysRestaurante | Adminstração";
+        String employeeAccessString = "SysRestaurante | Funcionário";
+
+        try {
+            user = AppFactory.getUserDao();
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            LOGGER.severe("Trying to access null user object.");
+        }
+
         this.clearToggleGroup(menuGroup, submenuGroup);
-        userLabel.setText("Olá, Saulo");
-        dashboardLinkLabel.setText("SysRestaurante | Adminstração");
+        userLabel.setText("Olá, " + user.getName());
+
+        if (user.isAdmin()) {
+            dashboardLinkLabel.setText(adminAccessString);
+        } else {
+            dashboardLinkLabel.setText(employeeAccessString);
+        }
     }
 
     public void unfoldSubmenus(VBox box, ToggleButton... toggleSubmenus) {

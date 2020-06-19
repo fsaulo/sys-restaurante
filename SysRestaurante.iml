@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_13">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_9">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
@@ -10,23 +10,23 @@
       <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="14" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="lib" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-base:14-ea+8" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:14-ea+8" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:linux:14-ea+8" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-media:14-ea+8" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-media:win:14-ea+8" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-media:linux:14-ea+8" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:14-ea+8" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:14-ea+8" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:linux:14-ea+8" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-web:14-ea+8" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-web:win:14-ea+8" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-web:linux:14-ea+8" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:14-ea+8" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:14-ea+8" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:linux:14-ea+8" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:14-ea+8" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:14-ea+8" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:linux:14-ea+8" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-swing:14-ea+8" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-swing:win:14-ea+8" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-swing:linux:14-ea+8" level="project" />
     <orderEntry type="library" name="Maven: org.openjfx:javafx-archetype-fxml:0.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.30.1" level="project" />
     <orderEntry type="library" name="Maven: org.controlsfx:controlsfx:11.0.1" level="project" />

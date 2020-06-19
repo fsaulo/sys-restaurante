@@ -52,7 +52,14 @@ public class MainGUI extends Application {
 
     public static void closeStage() {
         Stage stage = (Stage) mainController.getScene().getWindow();
-        stage.close();
+
+        try {
+            stage.close();
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            LOGGER.severe("Tryied to acces null stage object.");
+        }
     }
 
     public static void startProgram(Stage stage) throws IOException {
