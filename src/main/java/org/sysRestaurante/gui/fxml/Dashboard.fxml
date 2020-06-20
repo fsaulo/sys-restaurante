@@ -60,16 +60,25 @@
                         </HBox>
                         <HBox prefWidth="749.0" spacing="10.0" styleClass="tile-info" VBox.vgrow="ALWAYS">
                            <children>
-                              <LineChart fx:id="lineChart" legendSide="RIGHT" legendVisible="false" prefHeight="418.0" prefWidth="772.0" HBox.hgrow="ALWAYS">
+                              <LineChart fx:id="lineChart" legendSide="RIGHT" legendVisible="false" style="-fx-font-family: Courier;" HBox.hgrow="ALWAYS">
                                  <xAxis>
-                                    <CategoryAxis gapStartAndEnd="false" side="BOTTOM" />
+                                    <CategoryAxis gapStartAndEnd="false" side="BOTTOM">
+                                       <tickLabelFont>
+                                          <Font name="Carlito Bold" size="12.0" />
+                                       </tickLabelFont></CategoryAxis>
                                  </xAxis>
                                  <yAxis>
-                                    <NumberAxis minorTickCount="0" prefHeight="199.0" prefWidth="13.0" side="LEFT" tickLabelGap="5.0" tickMarkVisible="false">
+                                    <NumberAxis minorTickCount="0" prefHeight="199.0" prefWidth="13.0" side="LEFT" tickLabelGap="5.0">
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
-                                       </cursor></NumberAxis>
+                                       </cursor>
+                                       <tickLabelFont>
+                                          <Font name="Carlito" size="12.0" />
+                                       </tickLabelFont></NumberAxis>
                                  </yAxis>
+                                 <padding>
+                                    <Insets left="10.0" top="10.0" />
+                                 </padding>
                               </LineChart>
                            </children>
                            <padding>

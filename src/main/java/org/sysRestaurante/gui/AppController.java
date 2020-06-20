@@ -15,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -29,8 +28,8 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.SessionDao;
-import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.gui.formatter.DateFormatter;
+import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
@@ -56,7 +55,6 @@ public class AppController implements DateFormatter {
         SessionDao session = new SessionDao();
         AppFactory.setAppController(this);
         AppFactory.setSessionDao(session);
-
 
         borderPaneHolder.leftProperty().setValue(
                 FXMLLoader.load(AppController.class.getResource(SceneNavigator.MENU_TOOL_BAR)));
@@ -220,7 +218,7 @@ public class AppController implements DateFormatter {
             stage.setMinWidth(720);
             stage.setMinHeight(430);
             stage.setMinWidth(840);
-            stage.setWidth(1090);
+            stage.setWidth(1080);
             stage.setResizable(true);
             stage.showAndWait();
         } catch (IOException ex) {
