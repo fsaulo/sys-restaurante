@@ -163,9 +163,10 @@ public class DashboardController {
 
     public void buildChart() {
         XYChart.Series series = new XYChart.Series();
+        final int listSize = 15;
 
         List<CashierDao> data = Cashier.getCashier();
-        data = data.subList(data.size() - 11, data.size() - 1);
+        data = data.subList(data.size() - listSize, data.size() - 1);
 
         for (CashierDao value : data) {
             String dateString;

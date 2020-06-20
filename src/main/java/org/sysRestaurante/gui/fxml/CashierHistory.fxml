@@ -66,7 +66,7 @@
                                           </HBox>
                                        </placeholder>
                                        <columns>
-                                          <TableColumn fx:id="codOrder" editable="false" maxWidth="78.0" minWidth="50.0" prefWidth="-1.0" text="Cod." />
+                                          <TableColumn fx:id="codCashier" editable="false" maxWidth="78.0" minWidth="50.0" prefWidth="-1.0" text="Cod." />
                                           <TableColumn fx:id="revenue" editable="false" minWidth="100.0" prefWidth="159.0" text="Balanço do caixa" />
                                           <TableColumn fx:id="withdrawals" editable="false" minWidth="20.0" prefWidth="157.0" text="Retiradas" />
                                           <TableColumn fx:id="dateOpenning" editable="false" minWidth="100.0" prefWidth="175.0" text="Data de abertura" />

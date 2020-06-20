@@ -21,14 +21,15 @@ import java.util.logging.Logger;
 
 public class Cashier {
 
-    private Connection con;
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Cashier.class.getName());
 
     public void open(int userId, double initialAmount, String note) {
         String query = "INSERT INTO caixa (id_usuario, data_abertura, hora_abertura, balanco_inicial, is_aberto, " +
                 "observacao) VALUES (?,?,?,?,?,?)";
 
+        Connection con;
         PreparedStatement ps;
+
         if (initialAmount < 0) initialAmount = 0.0;
 
         CashierDao cashier = new CashierDao();
@@ -129,32 +130,6 @@ public class Cashier {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public static double getRevenue(int idCashier) {
-        String query = "SELECT balanco FROM caixa WHERE id_caixa = ?";
-        double revenue = 0;
-        PreparedStatement ps;
-        ResultSet rs;
-
-        try {
-            Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
-            ps.setInt(1, idCashier);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                revenue = rs.getDouble("balanco");
-            }
-
-            ps.close();
-            rs.close();
-            con.close();
-            return revenue;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return 0;
     }
 
     public static boolean isOpen() {
@@ -275,6 +250,15 @@ public class Cashier {
                 cashierDao.setInCash(rs.getDouble("total_avista"));
                 cashierDao.setByCard(rs.getDouble("total_acartao"));
                 cashierDao.setInitialAmount(rs.getDouble("balanco_inicial"));
+
+                try {
+                    cashierDao.setDateClosing(rs.getDate("data_fechamento").toLocalDate());
+                    cashierDao.setTimeClosing(rs.getTime("hora_fechamento").toLocalTime());
+                    cashierDao.configDateTimeEvent();
+                } catch (NullPointerException exception) {
+                    ExceptionHandler.doNothing();
+                }
+
                 list.add(cashierDao);
             }
 

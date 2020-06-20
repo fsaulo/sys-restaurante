@@ -1,14 +1,24 @@
 package org.sysRestaurante.gui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.CashierDao;
+import org.sysRestaurante.gui.formatter.CellFormatter;
+import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.model.Cashier;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class CashierHistoryController {
 
@@ -17,17 +27,17 @@ public class CashierHistoryController {
     @FXML
     private BorderPane borderPaneHolder;
     @FXML
-    private TableView<?> orderListTableView;
+    private TableView<CashierDao> orderListTableView;
     @FXML
-    private TableColumn<?, ?> codOrder;
+    private TableColumn<CashierDao, Integer> codCashier;
     @FXML
-    private TableColumn<?, ?> revenue;
+    private TableColumn<CashierDao, Double> revenue;
     @FXML
-    private TableColumn<?, ?> withdrawals;
+    private TableColumn<CashierDao, Double> withdrawals;
     @FXML
-    private TableColumn<?, ?> dateOpenning;
+    private TableColumn<CashierDao, LocalDateTime> dateOpenning;
     @FXML
-    private TableColumn<?, ?> dateClosing;
+    private TableColumn<CashierDao, LocalDateTime> dateClosing;
     @FXML
     private VBox cashierDateDetailsBox;
     @FXML
@@ -66,5 +76,21 @@ public class CashierHistoryController {
     public void initialize() {
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
+        ObservableList<CashierDao> items = FXCollections.observableList(Cashier.getCashier());
+        FXCollections.reverse(items);
+        orderListTableView.setItems(items);
+        codCashier.setCellValueFactory(new PropertyValueFactory<>("idCashier"));
+        revenue.setCellValueFactory(new PropertyValueFactory<>("revenue"));
+        withdrawals.setCellValueFactory(new PropertyValueFactory<>("withdrawal"));
+        dateClosing.setCellValueFactory(new PropertyValueFactory<>("dateTimeClosing"));
+        dateOpenning.setCellValueFactory(new PropertyValueFactory<>("dateTimeOpening"));
+        dateClosing.setCellFactory((CellFormatter<CashierDao, LocalDateTime>) value ->
+                DateTimeFormatter.ofPattern("dd/MM/yyyy H:m:ss").format(value));
+        dateOpenning.setCellFactory((CellFormatter<CashierDao, LocalDateTime>) value ->
+                DateTimeFormatter.ofPattern("dd/MM/yyyy H:m:ss").format(value));
+        revenue.setCellFactory((CellFormatter<CashierDao, Double>) value -> CurrencyField.getBRLCurrencyFormat()
+                .format(value));
+        withdrawals.setCellFactory((CellFormatter<CashierDao, Double>) value -> CurrencyField.getBRLCurrencyFormat()
+                .format(value));
     }
 }
