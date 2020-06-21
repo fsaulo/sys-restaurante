@@ -460,19 +460,23 @@ public class Order {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                orderDao = new OrderDao();
-                orderDao.setIdOrder(rs.getInt("id_pedido"));
-                orderDao.setInCash(rs.getDouble("valor_avista"));
-                orderDao.setByCard(rs.getDouble("valor_cartao"));
-                orderDao.setNote(rs.getString("observacao"));
-                orderDao.setDetails(rs.getInt("id_categoria_pedido"));
-                orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
-                orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
-                orderDao.setStatus(rs.getInt("status"));
-                orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
-                orderDao.setTaxes(rs.getDouble("taxas"));
-                orderDao.setDiscount(rs.getDouble("descontos"));
-                orderList.add(orderDao);
+                try {
+                    orderDao = new OrderDao();
+                    orderDao.setIdOrder(rs.getInt("id_pedido"));
+                    orderDao.setInCash(rs.getDouble("valor_avista"));
+                    orderDao.setByCard(rs.getDouble("valor_cartao"));
+                    orderDao.setNote(rs.getString("observacao"));
+                    orderDao.setDetails(rs.getInt("id_categoria_pedido"));
+                    orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
+                    orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
+                    orderDao.setStatus(rs.getInt("status"));
+                    orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
+                    orderDao.setTaxes(rs.getDouble("taxas"));
+                    orderDao.setDiscount(rs.getDouble("descontos"));
+                    orderList.add(orderDao);
+                } catch (NullPointerException ignored) {
+                    ExceptionHandler.doNothing();
+                }
             }
 
             ps.close();
