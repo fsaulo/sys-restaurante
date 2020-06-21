@@ -30,15 +30,15 @@ public class NotificationHandler {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Erro do sistema");
         alert.setHeaderText("Eita! Ocorreu um erro gravíssimo!");
-        alert.setContentText("Os dados da última operação foram perdidos, por favor, feche o sistema e abra novamente."
-        + "Lamento o ocorrido. Se possível, encaminhe os logs de erros para o desenvolvedor.");
+        alert.setContentText("Os dados da última operação foram perdidos, por favor, feche o sistema e abra novamente. "
+        + "Lamentamos o ocorrido. Se possível, encaminhe os logs de erros para o desenvolvedor.");
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
 
         ex.printStackTrace(pw);
         String exceptionText = sw.toString();
-        Label label = new Label("Segue em anexo os logs de erros:");
+        Label label = new Label("Segue em anexo os logs de erros: ");
         TextArea textArea = new TextArea(exceptionText);
 
         textArea.setEditable(false);

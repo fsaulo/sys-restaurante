@@ -6,12 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.util.DBConnection;
-import org.sysRestaurante.util.ExceptionHandler;
-import org.sysRestaurante.util.LoggerHandler;
-import org.sysRestaurante.util.Encryption;
+import org.sysRestaurante.util.*;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -23,7 +19,7 @@ public class MainGUI extends Application {
     private static final String KEY = "Jaguaric@3105";
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setHeight(450);
         primaryStage.setWidth(550);
         final String JAVA_VERSION = System.getProperty("java.version");
@@ -51,42 +47,50 @@ public class MainGUI extends Application {
     }
 
     public static void closeStage() {
-        Stage stage = (Stage) mainController.getScene().getWindow();
-
         try {
+            Stage stage = (Stage) mainController.getScene().getWindow();
             stage.close();
         } catch (NullPointerException ex) {
             ex.printStackTrace();
             ExceptionHandler.incrementGlobalExceptionsCount();
             LOGGER.severe("Tryied to acces null stage object.");
+            exitProgram();
         }
     }
 
-    public static void startProgram(Stage stage) throws IOException {
+    public static void startProgram(Stage stage) {
         stage.setTitle("SysRestaurante");
-        stage.setScene(createScene(loadMainPane()));
-        stage.setMinHeight(390);
-        stage.setMinWidth(465);
-        stage.centerOnScreen();
-        stage.show();
 
-        stage.setOnCloseRequest(e -> {
-            if (AppFactory.getUserDao() != null) {
-                AppFactory.getLoginController().storeLastSessionDuration();
-            }
-            LOGGER.info(DBConnection.getGlobalDBRequestsCount() + " requests to database.");
-            Platform.exit();
-            LOGGER.info("Program exited.");
-            System.exit(0);
-        });
+        try {
+            stage.setScene(createScene(loadMainPane()));
+            stage.setMinHeight(390);
+            stage.setMinWidth(465);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException exception) {
+            NotificationHandler.errorDialog(exception);
+            exception.printStackTrace();
+        }
+
+        stage.setOnCloseRequest(e -> exitProgram());
     }
 
-    public static void restartProgram() throws IOException {
+    public static void restartProgram() {
         closeStage();
         Stage stage = new Stage();
         stage.setHeight(450);
         stage.setWidth(550);
         startProgram(stage);
+    }
+
+    public static void exitProgram() {
+        if (AppFactory.getUserDao() != null) {
+            AppFactory.getLoginController().storeLastSessionDuration();
+        }
+        LOGGER.info(DBConnection.getGlobalDBRequestsCount() + " requests to database.");
+        Platform.exit();
+        LOGGER.info("Program exited.");
+        System.exit(0);
     }
 
     public static MainGUIController getMainController() {

@@ -7,11 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -23,6 +19,7 @@ import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Reminder;
+import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.io.IOException;
@@ -166,7 +163,39 @@ public class DashboardController {
         final int listSize = 15;
 
         List<CashierDao> data = Cashier.getCashier();
-        data = data.subList(data.size() - listSize, data.size() - 1);
+        List<CashierDao> subListData = new ArrayList<>();
+        CashierDao previousElement = data.get(0);
+        double totalRevenue = previousElement.getRevenue();
+
+        for (int i = 1; i < data.size(); i++) {
+            CashierDao nextElement = data.get(i);
+
+            try {
+                if (previousElement.getDateClosing().isEqual(nextElement.getDateClosing())) {
+                    totalRevenue += nextElement.getRevenue();
+                } else {
+                    totalRevenue = nextElement.getRevenue();
+                    CashierDao newElement = new CashierDao();
+                    newElement.setIdCashier(previousElement.getIdCashier());
+                    newElement.setRevenue(totalRevenue);
+                    newElement.setDateClosing(nextElement.getDateClosing());
+                    newElement.setTimeClosing(nextElement.getTimeClosing());
+                    newElement.setDateOpening(nextElement.getDateOpening());
+                    newElement.setTimeOpening(nextElement.getTimeOpening());
+                    subListData.add(newElement);
+                }
+            } catch (Exception ex) {
+                ExceptionHandler.doNothing();
+            }
+
+            previousElement = nextElement;
+        }
+
+        if (data.size() < 15) {
+            data = subListData;
+        } else {
+            data = subListData.subList(subListData.size() - listSize, subListData.size() - 1);
+        }
 
         for (CashierDao value : data) {
             String dateString;
@@ -203,7 +232,6 @@ public class DashboardController {
                 stackPane.setCursor(Cursor.DEFAULT);
                 legend.hide();
             });
-
 
             d1.setNode(stackPane);
             series.getData().add(d1);

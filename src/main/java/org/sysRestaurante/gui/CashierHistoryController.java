@@ -124,7 +124,6 @@ public class CashierHistoryController {
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
 
-
             TableView<OrderDao> tableOrderDetails = new TableView<>();
             TableColumn<OrderDao, Integer> codOrder = new TableColumn<>("Cod.");
             TableColumn<OrderDao, String> details = new TableColumn<>("Detalhes");
@@ -197,7 +196,6 @@ public class CashierHistoryController {
             wrapper.setPadding(new Insets(5,0,0,0));
             wrapper.setSpacing(5);
             newTab.setContent(wrapper);
-
         });
     }
 }
