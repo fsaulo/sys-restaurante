@@ -1,9 +1,12 @@
 package org.sysRestaurante.gui;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
@@ -17,6 +20,7 @@ import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.ExceptionHandler;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -104,7 +108,14 @@ public class CashierHistoryController {
 
         searchOrderBox.setOnMouseClicked(e -> {
             ObservableList<OrderDao> orderDetails = null;
-            CashierDao cashier = orderListTableView.getSelectionModel().getSelectedItem();
+            CashierDao cashier = null;
+
+            try {
+                cashier = orderListTableView.getSelectionModel().getSelectedItem();
+                orderDetails = FXCollections.observableList(Order.getOrderByIdCashier(cashier.getIdCashier()));
+            } catch (Exception ignored) {
+                ExceptionHandler.doNothing();
+            }
 
             Tab newTab = new Tab("Caixa: " + DateTimeFormatter
                     .ofPattern("dd/MM/yyyy")
@@ -113,13 +124,7 @@ public class CashierHistoryController {
             tabPane.getTabs().add(newTab);
             tabPane.getSelectionModel().select(newTab);
 
-            try {
-                orderDetails = FXCollections.observableList(Order.getOrderByIdCashier(cashier.getIdCashier()));
-            } catch (Exception ignored) {
-                ExceptionHandler.doNothing();
-            }
 
-            VBox wrapper = new VBox();
             TableView<OrderDao> tableOrderDetails = new TableView<>();
             TableColumn<OrderDao, Integer> codOrder = new TableColumn<>("Cod.");
             TableColumn<OrderDao, String> details = new TableColumn<>("Detalhes");
@@ -128,10 +133,40 @@ public class CashierHistoryController {
             TableColumn<OrderDao, LocalDate> date = new TableColumn<>("Data");
             TableColumn<OrderDao, Double> total = new TableColumn<>("Total");
 
+            tableOrderDetails.setRowFactory(orderDaoTableView -> {
+                final TableRow<OrderDao> row = new TableRow<>();
+                final ContextMenu contextMenu = new ContextMenu();
+
+                SeparatorMenuItem separator = new SeparatorMenuItem();
+                MenuItem optionDeleteOrder = new MenuItem("Cancelar pedido");
+                MenuItem optionDetailsOrder = new MenuItem("Detalhes");
+                MenuItem optionSeeReceipt = new MenuItem("Recibo");
+
+                optionDetailsOrder.setOnAction(actionEvent -> {
+                    AppFactory.setOrderDao(row.getItem());
+                    AppController.showDialog(SceneNavigator.ORDER_DETAILS_DIALOG, true);
+                });
+
+                optionSeeReceipt.setDisable(true);
+                optionDeleteOrder.setDisable(true);
+                contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
+
+                row.contextMenuProperty()
+                        .bind(Bindings
+                        .when(row
+                        .emptyProperty()
+                        .not())
+                        .then(contextMenu)
+                        .otherwise((ContextMenu) null));
+
+                return row;
+            });
+
             tableOrderDetails.getColumns().addAll(codOrder, details, total, notes, status, date);
             tableOrderDetails.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
             tableOrderDetails.setPlaceholder(new Label("Nenhum registro"));
             tableOrderDetails.setItems(orderDetails);
+
             codOrder.setCellValueFactory(new PropertyValueFactory<>("idOrder"));
             total.setCellValueFactory(new PropertyValueFactory<>("total"));
             details.setCellValueFactory(new PropertyValueFactory<>("details"));
@@ -146,12 +181,23 @@ public class CashierHistoryController {
                     .getBRLCurrencyFormat()
                     .format(value));
 
-            wrapper.getChildren().add(tableOrderDetails);
+            Parent detailsBox = null;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.DETAILS_CASHIER_BOX));
+            loader.setController(new DetailsCashierBoxController(cashier));
+
+            try {
+                detailsBox = loader.load();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+
+            VBox wrapper = new VBox();
+            wrapper.getChildren().addAll(tableOrderDetails, detailsBox);
             wrapper.setVgrow(tableOrderDetails, Priority.ALWAYS);
             wrapper.setPadding(new Insets(5,0,0,0));
             wrapper.setSpacing(5);
             newTab.setContent(wrapper);
-        });
 
+        });
     }
 }

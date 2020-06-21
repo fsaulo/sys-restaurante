@@ -1,6 +1,7 @@
 package org.sysRestaurante.model;
 
 import org.sysRestaurante.dao.EmployeeDao;
+import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -104,6 +105,39 @@ public class Personnel {
             ex.printStackTrace();
         }
 
+        return null;
+    }
+
+    public static UserDao getUserInfoById(int idUser) throws SQLException {
+        String query = "SELECT nome, username, email, is_admin FROM usuario WHERE id_usuario = ?";
+        UserDao userDao = new UserDao();
+        PreparedStatement ps = null;
+        Connection connection = null;
+        ResultSet rs = null;
+
+        try {
+            connection = DBConnection.getConnection();
+            ps = connection.prepareStatement(query);
+            ps.setInt(1, idUser);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                userDao.setAdmin(rs.getBoolean("is_admin"));
+                userDao.setName(rs.getString("nome"));
+                userDao.setUsername(rs.getString("username"));
+                userDao.setEmail(rs.getString("email"));
+            }
+
+            return userDao;
+        } catch (SQLException exception) {
+            LOGGER.severe("An error has occurred while trying to fetch user data access from the database");
+            exception.printStackTrace();
+            NotificationHandler.errorDialog(exception);
+        } finally {
+            ps.close();
+            rs.close();
+            connection.close();
+        }
         return null;
     }
 }

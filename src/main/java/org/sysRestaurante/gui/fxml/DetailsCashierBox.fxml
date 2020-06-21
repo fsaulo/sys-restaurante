@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" prefWidth="783.0" styleClass="box-content" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox fx:id="cashierDateDetailsBox" alignment="CENTER_RIGHT" opacity="0.6">
+         <children>
+            <Label text="Caixa aberto em">
+               <font>
+                  <Font name="Carlito Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="dateLabel" text="02/01/2020 01:22">
+               <font>
+                  <Font name="Carlito Bold" size="15.0" />
+               </font>
+               <tooltip>
+                  <Tooltip fx:id="toolTip" text="Caixa aberto em {data} por {pessoa}" />
+               </tooltip>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <Separator orientation="VERTICAL" />
+      <VBox fx:id="cashierDateDetailsBox1" alignment="CENTER" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="codCashier" text="CAIXA #544">
+               <font>
+                  <Font name="Carlito Bold" size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="userLabel" text="Aberto por Saulo (ADMINISTRADOR)">
+               <font>
+                  <Font name="Carlito Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <Separator orientation="VERTICAL" />
+      <VBox alignment="TOP_RIGHT" opacity="0.6">
+         <children>
+            <Label text="Total retiradas">
+               <font>
+                  <Font name="Carlito Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="withdrawalLabel" text="R$ 0,00" textFill="#6d423e">
+               <font>
+                  <Font name="Carlito Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <Separator orientation="VERTICAL" />
+      <VBox alignment="TOP_RIGHT" opacity="0.6">
+         <children>
+            <Label text="Total à vista">
+               <font>
+                  <Font name="Carlito Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="inCashLabel" text="R$ 0,00" textFill="#289e2c">
+               <font>
+                  <Font name="Carlito Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <Separator orientation="VERTICAL" />
+      <VBox alignment="TOP_RIGHT" opacity="0.6">
+         <children>
+            <Label text="Total no cartão">
+               <font>
+                  <Font name="Carlito Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="byCardLabel" text="R$ 0,00" textFill="#289e2c">
+               <font>
+                  <Font name="Carlito Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <Separator orientation="VERTICAL" />
+      <VBox alignment="TOP_RIGHT">
+         <children>
+            <Label opacity="0.7" text="Balanço do dia">
+               <font>
+                  <Font name="Carlito Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="revenueLabel" text="R$ 0,00" textFill="#289e2c">
+               <font>
+                  <Font name="Carlito Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</HBox>

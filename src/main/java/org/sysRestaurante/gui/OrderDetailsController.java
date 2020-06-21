@@ -26,6 +26,7 @@ import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
+import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.io.IOException;
@@ -213,8 +214,13 @@ public class OrderDetailsController {
     }
 
     public void exit() {
-        AppFactory.getCashierController().updateOrderTableList();
-        AppFactory.getCashierController().updateCashierElements();
+        try {
+            AppFactory.getCashierController().updateOrderTableList();
+            AppFactory.getCashierController().updateCashierElements();
+        } catch (Exception ex) {
+            ExceptionHandler.doNothing();
+        }
+
         totalLabel.getParent().getScene().getWindow().hide();
     }
 }
