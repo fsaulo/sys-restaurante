@@ -16,7 +16,6 @@ import org.sysRestaurante.util.Animation;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 public class ToolBarController extends AppFactory {
@@ -208,9 +207,9 @@ public class ToolBarController extends AppFactory {
             LOGGER.info("User logged out");
             AppFactory.getLoginController().storeLastSessionDuration();
             MainGUI.restartProgram();
-        } catch (IOException e) {
+        } catch (Exception e) {
             ExceptionHandler.incrementGlobalExceptionsCount();
-            LOGGER.severe("Couldn't log out due to IOException.");
+            LOGGER.severe("Couldn't log out due to an exception.");
             e.printStackTrace();
         }
     }

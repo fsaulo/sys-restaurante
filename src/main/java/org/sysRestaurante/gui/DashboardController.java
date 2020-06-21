@@ -160,7 +160,7 @@ public class DashboardController {
 
     public void buildChart() {
         XYChart.Series series = new XYChart.Series();
-        final int listSize = 15;
+        final int listSize = 30;
 
         List<CashierDao> data = Cashier.getCashier();
         List<CashierDao> subListData = new ArrayList<>();
@@ -191,7 +191,7 @@ public class DashboardController {
             previousElement = nextElement;
         }
 
-        if (data.size() < 15) {
+        if (subListData.size() < listSize) {
             data = subListData;
         } else {
             data = subListData.subList(subListData.size() - listSize, subListData.size() - 1);
@@ -199,11 +199,14 @@ public class DashboardController {
 
         for (CashierDao value : data) {
             String dateString;
+            String dateString2;
 
             try {
-                dateString = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(value.getDateClosing());
+                dateString = DateTimeFormatter.ofPattern("d MMM").format(value.getDateClosing());
+                dateString2 = DateTimeFormatter.ofPattern("d MMM uuuu").format(value.getDateClosing());
             } catch (Exception ex) {
-                dateString = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(value.getDateOpening());
+                dateString = DateTimeFormatter.ofPattern("d MMM").format(value.getDateOpening());
+                dateString2 = DateTimeFormatter.ofPattern("d MMM uuuu").format(value.getDateClosing());
             }
 
             final XYChart.Data<String, Number> d1 = new XYChart.Data(dateString, value.getRevenue());
@@ -213,7 +216,7 @@ public class DashboardController {
             box.setPadding(new Insets(15));
 
             Label label1 = new Label(CurrencyField.getBRLCurrencyFormat().format(value.getRevenue()));
-            Label label2 = new Label(dateString);
+            Label label2 = new Label(dateString2);
 
             label1.setStyle("-fx-font-weight: bold; -fx-font-size: 13");
             label2.setStyle("-fx-font-size: 13");
