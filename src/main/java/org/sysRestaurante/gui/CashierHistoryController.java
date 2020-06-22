@@ -38,21 +38,21 @@ public class CashierHistoryController {
     @FXML
     private TableColumn<CashierDao, Double> revenue;
     @FXML
+    private TableColumn<CashierDao, Double> revenueCash;
+    @FXML
+    private TableColumn<CashierDao, Double> revenueCard;
+    @FXML
+    private TableColumn<CashierDao, String> notes;
+    @FXML
     private TableColumn<CashierDao, Double> withdrawals;
     @FXML
     private TableColumn<CashierDao, LocalDateTime> dateOpenning;
     @FXML
     private TableColumn<CashierDao, LocalDateTime> dateClosing;
     @FXML
+    private VBox searchOrderBox;
+    @FXML
     private VBox cashierDateDetailsBox;
-    @FXML
-    private Label withdrawalLabel;
-    @FXML
-    private Label inCashLabel;
-    @FXML
-    private Label byCardLabel;
-    @FXML
-    private Label revenueLabel;
     @FXML
     private VBox openOrCloseCashierButton;
     @FXML
@@ -63,8 +63,6 @@ public class CashierHistoryController {
     private VBox cancelOrderBox;
     @FXML
     private HBox wrapperBoxPicker;
-    @FXML
-    private VBox searchOrderBox;
     @FXML
     private Label openOrCloseCashierLabel11;
     @FXML
@@ -90,9 +88,12 @@ public class CashierHistoryController {
         orderListTableView.setItems(items);
         codCashier.setCellValueFactory(new PropertyValueFactory<>("idCashier"));
         revenue.setCellValueFactory(new PropertyValueFactory<>("revenue"));
+        revenueCash.setCellValueFactory(new PropertyValueFactory<>("inCash"));
+        revenueCard.setCellValueFactory(new PropertyValueFactory<>("byCard"));
         withdrawals.setCellValueFactory(new PropertyValueFactory<>("withdrawal"));
         dateClosing.setCellValueFactory(new PropertyValueFactory<>("dateTimeClosing"));
         dateOpenning.setCellValueFactory(new PropertyValueFactory<>("dateTimeOpening"));
+        notes.setCellValueFactory(new PropertyValueFactory<>("note"));
         dateClosing.setCellFactory((CellFormatter<CashierDao, LocalDateTime>) value -> DateTimeFormatter
                         .ofPattern("dd/MM/yyyy H:m:ss")
                         .format(value));
@@ -100,6 +101,12 @@ public class CashierHistoryController {
                         .ofPattern("dd/MM/yyyy H:m:ss")
                         .format(value));
         revenue.setCellFactory((CellFormatter<CashierDao, Double>) value -> CurrencyField
+                .getBRLCurrencyFormat()
+                .format(value));
+        revenueCash.setCellFactory((CellFormatter<CashierDao, Double>) value -> CurrencyField
+                .getBRLCurrencyFormat()
+                .format(value));
+        revenueCard.setCellFactory((CellFormatter<CashierDao, Double>) value -> CurrencyField
                 .getBRLCurrencyFormat()
                 .format(value));
         withdrawals.setCellFactory((CellFormatter<CashierDao, Double>) value -> CurrencyField
