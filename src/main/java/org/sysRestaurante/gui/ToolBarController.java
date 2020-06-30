@@ -82,6 +82,7 @@ public class ToolBarController extends AppFactory {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ToolBarController.class.getName());
 
     public void initialize() {
+        AppFactory.setToolBarController(this);
         UserDao user = null;
         String adminAccessString = "SysRestaurante | Adminstração";
         String employeeAccessString = "SysRestaurante | Funcionário";

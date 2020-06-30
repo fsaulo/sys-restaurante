@@ -89,7 +89,7 @@ public class OrderDetailsController {
         timeLabel.setText("Sem registro");
         exitButton.setOnAction(actionEvent -> exit());
         codComandaLabel.setText("CAIXA #" + AppFactory.getCashierDao().getIdCashier());
-        dateLabel.setText(DateFormatter.TIME_DETAILS_FORMAT.format(order.getOrderDate().atTime(order.getOrderTime())));
+        dateLabel.setText(DateFormatter.DATE_TIME_FORMAT.format(order.getOrderDate().atTime(order.getOrderTime())));
         cancelOrderButton.setOnAction(actionEvent -> onCancelOrder());
 
         receiptButton.setOnMouseClicked(event -> {

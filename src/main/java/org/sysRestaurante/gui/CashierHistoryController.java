@@ -28,8 +28,6 @@ import java.time.format.DateTimeFormatter;
 public class CashierHistoryController {
 
     @FXML
-    private GridPane gridWrapper;
-    @FXML
     private BorderPane borderPaneHolder;
     @FXML
     private TableView<CashierDao> orderListTableView;

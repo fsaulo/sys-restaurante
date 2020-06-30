@@ -7,14 +7,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
-
 import javafx.stage.Window;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
@@ -22,9 +16,10 @@ import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.dao.SessionDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Cashier;
-import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Management;
+import org.sysRestaurante.model.Order;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -113,8 +108,9 @@ public class ManageComandaController {
     }
 
     public void updateInfo() {
+        long averageTimeInMinutes = session.getAveragePermanencyInMinutes();
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
-        averageTime.setText(session.getAveragePermanencyInMinutes() + " minutos");
+        averageTime.setText(DateFormatter.translateTimeFromMinutes(averageTimeInMinutes));
         busyTables.setText(String.valueOf(session.getBusyTablesCount()));
         availableTables.setText(String.valueOf(session.getAvailableTablesCount()));
         averageIncome.setText(format.format(averageIncome()));

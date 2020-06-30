@@ -1,22 +1,7 @@
 package org.sysRestaurante.applet;
 
-import org.sysRestaurante.dao.CashierDao;
-import org.sysRestaurante.dao.ComandaDao;
-import org.sysRestaurante.dao.OrderDao;
-import org.sysRestaurante.dao.ProductDao;
-import org.sysRestaurante.dao.SessionDao;
-import org.sysRestaurante.dao.UserDao;
-import org.sysRestaurante.gui.AppController;
-import org.sysRestaurante.gui.CashierController;
-import org.sysRestaurante.gui.CashierPOSController;
-import org.sysRestaurante.gui.ComandaPOSController;
-import org.sysRestaurante.gui.DashboardController;
-import org.sysRestaurante.gui.LoginController;
-import org.sysRestaurante.gui.MainGUIController;
-import org.sysRestaurante.gui.ManageComandaController;
-import org.sysRestaurante.gui.POS;
-import org.sysRestaurante.gui.ReceiptViewController;
-import org.sysRestaurante.model.Receipt;
+import org.sysRestaurante.dao.*;
+import org.sysRestaurante.gui.*;
 
 import java.util.ArrayList;
 
@@ -37,6 +22,15 @@ public class AppFactory {
     private static ComandaPOSController comandaPOSController;
     private static POS pos;
     private static ReceiptViewController receiptViewController;
+    private static ToolBarController toolBarController;
+
+    public static ToolBarController getToolBarController() {
+        return toolBarController;
+    }
+
+    public static void setToolBarController(ToolBarController toolBarController) {
+        AppFactory.toolBarController = toolBarController;
+    }
 
     public static SessionDao getSessionDao() {
         return sessionDao;

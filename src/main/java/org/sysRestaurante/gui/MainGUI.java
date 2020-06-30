@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 public class MainGUI extends Application {
 
     private static final Logger LOGGER = new LoggerHandler().getGenericConsoleHandler(MainGUI.class.getName());
-    private static MainGUIController mainController;
     private static final String KEY = "Jaguaric@3105";
+    private static MainGUIController mainController;
 
     @Override
     public void start(Stage primaryStage) {
