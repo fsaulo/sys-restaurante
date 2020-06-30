@@ -19,11 +19,11 @@
             <plugin>
         	    <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <release>13</release>
-        	        <target>13</target>
-                    <source>13</source>
+                    <release>14</release>
+        	        <target>14</target>
+                    <source>14</source>
                 </configuration>
             </plugin>
 
@@ -72,37 +72,37 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-media</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
