@@ -1,6 +1,7 @@
 package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -175,8 +176,7 @@ public class DashboardController {
                     totalRevenue += nextElement.getRevenue();
                 } else {
                     totalRevenue = nextElement.getRevenue();
-                    CashierDao newElement = new CashierDao();
-                    newElement.setIdCashier(previousElement.getIdCashier());
+                    CashierDao newElement = previousElement;
                     newElement.setRevenue(totalRevenue);
                     newElement.setDateClosing(nextElement.getDateClosing());
                     newElement.setTimeClosing(nextElement.getTimeClosing());
@@ -221,19 +221,22 @@ public class DashboardController {
             label1.setStyle("-fx-font-weight: bold; -fx-font-size: 13");
             label2.setStyle("-fx-font-size: 13");
             box.getChildren().addAll(label1, label2);
+            box.setCursor(Cursor.HAND);
+            box.setOnMouseClicked(mouseEvent -> openHistoryPane(mouseEvent, value));
 
             PopOver legend = new PopOver(box);
+
+            box.setOnMouseExited(mouseEvent -> {
+                stackPane.setCursor(Cursor.DEFAULT);
+                legend.hide();
+            });
+
             legend.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
             legend.setDetachable(false);
 
             stackPane.setOnMouseEntered(mouseDragEvent -> {
                 legend.show(stackPane);
                 stackPane.setCursor(Cursor.HAND);
-
-            });
-            box.setOnMouseExited(mouseEvent -> {
-                stackPane.setCursor(Cursor.DEFAULT);
-                legend.hide();
             });
 
             d1.setNode(stackPane);
@@ -241,5 +244,10 @@ public class DashboardController {
         }
 
         lineChart.getData().add(series);
+    }
+
+    public void openHistoryPane(Event mouseEvent, CashierDao cashier) {
+        AppFactory.getToolBarController().submenuHistoricoCaixa(mouseEvent);
+        AppFactory.getCashierHistoryController().buildTableOrderDetails(cashier);
     }
 }

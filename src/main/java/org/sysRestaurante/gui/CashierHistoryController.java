@@ -77,6 +77,7 @@ public class CashierHistoryController {
     private TabPane tabPane;
 
     public void initialize() {
+        AppFactory.setCashierHistoryController(this);
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
 
@@ -112,95 +113,102 @@ public class CashierHistoryController {
                 .format(value));
 
         searchOrderBox.setOnMouseClicked(e -> {
-            ObservableList<OrderDao> orderDetails = null;
-            CashierDao cashier = null;
+            CashierDao cashier = new CashierDao();
 
             try {
                 cashier = orderListTableView.getSelectionModel().getSelectedItem();
-                orderDetails = FXCollections.observableList(Order.getOrderByIdCashier(cashier.getIdCashier()));
+                orderListTableView.getSelectionModel().clearSelection();
+                buildTableOrderDetails(cashier);
             } catch (Exception ignored) {
                 ExceptionHandler.doNothing();
             }
+        });
+    }
 
-            Tab newTab = new Tab("Caixa: " + DateTimeFormatter
-                    .ofPattern("dd/MM/yyyy")
-                    .format(cashier.getDateOpening()));
+    public void buildTableOrderDetails(CashierDao cashier) {
+        ObservableList<OrderDao> orderDetails = null;
 
-            tabPane.getTabs().add(newTab);
-            tabPane.getSelectionModel().select(newTab);
+        try {
+            orderDetails = FXCollections.observableList(Order.getOrderByIdCashier(cashier.getIdCashier()));
+        } catch (Exception ignored) {
+            ExceptionHandler.doNothing();
+        }
 
-            TableView<OrderDao> tableOrderDetails = new TableView<>();
-            TableColumn<OrderDao, Integer> codOrder = new TableColumn<>("Cod.");
-            TableColumn<OrderDao, String> details = new TableColumn<>("Detalhes");
-            TableColumn<OrderDao, String> status = new TableColumn<>("Status");
-            TableColumn<OrderDao, String> notes = new TableColumn<>("Observação");
-            TableColumn<OrderDao, LocalDate> date = new TableColumn<>("Data");
-            TableColumn<OrderDao, Double> total = new TableColumn<>("Total");
+        Tab newTab = new Tab("Caixa: " + DateTimeFormatter
+                .ofPattern("dd/MM/yyyy")
+                .format(cashier.getDateOpening()));
 
-            tableOrderDetails.setRowFactory(orderDaoTableView -> {
-                final TableRow<OrderDao> row = new TableRow<>();
-                final ContextMenu contextMenu = new ContextMenu();
+        tabPane.getTabs().add(newTab);
+        tabPane.getSelectionModel().select(newTab);
 
-                SeparatorMenuItem separator = new SeparatorMenuItem();
-                MenuItem optionDeleteOrder = new MenuItem("Cancelar pedido");
-                MenuItem optionDetailsOrder = new MenuItem("Detalhes");
-                MenuItem optionSeeReceipt = new MenuItem("Recibo");
+        TableView<OrderDao> tableOrderDetails = new TableView<>();
+        TableColumn<OrderDao, Integer> codOrder = new TableColumn<>("Cod.");
+        TableColumn<OrderDao, String> details = new TableColumn<>("Detalhes");
+        TableColumn<OrderDao, String> status = new TableColumn<>("Status");
+        TableColumn<OrderDao, String> notes = new TableColumn<>("Observação");
+        TableColumn<OrderDao, LocalDate> date = new TableColumn<>("Data");
+        TableColumn<OrderDao, Double> total = new TableColumn<>("Total");
 
-                optionDetailsOrder.setOnAction(actionEvent -> {
-                    AppFactory.setOrderDao(row.getItem());
-                    AppController.showDialog(SceneNavigator.ORDER_DETAILS_DIALOG, true);
-                });
+        tableOrderDetails.setRowFactory(orderDaoTableView -> {
+            final TableRow<OrderDao> row = new TableRow<>();
+            final ContextMenu contextMenu = new ContextMenu();
 
-                optionSeeReceipt.setDisable(true);
-                optionDeleteOrder.setDisable(true);
-                contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
+            SeparatorMenuItem separator = new SeparatorMenuItem();
+            MenuItem optionDeleteOrder = new MenuItem("Cancelar pedido");
+            MenuItem optionDetailsOrder = new MenuItem("Detalhes");
+            MenuItem optionSeeReceipt = new MenuItem("Recibo");
 
-                row.contextMenuProperty()
-                        .bind(Bindings
-                        .when(row
-                        .emptyProperty()
-                        .not())
-                        .then(contextMenu)
-                        .otherwise((ContextMenu) null));
-
-                return row;
+            optionDetailsOrder.setOnAction(actionEvent -> {
+                AppFactory.setOrderDao(row.getItem());
+                AppController.showDialog(SceneNavigator.ORDER_DETAILS_DIALOG, true);
             });
 
-            tableOrderDetails.getColumns().addAll(codOrder, details, total, notes, status, date);
-            tableOrderDetails.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-            tableOrderDetails.setPlaceholder(new Label("Nenhum registro"));
-            tableOrderDetails.setItems(orderDetails);
+            optionSeeReceipt.setDisable(true);
+            optionDeleteOrder.setDisable(true);
+            contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
 
-            codOrder.setCellValueFactory(new PropertyValueFactory<>("idOrder"));
-            total.setCellValueFactory(new PropertyValueFactory<>("total"));
-            details.setCellValueFactory(new PropertyValueFactory<>("details"));
-            date.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
-            status.setCellValueFactory(new PropertyValueFactory<>("status"));
-            notes.setCellValueFactory(new PropertyValueFactory<>("note"));
-            status.setCellFactory(tc -> new StatusCellFormatter());
-            date.setCellFactory((CellFormatter<OrderDao, LocalDate>) value -> DateTimeFormatter
-                    .ofPattern("dd-MM-yyyy")
-                    .format(value));
-            total.setCellFactory((CellFormatter<OrderDao, Double>) value -> CurrencyField
-                    .getBRLCurrencyFormat()
-                    .format(value));
+            row.contextMenuProperty().bind(Bindings
+                            .when(row.emptyProperty().not())
+                            .then(contextMenu)
+                            .otherwise((ContextMenu) null));
 
-            Parent detailsBox = null;
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.DETAILS_CASHIER_BOX));
-            loader.setController(new DetailsCashierBoxController(cashier));
-
-            try {
-                detailsBox = loader.load();
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
-
-            VBox wrapper = new VBox();
-            wrapper.getChildren().addAll(tableOrderDetails, detailsBox);
-            wrapper.setVgrow(tableOrderDetails, Priority.ALWAYS);
-            wrapper.setPadding(new Insets(5,0,0,0));
-            wrapper.setSpacing(5);
-            newTab.setContent(wrapper);
+            return row;
         });
+
+        tableOrderDetails.getColumns().addAll(codOrder, details, total, notes, status, date);
+        tableOrderDetails.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableOrderDetails.setPlaceholder(new Label("Nenhum registro"));
+        tableOrderDetails.setItems(orderDetails);
+
+        codOrder.setCellValueFactory(new PropertyValueFactory<>("idOrder"));
+        total.setCellValueFactory(new PropertyValueFactory<>("total"));
+        details.setCellValueFactory(new PropertyValueFactory<>("details"));
+        date.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        notes.setCellValueFactory(new PropertyValueFactory<>("note"));
+        status.setCellFactory(tc -> new StatusCellFormatter());
+        date.setCellFactory((CellFormatter<OrderDao, LocalDate>) value -> DateTimeFormatter
+                .ofPattern("dd-MM-yyyy")
+                .format(value));
+        total.setCellFactory((CellFormatter<OrderDao, Double>) value -> CurrencyField
+                .getBRLCurrencyFormat()
+                .format(value));
+
+        Parent detailsBox = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.DETAILS_CASHIER_BOX));
+        loader.setController(new DetailsCashierBoxController(cashier));
+
+        try {
+            detailsBox = loader.load();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+        VBox wrapper = new VBox();
+        wrapper.getChildren().addAll(tableOrderDetails, detailsBox);
+        wrapper.setVgrow(tableOrderDetails, Priority.ALWAYS);
+        wrapper.setPadding(new Insets(5,0,0,0));
+        wrapper.setSpacing(5);
+        newTab.setContent(wrapper);
     }
 }

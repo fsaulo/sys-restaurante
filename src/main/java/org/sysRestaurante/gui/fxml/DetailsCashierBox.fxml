@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" prefWidth="783.0" styleClass="box-content" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="box-content" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox fx:id="cashierDateDetailsBox" alignment="CENTER_RIGHT" opacity="0.6">
          <children>
@@ -38,7 +38,7 @@
                   <Font name="Carlito Bold" size="19.0" />
                </font>
             </Label>
-            <Label fx:id="userLabel" text="Aberto por Saulo (ADMINISTRADOR)">
+            <Label fx:id="userLabel" prefHeight="18.0" prefWidth="163.0" text="Aberto por Saulo (ADMINISTRADOR)">
                <font>
                   <Font name="Carlito Bold" size="15.0" />
                </font>

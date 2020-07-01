@@ -23,6 +23,15 @@ public class AppFactory {
     private static POS pos;
     private static ReceiptViewController receiptViewController;
     private static ToolBarController toolBarController;
+    private static CashierHistoryController cashierHistoryController;
+
+    public static CashierHistoryController getCashierHistoryController() {
+        return cashierHistoryController;
+    }
+
+    public static void setCashierHistoryController(CashierHistoryController cashierHistoryController) {
+        AppFactory.cashierHistoryController = cashierHistoryController;
+    }
 
     public static ToolBarController getToolBarController() {
         return toolBarController;
