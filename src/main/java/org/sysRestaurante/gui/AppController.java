@@ -66,8 +66,9 @@ public class AppController implements DateFormatter {
 
         SceneNavigator.loadScene(borderPaneHolder);
         Stage stage = (Stage) borderPaneHolder.getScene().getWindow();
-        stage.setWidth(1215);
+        stage.setWidth(1200);
         stage.setHeight(700);
+        stage.setMinWidth(800);
         stage.centerOnScreen();
         Platform.runLater(this::setFullScreenShortcut);
     }

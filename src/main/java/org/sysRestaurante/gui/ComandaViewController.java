@@ -7,12 +7,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
-
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.EmployeeDao;
@@ -32,8 +29,6 @@ public class ComandaViewController {
     private Button closeComandaButton;
     @FXML
     private Button addOrder;
-    @FXML
-    private VBox popOverVbox;
     @FXML
     private ComboBox<EmployeeDao> employeeComboBox;
     @FXML

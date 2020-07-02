@@ -105,7 +105,6 @@ public class FinishSellController {
     @FXML
     private Button cc2;
 
-    private ArrayList<ProductDao> products;
     private CurrencyField payInCash;
     private CurrencyField payByCard;
     private PercentageField percentageField1;
@@ -221,7 +220,7 @@ public class FinishSellController {
 
         PopOver popOver = new PopOver(node);
         popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
-        products = AppFactory.getSelectedProducts();
+        ArrayList<ProductDao> products = AppFactory.getSelectedProducts();
 
         if (products.size() >= 15) {
             popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
