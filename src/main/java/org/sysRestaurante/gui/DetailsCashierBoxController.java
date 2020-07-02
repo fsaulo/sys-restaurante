@@ -62,6 +62,7 @@ public class DetailsCashierBoxController {
         dateLabel.setText("Caixa aberto em " + dateOpening);
         userLabel.setText(userTypeLabel.toString());
         toolTip.setText("Caixa aberto no dia: " + dateOpening);
+        invisibleSeparator.setVisible(primaryStage.getWidth() >= 1400);
 
         primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
             invisibleSeparator.setVisible(primaryStage.getWidth() >= 1400);

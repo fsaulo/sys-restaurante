@@ -68,7 +68,7 @@ public class MainGUI extends Application {
         try {
             stage.setScene(createScene(loadMainPane()));
             stage.setMinHeight(390);
-            stage.setMinWidth(460);
+            stage.setMinWidth(450);
             stage.centerOnScreen();
             stage.show();
         } catch (IOException exception) {
