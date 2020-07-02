@@ -180,8 +180,8 @@ public class ManageComandaController {
         Pane pane = new Pane();
         HBox topTile = new HBox();
         HBox.setHgrow(pane, Priority.ALWAYS);
-        topTile.getChildren().addAll(comandaCod, pane, tableCod);
         Circle icon = new Circle(4);
+        topTile.getChildren().addAll(comandaCod, pane, tableCod);
         icon.getStyleClass().add("circle-status");
         comandaCod.setStyle("-fx-font-size: 13px; -fx-opacity: 0.5");
         tableCod.setStyle("-fx-font-size: 17px;");

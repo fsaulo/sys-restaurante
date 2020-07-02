@@ -108,7 +108,6 @@
                      <content>
                         <VBox alignment="CENTER" spacing="5.0">
                            <children>
-                              <Separator layoutX="15.0" layoutY="502.0" prefWidth="200.0" />
                               <Label text="Opçes de registros">
                                  <font>
                                     <Font name="Carlito Bold" size="15.0" />

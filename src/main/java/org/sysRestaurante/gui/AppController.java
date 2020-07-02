@@ -72,6 +72,10 @@ public class AppController implements DateFormatter {
         Platform.runLater(this::setFullScreenShortcut);
     }
 
+    public Stage getMainStage() {
+        return (Stage) borderPaneHolder.getScene().getWindow();
+    }
+
     public void setFullScreenShortcut() {
         Stage stage = (Stage) borderPaneHolder.getParent().getScene().getWindow();
         stage.setFullScreenExitHint("Você entrou em modo tela cheia.\nPara sair pressione ESC ou F11");
