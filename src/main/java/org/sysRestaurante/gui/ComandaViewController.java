@@ -39,7 +39,7 @@ public class ComandaViewController {
     @FXML
     private ListView<ProductDao> productsListView;
 
-    private ComandaDao comanda;
+    private final ComandaDao comanda;
     private ArrayList<ProductDao> list;
 
     public ComandaViewController(ComandaDao comanda) {

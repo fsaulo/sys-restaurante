@@ -8,11 +8,23 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
@@ -46,16 +58,6 @@ public class CashierController {
     private VBox statusCashierBox;
     @FXML
     private Label statusCashierLabel;
-    @FXML
-    private VBox cashierDateDetailsBox;
-    @FXML
-    private Label revenueLabel;
-    @FXML
-    private Label inCashLabel;
-    @FXML
-    private Label byCardLabel;
-    @FXML
-    private Label withdrawalLabel;
     @FXML
     private TableColumn<OrderDao, Integer> codOrder;
     @FXML
@@ -271,19 +273,15 @@ public class CashierController {
     public void updateCashierStatus() {
         AppFactory.setCashierController(this);
         boolean isCashierOpenned = Cashier.isOpen();
-        CashierDao cashierDao;
 
         if (isCashierOpenned) {
-            cashierDao = new Cashier().getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
             setDisableCashierOptions(false);
             openOrCloseCashierLabel.setText("Fechar caixa");
             statusCashierLabel.setText("CAIXA LIVRE");
             statusCashierBox.setStyle("-fx-background-color: #58996A; -fx-background-radius: 5");
             statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
             statusCashierBox.getChildren().add(statusCashierLabel);
-//            changeCashierDetails(true);
         } else {
-            cashierDao = new CashierDao();
             setDisableCashierOptions(true);
             openOrCloseCashierLabel.setText("Abrir caixa");
             Label statusMessage = new Label("Use o atalho F10 para abrir o caixa");
@@ -296,14 +294,7 @@ public class CashierController {
                     "-fx-font-style: italic");
             statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
             statusCashierBox.getChildren().addAll(statusCashierLabel, statusMessage);
-//            changeCashierDetails(false);
         }
-
-//        NumberFormat brlCurrencyFormat = CurrencyField.getBRLCurrencyFormat();
-//        revenueLabel.setText(brlCurrencyFormat.format(cashierDao.getRevenue()));
-//        inCashLabel.setText(brlCurrencyFormat.format(cashierDao.getInCash()));
-//        byCardLabel.setText(brlCurrencyFormat.format(cashierDao.getByCard()));
-//        withdrawalLabel.setText(brlCurrencyFormat.format(cashierDao.getWithdrawal()));
     }
 
     public void updateOrderTableList() {
@@ -361,23 +352,4 @@ public class CashierController {
         cancelOrderBox.setDisable(status);
         newOrderBox.setDisable(status);
     }
-
-//    public void changeCashierDetails(boolean isCashierOpenned) {
-//        cashierDateDetailsBox.getChildren().removeAll(cashierDateDetailsBox.getChildren());
-//
-//        if (isCashierOpenned) {
-//            Label message = new Label("Caixa aberto em");
-//            Label date = new Label();
-//            message.setStyle("-fx-font-family: carlito; -fx-font-size: 15; -fx-font-weight: bold");
-//            date.setStyle("-fx-font-family: carlito; -fx-font-size: 15; -fx-font-weight: bold");
-//            date.setText(DateFormatter
-//                    .TIME_DETAILS_FORMAT
-//                    .format(Cashier.getCashierDateTimeDetailsById(AppFactory.getCashierDao().getIdCashier())));
-//            cashierDateDetailsBox.getChildren().addAll(message, date);
-//        } else {
-//            Label message = new Label("Caixa está fechado");
-//            message.setStyle("-fx-font-family: carlito; -fx-font-size: 15; -fx-font-weight: bold");
-//            cashierDateDetailsBox.getChildren().add(message);
-//        }
-//    }
 }

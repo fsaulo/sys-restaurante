@@ -64,8 +64,6 @@ public class DetailsCashierBoxController {
         byCardLabel.setText(formatter.format(cashierDao.getByCard()));
         dateLabel.setText("Caixa aberto em " + dateOpening);
         userLabel.setText(userTypeLabel.toString());
-//        codCashier.setText("CAIXA #" + cashierDao.getIdCashier());
-//        userLabel.setText(userTypeLabel.toString());
         toolTip.setText("Caixa aberto no dia: " + dateOpening);
 
         primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
