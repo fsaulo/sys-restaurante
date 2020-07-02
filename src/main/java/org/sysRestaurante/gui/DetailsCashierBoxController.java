@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
@@ -32,8 +31,6 @@ public class DetailsCashierBoxController {
     private Label revenueLabel;
     @FXML
     private Tooltip toolTip;
-    @FXML
-    private HBox hBoxResizable;
     @FXML
     private Separator invisibleSeparator;
 
@@ -68,7 +65,6 @@ public class DetailsCashierBoxController {
 
         primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
             invisibleSeparator.setVisible(primaryStage.getWidth() >= 1400);
-            System.out.println(primaryStage.getWidth());
         });
     }
 }

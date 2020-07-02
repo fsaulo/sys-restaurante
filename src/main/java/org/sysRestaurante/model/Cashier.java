@@ -191,7 +191,7 @@ public class Cashier {
         return null;
     }
 
-    public CashierDao getCashierDataAccessObject(int idCashier) {
+    public static void getCashierDataAccessObject(int idCashier) {
         String query = "SELECT * FROM caixa WHERE id_caixa = ?";
         PreparedStatement ps;
         ResultSet rs;
@@ -221,11 +221,9 @@ public class Cashier {
             ps.close();
             rs.close();
             con.close();
-            return cashierDao;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return null;
     }
 
     public static List<CashierDao> getCashier() {

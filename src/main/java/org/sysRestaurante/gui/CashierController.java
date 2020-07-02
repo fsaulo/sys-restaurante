@@ -271,8 +271,9 @@ public class CashierController {
     }
 
     public void updateCashierStatus() {
-        AppFactory.setCashierController(this);
         boolean isCashierOpenned = Cashier.isOpen();
+        AppFactory.setCashierController(this);
+        Cashier.getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
 
         if (isCashierOpenned) {
             setDisableCashierOptions(false);
@@ -345,7 +346,6 @@ public class CashierController {
         sortedData.comparatorProperty().bind(orderListTableView.comparatorProperty());
         orderListTableView.setItems(sortedData);
     }
-
 
     public void setDisableCashierOptions(boolean status) {
         searchOrderBox.setDisable(status);
