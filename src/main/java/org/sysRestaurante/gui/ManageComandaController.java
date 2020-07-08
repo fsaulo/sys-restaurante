@@ -47,6 +47,14 @@ public class ManageComandaController {
     private Label averageIncome;
     @FXML
     private VBox registerTableButton;
+    @FXML
+    private HBox wrapperBoxPicker1;
+    @FXML
+    private HBox wrapperBoxPicker2;
+    @FXML
+    private VBox statusCashierBox;
+    @FXML
+    private Label statusCashierLabel;
 
     private SessionDao session;
     private List<ComandaDao> comandas;
@@ -70,6 +78,7 @@ public class ManageComandaController {
         setController();
         initSessionDetails();
         updateInfo();
+        updateCashierStatus();
 
         Platform.runLater(this::listBusyTable);
     }
@@ -78,16 +87,41 @@ public class ManageComandaController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.NEW_COMANDA_DIALOG));
         VBox node = loader.load();
         PopOver popOver = new PopOver(node);
-        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_CENTER);
-        newComandaButton.setOnMouseClicked(e1 -> popOver.show(newComandaButton));
+        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.RIGHT_TOP);
+        popOver.setDetachable(false);
+        newComandaButton.setOnMouseClicked(e1 -> popOver.show(wrapperBoxPicker1));
     }
 
     public void handleRegisterTable() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.REGISTER_TABLE_VIEW));
         VBox node = loader.load();
         PopOver popOver = new PopOver(node);
-        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_CENTER);
-        registerTableButton.setOnMouseClicked(e1 -> popOver.show(registerTableButton));
+        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.RIGHT_TOP);
+        popOver.setDetachable(false);
+        registerTableButton.setOnMouseClicked(e1 -> popOver.show(wrapperBoxPicker2));
+    }
+
+    public void updateCashierStatus() {
+        boolean isCashierOpenned = Cashier.isOpen();
+        Cashier.getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
+
+        if (isCashierOpenned) {
+            statusCashierLabel.setText("CAIXA LIVRE");
+            statusCashierBox.setStyle("-fx-background-color: #58996A; -fx-background-radius: 5");
+            statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
+            statusCashierBox.getChildren().add(statusCashierLabel);
+        } else {
+            Label statusMessage = new Label("Use o atalho F10 para abrir o caixa");
+            statusCashierLabel.setText("CAIXA FECHADO");
+            statusCashierBox.setStyle("-fx-background-color: #bababa; -fx-background-radius: 5");
+            statusCashierBox.getChildren().add(statusMessage);
+            statusMessage.setStyle("-fx-font-family: carlito; " +
+                    "-fx-font-size: 15; " +
+                    "-fx-text-fill: white; " +
+                    "-fx-font-style: italic");
+            statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
+            statusCashierBox.getChildren().addAll(statusCashierLabel, statusMessage);
+        }
     }
 
     public void setController() {

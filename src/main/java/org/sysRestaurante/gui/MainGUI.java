@@ -25,7 +25,7 @@ public class MainGUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setHeight(450);
-        primaryStage.setWidth(550);
+        primaryStage.setWidth(500);
         final String JAVA_VERSION = System.getProperty("java.version");
         final String JAVAFX_VERSION = System.getProperties().get("javafx.runtime.version").toString();
         LOGGER.info("Java JDK Runtime Version: " + JAVA_VERSION);
@@ -83,7 +83,7 @@ public class MainGUI extends Application {
         closeStage();
         Stage stage = new Stage();
         stage.setHeight(450);
-        stage.setWidth(550);
+        stage.setWidth(500);
         startProgram(stage);
     }
 

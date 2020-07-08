@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="hBoxResizable" alignment="TOP_RIGHT" styleClass="box-content" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="hBoxResizable" alignment="TOP_RIGHT" prefHeight="55.0" styleClass="box-content" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox fx:id="cashierDateDetailsBox" alignment="CENTER_LEFT" opacity="0.6">
          <children>

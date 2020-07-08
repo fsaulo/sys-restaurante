@@ -9,7 +9,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.OrderDao;
@@ -115,6 +118,16 @@ public class CashierHistoryController {
         searchOrderBox.setOnMouseClicked(e -> {
             CashierDao cashier = new CashierDao();
 
+            if (orderListTableView.getSelectionModel().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Alerta do sistema");
+                alert.setHeaderText("Nenhum registro selecionado!");
+                alert.setContentText("Por favor, selecione um registro na lista para continuar.");
+                alert.initOwner(AppFactory.getMainController().getScene().getWindow());
+                alert.showAndWait();
+                return;
+            }
+
             try {
                 cashier = orderListTableView.getSelectionModel().getSelectedItem();
                 orderListTableView.getSelectionModel().clearSelection();
@@ -123,6 +136,31 @@ public class CashierHistoryController {
                 ExceptionHandler.doNothing();
             }
         });
+
+        updateCashierStatus();
+    }
+
+    public void updateCashierStatus() {
+        boolean isCashierOpenned = Cashier.isOpen();
+        Cashier.getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
+
+        if (isCashierOpenned) {
+            statusCashierLabel.setText("CAIXA LIVRE");
+            statusCashierBox.setStyle("-fx-background-color: #58996A; -fx-background-radius: 5");
+            statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
+            statusCashierBox.getChildren().add(statusCashierLabel);
+        } else {
+            Label statusMessage = new Label("Use o atalho F10 para abrir o caixa");
+            statusCashierLabel.setText("CAIXA FECHADO");
+            statusCashierBox.setStyle("-fx-background-color: #bababa; -fx-background-radius: 5");
+            statusCashierBox.getChildren().add(statusMessage);
+            statusMessage.setStyle("-fx-font-family: carlito; " +
+                    "-fx-font-size: 15; " +
+                    "-fx-text-fill: white; " +
+                    "-fx-font-style: italic");
+            statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
+            statusCashierBox.getChildren().addAll(statusCashierLabel, statusMessage);
+        }
     }
 
     public void buildTableOrderDetails(CashierDao cashier) {
