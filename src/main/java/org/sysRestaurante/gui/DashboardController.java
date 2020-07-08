@@ -161,7 +161,7 @@ public class DashboardController {
 
     public void buildChart() {
         XYChart.Series series = new XYChart.Series();
-        final int listSize = 30;
+        final int listSize = 15;
 
         List<CashierDao> data = Cashier.getCashier();
         List<CashierDao> subListData = new ArrayList<>();

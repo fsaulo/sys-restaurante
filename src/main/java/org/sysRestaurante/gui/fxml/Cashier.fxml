@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="gridWrapper" prefHeight="766.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierController">
+<GridPane fx:id="gridWrapper" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
    </columnConstraints>
@@ -102,7 +102,7 @@
                            <children>
                               <Label text="Controle de caixa">
                                  <font>
-                                    <Font name="Carlito Bold" size="16.0" />
+                                    <Font name="Carlito Bold" size="15.0" />
                                  </font>
                               </Label>
                               <Separator prefWidth="200.0" />
@@ -126,7 +126,7 @@
                               <Separator prefWidth="200.0" />
                               <Label text="Opções de caixa">
                                  <font>
-                                    <Font name="Carlito Bold" size="16.0" />
+                                    <Font name="Carlito Bold" size="15.0" />
                                  </font>
                               </Label>
                               <Separator prefWidth="200.0" />

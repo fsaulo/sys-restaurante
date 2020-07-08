@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -13,7 +14,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <GridPane fx:id="gridWrapper" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ManageComandaController">
@@ -52,11 +52,6 @@
                            </font>
                         </Label>
                         <Pane HBox.hgrow="ALWAYS" />
-                        <Label opacity="0.59" text="Digite o número da mesa para realizar uma busca">
-                           <font>
-                              <Font name="Carlito Bold" size="18.0" />
-                           </font>
-                        </Label>
                      </children>
                      <padding>
                         <Insets left="5.0" right="5.0" />
@@ -66,258 +61,7 @@
                      <content>
                         <HBox>
                            <children>
-                              <TilePane fx:id="tilePane" hgap="9.0" prefColumns="4" vgap="9.0">
-                                 <children>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
-                                       <children>
-                                          <Label text="MESA #023" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Separator prefWidth="200.0" />
-                                          <Label fx:id="byCardLabel11412" text="Ocupada" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                             </font>
-                                             <graphic>
-                                                <Circle fill="#ff971f" radius="4.5" stroke="BLACK" strokeType="INSIDE" />
-                                             </graphic>
-                                          </Label>
-                                          <Label text="45 minutos" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="R$ 54,45" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
-                                       <children>
-                                          <Label text="MESA #027" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Separator prefWidth="200.0" />
-                                          <Label fx:id="byCardLabel114121" text="Ocupada" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                             </font>
-                                             <graphic>
-                                                <Circle fill="#ff971f" radius="4.5" stroke="BLACK" strokeType="INSIDE" />
-                                             </graphic>
-                                          </Label>
-                                          <Label text="2 minutos" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="R$ 54,45" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
-                                       <children>
-                                          <Label text="MESA #033" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Separator prefWidth="200.0" />
-                                          <Label fx:id="byCardLabel114122" text="Ocupada" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                             </font>
-                                             <graphic>
-                                                <Circle fill="#ff971f" radius="4.5" stroke="BLACK" strokeType="INSIDE" />
-                                             </graphic>
-                                          </Label>
-                                          <Label text="1 minuto" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="R$ 0,00" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
-                                       <children>
-                                          <Label text="MESA #034" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Separator prefWidth="200.0" />
-                                          <Label fx:id="byCardLabel114123" text="Ocupada" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                             </font>
-                                             <graphic>
-                                                <Circle fill="#ff971f" radius="4.5" stroke="BLACK" strokeType="INSIDE" />
-                                             </graphic>
-                                          </Label>
-                                          <Label text="45 minutos" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="R$ 40,50" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
-                                       <children>
-                                          <Label text="MESA #035" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Separator prefWidth="200.0" />
-                                          <Label fx:id="byCardLabel114124" text="Ocupada" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                             </font>
-                                             <graphic>
-                                                <Circle fill="#ff971f" radius="4.5" stroke="BLACK" strokeType="INSIDE" />
-                                             </graphic>
-                                          </Label>
-                                          <Label text="Mais de uma hora" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="R$ 150,40" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
-                                       <children>
-                                          <Label text="MESA #043" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Separator prefWidth="200.0" />
-                                          <Label fx:id="byCardLabel1141241" text="Ocupada" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                             </font>
-                                             <graphic>
-                                                <Circle fill="#ff971f" radius="4.5" stroke="BLACK" strokeType="INSIDE" />
-                                             </graphic>
-                                          </Label>
-                                          <Label text="2 horas" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="R$ 54,45" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
-                                       <children>
-                                          <Label text="MESA #048" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Separator prefWidth="200.0" />
-                                          <Label fx:id="byCardLabel1141242" text="Ocupada" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                             </font>
-                                             <graphic>
-                                                <Circle fill="#ff971f" radius="4.5" stroke="BLACK" strokeType="INSIDE" />
-                                             </graphic>
-                                          </Label>
-                                          <Label text="3 minutos" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="R$ 5,00" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="205.0" style="-fx-border-color: gray; -fx-background-color: black; -fx-border-width: 3;">
-                                       <children>
-                                          <Label text="MESA #050" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Separator prefWidth="200.0" />
-                                          <Label fx:id="byCardLabel11412421" text="Ocupada" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                             </font>
-                                             <graphic>
-                                                <Circle fill="#ff971f" radius="4.5" stroke="BLACK" strokeType="INSIDE" />
-                                             </graphic>
-                                          </Label>
-                                          <Label text="3 horas" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label text="R$ 0,00" textFill="WHITE">
-                                             <font>
-                                                <Font name="Carlito Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </padding>
-                                    </VBox>
-                                 </children>
-                              </TilePane>
+                              <TilePane fx:id="tilePane" hgap="9.0" prefColumns="4" vgap="9.0" />
                            </children>
                         </HBox>
                      </content>
@@ -338,6 +82,9 @@
                                  <font>
                                     <Font name="Carlito Bold" size="20.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Faturamento médio total por comanda" />
+                                 </tooltip>
                               </Label>
                            </children>
                            <padding>
@@ -358,6 +105,9 @@
                                  <font>
                                     <Font name="Carlito Bold" size="20.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Mesas ocupadas com base nas comandas abertas" />
+                                 </tooltip>
                               </Label>
                            </children>
                            <padding>
@@ -376,6 +126,9 @@
                                  <font>
                                     <Font name="Carlito Bold" size="20.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Total de mesas cadastradas que não estão ocupadas" />
+                                 </tooltip>
                               </Label>
                            </children>
                            <padding>
@@ -394,6 +147,9 @@
                                  <font>
                                     <Font name="Carlito Bold" size="20.0" />
                                  </font>
+                                 <tooltip>
+                                    <Tooltip text="Calculado a partir do tempo médio gasto nas mesas por pessoa" />
+                                 </tooltip>
                               </Label>
                            </children>
                            <padding>
@@ -418,7 +174,7 @@
                      <content>
                         <VBox alignment="CENTER" spacing="5.0">
                            <children>
-                              <Label text="Opçes de comanda">
+                              <Label text="Opções de comanda">
                                  <font>
                                     <Font name="Carlito Bold" size="15.0" />
                                  </font>
@@ -494,9 +250,16 @@
                                     </VBox>
                                  </children>
                               </HBox>
+                              <Separator prefWidth="200.0" />
+                              <Label text="Opções de registro">
+                                 <font>
+                                    <Font name="Carlito Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Separator prefWidth="200.0" />
                               <VBox alignment="CENTER" prefHeight="50.0" styleClass="cashier-button">
                                  <children>
-                                    <Label text="Atualizar registros" textAlignment="CENTER" wrapText="true">
+                                    <Label text="Atualizar" textAlignment="CENTER" wrapText="true">
                                        <font>
                                           <Font name="Carlito Bold" size="16.0" />
                                        </font>

@@ -85,7 +85,7 @@
                                           <Pane prefWidth="120.0" HBox.hgrow="ALWAYS" />
                                           <Label fx:id="unitPriceLabel" text="R$ 5,50">
                                              <font>
-                                                <Font name="Carlito Bold" size="17.0" />
+                                                <Font name="Cantarell Bold" size="17.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -329,7 +329,7 @@
                   </Label>
                   <Label fx:id="subtotalLabel" text="R$ 54,90" textFill="#78d34e">
                      <font>
-                        <Font name="Agency FB" size="37.0" />
+                        <Font name="Cantarell Regular" size="37.0" />
                      </font>
                   </Label>
                </children>

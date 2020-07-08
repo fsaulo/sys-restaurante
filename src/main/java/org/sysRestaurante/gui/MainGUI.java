@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.Encryption;

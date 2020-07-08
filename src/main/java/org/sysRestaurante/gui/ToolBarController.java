@@ -25,6 +25,8 @@ public class ToolBarController extends AppFactory {
     @FXML
     private ToggleButton toggleMenuPrincipal;
     @FXML
+    private ToggleButton toggleMenuFerramentas;
+    @FXML
     private ToggleButton toggleGerenciarBalcao;
     @FXML
     private ToggleButton toggleComandas;
@@ -41,7 +43,7 @@ public class ToolBarController extends AppFactory {
     @FXML
     private ToggleButton g2a;
     @FXML
-    private ToggleButton g2b;
+    private ToggleButton toggleGerenciaProdutos;
     @FXML
     private ToggleButton g2c;
     @FXML
@@ -67,7 +69,7 @@ public class ToolBarController extends AppFactory {
     @FXML
     private ToggleButton g5c;
     @FXML
-    private VBox vboxG2;
+    private VBox vBoxMenuFerramentas;
     @FXML
     private VBox vboxG3;
     @FXML
@@ -127,8 +129,17 @@ public class ToolBarController extends AppFactory {
                 toggleComandas,
                 toggleHistoricoCaixa,
                 togglePainelCardapio,
-                togglePedidos
-        );
+                togglePedidos);
+        event.consume();
+    }
+
+    public void menuFerramentas(Event event) {
+        unfoldSubmenus(
+                vBoxMenuFerramentas,
+                g2a,
+                toggleGerenciaProdutos,
+                g2c,
+                g2d);
         event.consume();
     }
 
@@ -136,11 +147,17 @@ public class ToolBarController extends AppFactory {
         toggleMenuPrincipal.setSelected(true);
     }
 
+    public void selectMenuFerramentas() {
+        toggleMenuFerramentas.setSelected(true);
+    }
+
+    @FXML
     public void dashboard(MouseEvent event) {
         untoggleGroup(submenuGroup);
         AppFactory.getAppController().loadPage(event, SceneNavigator.DASHBOARD);
     }
 
+    @FXML
     public void submenuGerenciarBalcao(MouseEvent event) {
         if (!toggleGerenciarBalcao.isSelected()) {
             toggleGerenciarBalcao.setSelected(true);
@@ -150,26 +167,32 @@ public class ToolBarController extends AppFactory {
         AppFactory.getAppController().loadPage(event, SceneNavigator.CASHIER);
     }
 
+    @FXML
     public void submenuComandas(MouseEvent event) {
         selectMenuPrincipal();
         AppFactory.getAppController().loadPage(event, SceneNavigator.MANAGE_COMANDA);
     }
 
+    @FXML
     public void submenuHistoricoCaixa(Event event) {
         selectMenuPrincipal();
         AppFactory.getAppController().loadPage(event, SceneNavigator.CASHIER_HISTORY_VIEW);
     }
 
+    @FXML
     public void submenuPedidos() {
         selectMenuPrincipal();
     }
 
+    @FXML
     public void submenuPainelCardapio() {
         selectMenuPrincipal();
     }
 
-    public void menuG2(ActionEvent event) {
-        unfoldSubmenus(vboxG2, g2a, g2b, g2c, g2d);
+    @FXML
+    public void submenuProdutos(Event event) {
+        selectMenuFerramentas();
+        AppFactory.getAppController().loadPage(event, SceneNavigator.PRODUCT_MANAGEMENT_VIEW);
     }
 
     public void menuG3(ActionEvent event) {
