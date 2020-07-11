@@ -24,6 +24,15 @@ public class AppFactory {
     private static ReceiptViewController receiptViewController;
     private static ToolBarController toolBarController;
     private static CashierHistoryController cashierHistoryController;
+    private static MainGUI mainGUI;
+
+    public static MainGUI getMainGUI() {
+        return mainGUI;
+    }
+
+    public static void setMainGUI(MainGUI mainGUI) {
+        AppFactory.mainGUI = mainGUI;
+    }
 
     public static CashierHistoryController getCashierHistoryController() {
         return cashierHistoryController;

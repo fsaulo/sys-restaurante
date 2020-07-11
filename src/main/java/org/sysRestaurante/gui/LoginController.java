@@ -4,18 +4,18 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.control.Label;
-import javafx.fxml.FXML;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.UserDao;
-import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.gui.formatter.DateFormatter;
+import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
@@ -31,8 +31,8 @@ public class LoginController implements DateFormatter {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(LoginController.class.getName());
     private static final String SIGNATURE_IMAGE = "src/main/resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
     private static final String LOGINTEXT_IMAGE = "src/main/resources/images/login-text.png";
-    private static UserDao userDaoData;
     private final Authentication certs = new Authentication();
+    private static UserDao userDaoData;
 
     @FXML
     private Label dbStatusLabel;
@@ -54,19 +54,18 @@ public class LoginController implements DateFormatter {
     private ImageView loginTextImage;
 
     public void initialize() {
+        AppFactory.setLoginController(this);
+        loginPane.setMinHeight(250);
+        loginPane.setMinWidth(440);
+        statusAccessLabel.setText("");
+        startClock();
+
         if (certs.isDatabaseConnected()) {
             dbStatusLabel.setTextFill(Color.web("Green"));
-
         } else {
             dbStatusLabel.setTextFill(Color.web("Red"));
             dbStatusLabel.setText("Desconectado");
         }
-
-        loginPane.setMinHeight(250);
-        loginPane.setMinWidth(440);
-        statusAccessLabel.setText("");
-        AppFactory.setLoginController(this);
-        startClock();
 
         try {
             setSignatureImage();

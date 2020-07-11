@@ -6,13 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.util.DBConnection;
-import org.sysRestaurante.util.Encryption;
-import org.sysRestaurante.util.ExceptionHandler;
-import org.sysRestaurante.util.LoggerHandler;
-import org.sysRestaurante.util.NotificationHandler;
+import org.sysRestaurante.util.*;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -25,6 +20,7 @@ public class MainGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        AppFactory.setMainGUI(this);
         primaryStage.setHeight(450);
         primaryStage.setWidth(500);
         final String JAVA_VERSION = System.getProperty("java.version");
@@ -33,65 +29,61 @@ public class MainGUI extends Application {
         LOGGER.info("JavaFX Runtime Version: " + JAVAFX_VERSION);
         Encryption.setKey(KEY);
         startProgram(primaryStage);
-
-        LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");
     }
 
     private static Pane loadMainPane() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         Pane wrapperPane = loader.load(MainGUI.class.getResourceAsStream(SceneNavigator.MAIN));
+        wrapperPane.setOnMouseClicked(e -> wrapperPane.requestFocus());
 
         mainController = loader.getController();
-        LOGGER.info("Wrapper pane successfully loaded.");
         mainController.setMainPanePadding(300, 70, 300, 70);
-        wrapperPane.setOnMouseClicked(e -> wrapperPane.requestFocus());
 
         SceneNavigator.setMainGUIController(mainController);
         SceneNavigator.loadScene(SceneNavigator.LOGIN);
+        LOGGER.info("Wrapper pane successfully loaded.");
         return wrapperPane;
     }
 
     public static void closeStage() {
         try {
-            Stage stage = (Stage) mainController.getScene().getWindow();
-            stage.close();
+            mainController = SceneNavigator.getMainController();
+            mainController.getScene().getWindow().hide();
         } catch (NullPointerException ex) {
+            LOGGER.severe("Tryied to acces null stage object.");
             ex.printStackTrace();
             ExceptionHandler.incrementGlobalExceptionsCount();
-            LOGGER.severe("Tryied to acces null stage object.");
             exitProgram();
         }
     }
 
     public static void startProgram(Stage stage) {
-        stage.setTitle("SysRestaurante");
-
         try {
+            stage.setTitle("SysRestaurante");
+            stage.setOnCloseRequest(e -> exitProgram());
             stage.setScene(createScene(loadMainPane()));
             stage.setMinHeight(390);
             stage.setMinWidth(450);
             stage.centerOnScreen();
+            LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");
             stage.show();
-        } catch (IOException exception) {
+        } catch (IOException | IllegalStateException exception) {
+            LOGGER.severe("Exception triggered by startProgram()");
             NotificationHandler.errorDialog(exception);
             exception.printStackTrace();
         }
-
-        stage.setOnCloseRequest(e -> exitProgram());
     }
 
-    public static void restartProgram() {
+    public void restartProgram() {
         closeStage();
-        Stage stage = new Stage();
-        stage.setHeight(450);
-        stage.setWidth(500);
-        startProgram(stage);
+        start(new Stage());
     }
 
     public static void exitProgram() {
         if (AppFactory.getUserDao() != null) {
             AppFactory.getLoginController().storeLastSessionDuration();
         }
+
         LOGGER.info(DBConnection.getGlobalDBRequestsCount() + " requests to database.");
         Platform.exit();
         LOGGER.info("Program exited.");

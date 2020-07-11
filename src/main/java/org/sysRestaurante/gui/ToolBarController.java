@@ -230,7 +230,7 @@ public class ToolBarController extends AppFactory {
             AppFactory.setUserDao(null);
             LOGGER.info("User logged out");
             AppFactory.getLoginController().storeLastSessionDuration();
-            MainGUI.restartProgram();
+            AppFactory.getMainGUI().restartProgram();
         } catch (Exception e) {
             ExceptionHandler.incrementGlobalExceptionsCount();
             LOGGER.severe("Couldn't log out due to an exception.");

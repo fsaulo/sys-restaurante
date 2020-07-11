@@ -51,6 +51,10 @@ public class SceneNavigator {
         SceneNavigator.mainController = mainController;
     }
 
+    public static MainGUIController getMainController() {
+        return mainController;
+    }
+
     public static void loadScene(String fxml) {
         try {
             mainController.setScene(FXMLLoader.load(SceneNavigator.class.getResource(fxml)));
