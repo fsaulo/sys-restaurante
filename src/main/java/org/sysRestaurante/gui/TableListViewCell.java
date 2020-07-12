@@ -16,8 +16,6 @@ public class TableListViewCell extends ListCell<TableDao> {
     @FXML
     private Label codTable;
     @FXML
-    private Label id;
-    @FXML
     private Label availability;
     @FXML
     private HBox wrapperBox;

@@ -43,7 +43,7 @@ public class ToolBarController extends AppFactory {
     @FXML
     private ToggleButton g2a;
     @FXML
-    private ToggleButton toggleGerenciaProdutos;
+    private ToggleButton toggleGerenciarProdutos;
     @FXML
     private ToggleButton g2c;
     @FXML
@@ -122,9 +122,9 @@ public class ToolBarController extends AppFactory {
         }
     }
 
+    @FXML
     public void menuPrincipal(Event event) {
-        unfoldSubmenus(
-                vBoxMenuPrincipal,
+        unfoldSubmenus(vBoxMenuPrincipal,
                 toggleGerenciarBalcao,
                 toggleComandas,
                 toggleHistoricoCaixa,
@@ -133,11 +133,11 @@ public class ToolBarController extends AppFactory {
         event.consume();
     }
 
+    @FXML
     public void menuFerramentas(Event event) {
-        unfoldSubmenus(
-                vBoxMenuFerramentas,
+        unfoldSubmenus(vBoxMenuFerramentas,
                 g2a,
-                toggleGerenciaProdutos,
+                toggleGerenciarProdutos,
                 g2c,
                 g2d);
         event.consume();
@@ -191,6 +191,10 @@ public class ToolBarController extends AppFactory {
 
     @FXML
     public void submenuProdutos(Event event) {
+        if (!toggleGerenciarProdutos.isSelected()) {
+            toggleGerenciarProdutos.setSelected(true);
+        }
+
         selectMenuFerramentas();
         AppFactory.getAppController().loadPage(event, SceneNavigator.PRODUCT_MANAGEMENT_VIEW);
     }
@@ -210,8 +214,8 @@ public class ToolBarController extends AppFactory {
     public void clearToggleGroup(ToggleGroup... grupoMenu) {
         for (ToggleGroup grupo : grupoMenu)
         {
-            grupo.selectedToggleProperty().addListener(
-                    (ObservableValue<? extends Toggle> obs, Toggle old, Toggle novo) -> {
+            grupo.selectedToggleProperty()
+                    .addListener((ObservableValue<? extends Toggle> obs, Toggle old, Toggle novo) -> {
                     if (grupo.getSelectedToggle() == null) {
                         grupo.selectToggle(old);
                     }});

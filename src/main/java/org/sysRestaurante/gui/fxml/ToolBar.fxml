@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ToolBarController">
+<VBox alignment="CENTER" spacing="5.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ToolBarController">
    <children>
-      <HBox alignment="CENTER" onMouseClicked="#dashboard" styleClass="box-header">
+      <HBox alignment="CENTER" minHeight="40.0" onMouseClicked="#dashboard" styleClass="box-header">
          <children>
             <Label fx:id="dashboardLinkLabel" alignment="CENTER" onMouseClicked="#dashboard" styleClass="label-title" text="SysAdmin | Bar &amp; Restaurante " textAlignment="CENTER" wrapText="true">
                <font>
@@ -65,7 +60,7 @@
                               <Insets />
                            </VBox.margin>
                         </VBox>
-                        <ToggleButton fx:id="toggleMenuFerramentas" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#menuFerramentas" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Ferramentas" toggleGroup="$menuGroup">
+                        <ToggleButton fx:id="toggleMenuFerramentas" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#menuFerramentas" onMouseClicked="#submenuProdutos" prefHeight="45.0" prefWidth="300.0" styleClass="menus" text="Ferramentas" toggleGroup="$menuGroup">
                            <font>
                               <Font name="Carlito Bold" size="18.0" />
                            </font>
@@ -75,8 +70,8 @@
                         </ToggleButton>
                         <VBox fx:id="vBoxMenuFerramentas">
                            <children>
+                              <ToggleButton fx:id="toggleGerenciarProdutos" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#submenuProdutos" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Produtos/Serviços" toggleGroup="$submenuGroup" />
                               <ToggleButton fx:id="g2a" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Controle de estoque" toggleGroup="$submenuGroup" />
-                              <ToggleButton fx:id="toggleGerenciaProdutos" alignment="CENTER_LEFT" mnemonicParsing="false" onAction="#submenuProdutos" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Produtos/Serviços" toggleGroup="$submenuGroup" />
                               <ToggleButton fx:id="g2c" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Backup &amp; Atualizações" toggleGroup="$submenuGroup" />
                               <ToggleButton fx:id="g2d" alignment="CENTER_LEFT" disable="true" mnemonicParsing="false" prefHeight="26.0" prefWidth="300.0" styleClass="submenu" text="Impressoras" toggleGroup="$submenuGroup">
                                  <VBox.margin>
@@ -198,7 +193,7 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
                <font>
-                  <Font name="Carlito" size="15.0" />
+                  <Font name="Carlito" size="14.0" />
                </font></Label>
             <Pane prefWidth="67.0" />
             <Label fx:id="userLabel1" onMouseClicked="#onLogoutRequest" opacity="0.8" prefWidth="75.0" styleClass="menu-exit" text="Sair">
@@ -206,12 +201,12 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
                <font>
-                  <Font name="Carlito" size="15.0" />
+                  <Font name="Carlito" size="14.0" />
                </font>
             </Label>
          </children>
          <padding>
-            <Insets bottom="1.0" left="1.0" right="1.0" />
+            <Insets bottom="2.0" left="1.0" right="1.0" top="2.0" />
          </padding>
       </HBox>
    </children>
