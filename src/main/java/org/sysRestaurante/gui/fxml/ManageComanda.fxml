@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.TilePane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane fx:id="gridWrapper" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ManageComandaController">
+<GridPane fx:id="gridWrapper" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ManageComandaController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
    </columnConstraints>
@@ -57,18 +47,22 @@
                         <Insets left="5.0" right="5.0" />
                      </padding>
                   </HBox>
-                  <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent;" styleClass="box-content" VBox.vgrow="ALWAYS">
-                     <content>
-                        <HBox>
-                           <children>
-                              <TilePane fx:id="tilePane" hgap="9.0" prefColumns="4" vgap="9.0" />
-                           </children>
-                        </HBox>
-                     </content>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </ScrollPane>
+                  <HBox VBox.vgrow="ALWAYS">
+                     <children>
+                        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent;" styleClass="box-content" HBox.hgrow="ALWAYS">
+                           <content>
+                              <HBox>
+                                 <children>
+                                    <TilePane fx:id="tilePane" hgap="9.0" prefColumns="4" vgap="9.0" />
+                                 </children>
+                              </HBox>
+                           </content>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </ScrollPane>
+                     </children>
+                  </HBox>
                   <HBox alignment="TOP_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" styleClass="box-content">
                      <children>
                         <VBox alignment="TOP_RIGHT" opacity="0.6">
@@ -160,7 +154,7 @@
                   </HBox>
                </children>
                <BorderPane.margin>
-                  <Insets bottom="3.0" />
+                  <Insets bottom="3.0" top="3.0" />
                </BorderPane.margin>
             </VBox>
          </center>
@@ -295,7 +289,7 @@
                   </VBox>
                </children>
                <BorderPane.margin>
-                  <Insets bottom="3.0" left="3.0" />
+                  <Insets bottom="3.0" left="3.0" top="3.0" />
                </BorderPane.margin>
             </VBox>
          </right>

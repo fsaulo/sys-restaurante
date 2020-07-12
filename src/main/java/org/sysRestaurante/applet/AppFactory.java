@@ -26,6 +26,23 @@ public class AppFactory {
     private static CashierHistoryController cashierHistoryController;
     private static MainGUI mainGUI;
 
+    public static void clearWorkspace() {
+        setReceiptViewController(null);
+        setSelectedProducts(null);
+        setOrderDao(null);
+        setComandaDao(null);
+        setComandaPOSController(null);
+        setCashierDao(null);
+        setUserDao(null);
+        setCashierController(null);
+        setPos(null);
+        setMainGUI(null);
+        setCashierPOSController(null);
+        setSessionDao(null);
+        setManageComandaController(null);
+        setToolBarController(null);
+    }
+
     public static MainGUI getMainGUI() {
         return mainGUI;
     }

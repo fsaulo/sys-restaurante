@@ -31,7 +31,6 @@ public class MainGUI extends Application {
         startProgram(primaryStage);
     }
 
-
     private static Pane loadMainPane() throws IOException {
         FXMLLoader loader = new FXMLLoader();
         Pane wrapperPane = loader.load(MainGUI.class.getResourceAsStream(SceneNavigator.MAIN));
@@ -46,6 +45,18 @@ public class MainGUI extends Application {
         return wrapperPane;
     }
 
+    public static void closeStage() {
+        try {
+            mainController = SceneNavigator.getMainController();
+            mainController.getScene().getWindow().hide();
+        } catch (NullPointerException ex) {
+            LOGGER.severe("Tryied to acces null stage object.");
+            ex.printStackTrace();
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            exitProgram();
+        }
+    }
+
     public static void startProgram(Stage stage) {
         try {
             stage.setTitle("SysRestaurante");
@@ -54,8 +65,8 @@ public class MainGUI extends Application {
             stage.setMinHeight(390);
             stage.setMinWidth(450);
             stage.centerOnScreen();
-            stage.show();
             LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");
+            stage.show();
         } catch (IOException | IllegalStateException exception) {
             LOGGER.severe("Exception triggered by startProgram()");
             NotificationHandler.errorDialog(exception);
@@ -65,6 +76,16 @@ public class MainGUI extends Application {
 
     public void restartProgram() {
         start((Stage) mainController.getScene().getWindow());
+        closeStage();
+        try {
+            AppFactory.clearWorkspace();
+            LOGGER.info("Workspace cleared.");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            LOGGER.severe("Erro while trying to clear workspace");
+        }
+
+        start(new Stage());
     }
 
     public static void exitProgram() {
