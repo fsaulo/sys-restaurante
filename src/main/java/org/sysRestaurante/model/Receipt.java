@@ -198,7 +198,7 @@ public class Receipt {
         fileChooser.setInitialFileName("SysRecibo_Caixa_Cod" + idOrder + "_" + LocalDate.now() + ".png");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
         fileChooser.setTitle("Salvar recibo");
-        var file = fileChooser.showSaveDialog(owner);
+        File file = fileChooser.showSaveDialog(owner);
 
         if (file != null) {
             if(!file.getName().contains(".")) {

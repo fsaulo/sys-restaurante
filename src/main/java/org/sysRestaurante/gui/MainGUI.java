@@ -62,8 +62,8 @@ public class MainGUI extends Application {
             stage.setTitle("SysRestaurante");
             stage.setOnCloseRequest(e -> exitProgram());
             stage.setScene(createScene(loadMainPane()));
-            stage.setMinHeight(390);
-            stage.setMinWidth(450);
+            stage.setMinHeight(395);
+            stage.setMinWidth(465);
             stage.centerOnScreen();
             LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");
             stage.show();
@@ -76,6 +76,14 @@ public class MainGUI extends Application {
 
     public void restartProgram() {
         closeStage();
+        try {
+            AppFactory.clearWorkspace();
+            LOGGER.info("Workspace cleared.");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            LOGGER.severe("Erro while trying to clear workspace");
+        }
+
         start(new Stage());
     }
 
