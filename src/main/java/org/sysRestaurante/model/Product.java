@@ -17,7 +17,7 @@ public class Product {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Product.class.getName());
 
-    public ObservableList<ProductDao> getProducts() {
+    public static ObservableList<ProductDao> getProducts() {
         PreparedStatement ps;
         ResultSet rs;
         ProductDao productDao;

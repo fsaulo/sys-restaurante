@@ -53,9 +53,9 @@
                               <HBox spacing="10.0" />
                               <ListView fx:id="productsListView" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent; -fx-border-color: #dddddd;" VBox.vgrow="ALWAYS">
                                  <placeholder>
-                                    <VBox alignment="CENTER" minHeight="0.0">
+                                    <VBox alignment="TOP_CENTER">
                                        <padding>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                          <Insets left="5.0" right="5.0" />
                                        </padding>
                                        <children>
                                           <Label opacity="0.7" text="Nenhum produto encontrado com essa descrição." textAlignment="CENTER" wrapText="true">
@@ -177,6 +177,9 @@
                            </padding>
                         </VBox>
                      </children>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
                   </VBox>
                </children>
                <BorderPane.margin>
@@ -290,7 +293,7 @@
                                  </font>
                               </Label>
                               <Separator prefWidth="200.0" />
-                              <TextField fx:id="searchBox11" prefHeight="35.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" />
+                              <TextField fx:id="searchBox" prefHeight="35.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" />
                               <ComboBox prefHeight="35.0" prefWidth="230.0" promptText="Filtrar por categoria" style="-fx-font-weight: bold; -fx-font-family: Carlito; -fx-font-size: 15;" />
                               <Separator prefWidth="200.0" />
                               <HBox>

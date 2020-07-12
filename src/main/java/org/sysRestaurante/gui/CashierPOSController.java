@@ -62,7 +62,7 @@ public class CashierPOSController extends POS {
     private Spinner<Integer> qtySpinner;
 
     private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
-    private final ObservableList<ProductDao> products = new Product().getProducts();
+    private final ObservableList<ProductDao> products = Product.getProducts();
 
     public void initialize() {
         AppFactory.setPos(this);

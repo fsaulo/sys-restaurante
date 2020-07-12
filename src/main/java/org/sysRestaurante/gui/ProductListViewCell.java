@@ -12,9 +12,12 @@ import javafx.scene.layout.HBox;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.util.ExceptionHandler;
+import org.sysRestaurante.util.LoggerHandler;
 
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.logging.Logger;
 
 public class ProductListViewCell extends ListCell<ProductDao> {
 
@@ -33,6 +36,7 @@ public class ProductListViewCell extends ListCell<ProductDao> {
 
     private FXMLLoader mLLoader;
     private boolean setLabel = true;
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ProductListViewCell.class.getName());
 
     public ProductListViewCell() {
     }
@@ -72,7 +76,12 @@ public class ProductListViewCell extends ListCell<ProductDao> {
                 wrapperBox.setOnMouseClicked(event -> {
                     if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                         if (product != null) {
-                            AppFactory.getPos().addToSelectedProductsList(product);
+                            try {
+                                AppFactory.getPos().addToSelectedProductsList(product);
+                            } catch (NullPointerException ignored) {
+                                ExceptionHandler.doNothing();
+                                LOGGER.warning("Illegal Class Access. Not possible to add product to basket here.");
+                            }
                         } else {
                             event.consume();
                         }
