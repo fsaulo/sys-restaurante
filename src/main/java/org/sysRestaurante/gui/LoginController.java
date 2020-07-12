@@ -130,6 +130,7 @@ public class LoginController implements DateFormatter {
         SceneNavigator.loadScene(SceneNavigator.APPLICATION_STAGE);
     }
 
+    @FXML
     public void loginRequested() throws SQLException {
         int typeAuthentication = certs.loginRequested(usernameField.getText(), passwordField.getText());
         LOGGER.config("Type of authentication: " + typeAuthentication);
