@@ -107,6 +107,7 @@ public class AppController implements DateFormatter {
         sep1.setPadding(new Insets(-1, 0, -1, 0));
         sep2.setPadding(new Insets(-1, 0, -1, 0));
         footer.setSpacing(3);
+        footer.setMinHeight(23);
         footer.setPadding(new Insets(1, 3, 1, 3));
         footer.setStyle("-fx-border-color: #CBCBCC");
         footer.setAlignment(Pos.CENTER);

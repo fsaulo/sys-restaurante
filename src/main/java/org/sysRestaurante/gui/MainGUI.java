@@ -7,16 +7,25 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.util.*;
+import org.sysRestaurante.util.DBConnection;
+import org.sysRestaurante.util.Encryption;
+import org.sysRestaurante.util.ExceptionHandler;
+import org.sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.util.NotificationHandler;
 
 import java.io.IOException;
 import java.util.logging.Logger;
 
 public class MainGUI extends Application {
 
-    private static final Logger LOGGER = new LoggerHandler().getGenericConsoleHandler(MainGUI.class.getName());
     private static final String KEY = "Jaguaric@3105";
     private static MainGUIController mainController;
+    private static final Logger LOGGER;
+
+    static {
+        new LoggerHandler();
+        LOGGER = LoggerHandler.getGenericConsoleHandler(MainGUI.class.getName());
+    }
 
     private static Pane loadMainPane() throws IOException {
         FXMLLoader loader = new FXMLLoader();
