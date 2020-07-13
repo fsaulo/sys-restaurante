@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class DashboardController {
@@ -141,7 +142,7 @@ public class DashboardController {
                 "-fx-font-style: italic");
         String date = DateFormatter
                 .TIME_DETAILS_FORMAT
-                .format(Cashier.getCashierDateTimeDetailsById(AppFactory.getCashierDao().getIdCashier()));
+                .format(Objects.requireNonNull(Cashier.getCashierDateTimeDetailsById(AppFactory.getCashierDao().getIdCashier())));
 
         if (isCashierOpenned) {
             statusCashierLabel.setText("CAIXA LIVRE");
@@ -165,7 +166,7 @@ public class DashboardController {
 
         List<CashierDao> data = Cashier.getCashier();
         List<CashierDao> subListData = new ArrayList<>();
-        CashierDao previousElement = data.get(0);
+        CashierDao previousElement = Objects.requireNonNull(data).get(0);
         double totalRevenue = previousElement.getRevenue();
 
         for (int i = 1; i < data.size(); i++) {
@@ -176,13 +177,12 @@ public class DashboardController {
                     totalRevenue += nextElement.getRevenue();
                 } else {
                     totalRevenue = nextElement.getRevenue();
-                    CashierDao newElement = previousElement;
-                    newElement.setRevenue(totalRevenue);
-                    newElement.setDateClosing(nextElement.getDateClosing());
-                    newElement.setTimeClosing(nextElement.getTimeClosing());
-                    newElement.setDateOpening(nextElement.getDateOpening());
-                    newElement.setTimeOpening(nextElement.getTimeOpening());
-                    subListData.add(newElement);
+                    previousElement.setRevenue(totalRevenue);
+                    previousElement.setDateClosing(nextElement.getDateClosing());
+                    previousElement.setTimeClosing(nextElement.getTimeClosing());
+                    previousElement.setDateOpening(nextElement.getDateOpening());
+                    previousElement.setTimeOpening(nextElement.getTimeOpening());
+                    subListData.add(previousElement);
                 }
             } catch (Exception ex) {
                 ExceptionHandler.doNothing();

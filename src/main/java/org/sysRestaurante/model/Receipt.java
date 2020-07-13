@@ -122,14 +122,13 @@ public class Receipt {
     private String getHeader() {
         String sep1 = "--------------------------------------------------";
         String msg1 = center("ESSE RECIBO NÃO É CUPOM FISCAL");
-        String header = strCompanyName + "\n" +
+        return strCompanyName + "\n" +
                         strCompanyAddress + "\n" +
                         strCompanyTel + "\n" +
                         strCompanyCNPJ + "\n\n" +
                         sep1 + "\n" +
                         msg1 + "\n" +
                         sep1 + "\n\n";
-        return header;
     }
 
     private String getBody() {
@@ -164,7 +163,7 @@ public class Receipt {
         String msg1 = center("OBRIGADO PELA PREFERÊNCIA.");
         String msg2 = center("VOLTE SEMPRE!");
         String dateTime = String.format("%-24s %25s", "DATA: " + strDate, "HORA: " + strTime);
-        String footer = "\n\n" + sep2 + "\n" +
+        return "\n\n" + sep2 + "\n" +
                         subtotal + "\n" +
                         discount + "\n" +
                         taxes + "\n" +
@@ -175,7 +174,6 @@ public class Receipt {
                         sep2 + "\n\n" +
                         msg1 + "\n" +
                         msg2;
-        return footer;
     }
 
     public WritableImage getReceiptImageFile() {

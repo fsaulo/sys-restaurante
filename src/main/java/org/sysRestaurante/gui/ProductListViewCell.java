@@ -75,15 +75,11 @@ public class ProductListViewCell extends ListCell<ProductDao> {
                 category.setOnMouseClicked(event -> AppFactory.getPos().searchByCategory(category.getText()));
                 wrapperBox.setOnMouseClicked(event -> {
                     if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                        if (product != null) {
-                            try {
-                                AppFactory.getPos().addToSelectedProductsList(product);
-                            } catch (NullPointerException ignored) {
-                                ExceptionHandler.doNothing();
-                                LOGGER.warning("Illegal Class Access. Not possible to add product to basket here.");
-                            }
-                        } else {
-                            event.consume();
+                        try {
+                            AppFactory.getPos().addToSelectedProductsList(product);
+                        } catch (NullPointerException ignored) {
+                            ExceptionHandler.doNothing();
+                            LOGGER.warning("Illegal Class Access. Not possible to add product to basket here.");
                         }
                     }
                 });

@@ -161,6 +161,5 @@ public class LoginController implements DateFormatter {
                 statusAccessLabel.setText("Acesso negado");
         }
 
-        typeAuthentication = -1;
     }
 }

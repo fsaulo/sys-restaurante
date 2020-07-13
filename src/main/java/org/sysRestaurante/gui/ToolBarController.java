@@ -16,6 +16,7 @@ import org.sysRestaurante.util.Animation;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class ToolBarController extends AppFactory {
@@ -98,7 +99,7 @@ public class ToolBarController extends AppFactory {
         }
 
         this.clearToggleGroup(menuGroup, submenuGroup);
-        userLabel.setText("Olá, " + user.getName());
+        userLabel.setText("Olá, " + Objects.requireNonNull(user).getName());
 
         if (user.isAdmin()) {
             dashboardLinkLabel.setText(adminAccessString);

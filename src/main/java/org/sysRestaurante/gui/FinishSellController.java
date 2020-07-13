@@ -36,6 +36,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class FinishSellController {
@@ -259,7 +260,7 @@ public class FinishSellController {
             OrderDao orderDao = AppFactory.getOrderDao();
 
             if (orderDao instanceof ComandaDao || orderDao == null) {
-                int idOrder = orderDao.getIdOrder();
+                int idOrder = Objects.requireNonNull(orderDao).getIdOrder();
                 int idComanda = ((ComandaDao) orderDao).getIdComanda();
                 int idTable = ((ComandaDao) orderDao).getIdTable();
 
@@ -284,7 +285,7 @@ public class FinishSellController {
                         taxes,
                         note.toString());
 
-                Order.addProductsToOrder(orderDao.getIdOrder(), items);
+                Order.addProductsToOrder(Objects.requireNonNull(orderDao).getIdOrder(), items);
                 AppFactory.getCashierController().updateCashierElements();
             }
 

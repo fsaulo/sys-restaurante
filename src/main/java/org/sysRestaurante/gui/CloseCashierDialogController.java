@@ -57,7 +57,7 @@ public class CloseCashierDialogController {
     private boolean customerPresent = false;
     private List<ComandaDao> comandas;
     CashierDao cashierDao;
-    private ObservableList<TableDao> tables = FXCollections.observableArrayList(Management.getBusyTables());
+    private final ObservableList<TableDao> tables = FXCollections.observableArrayList(Management.getBusyTables());
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(
             CloseCashierDialogController.class.getName());
 

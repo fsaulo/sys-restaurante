@@ -14,419 +14,403 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="wrapperVBox" minHeight="-Infinity" minWidth="-Infinity" prefWidth="420.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.FinishSellController">
-   <children>
-      <HBox alignment="CENTER_LEFT" prefWidth="390.0" style="-fx-background-color: white;" styleClass="box-content">
-         <children>
-            <Label opacity="0.8" text="Finalizar pedido">
-               <font>
-                  <Font name="Carlito Bold" size="26.0" />
-               </font>
+<VBox fx:id="wrapperVBox" minHeight="-Infinity" minWidth="-Infinity" prefWidth="420.0" spacing="5.0"
+      xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.sysRestaurante.gui.FinishSellController">
+    <stylesheets>
+        <URL value="@../css/menu.css"/>
+        <URL value="@../css/controls.css"/>
+    </stylesheets>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
+    <HBox alignment="CENTER_LEFT" prefWidth="390.0" style="-fx-background-color: white;" styleClass="box-content">
+        <padding>
+            <Insets left="5.0" right="5.0"/>
+        </padding>
+        <Label opacity="0.8" text="Finalizar pedido">
+            <font>
+                <Font name="Carlito Bold" size="26.0"/>
+            </font>
+        </Label>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label opacity="0.8" text="#2144">
+            <font>
+                <Font name="Carlito Italic" size="18.0"/>
+            </font>
+            <tooltip>
+                <Tooltip text="Número do pedido"/>
+            </tooltip>
+        </Label>
+    </HBox>
+    <Label prefWidth="280.0" text="Valor pago em dinheiro:">
+        <font>
+          <Font name="Carlito Bold" size="17.0"/>
+        </font>
+    </Label>
+    <HBox fx:id="box1" alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-background-color: white;"
+          styleClass="box-content">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <VBox spacing="5.0">
+            <HBox alignment="BOTTOM_LEFT" prefWidth="280.0" spacing="3.0">
+                <Button fx:id="tc1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0"
+                        text="Total" textAlignment="CENTER">
+                    <font>
+                        <Font name="Carlito" size="15.0"/>
+                    </font>
+                    <tooltip>
+                        <Tooltip text="Pagamento do valor cheio em dinheiro"/>
+                    </tooltip>
+                </Button>
+                <Button fx:id="cc1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0"
+                        text="Completar" textAlignment="CENTER">
+                    <font>
+                        <Font name="Carlito" size="15.0"/>
+                    </font>
+                    <tooltip>
+                        <Tooltip text="Completar o valor restante em dinheiro"/>
+                    </tooltip>
+                </Button>
+                <Button fx:id="c1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0"
+                        text="Limpar" textAlignment="CENTER">
+                    <font>
+                        <Font name="Carlito" size="15.0"/>
+                    </font>
+                    <tooltip>
+                        <Tooltip text="Limpar valor definido em dinheiro"/>
+                    </tooltip>
+                </Button>
+            </HBox>
+        </VBox>
+    </HBox>
+    <Label prefWidth="280.0" text="Valor pago no cartão de crédito:">
+        <font>
+          <Font name="Carlito Bold" size="17.0"/>
+        </font>
+    </Label>
+    <HBox fx:id="box2" alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-background-color: white;"
+          styleClass="box-content">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <VBox spacing="5.0">
+            <HBox alignment="BOTTOM_LEFT" prefWidth="280.0" spacing="3.0">
+                <Button fx:id="tc2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0"
+                        text="Total" textAlignment="CENTER">
+                    <font>
+                        <Font name="Carlito" size="15.0"/>
+                    </font>
+                    <tooltip>
+                        <Tooltip text="Pagamento do valor cheio no cartão de crédito"/>
+                    </tooltip>
+                </Button>
+                <Button fx:id="cc2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0"
+                        text="Completar" textAlignment="CENTER">
+                    <font>
+                        <Font name="Carlito" size="15.0"/>
+                    </font>
+                    <tooltip>
+                        <Tooltip text="Completar o valor restante no cartão"/>
+                    </tooltip>
+                </Button>
+                <Button fx:id="c2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0"
+                        text="Limpar" textAlignment="CENTER">
+                    <font>
+                        <Font name="Carlito" size="15.0"/>
+                    </font>
+                    <tooltip>
+                        <Tooltip text="Limpar valor definido no cartão"/>
+                    </tooltip>
+                </Button>
+            </HBox>
+        </VBox>
+    </HBox>
+    <Label prefWidth="280.0" text="Descontos aplicados:">
+        <font>
+          <Font name="Carlito Bold" size="17.0"/>
+        </font>
+    </Label>
+    <HBox fx:id="box3" alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-background-color: white;"
+          styleClass="box-content">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <VBox spacing="5.0">
+            <HBox alignment="CENTER_LEFT" prefWidth="280.0" spacing="3.0">
+                <ToggleButton fx:id="ba0" mnemonicParsing="false" opacity="0.7" prefHeight="37.0"
+                              prefWidth="47.0" selected="true" styleClass="toggle-service" text="0%">
+                    <toggleGroup>
+                        <ToggleGroup/>
+                    </toggleGroup>
+                    <font>
+                        <Font name="Comfortaa Regular" size="13.0"/>
+                    </font>
+                </ToggleButton>
+                <ToggleButton fx:id="ba5" mnemonicParsing="false" opacity="0.7" prefHeight="37.0"
+                              prefWidth="47.0" styleClass="toggle-service" text="5%">
+                    <font>
+                        <Font name="Comfortaa Regular" size="13.0"/>
+                    </font>
+                </ToggleButton>
+                <ToggleButton fx:id="ba10" mnemonicParsing="false" opacity="0.7" prefHeight="37.0"
+                              prefWidth="47.0" styleClass="toggle-service" text="10%">
+                    <font>
+                        <Font name="Comfortaa Regular" size="13.0"/>
+                    </font>
+                </ToggleButton>
+                <ToggleButton fx:id="ba15" mnemonicParsing="false" opacity="0.7" prefHeight="37.0"
+                              prefWidth="47.0" styleClass="toggle-service" text="15%">
+                    <font>
+                        <Font name="Comfortaa Regular" size="13.0"/>
+                    </font>
+                </ToggleButton>
+                <ToggleButton fx:id="ba20" mnemonicParsing="false" opacity="0.7" prefHeight="37.0"
+                              prefWidth="47.0" styleClass="toggle-service" text="20%">
+                    <font>
+                        <Font name="Comfortaa Regular" size="13.0"/>
+                    </font>
+                </ToggleButton>
+            </HBox>
+        </VBox>
+    </HBox>
+    <Label prefWidth="280.0" text="Taxa de serviço:">
+        <font>
+          <Font name="Carlito Bold" size="17.0"/>
+        </font>
+    </Label>
+    <HBox fx:id="box4" alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-background-color: white;"
+          styleClass="box-content">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <VBox spacing="5.0">
+            <HBox alignment="CENTER_LEFT" prefWidth="280.0" spacing="3.0">
+                <ToggleButton fx:id="bs0" mnemonicParsing="false" opacity="0.7" prefHeight="37.0"
+                              prefWidth="47.0" selected="true" styleClass="toggle-service" text="0%">
+                    <toggleGroup>
+                        <ToggleGroup/>
+                    </toggleGroup>
+                    <font>
+                        <Font name="Comfortaa Regular" size="13.0"/>
+                    </font>
+                </ToggleButton>
+                <ToggleButton fx:id="bs5" mnemonicParsing="false" opacity="0.7" prefHeight="37.0"
+                              prefWidth="47.0" styleClass="toggle-service" text="5%">
+                    <font>
+                        <Font name="Comfortaa Regular" size="13.0"/>
+                    </font>
+                </ToggleButton>
+                <ToggleButton fx:id="bs10" mnemonicParsing="false" opacity="0.7" prefHeight="37.0"
+                              prefWidth="47.0" styleClass="toggle-service" text="10%">
+                    <font>
+                        <Font name="Comfortaa Regular" size="13.0"/>
+                    </font>
+                </ToggleButton>
+                <ToggleButton fx:id="bs15" mnemonicParsing="false" opacity="0.7" prefHeight="37.0"
+                              prefWidth="47.0" styleClass="toggle-service" text="15%">
+                    <font>
+                        <Font name="Comfortaa Regular" size="13.0"/>
+                    </font>
+                </ToggleButton>
+                <ToggleButton fx:id="bs20" mnemonicParsing="false" opacity="0.7" prefHeight="37.0"
+                              prefWidth="47.0" styleClass="toggle-service" text="20%">
+                    <font>
+                        <Font name="Comfortaa Regular" size="13.0"/>
+                    </font>
+                </ToggleButton>
+            </HBox>
+        </VBox>
+    </HBox>
+    <VBox alignment="CENTER_LEFT" spacing="5.0">
+        <Label text="Adicionar observação:" underline="true">
+            <font>
+                <Font name="Carlito" size="17.0"/>
+            </font>
+        </Label>
+        <TextArea fx:id="noteTextArea" prefHeight="29.0" prefWidth="405.0"/>
+    </VBox>
+    <HBox style="-fx-background-color: white;" styleClass="box-content">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <VBox alignment="BOTTOM_LEFT">
+            <Label opacity="0.7" text="Taxas" textFill="#000000b2">
+                <font>
+                    <Font name="Carlito" size="15.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip
+                            text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis"/>
+                </tooltip>
             </Label>
-            <Pane HBox.hgrow="ALWAYS" />
-            <Label opacity="0.8" text="#2144">
-               <font>
-                  <Font name="Carlito Italic" size="18.0" />
-               </font>
-               <tooltip>
-                  <Tooltip text="Número do pedido" />
-               </tooltip>
+            <Label fx:id="taxLabel" opacity="0.75" text="R$ 0,20" textFill="#4a8d2c">
+                <font>
+                    <Font name="Comfortaa Regular" size="18.0"/>
+                </font>
             </Label>
-         </children>
-         <padding>
-            <Insets left="5.0" right="5.0" />
-         </padding>
-      </HBox>
-      <Label prefWidth="280.0" text="Valor pago em dinheiro:">
-         <font>
-            <Font name="Carlito Bold" size="17.0" />
-         </font>
-      </Label>
-      <HBox fx:id="box1" alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-background-color: white;" styleClass="box-content">
-         <children>
-            <VBox spacing="5.0">
-               <children>
-                  <HBox alignment="BOTTOM_LEFT" prefWidth="280.0" spacing="3.0">
-                     <children>
-                        <Button fx:id="tc1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Total" textAlignment="CENTER">
-                           <font>
-                              <Font name="Carlito" size="15.0" />
-                           </font>
-                           <tooltip>
-                              <Tooltip text="Pagamento do valor cheio em dinheiro" />
-                           </tooltip>
-                        </Button>
-                        <Button fx:id="cc1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Completar" textAlignment="CENTER">
-                           <font>
-                              <Font name="Carlito" size="15.0" />
-                           </font>
-                           <tooltip>
-                              <Tooltip text="Completar o valor restante em dinheiro" />
-                           </tooltip>
-                        </Button>
-                        <Button fx:id="c1" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Limpar" textAlignment="CENTER">
-                           <font>
-                              <Font name="Carlito" size="15.0" />
-                           </font>
-                           <tooltip>
-                              <Tooltip text="Limpar valor definido em dinheiro" />
-                           </tooltip>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </HBox>
-      <Label prefWidth="280.0" text="Valor pago no cartão de crédito:">
-         <font>
-            <Font name="Carlito Bold" size="17.0" />
-         </font>
-      </Label>
-      <HBox fx:id="box2" alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-background-color: white;" styleClass="box-content">
-         <children>
-            <VBox spacing="5.0">
-               <children>
-                  <HBox alignment="BOTTOM_LEFT" prefWidth="280.0" spacing="3.0">
-                     <children>
-                        <Button fx:id="tc2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Total" textAlignment="CENTER">
-                           <font>
-                              <Font name="Carlito" size="15.0" />
-                           </font>
-                           <tooltip>
-                              <Tooltip text="Pagamento do valor cheio no cartão de crédito" />
-                           </tooltip>
-                        </Button>
-                        <Button fx:id="cc2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Completar" textAlignment="CENTER">
-                           <font>
-                              <Font name="Carlito" size="15.0" />
-                           </font>
-                           <tooltip>
-                              <Tooltip text="Completar o valor restante no cartão" />
-                           </tooltip>
-                        </Button>
-                        <Button fx:id="c2" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="140.0" text="Limpar" textAlignment="CENTER">
-                           <font>
-                              <Font name="Carlito" size="15.0" />
-                           </font>
-                           <tooltip>
-                              <Tooltip text="Limpar valor definido no cartão" />
-                           </tooltip>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </HBox>
-      <Label prefWidth="280.0" text="Descontos aplicados:">
-         <font>
-            <Font name="Carlito Bold" size="17.0" />
-         </font>
-      </Label>
-      <HBox fx:id="box3" alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-background-color: white;" styleClass="box-content">
-         <children>
-            <VBox spacing="5.0">
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefWidth="280.0" spacing="3.0">
-                     <children>
-                        <ToggleButton fx:id="ba0" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" selected="true" styleClass="toggle-service" text="0%">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="serviceTax1" />
-                           </toggleGroup>
-                           <font>
-                              <Font name="Comfortaa Regular" size="13.0" />
-                           </font>
-                        </ToggleButton>
-                        <ToggleButton fx:id="ba5" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="5%" toggleGroup="$serviceTax1">
-                           <font>
-                              <Font name="Comfortaa Regular" size="13.0" />
-                           </font></ToggleButton>
-                        <ToggleButton fx:id="ba10" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="10%" toggleGroup="$serviceTax1">
-                           <font>
-                              <Font name="Comfortaa Regular" size="13.0" />
-                           </font></ToggleButton>
-                        <ToggleButton fx:id="ba15" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="15%" toggleGroup="$serviceTax1">
-                           <font>
-                              <Font name="Comfortaa Regular" size="13.0" />
-                           </font></ToggleButton>
-                        <ToggleButton fx:id="ba20" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="20%" toggleGroup="$serviceTax1">
-                           <font>
-                              <Font name="Comfortaa Regular" size="13.0" />
-                           </font></ToggleButton>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </HBox>
-      <Label prefWidth="280.0" text="Taxa de serviço:">
-         <font>
-            <Font name="Carlito Bold" size="17.0" />
-         </font>
-      </Label>
-      <HBox fx:id="box4" alignment="BOTTOM_LEFT" spacing="10.0" style="-fx-background-color: white;" styleClass="box-content">
-         <children>
-            <VBox spacing="5.0">
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefWidth="280.0" spacing="3.0">
-                     <children>
-                        <ToggleButton fx:id="bs0" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" selected="true" styleClass="toggle-service" text="0%">
-                           <toggleGroup>
-                              <ToggleGroup fx:id="serviceTax11" />
-                           </toggleGroup>
-                           <font>
-                              <Font name="Comfortaa Regular" size="13.0" />
-                           </font>
-                        </ToggleButton>
-                        <ToggleButton fx:id="bs5" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="5%" toggleGroup="$serviceTax11">
-                           <font>
-                              <Font name="Comfortaa Regular" size="13.0" />
-                           </font></ToggleButton>
-                        <ToggleButton fx:id="bs10" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="10%" toggleGroup="$serviceTax11">
-                           <font>
-                              <Font name="Comfortaa Regular" size="13.0" />
-                           </font></ToggleButton>
-                        <ToggleButton fx:id="bs15" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="15%" toggleGroup="$serviceTax11">
-                           <font>
-                              <Font name="Comfortaa Regular" size="13.0" />
-                           </font></ToggleButton>
-                        <ToggleButton fx:id="bs20" mnemonicParsing="false" opacity="0.7" prefHeight="37.0" prefWidth="47.0" styleClass="toggle-service" text="20%" toggleGroup="$serviceTax11">
-                           <font>
-                              <Font name="Comfortaa Regular" size="13.0" />
-                           </font></ToggleButton>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </HBox>
-      <VBox alignment="CENTER_LEFT" spacing="5.0">
-         <children>
-            <Label text="Adicionar observação:" underline="true">
-               <font>
-                  <Font name="Carlito" size="17.0" />
-               </font>
+            <Label opacity="0.7" text="Descontos" textFill="#000000b2">
+                <font>
+                    <Font name="Carlito" size="15.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip
+                            text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis"/>
+                </tooltip>
             </Label>
-            <TextArea fx:id="noteTextArea" prefHeight="29.0" prefWidth="405.0" />
-         </children>
-      </VBox>
-      <HBox style="-fx-background-color: white;" styleClass="box-content">
-         <children>
-            <VBox alignment="BOTTOM_LEFT">
-               <children>
-                  <Label opacity="0.7" text="Taxas" textFill="#000000b2">
-                     <font>
-                        <Font name="Carlito" size="15.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis" />
-                     </tooltip>
-                  </Label>
-                  <Label fx:id="taxLabel" opacity="0.75" text="R$ 0,20" textFill="#4a8d2c">
-                     <font>
-                        <Font name="Comfortaa Regular" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label opacity="0.7" text="Descontos" textFill="#000000b2">
-                     <font>
-                        <Font name="Carlito" size="15.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis" />
-                     </tooltip>
-                  </Label>
-                  <Label fx:id="discountLabel" opacity="0.75" text="R$ -0,90" textFill="#4a8d2c">
-                     <font>
-                        <Font name="Comfortaa Regular" size="18.0" />
-                     </font>
-                  </Label>
-               </children>
+            <Label fx:id="discountLabel" opacity="0.75" text="R$ -0,90" textFill="#4a8d2c">
+                <font>
+                    <Font name="Comfortaa Regular" size="18.0"/>
+                </font>
+            </Label>
+        </VBox>
+        <Separator orientation="VERTICAL"/>
+        <VBox alignment="BOTTOM_LEFT">
+            <Label opacity="0.7" text="Subtotal" textFill="#000000b2">
+                <font>
+                    <Font name="Carlito" size="15.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip
+                            text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis"/>
+                </tooltip>
+            </Label>
+            <Label fx:id="subtotalLabel" opacity="0.75" text="R$ 55,90" textFill="#4a8d2c">
+                <font>
+                    <Font name="Comfortaa Regular" size="18.0"/>
+                </font>
+            </Label>
+        </VBox>
+        <Separator orientation="VERTICAL"/>
+        <VBox alignment="BOTTOM_RIGHT" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+            <Label opacity="0.7" text="Troco" textFill="#000000b2">
+                <font>
+                    <Font name="Carlito" size="15.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip
+                            text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis"/>
+                </tooltip>
+            </Label>
+            <Label fx:id="changeLabel" opacity="0.75" text="R$ 1,30" textFill="#4a8d2c">
+                <font>
+                    <Font name="Comfortaa Regular" size="18.0"/>
+                </font>
+            </Label>
+            <Label opacity="0.7" text="Total" textFill="#000000b2">
+                <font>
+                    <Font name="Carlito Bold" size="15.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip
+                            text="Total consumido menos descontos (acrescidas as taxas de serviço quando aplicáveis)"/>
+                </tooltip>
+            </Label>
+            <Label fx:id="totalLabel" text="R$ 54,90" textFill="#4a8d2c">
+                <font>
+                    <Font name="Comfortaa Regular" size="25.0"/>
+                </font>
+                <VBox.margin>
+                    <Insets/>
+                </VBox.margin>
+            </Label>
+        </VBox>
+    </HBox>
+    <HBox fx:id="hBoxControl" alignment="CENTER" spacing="5.0" style="-fx-background-color: white;"
+          styleClass="box-content" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <VBox alignment="CENTER" prefWidth="85.0" spacing="5.0">
+            <VBox fx:id="seeReceiptBox" alignment="CENTER" prefHeight="30.0" prefWidth="70.0"
+                  styleClass="cashier-button">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </padding>
+                <Label styleClass="cashier-text" text="Recibo" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="Carlito Bold" size="16.0"/>
+                    </font>
+                </Label>
             </VBox>
-            <Separator orientation="VERTICAL" />
-            <VBox alignment="BOTTOM_LEFT">
-               <children>
-                  <Label opacity="0.7" text="Subtotal" textFill="#000000b2">
-                     <font>
-                        <Font name="Carlito" size="15.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis" />
-                     </tooltip>
-                  </Label>
-                  <Label fx:id="subtotalLabel" opacity="0.75" text="R$ 55,90" textFill="#4a8d2c">
-                     <font>
-                        <Font name="Comfortaa Regular" size="18.0" />
-                     </font>
-                  </Label>
-               </children>
+            <VBox alignment="CENTER" disable="true" prefWidth="70.0"
+                  styleClass="cashier-button">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </padding>
+                <Label styleClass="cashier-text" text="Enviar" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="Carlito Bold" size="16.0"/>
+                    </font>
+                </Label>
             </VBox>
-            <Separator orientation="VERTICAL" />
-            <VBox alignment="BOTTOM_RIGHT" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label opacity="0.7" text="Troco" textFill="#000000b2">
-                     <font>
-                        <Font name="Carlito" size="15.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Valor referente ao troco do cliente deduzido das taxas de serviços, quando aplicáveis" />
-                     </tooltip>
-                  </Label>
-                  <Label fx:id="changeLabel" opacity="0.75" text="R$ 1,30" textFill="#4a8d2c">
-                     <font>
-                        <Font name="Comfortaa Regular" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label opacity="0.7" text="Total" textFill="#000000b2">
-                     <font>
-                        <Font name="Carlito Bold" size="15.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Total consumido menos descontos (acrescidas as taxas de serviço quando aplicáveis)" />
-                     </tooltip>
-                  </Label>
-                  <Label fx:id="totalLabel" text="R$ 54,90" textFill="#4a8d2c">
-                     <font>
-                        <Font name="Comfortaa Regular" size="25.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-               </children>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
+        </VBox>
+        <VBox alignment="CENTER" prefWidth="85.0" spacing="5.0">
+            <VBox fx:id="saveReceipt" alignment="CENTER" onMouseClicked="#saveReceipt" prefHeight="30.0"
+                  prefWidth="70.0" styleClass="cashier-button">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </padding>
+                <Label styleClass="cashier-text" text="Salvar" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="Carlito Bold" size="16.0"/>
+                    </font>
+                </Label>
             </VBox>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </HBox>
-      <HBox fx:id="hBoxControl" alignment="CENTER" spacing="5.0" style="-fx-background-color: white;" styleClass="box-content" VBox.vgrow="ALWAYS">
-         <children>
-            <VBox alignment="CENTER" prefWidth="85.0" spacing="5.0">
-               <children>
-                  <VBox fx:id="seeReceiptBox" alignment="CENTER" prefHeight="30.0" prefWidth="70.0" styleClass="cashier-button">
-                     <children>
-                        <Label styleClass="cashier-text" text="Recibo" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Carlito Bold" size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
-                  <VBox fx:id="finalizeSell211" alignment="CENTER" disable="true" prefWidth="70.0" styleClass="cashier-button">
-                     <children>
-                        <Label styleClass="cashier-text" text="Enviar" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Carlito Bold" size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
-               </children>
+            <VBox alignment="CENTER" disable="true" prefWidth="70.0"
+                  styleClass="cashier-button">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </padding>
+                <Label styleClass="cashier-text" text="Imprimir" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="Carlito Bold" size="16.0"/>
+                    </font>
+                </Label>
             </VBox>
-            <VBox alignment="CENTER" prefWidth="85.0" spacing="5.0">
-               <children>
-                  <VBox fx:id="saveReceipt" alignment="CENTER" onMouseClicked="#saveReceipt" prefHeight="30.0" prefWidth="70.0" styleClass="cashier-button">
-                     <children>
-                        <Label styleClass="cashier-text" text="Salvar" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Carlito Bold" size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
-                  <VBox fx:id="finalizeSell21" alignment="CENTER" disable="true" prefWidth="70.0" styleClass="cashier-button">
-                     <children>
-                        <Label styleClass="cashier-text" text="Imprimir" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Carlito Bold" size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
-               </children>
+        </VBox>
+        <VBox alignment="CENTER" prefWidth="85.0" spacing="5.0">
+            <VBox alignment="CENTER" onMouseClicked="#back" prefHeight="30.0"
+                  prefWidth="70.0" styleClass="cashier-button">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </padding>
+                <Label styleClass="cashier-text" text="Voltar" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="Carlito Bold" size="16.0"/>
+                    </font>
+                </Label>
             </VBox>
-            <VBox alignment="CENTER" prefWidth="85.0" spacing="5.0">
-               <children>
-                  <VBox fx:id="goBackButton" alignment="CENTER" onMouseClicked="#back" prefHeight="30.0" prefWidth="70.0" styleClass="cashier-button">
-                     <children>
-                        <Label styleClass="cashier-text" text="Voltar" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Carlito Bold" size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
-                  <VBox fx:id="cancelButton" alignment="CENTER" onMouseClicked="#cancel" prefWidth="70.0" styleClass="cashier-button">
-                     <children>
-                        <Label styleClass="cashier-text" text="Cancelar" textAlignment="CENTER" wrapText="true">
-                           <font>
-                              <Font name="Carlito Bold" size="16.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </padding>
-                  </VBox>
-               </children>
+            <VBox fx:id="cancelButton" alignment="CENTER" onMouseClicked="#cancel" prefWidth="70.0"
+                  styleClass="cashier-button">
+                <padding>
+                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                </padding>
+                <Label styleClass="cashier-text" text="Cancelar" textAlignment="CENTER" wrapText="true">
+                    <font>
+                        <Font name="Carlito Bold" size="16.0"/>
+                    </font>
+                </Label>
             </VBox>
-            <VBox fx:id="confirmBox" alignment="CENTER" prefHeight="63.0" prefWidth="130.0" style="-fx-background-color: #58996A; -fx-background-radius: 5; -fx-cursor: hand;">
-               <children>
-                  <Label prefHeight="40.0" prefWidth="105.0" styleClass="cashier-text" text="Confirmar (F2)" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-                     <font>
-                        <Font name="Carlito Bold" size="16.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Confirmar pagamento" />
-                     </tooltip>
-                  </Label>
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </VBox>
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </HBox>
-   </children>
-   <stylesheets>
-      <URL value="@../css/menu.css" />
-      <URL value="@../css/controls.css" />
-   </stylesheets>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
+        </VBox>
+        <VBox fx:id="confirmBox" alignment="CENTER" prefHeight="63.0" prefWidth="130.0"
+              style="-fx-background-color: #58996A; -fx-background-radius: 5; -fx-cursor: hand;">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+            <Label prefHeight="40.0" prefWidth="105.0" styleClass="cashier-text" text="Confirmar (F2)"
+                   textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                <font>
+                    <Font name="Carlito Bold" size="16.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip text="Confirmar pagamento"/>
+                </tooltip>
+            </Label>
+        </VBox>
+    </HBox>
 </VBox>

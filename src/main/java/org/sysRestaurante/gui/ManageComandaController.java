@@ -26,6 +26,7 @@ import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
 public class ManageComandaController {
 
@@ -134,11 +135,11 @@ public class ManageComandaController {
     }
 
     public void initSessionDetails() {
-        int busy = Management.getBusyTables().size();
+        int busy = Objects.requireNonNull(Management.getBusyTables()).size();
         session = AppFactory.getSessionDao();
         session.setIdCashier(AppFactory.getCashierDao().getIdCashier());
         session.setBusyTablesCount(busy);
-        session.setAvailableTablesCount(Management.getTables().size() - busy);
+        session.setAvailableTablesCount(Objects.requireNonNull(Management.getTables()).size() - busy);
     }
 
     public void updateInfo() {
@@ -188,7 +189,7 @@ public class ManageComandaController {
     public void computeTotalComanda(ComandaDao comanda) {
         double total = 0;
         List<ProductDao> list = Order.getItemsByOrderId(comanda.getIdOrder());
-        for (ProductDao product : list) {
+        for (ProductDao product : Objects.requireNonNull(list)) {
             total += product.getQuantity() * product.getSellPrice();
             comanda.setTotal(total);
         }
@@ -263,7 +264,7 @@ public class ManageComandaController {
 
     public String calculateTimePeriod(ComandaDao comanda) {
         LocalDateTime dateTimeOpenned = comanda.getDateOpening().atTime(comanda.getTimeOpening());
-        String durationText = null;
+        String durationText;
 
         if (ChronoUnit.DAYS.between(dateTimeOpenned, LocalDateTime.now()) > 1) {
             durationText = ChronoUnit.DAYS.between(dateTimeOpenned, LocalDateTime.now()) + " dias";

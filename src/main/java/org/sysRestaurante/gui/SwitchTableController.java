@@ -70,7 +70,7 @@ public class SwitchTableController {
         String filter = searchBox.getText().toUpperCase();
         String AVAILABLE = "DISPONIVEL;DISPONÍVEL";
 
-        if (filter == null || filter.length() == 0) {
+        if (filter.length() == 0) {
             filteredData.setPredicate(null);
         }
         else if (AVAILABLE.contains(filter.toUpperCase())) {
@@ -89,7 +89,7 @@ public class SwitchTableController {
 
     private void onConfirmClicked(Event event) {
         ComandaDao order = AppFactory.getComandaDao();
-        int idTable = 0;
+        int idTable;
 
         boolean empty = false;
         boolean available = false;
@@ -103,7 +103,7 @@ public class SwitchTableController {
         }
 
 
-        if (available && !empty) {
+        if (available) {
             idTable = tableListView.getSelectionModel().getSelectedItem().getIdTable();
         } else  {
             if (empty) {

@@ -6,77 +6,68 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="vboxWrapper" alignment="TOP_CENTER" prefHeight="297.0" prefWidth="609.0" spacing="10.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.OpenCashierDialogController">
-   <children>
-      <VBox alignment="CENTER_LEFT">
-         <children>
-            <Label text="Abrir caixa">
-               <font>
-                  <Font name="Carlito Bold" size="25.0" />
-               </font>
+<VBox alignment="TOP_CENTER" prefHeight="297.0" prefWidth="609.0" spacing="10.0"
+      xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.sysRestaurante.gui.OpenCashierDialogController">
+    <stylesheets>
+        <URL value="@../css/menu.css"/>
+    </stylesheets>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
+    <VBox alignment="CENTER_LEFT">
+        <Label text="Abrir caixa">
+            <font>
+                <Font name="Carlito Bold" size="25.0"/>
+            </font>
+        </Label>
+        <Separator prefWidth="200.0"/>
+    </VBox>
+    <VBox spacing="5.0">
+        <HBox fx:id="cashBox" alignment="TOP_RIGHT">
+            <Label prefHeight="18.0" text="Dinheiro disponível no caixa:">
+                <font>
+                    <Font name="Carlito" size="17.0"/>
+                </font>
+                <tooltip>
+                    <Tooltip
+                            text="Atenção: É importante cadastrar o valor inicial do caixa para que seja possível computar troco."/>
+                </tooltip>
             </Label>
-            <Separator prefWidth="200.0" />
-         </children>
-      </VBox>
-      <VBox spacing="5.0">
-         <children>
-            <HBox fx:id="cashBox" alignment="TOP_RIGHT">
-               <children>
-                  <Label prefHeight="18.0" text="Dinheiro disponível no caixa:">
-                     <font>
-                        <Font name="Carlito" size="17.0" />
-                     </font>
-                     <tooltip>
-                        <Tooltip text="Atenção: É importante cadastrar o valor inicial do caixa para que seja possível computar troco." />
-                     </tooltip>
-                  </Label>
-                  <Pane HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-      <HBox alignment="TOP_RIGHT" prefHeight="136.0" prefWidth="574.0">
-         <children>
-            <Label prefHeight="18.0" text="Adicionar uma observação: ">
-               <font>
-                  <Font name="Carlito" size="17.0" />
-               </font>
-            </Label>
-            <Pane HBox.hgrow="ALWAYS" />
-            <TextArea fx:id="addNote" prefHeight="136.0" prefWidth="340.0" promptText="Escreva uma observação">
-               <font>
-                  <Font name="Carlito" size="15.0" />
-               </font>
-            </TextArea>
-         </children>
-      </HBox>
-      <VBox>
-         <children>
-            <Separator prefWidth="200.0" />
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="63.0" prefWidth="457.0" spacing="10.0">
-               <children>
-                  <Button fx:id="continueButton" mnemonicParsing="false" opacity="0.8" prefHeight="40.0" prefWidth="110.0" text="Continuar">
-                     <font>
-                        <Font name="Carlito Bold" size="15.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" opacity="0.8" prefHeight="40.0" prefWidth="110.0" text="Cancelar">
-                     <font>
-                        <Font name="Carlito" size="15.0" />
-                     </font>
-                  </Button>
-               </children>
-               <padding>
-                  <Insets bottom="5.0" top="5.0" />
-               </padding>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
-   <stylesheets>
-      <URL value="@../css/menu.css" />
-   </stylesheets>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
+            <Pane HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </VBox>
+    <HBox alignment="TOP_RIGHT" prefHeight="136.0" prefWidth="574.0">
+        <Label prefHeight="18.0" text="Adicionar uma observação: ">
+            <font>
+                <Font name="Carlito" size="17.0"/>
+            </font>
+        </Label>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <TextArea fx:id="addNote" prefHeight="136.0" prefWidth="340.0" promptText="Escreva uma observação">
+            <font>
+                <Font name="Carlito" size="15.0"/>
+            </font>
+        </TextArea>
+    </HBox>
+    <VBox>
+        <Separator prefWidth="200.0"/>
+        <HBox alignment="BOTTOM_RIGHT" prefHeight="63.0" prefWidth="457.0" spacing="10.0">
+            <padding>
+                <Insets bottom="5.0" top="5.0"/>
+            </padding>
+            <Button fx:id="continueButton" mnemonicParsing="false" opacity="0.8" prefHeight="40.0"
+                    prefWidth="110.0" text="Continuar">
+                <font>
+                    <Font name="Carlito Bold" size="15.0"/>
+                </font>
+            </Button>
+            <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" opacity="0.8"
+                    prefHeight="40.0" prefWidth="110.0" text="Cancelar">
+                <font>
+                    <Font name="Carlito" size="15.0"/>
+                </font>
+            </Button>
+        </HBox>
+    </VBox>
 </VBox>

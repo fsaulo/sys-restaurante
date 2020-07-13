@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Product {
@@ -26,7 +27,7 @@ public class Product {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -61,7 +62,7 @@ public class Product {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idCategory);
             rs = ps.executeQuery();
 

@@ -14,6 +14,7 @@ import org.sysRestaurante.model.Personnel;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class DetailsCashierBoxController {
 
@@ -46,7 +47,7 @@ public class DetailsCashierBoxController {
         final String dateOpening = DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss")
                 .format(cashierDao.getDateOpening().atTime(cashierDao.getTimeOpening()));
 
-        StringBuilder userTypeLabel = new StringBuilder("por " + user.getName());
+        StringBuilder userTypeLabel = new StringBuilder("por " + Objects.requireNonNull(user).getName());
 
         if (user.isAdmin()) {
             userTypeLabel.append(" (ADMINSTRADOR)");

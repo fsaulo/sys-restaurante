@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Personnel {
@@ -27,7 +28,7 @@ public class Personnel {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setString(1, nome);
             ps.setString(2, password);
             ps.setString(3, username);
@@ -55,7 +56,7 @@ public class Personnel {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idEmployee);
             rs = ps.executeQuery();
 
@@ -75,15 +76,15 @@ public class Personnel {
     }
 
     public ArrayList<EmployeeDao> list() {
-        PreparedStatement ps = null;
-        Connection con = null;
-        ResultSet rs = null;
+        PreparedStatement ps;
+        Connection con;
+        ResultSet rs;
         String query = "SELECT * FROM funcionario";
         ArrayList<EmployeeDao> employees = new ArrayList<>();
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -117,7 +118,7 @@ public class Personnel {
 
         try {
             connection = DBConnection.getConnection();
-            ps = connection.prepareStatement(query);
+            ps = Objects.requireNonNull(connection).prepareStatement(query);
             ps.setInt(1, idUser);
             rs = ps.executeQuery();
 
@@ -134,9 +135,9 @@ public class Personnel {
             exception.printStackTrace();
             NotificationHandler.errorDialog(exception);
         } finally {
-            ps.close();
-            rs.close();
-            connection.close();
+            Objects.requireNonNull(ps).close();
+            Objects.requireNonNull(rs).close();
+            Objects.requireNonNull(connection).close();
         }
         return null;
     }

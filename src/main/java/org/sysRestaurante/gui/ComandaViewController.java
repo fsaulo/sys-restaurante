@@ -18,6 +18,7 @@ import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ComandaViewController {
 
@@ -46,7 +47,7 @@ public class ComandaViewController {
         handleEmployeesComboBox();
         tableLabel.setText("MESA " + comanda.getIdTable());
         comandaLabel.setText("#" + comanda.getIdComanda());
-        list = new ArrayList<>(Order.getItemsByOrderId(comanda.getIdOrder()));
+        list = new ArrayList<>(Objects.requireNonNull(Order.getItemsByOrderId(comanda.getIdOrder())));
 
         productsListView.setItems(FXCollections.observableList(list));
         productsListView.setCellFactory(plv -> new ProductListViewCell(false));

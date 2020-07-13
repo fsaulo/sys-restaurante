@@ -107,7 +107,7 @@ public class ComandaPOSController extends POS {
 
     private final ComandaDao comanda = AppFactory.getComandaDao();
     private final ObservableList<ProductDao> selectedProductsList = observableArrayList();
-    private final ObservableList<ProductDao> products = new Product().getProducts();
+    private final ObservableList<ProductDao> products = Product.getProducts();
 
     @FXML
     public void initialize() {
@@ -160,7 +160,7 @@ public class ComandaPOSController extends POS {
 
     public void handleChangeTable() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.SELEC_NEW_TABLE_VIEW));
-        PopOver popOver = null;
+        PopOver popOver;
         try {
             popOver = new PopOver(loader.load());
             popOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);

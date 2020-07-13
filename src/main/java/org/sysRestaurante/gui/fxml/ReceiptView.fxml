@@ -5,23 +5,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ReceiptViewController">
-   <children>
-      <VBox spacing="5.0">
-         <children>
-            <TextFlow fx:id="receiptText" scaleShape="false" style="-fx-background-color: white; -fx-border-radius: 2;" textAlignment="JUSTIFY">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </TextFlow>
-         </children>
-      </VBox>
-   </children>
-   <stylesheets>
-      <URL value="@../css/menu.css" />
-      <URL value="@../css/controls.css" />
-   </stylesheets>
-   <padding>
-      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-   </padding>
+<VBox spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.sysRestaurante.gui.ReceiptViewController">
+    <stylesheets>
+        <URL value="@../css/menu.css"/>
+        <URL value="@../css/controls.css"/>
+    </stylesheets>
+    <padding>
+        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+    </padding>
+    <VBox spacing="5.0">
+        <TextFlow fx:id="receiptText" scaleShape="false" style="-fx-background-color: white; -fx-border-radius: 2;"
+                  textAlignment="JUSTIFY">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+        </TextFlow>
+    </VBox>
 </VBox>

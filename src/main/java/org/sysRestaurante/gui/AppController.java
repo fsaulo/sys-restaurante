@@ -63,7 +63,7 @@ public class AppController implements DateFormatter {
         borderPaneHolder.centerProperty()
                 .setValue(FXMLLoader.load(AppController.class.getResource(SceneNavigator.DASHBOARD)));
 
-        borderPaneHolder.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
+        BorderPane.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
 
 
         SceneNavigator.loadScene(borderPaneHolder);
@@ -110,7 +110,7 @@ public class AppController implements DateFormatter {
         footer.setPadding(new Insets(1, 3, 1, 3));
         footer.setStyle("-fx-border-color: #CBCBCC");
         footer.setAlignment(Pos.CENTER);
-        footer.setHgrow(growPane, Priority.ALWAYS);
+        HBox.setHgrow(growPane, Priority.ALWAYS);
         footer.getChildren().addAll(timeStatusLabel,
                 sep1,
                 sessionTimer,
@@ -178,7 +178,7 @@ public class AppController implements DateFormatter {
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(fxml));
-            Scene scene = null;
+            Scene scene;
 
             try {
                 scene = new Scene(loader.load());

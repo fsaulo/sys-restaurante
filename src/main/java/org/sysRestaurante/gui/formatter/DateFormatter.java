@@ -17,7 +17,7 @@ public interface DateFormatter {
      */
 
     static String translateTimeFromMinutes(long minutes) {
-        String humanReadableDateTime = null;
+        String humanReadableDateTime;
 
         // Less than an hour
         if (minutes < 60) {
@@ -25,12 +25,12 @@ public interface DateFormatter {
         }
 
         // More than an hour & less then a day
-        else if (minutes >= 60 && minutes <= 1440) {
+        else if (minutes <= 1440) {
             humanReadableDateTime = Duration.ofMinutes(minutes).toHours() + " horas";
         }
 
         // More than a day
-        else if (minutes > 1440) {
+        else {
             humanReadableDateTime = Duration.ofMinutes(minutes).toHours() + " dias";
         }
 

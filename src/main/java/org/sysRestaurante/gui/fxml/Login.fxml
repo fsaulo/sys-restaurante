@@ -13,134 +13,128 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="loginWrapper" prefHeight="347.0" prefWidth="557.0" spacing="25.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.LoginController">
-   <children>
-      <AnchorPane fx:id="loginPane" style="-fx-border-insets: 10 0 0 0; -fx-border-color: #D2D2D2; -fx-border-radius: 5; -fx-background-color: #F4F4F4; -fx-border-width: 2;">
-          <children>
-              <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;" text="Autenticação no Sistema" textFill="#807d7d">
-               <font>
-                  <Font name="Carlito" size="17.0" />
-               </font>
+<VBox prefHeight="347.0" prefWidth="557.0" spacing="25.0" xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.LoginController">
+    <AnchorPane fx:id="loginPane"
+                style="-fx-border-insets: 10 0 0 0; -fx-border-color: #D2D2D2; -fx-border-radius: 5; -fx-background-color: #F4F4F4; -fx-border-width: 2;">
+        <Label alignment="TOP_LEFT" layoutX="14.0" style="-fx-padding: 0 5; -fx-background-color: inherit;"
+               text="Autenticação no Sistema" textFill="#807d7d">
+            <font>
+                <Font name="Carlito" size="17.0"/>
+            </font>
+        </Label>
+        <VBox alignment="CENTER" layoutX="4.0" layoutY="23.0" AnchorPane.bottomAnchor="0.0"
+              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+            <VBox alignment="CENTER" prefWidth="533.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="5.0"/>
+                </padding>
+                <HBox alignment="BOTTOM_LEFT" prefWidth="533.0" VBox.vgrow="ALWAYS">
+                    <ImageView fx:id="loginTextImage" fitHeight="101.0" fitWidth="275.0" pickOnBounds="true"
+                               preserveRatio="true"/>
+                </HBox>
+                <HBox prefHeight="49.0" prefWidth="533.0" spacing="5.0">
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                    <padding>
+                        <Insets bottom="5.0" top="5.0"/>
+                    </padding>
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <TextField fx:id="usernameField" prefHeight="12.0" prefWidth="398.0"
+                                   promptText="Usuário">
+                            <font>
+                                <Font name="Carlito" size="15.0"/>
+                            </font>
+                        </TextField>
+                        <PasswordField fx:id="passwordField" onInputMethodTextChanged="#loginRequested"
+                                       prefHeight="55.0" prefWidth="398.0" promptText="Senha">
+                            <font>
+                                <Font name="Carlito" size="15.0"/>
+                            </font>
+                        </PasswordField>
+                    </VBox>
+                    <Button mnemonicParsing="false" onAction="#loginRequested" prefHeight="60.0"
+                            prefWidth="160.0" style="-fx-cursor: hand;" text="Entrar"
+                            textOverrun="WORD_ELLIPSIS" wrapText="true">
+                        <font>
+                            <Font name="Carlito Bold" size="20.0"/>
+                        </font>
+                    </Button>
+                </HBox>
+                <HBox prefWidth="533.0">
+                    <Label fx:id="statusAccessLabel" alignment="BOTTOM_LEFT"
+                           text="Acesso não autorizado: usuário ou senha incorretos." textFill="RED"
+                           underline="true" wrapText="true">
+                        <font>
+                            <Font name="Carlito" size="19.0"/>
+                        </font>
+                    </Label>
+                </HBox>
+            </VBox>
+            <HBox alignment="BASELINE_LEFT" prefHeight="15.0" prefWidth="462.0"
+                  style="-fx-background-color: #e7e4e4; -fx-background-radius: 5;" VBox.vgrow="NEVER">
+                <VBox.margin>
+                    <Insets top="5.0"/>
+                </VBox.margin>
+                <padding>
+                    <Insets left="5.0" right="5.0"/>
+                </padding>
+                <Label prefHeight="17.0" prefWidth="131.0" text="Status" HBox.hgrow="ALWAYS">
+                    <font>
+                        <Font name="Cantarell Regular" size="14.0"/>
+                    </font>
+                </Label>
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Label fx:id="dbStatusLabel" alignment="CENTER_RIGHT" text="Conectado" textFill="#468d13">
+                    <font>
+                        <Font name="Cantarell Regular" size="14.0"/>
+                    </font>
+                </Label>
+            </HBox>
+        </VBox>
+    </AnchorPane>
+    <HBox style="-fx-border-color: #D2D2D2; -fx-border-width: 2; -fx-border-radius: 5;">
+        <VBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="383.0" spacing="5.0" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets bottom="5.0" left="5.0"/>
+            </HBox.margin>
+            <Label fx:id="clockLabel" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="383.0"
+                   text="18/05/2018 07:01:03">
+                <font>
+                    <Font name="Liberation Mono Bold" size="15.0"/>
+                </font>
             </Label>
-            <VBox alignment="CENTER" layoutX="4.0" layoutY="23.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
-               <children>
-                  <VBox alignment="CENTER" prefWidth="533.0" spacing="5.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <HBox alignment="BOTTOM_LEFT" prefWidth="533.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <ImageView fx:id="loginTextImage" fitHeight="101.0" fitWidth="275.0" pickOnBounds="true" preserveRatio="true" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="49.0" prefWidth="533.0" spacing="5.0">
-                           <children>
-                              <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <TextField fx:id="usernameField" prefHeight="12.0" prefWidth="398.0" promptText="Usuário">
-                                       <font>
-                                          <Font name="Carlito" size="15.0" />
-                                       </font></TextField>
-                                    <PasswordField fx:id="passwordField" onInputMethodTextChanged="#loginRequested" prefHeight="55.0" prefWidth="398.0" promptText="Senha">
-                                       <font>
-                                          <Font name="Carlito" size="15.0" />
-                                       </font></PasswordField>
-                                 </children>
-                              </VBox>
-                              <Button mnemonicParsing="false" onAction="#loginRequested" prefHeight="60.0" prefWidth="160.0" style="-fx-cursor: hand;" text="Entrar" textOverrun="WORD_ELLIPSIS" wrapText="true">
-                                 <font>
-                                    <Font name="Carlito Bold" size="20.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <padding>
-                              <Insets bottom="5.0" top="5.0" />
-                           </padding>
-                        </HBox>
-                        <HBox prefWidth="533.0">
-                           <children>
-                              <Label fx:id="statusAccessLabel" alignment="BOTTOM_LEFT" text="Acesso não autorizado: usuário ou senha incorretos." textFill="RED" underline="true" wrapText="true">
-                                 <font>
-                                    <Font name="Carlito" size="19.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </HBox>
-                     </children>
-                     <padding>
-                        <Insets bottom="5.0" />
-                     </padding>
-                  </VBox>
-                  <HBox alignment="BASELINE_LEFT" prefHeight="15.0" prefWidth="462.0" style="-fx-background-color: #e7e4e4; -fx-background-radius: 5;" VBox.vgrow="NEVER">
-                     <children>
-                        <Label prefHeight="17.0" prefWidth="131.0" text="Status" HBox.hgrow="ALWAYS">
-                           <font>
-                              <Font name="Cantarell Regular" size="14.0" />
-                           </font>
-                        </Label>
-                        <Pane HBox.hgrow="ALWAYS" />
-                        <Label fx:id="dbStatusLabel" alignment="CENTER_RIGHT" text="Conectado" textFill="#468d13">
-                           <font>
-                              <Font name="Cantarell Regular" size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                     <padding>
-                        <Insets left="5.0" right="5.0" />
-                     </padding>
-                  </HBox>
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </VBox>
-          </children>
-      </AnchorPane>
-      <HBox style="-fx-border-color: #D2D2D2; -fx-border-width: 2; -fx-border-radius: 5;">
-         <children>
-            <VBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="383.0" spacing="5.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label fx:id="clockLabel" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="383.0" text="18/05/2018 07:01:03">
-                     <font>
-                        <Font name="Liberation Mono Bold" size="15.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="lastSessionLabel" prefHeight="0.0" prefWidth="383.0" text="Última sessão: 17/05/2018 17:55:56">
-                     <font>
-                        <Font name="Liberation Mono" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="0.0" prefWidth="383.0" text="GNU SysRestaurante v0.1">
-                     <font>
-                        <Font name="Liberation Mono" size="12.0" />
-                     </font>
-                  </Label>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" />
-               </HBox.margin>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="60.0" prefWidth="124.0">
-               <children>
-                  <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="  Desenvolvido por" wrappingWidth="130.46401977539062">
-                     <font>
-                        <Font name="Liberation Mono" size="12.0" />
-                     </font>
-                  </Text>
-                  <ImageView fx:id="signatureImage" fitHeight="28.0" fitWidth="194.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin>
-            </VBox>
-         </children>
-      </HBox>
-   </children>
+            <Label fx:id="lastSessionLabel" prefHeight="0.0" prefWidth="383.0"
+                   text="Última sessão: 17/05/2018 17:55:56">
+                <font>
+                    <Font name="Liberation Mono" size="12.0"/>
+                </font>
+            </Label>
+            <Label prefHeight="0.0" prefWidth="383.0" text="GNU SysRestaurante v0.1">
+                <font>
+                    <Font name="Liberation Mono" size="12.0"/>
+                </font>
+            </Label>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="60.0" prefWidth="124.0">
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+            <HBox.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </HBox.margin>
+            <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="  Desenvolvido por"
+                  wrappingWidth="130.46401977539062">
+                <font>
+                    <Font name="Liberation Mono" size="12.0"/>
+                </font>
+            </Text>
+            <ImageView fx:id="signatureImage" fitHeight="28.0" fitWidth="194.0" pickOnBounds="true"
+                       preserveRatio="true"/>
+        </VBox>
+    </HBox>
 </VBox>

@@ -11,47 +11,49 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="popOverVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="382.0" prefWidth="342.0" spacing="5.0" styleClass="view" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <HBox alignment="CENTER" prefHeight="40.0" prefWidth="342.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
-         <children>
-            <Label fx:id="tableLabel" text="Mesa 24">
-               <font>
-                  <Font name="Carlito Bold" size="27.0" />
-               </font>
-            </Label>
-            <Pane HBox.hgrow="ALWAYS" />
-            <Label fx:id="comandaLabel" text="#153">
-               <font>
-                  <Font name="Comfortaa Bold" size="16.0" />
-               </font>
-            </Label>
-         </children>
-         <padding>
-            <Insets left="5.0" right="5.0" />
-         </padding></HBox>
-      <ListView fx:id="productsListView" VBox.vgrow="ALWAYS" />
-      <ComboBox fx:id="employeeComboBox" prefHeight="35.0" prefWidth="600.0" promptText="Selecionar atendente" style="-fx-font-family: Carlito; -fx-font-weight: bold; -fx-font-size: 16;" styleClass="removed-glow" visibleRowCount="5" />
-      <HBox alignment="TOP_CENTER" spacing="10.0" styleClass="removed-glow">
-         <children>
-            <Button fx:id="closeComandaButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" style="-fx-focus-color: gray;" text="Encerrar comanda" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font name="Carlito Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="addOrder" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" style="-fx-focus-color: gray;" text="Adicionar pedido" HBox.hgrow="ALWAYS">
-               <font>
-                  <Font name="Carlito Bold" size="16.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-   </children>
-   <stylesheets>
-      <URL value="@../css/menu.css" />
-      <URL value="@../css/controls.css" />
-   </stylesheets>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
+<VBox fx:id="popOverVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="382.0" prefWidth="342.0" spacing="5.0" styleClass="view" xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@../css/menu.css"/>
+        <URL value="@../css/controls.css"/>
+    </stylesheets>
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
+    <HBox alignment="CENTER" prefHeight="40.0" prefWidth="342.0"
+          style="-fx-background-color: white; -fx-border-color: #dddddd;">
+        <padding>
+            <Insets left="5.0" right="5.0"/>
+        </padding>
+        <Label fx:id="tableLabel" text="Mesa 24">
+            <font>
+                <Font name="Carlito Bold" size="27.0"/>
+            </font>
+        </Label>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label fx:id="comandaLabel" text="#153">
+            <font>
+                <Font name="Comfortaa Bold" size="16.0"/>
+            </font>
+        </Label>
+    </HBox>
+    <ListView fx:id="productsListView" VBox.vgrow="ALWAYS"/>
+    <ComboBox fx:id="employeeComboBox" prefHeight="35.0" prefWidth="600.0" promptText="Selecionar atendente"
+              style="-fx-font-family: Carlito; -fx-font-weight: bold; -fx-font-size: 16;" styleClass="removed-glow"
+              visibleRowCount="5"/>
+    <HBox alignment="TOP_CENTER" spacing="10.0" styleClass="removed-glow">
+        <Button fx:id="closeComandaButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0"
+                style="-fx-focus-color: gray;" text="Encerrar comanda" HBox.hgrow="ALWAYS">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+        </Button>
+        <Button fx:id="addOrder" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0"
+                style="-fx-focus-color: gray;" text="Adicionar pedido" HBox.hgrow="ALWAYS">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+        </Button>
+    </HBox>
 </VBox>

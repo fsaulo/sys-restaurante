@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Reminder {
@@ -24,7 +25,7 @@ public class Reminder {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idUser);
             ps.setString(2, content);
             ps.setDate(3, java.sql.Date.valueOf(date));
@@ -46,7 +47,7 @@ public class Reminder {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
             ArrayList<NoteDao> noteDaos = new ArrayList<>();
 
@@ -76,7 +77,7 @@ public class Reminder {
         String query = "DELETE FROM lembrete WHERE is_marcado = ?";
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setBoolean(1, true);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -94,7 +95,7 @@ public class Reminder {
         String query = "UPDATE lembrete SET is_marcado = ? WHERE id_lembrete = ?";
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setBoolean(1, true);
             ps.setInt(2, id);
             ps.executeUpdate();
@@ -111,7 +112,7 @@ public class Reminder {
         String query = "UPDATE lembrete SET is_marcado = ? WHERE id_lembrete = ?";
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setBoolean(1, false);
             ps.setInt(2, id);
             ps.executeUpdate();

@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Cashier {
@@ -41,7 +42,7 @@ public class Cashier {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, userId);
             ps.setDate(2, Date.valueOf(cashier.getDateOpening()));
             ps.setTime(3, Time.valueOf(cashier.getTimeOpening()));
@@ -61,7 +62,7 @@ public class Cashier {
             keys.close();
             ps.close();
             con.close();
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             LOGGER.severe("Cashier couldn't be oppenned.");
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
@@ -75,7 +76,7 @@ public class Cashier {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setDate(1, Date.valueOf(LocalDate.now()));
             ps.setTime(2, Time.valueOf(LocalTime.now()));
             ps.setBoolean(3, false);
@@ -85,7 +86,7 @@ public class Cashier {
             LOGGER.info("Cashier closed.");
             ps.close();
             con.close();
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             LOGGER.severe("Cashier couldn't be oppened.");
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
@@ -105,7 +106,7 @@ public class Cashier {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query1);
+            ps = Objects.requireNonNull(con).prepareStatement(query1);
             ps.setInt(1, idCashier);
             ResultSet rs = ps.executeQuery();
 
@@ -141,7 +142,7 @@ public class Cashier {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -157,7 +158,7 @@ public class Cashier {
             con.close();
             rs.close();
             return isOpenned;
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             ex.printStackTrace();
         }
         return false;
@@ -171,7 +172,7 @@ public class Cashier {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idCashier);
             rs = ps.executeQuery();
 
@@ -185,7 +186,7 @@ public class Cashier {
             rs.close();
             con.close();
             return localDateTime;
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             ex.printStackTrace();
         }
         return null;
@@ -199,7 +200,7 @@ public class Cashier {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idCashier);
             rs = ps.executeQuery();
 
@@ -221,7 +222,7 @@ public class Cashier {
             ps.close();
             rs.close();
             con.close();
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             ex.printStackTrace();
         }
     }
@@ -234,7 +235,7 @@ public class Cashier {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -264,7 +265,7 @@ public class Cashier {
             rs.close();
             con.close();
             return list;
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             ex.printStackTrace();
         }
         return null;

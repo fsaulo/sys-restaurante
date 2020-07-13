@@ -149,7 +149,7 @@ public class POS {
         FilteredList<ProductDao> filteredData = new FilteredList<>(products, null);
         String filter = searchBox.getText().toUpperCase();
 
-        if(filter == null || filter.length() == 0) {
+        if(filter.length() == 0) {
             filteredData.setPredicate(null);
         }
         else {
@@ -486,6 +486,7 @@ public class POS {
     public void updateComandaItems() {
         OrderDao order = AppFactory.getOrderDao();
         List<ProductDao> products = Order.getItemsByOrderId(order.getIdOrder());
+        assert products != null;
         for (ProductDao product : products) {
             addToSelectedProductsList(product, product.getQuantity());
         }

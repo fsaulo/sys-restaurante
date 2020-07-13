@@ -16,6 +16,7 @@ import org.sysRestaurante.model.Product;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.text.Format;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class ProductManagementController {
@@ -68,16 +69,15 @@ public class ProductManagementController {
         startSearchControls();
         updateTables();
 
-        addProductButton.setOnMouseClicked(mouseEvent -> {
-            LOGGER.info("Mouse clicked. Working fine!");
-        });
+        addProductButton.setOnMouseClicked(mouseEvent -> LOGGER.info("Mouse clicked. Working fine!"));
     }
 
     public void refreshProductsList() {
-        FilteredList<ProductDao> filteredData = new FilteredList<>(products, null);
+        assert products != null;
+        FilteredList<ProductDao> filteredData = new FilteredList<>(Objects.requireNonNull(products), null);
         String filter = searchBox.getText().toUpperCase();
 
-        if(filter == null || filter.length() == 0) {
+        if(filter.length() == 0) {
             filteredData.setPredicate(null);
         }
         else {

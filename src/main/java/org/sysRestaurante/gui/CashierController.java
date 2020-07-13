@@ -41,6 +41,7 @@ import org.sysRestaurante.util.NotificationHandler;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class CashierController {
 
@@ -199,7 +200,7 @@ public class CashierController {
     @FXML
     public void onNewOrder() {
         newOrderBox.setDisable(true);
-        AppFactory.getAppController().showPOS();
+        AppController.showPOS();
 
         if (AppController.isSellConfirmed()) {
             AppController.setSellConfirmed(false);
@@ -235,7 +236,7 @@ public class CashierController {
 
             if (order.getDetails().equals("Pedido em comanda")) {
                 ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
-                int idComanda = comanda.getIdComanda();
+                int idComanda = Objects.requireNonNull(comanda).getIdComanda();
                 int idTable = comanda.getIdTable();
                 Order.closeComanda(idComanda, total);
                 Order.updateOrderStatus(idComanda, CANCELED);
@@ -317,6 +318,7 @@ public class CashierController {
     public void setFilterByDate() {
         int idCashier = AppFactory.getCashierDao().getIdCashier();
         ObservableList<OrderDao> data = Order.getOrderByIdCashier(idCashier);
+        assert data != null;
         FilteredList<OrderDao> filteredList = new FilteredList<>(data);
         datePicker.valueProperty().addListener((newValue) ->
             filteredList.setPredicate(orderDao -> {
@@ -334,6 +336,7 @@ public class CashierController {
     public void setFilterByCod(Number cod) {
         int idCashier = AppFactory.getCashierDao().getIdCashier();
         ObservableList<OrderDao> data = Order.getOrderByIdCashier(idCashier);
+        assert data != null;
         FilteredList<OrderDao> filteredList = new FilteredList<>(data);
         filteredList.setPredicate(orderDao -> {
             if (cod == null) {

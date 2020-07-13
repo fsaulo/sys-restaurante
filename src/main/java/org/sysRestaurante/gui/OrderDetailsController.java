@@ -34,6 +34,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderDetailsController {
 
@@ -101,14 +102,14 @@ public class OrderDetailsController {
 
         if (order.getDetails().equals("Pedido em comanda")) {
             ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
-            String employee = Personnel.getEmployeeNameById(comanda.getIdEmployee());
+            String employee = Personnel.getEmployeeNameById(Objects.requireNonNull(comanda).getIdEmployee());
             String customer = Order.getCustomerName(order.getIdOrder());
             tableLabel.setText("MESA #" + comanda.getIdTable());
             codComandaLabel.setText(String.valueOf(comanda.getIdComanda()));
             employeeLabel.setText(employee);
             employeeComboBox.getItems().add("Atendente");
 
-            if (!employee.equals("Nenhum")) {
+            if (!Objects.requireNonNull(employee).equals("Nenhum")) {
                 employeeComboBox.getItems().add(employee);
                 employeeComboBox.getSelectionModel().select(employee);
             } else {
@@ -176,7 +177,7 @@ public class OrderDetailsController {
 
             if (order.getDetails().equals("Pedido em comanda")) {
                 ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
-                int idComanda = comanda.getIdComanda();
+                int idComanda = Objects.requireNonNull(comanda).getIdComanda();
                 int idTable = comanda.getIdTable();
                 Order.closeComanda(idComanda, total);
                 Order.updateOrderStatus(idComanda, CANCELED);
@@ -209,8 +210,7 @@ public class OrderDetailsController {
             e.printStackTrace();
         }
 
-        PopOver popOver = new PopOver(node);
-        return popOver;
+        return new PopOver(node);
     }
 
     public void exit() {

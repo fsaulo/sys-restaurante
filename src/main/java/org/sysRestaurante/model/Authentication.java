@@ -19,6 +19,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +32,7 @@ public class Authentication {
     public boolean isDatabaseConnected() {
         try {
             con = DBConnection.getConnection();
-            if (con.isClosed()) {
+            if (Objects.requireNonNull(con).isClosed()) {
                 return false;
             } else {
                 con.close();
@@ -55,7 +56,7 @@ public class Authentication {
         }
 
         try {
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, userId);
             ps.setDate(2, java.sql.Date.valueOf(date.toLocalDate()));
             ps.setTime(3, java.sql.Time.valueOf(date.toLocalTime()));
@@ -83,16 +84,15 @@ public class Authentication {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setString(1, user);
             ps.setString(2, password);
             rs = ps.executeQuery();
 
             if (rs.next()) {
                 int userId = rs.getInt("id_usuario");
-                AppFactory appFactory = new AppFactory();
                 if (!rs.getBoolean("is_admin")) {
-                    appFactory.setUserDao(new EmployeeDao(
+                    AppFactory.setUserDao(new EmployeeDao(
                             rs.getString("nome"),
                             rs.getString("senha"),
                             rs.getString("username"),
@@ -103,7 +103,7 @@ public class Authentication {
                 }
                 else if (rs.getBoolean("is_admin")) {
                     updateSessionTable(userId);
-                    appFactory.setUserDao(new ManagerDao(
+                    AppFactory.setUserDao(new ManagerDao(
                             rs.getString("nome"),
                             rs.getString("senha"),
                             rs.getString("username"),
@@ -128,7 +128,7 @@ public class Authentication {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setString(1, username);
             rs = ps.executeQuery();
             UserDao userDao = new UserDao();
@@ -160,7 +160,7 @@ public class Authentication {
 
         try  {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, (int) sessionTime);
             ps.setInt(2, userId);
             ps.setInt(3, lastSessionID);
@@ -183,7 +183,7 @@ public class Authentication {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
             ArrayList<Long> dates = new ArrayList<>();
 
@@ -200,10 +200,9 @@ public class Authentication {
                 return null;
             } else {
                 Long mostRecentSessionLong = Collections.max(dates);
-                LocalDateTime mostRecentSession = Instant.ofEpochMilli(mostRecentSessionLong)
+                return Instant.ofEpochMilli(mostRecentSessionLong)
                         .atZone(ZoneId.systemDefault())
                         .toLocalDateTime();
-                return mostRecentSession;
             }
         } catch (SQLException | NullPointerException ex) {
             LOGGER.severe("Error while getting last session.");
@@ -219,7 +218,7 @@ public class Authentication {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             int id = 0;
 

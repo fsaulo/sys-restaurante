@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class CashierHistoryController {
 
@@ -84,7 +85,7 @@ public class CashierHistoryController {
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
 
-        ObservableList<CashierDao> items = FXCollections.observableList(Cashier.getCashier());
+        ObservableList<CashierDao> items = FXCollections.observableList(Objects.requireNonNull(Cashier.getCashier()));
         FXCollections.reverse(items);
 
         orderListTableView.setItems(items);
@@ -116,7 +117,7 @@ public class CashierHistoryController {
                 .format(value));
 
         searchOrderBox.setOnMouseClicked(e -> {
-            CashierDao cashier = new CashierDao();
+            CashierDao cashier;
 
             if (orderListTableView.getSelectionModel().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -167,7 +168,7 @@ public class CashierHistoryController {
         ObservableList<OrderDao> orderDetails = null;
 
         try {
-            orderDetails = FXCollections.observableList(Order.getOrderByIdCashier(cashier.getIdCashier()));
+            orderDetails = FXCollections.observableList(Objects.requireNonNull(Order.getOrderByIdCashier(cashier.getIdCashier())));
         } catch (Exception ignored) {
             ExceptionHandler.doNothing();
         }
@@ -244,7 +245,7 @@ public class CashierHistoryController {
 
         VBox wrapper = new VBox();
         wrapper.getChildren().addAll(tableOrderDetails, detailsBox);
-        wrapper.setVgrow(tableOrderDetails, Priority.ALWAYS);
+        VBox.setVgrow(tableOrderDetails, Priority.ALWAYS);
         wrapper.setPadding(new Insets(5,0,0,0));
         wrapper.setSpacing(5);
         newTab.setContent(wrapper);

@@ -9,42 +9,40 @@
 <?import javafx.scene.text.Font?>
 
 <HBox fx:id="wrapperBox" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Label fx:id="id" text="1">
-         <font>
-            <Font name="Carlito" size="16.0" />
-         </font>
-      </Label>
-      <Separator fx:id="sep" orientation="VERTICAL">
-         <HBox.margin>
-            <Insets bottom="5.0" top="5.0" />
-         </HBox.margin>
-      </Separator>
-      <Label fx:id="description" maxWidth="230.0" text="Descricao do produto" HBox.hgrow="NEVER">
-         <font>
-            <Font name="Carlito" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="category" opacity="0.73" styleClass="category-label" text="Categoria" textFill="#a0a1a1">
-         <font>
-            <Font name="Carlito Bold" size="13.0" />
-         </font>
-         <padding>
-            <Insets left="5.0" right="5.0" />
-         </padding>
-      </Label>
-      <Pane HBox.hgrow="ALWAYS" />
-      <Label fx:id="price" minWidth="-Infinity" text="R$ 23.12">
-         <font>
-            <Font name="Carlito Bold" size="16.0" />
-         </font>
-      </Label>
-   </children>
-   <stylesheets>
-      <URL value="@../css/menu.css" />
-      <URL value="@../css/controls.css" />
-   </stylesheets>
-   <padding>
-      <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-   </padding>
+    <stylesheets>
+        <URL value="@../css/menu.css"/>
+        <URL value="@../css/controls.css"/>
+    </stylesheets>
+    <padding>
+        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+    </padding>
+    <Label fx:id="id" text="1">
+        <font>
+          <Font name="Carlito" size="16.0"/>
+        </font>
+    </Label>
+    <Separator fx:id="sep" orientation="VERTICAL">
+        <HBox.margin>
+          <Insets bottom="5.0" top="5.0"/>
+        </HBox.margin>
+    </Separator>
+    <Label fx:id="description" maxWidth="230.0" text="Descricao do produto" HBox.hgrow="NEVER">
+        <font>
+          <Font name="Carlito" size="16.0"/>
+        </font>
+    </Label>
+    <Label fx:id="category" opacity="0.73" styleClass="category-label" text="Categoria" textFill="#a0a1a1">
+        <font>
+          <Font name="Carlito Bold" size="13.0"/>
+        </font>
+        <padding>
+          <Insets left="5.0" right="5.0"/>
+        </padding>
+    </Label>
+    <Pane HBox.hgrow="ALWAYS"/>
+    <Label fx:id="price" minWidth="-Infinity" text="R$ 23.12">
+        <font>
+          <Font name="Carlito Bold" size="16.0"/>
+        </font>
+    </Label>
 </HBox>
