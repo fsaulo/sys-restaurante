@@ -1,22 +1,23 @@
 package org.sysRestaurante.gui;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
+import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Product;
+import org.sysRestaurante.model.Receipt;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class CashierPOSController extends POS {
 
@@ -60,9 +61,14 @@ public class CashierPOSController extends POS {
     private TableColumn<ProductDao, Double> totalColumn;
     @FXML
     private Spinner<Integer> qtySpinner;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private VBox getReceipt;
 
     private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
     private final ObservableList<ProductDao> products = Product.getProducts();
+    private final OrderDao order = new OrderDao();
 
     public void initialize() {
         AppFactory.setPos(this);
@@ -71,6 +77,10 @@ public class CashierPOSController extends POS {
         setStageControls();
         setStageObjects();
         startSearchControls();
+
+        getReceipt.setOnMouseClicked(mouseEvent -> refreshReceipt());
+        selectedProductsList.addListener((ListChangeListener<ProductDao>) change -> refreshReceipt());
+
     }
 
     public void setStageControls() {
@@ -103,5 +113,25 @@ public class CashierPOSController extends POS {
 
         cancelButton.setOnMouseClicked(event -> onCancelButton());
         finalizeSell.setOnMouseClicked(event -> this.onFinalizeOrder());
+    }
+
+    public void buildReceiptContent() {
+        order.setOrderDate(LocalDate.now());
+        order.setOrderTime(LocalTime.now());
+        order.setTotal(getTotal());
+        order.setIdOrder(Order.getLastOrderId() + 1);
+        order.setDiscount(0);
+        order.setTaxes(0);
+        AppFactory.setOrderDao(order);
+    }
+
+    public Node receipt() {
+        return new Receipt.ThinReceipt(AppFactory.getOrderDao(), new ArrayList<>(selectedProductsTableView.getItems()))
+                .getReceiptAsNode();
+    }
+
+    public void refreshReceipt() {
+        buildReceiptContent();
+        scrollPane.contentProperty().set(receipt());
     }
 }

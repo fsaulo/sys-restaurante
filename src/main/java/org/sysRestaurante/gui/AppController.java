@@ -229,10 +229,9 @@ public class AppController implements DateFormatter {
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setTitle("SysRestaurante: Point of Sale");
-            stage.setMinWidth(720);
-            stage.setMinHeight(430);
-            stage.setMinWidth(840);
-            stage.setWidth(1080);
+            stage.setMinWidth(1050);
+            stage.setMinHeight(580);
+            stage.setHeight(600);
             stage.setResizable(true);
             stage.showAndWait();
         } catch (IOException ex) {

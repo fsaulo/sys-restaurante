@@ -10,18 +10,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
+import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Cashier;
+import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
-import org.sysRestaurante.gui.formatter.CurrencyField;
-import org.sysRestaurante.util.LoggerHandler;
-import org.sysRestaurante.model.Management;
 import org.sysRestaurante.util.PercentageField;
 
 import java.io.IOException;
@@ -32,7 +30,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 public class FinishSellController {
 
@@ -109,7 +106,6 @@ public class FinishSellController {
     private PercentageField percentageField2;
     private final OrderDao order = AppFactory.getOrderDao();
     private static final String GREEN = "#4a8d2c";
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(FinishSellController.class.getName());
 
     @FXML
     public void initialize() {
