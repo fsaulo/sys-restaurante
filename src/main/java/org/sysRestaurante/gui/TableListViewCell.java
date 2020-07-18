@@ -7,10 +7,12 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 
+import javafx.scene.layout.VBox;
 import org.sysRestaurante.dao.TableDao;
 
 import java.io.IOException;
 
+@SuppressWarnings("unused")
 public class TableListViewCell extends ListCell<TableDao> {
 
     @FXML
@@ -21,6 +23,7 @@ public class TableListViewCell extends ListCell<TableDao> {
     private HBox wrapperBox;
 
     private FXMLLoader mLLoader;
+    private VBox vBox;
 
     @Override
     protected void updateItem(TableDao table, boolean empty) {

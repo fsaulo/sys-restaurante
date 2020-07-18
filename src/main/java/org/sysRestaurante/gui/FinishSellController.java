@@ -3,12 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -41,6 +36,8 @@ import java.util.logging.Logger;
 
 public class FinishSellController {
 
+    public ToggleGroup discountGroup;
+    public ToggleGroup taxGroup;
     @FXML
     private HBox box1;
     @FXML
@@ -375,14 +372,10 @@ public class FinishSellController {
     }
 
     public double getTotal() {
-        double subtotal = getSubtotal();
-        double discount = getDiscount();
-        double tax = getTax();
-        return subtotal + tax - discount;
+		return getSubtotal() + getTax() - getDiscount();
     }
 
     public double getChange() {
-        double total = getTotal();
-        return Math.round(((payInCash.getAmount() + payByCard.getAmount()) - (total))*100)/100.0;
+        return Math.round(((payInCash.getAmount() + payByCard.getAmount()) - (getTotal()))*100)/100.0;
     }
 }

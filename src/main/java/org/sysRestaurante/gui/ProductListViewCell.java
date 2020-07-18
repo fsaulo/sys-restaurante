@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.logging.Logger;
 
+@SuppressWarnings("unused")
 public class ProductListViewCell extends ListCell<ProductDao> {
 
     @FXML

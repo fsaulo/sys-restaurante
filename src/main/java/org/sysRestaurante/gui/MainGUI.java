@@ -41,7 +41,7 @@ public class MainGUI extends Application {
         return wrapperPane;
     }
 
-    public static void startProgram(Stage stage) {
+    private static void startProgram(Stage stage) {
         try {
             stage.setTitle("SysRestaurante");
             stage.setOnCloseRequest(e -> exitProgram());
