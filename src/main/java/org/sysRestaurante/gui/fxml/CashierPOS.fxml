@@ -35,7 +35,7 @@
            <Separator />
            <ListView fx:id="productsListView" prefHeight="400.0" prefWidth="418.0" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent; -fx-border-color: #dddddd;" VBox.vgrow="ALWAYS">
               <placeholder>
-                  <VBox alignment="TOP_CENTER" minWidth="400.0" spacing="5">
+                  <VBox alignment="TOP_CENTER" spacing="5">
                       <padding>
                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                       </padding>
@@ -55,7 +55,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
               </padding>
            </ListView>
-           <VBox fx:id="detailsWrapperBox" prefWidth="401.0" spacing="5.0" VBox.vgrow="NEVER">
+           <VBox fx:id="detailsWrapperBox" spacing="5.0" VBox.vgrow="NEVER">
                <VBox.margin>
                    <Insets />
                </VBox.margin>
@@ -80,7 +80,7 @@
                                    <Font name="Carlito Bold" size="16.0" />
                                </font>
                            </Label>
-                           <HBox alignment="CENTER">
+                           <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
                                <Label text="Preço unit." HBox.hgrow="ALWAYS">
                                    <font>
                                        <Font name="Carlito" size="15.0" />
@@ -148,7 +148,7 @@
        </VBox>
    </center>
    <right>
-       <VBox prefWidth="280.0" spacing="5.0" BorderPane.alignment="CENTER">
+       <VBox prefWidth="275.0" spacing="5.0" BorderPane.alignment="CENTER">
            <BorderPane.margin>
                <Insets />
            </BorderPane.margin>
@@ -213,13 +213,13 @@
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
    <left>
-        <VBox prefWidth="320.0" spacing="5.0" BorderPane.alignment="CENTER">
+        <VBox prefWidth="340.0" spacing="5.0" BorderPane.alignment="CENTER">
            <Label text="Itens no carrinho">
               <font>
                   <Font name="Carlito Bold" size="20.0" />
               </font>
            </Label>
-           <Separator prefWidth="200.0" />
+           <Separator />
            <TableView fx:id="selectedProductsTableView" editable="true" VBox.vgrow="ALWAYS">
               <placeholder>
                   <Label opacity="0.7" text="O carrinho está vazio" textAlignment="CENTER" wrapText="true">
@@ -264,12 +264,12 @@
                </padding>
                <Label text="Total" textFill="#77d14db2">
                    <font>
-                       <Font name="Agency FB" size="26.0" />
+                       <Font name="Cantarell Regular" size="20.0" />
                    </font>
                </Label>
                <Label fx:id="subtotalLabel" text="R$ 54,90" textFill="#78d34e">
                    <font>
-                       <Font name="Cantarell Regular" size="37.0" />
+                       <Font name="Cantarell Bold" size="37.0" />
                    </font>
                </Label>
            </VBox>
