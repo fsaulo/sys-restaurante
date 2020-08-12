@@ -23,151 +23,147 @@
    <left>
        <VBox prefHeight="554.0" prefWidth="568.0" spacing="5.0" BorderPane.alignment="CENTER">
            <stylesheets>
-               <URL value="@../css/menu.css"/>
-               <URL value="@../css/controls.css"/>
+               <URL value="@../css/menu.css" />
+               <URL value="@../css/controls.css" />
            </stylesheets>
            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+               <Insets left="5.0" right="5.0" top="5.0" />
            </padding>
            <BorderPane.margin>
-               <Insets/>
+               <Insets />
            </BorderPane.margin>
            <HBox prefHeight="165.0" prefWidth="670.0" spacing="5.0">
                <VBox prefHeight="100.0" prefWidth="600.0" style="-fx-border-color: #dddddd;" HBox.hgrow="ALWAYS">
                    <HBox style="-fx-background-color: #dddddd;">
                        <padding>
-                           <Insets left="5.0" right="5.0"/>
+                           <Insets left="5.0" right="5.0" />
                        </padding>
                        <Label fx:id="tableLabel" text="MESA #012">
                            <font>
-                               <Font name="Carlito Bold" size="22.0"/>
+                               <Font name="Carlito Bold" size="22.0" />
                            </font>
                        </Label>
                    </HBox>
                    <HBox alignment="CENTER_LEFT">
                        <padding>
-                           <Insets left="5.0" right="5.0"/>
+                           <Insets left="5.0" right="5.0" />
                        </padding>
                        <VBox.margin>
-                           <Insets/>
+                           <Insets />
                        </VBox.margin>
                        <Label minWidth="125.0" prefWidth="125.0" text="Tempo:">
                            <font>
-                               <Font name="Carlito" size="18.0"/>
+                               <Font name="Carlito" size="18.0" />
                            </font>
                        </Label>
-                       <Label fx:id="timeLabel" maxHeight="200.0" text="--">
+                       <Label fx:id="timeLabel" maxHeight="200.0" text="--" wrapText="true">
                            <font>
-                               <Font name="Carlito Bold" size="18.0"/>
+                               <Font name="Carlito Bold" size="18.0" />
                            </font>
                        </Label>
                    </HBox>
                    <HBox alignment="CENTER_LEFT">
                        <padding>
-                           <Insets left="5.0" right="5.0"/>
+                           <Insets left="5.0" right="5.0" />
                        </padding>
                        <Label minWidth="90.0" prefWidth="125.0" text="Cliente:">
                            <font>
-                               <Font name="Carlito" size="18.0"/>
+                               <Font name="Carlito" size="18.0" />
                            </font>
                        </Label>
-                       <Label fx:id="customerLabel" maxWidth="200.0" text="--">
+                       <Label fx:id="customerLabel" maxWidth="200.0" text="--" wrapText="true">
                            <font>
-                               <Font name="Carlito Bold" size="18.0"/>
+                               <Font name="Carlito Bold" size="18.0" />
                            </font>
                        </Label>
                    </HBox>
                    <HBox alignment="CENTER_LEFT">
                        <padding>
-                           <Insets left="5.0" right="5.0"/>
+                           <Insets left="5.0" right="5.0" />
                        </padding>
                        <Label minWidth="125.0" prefWidth="125.0" text="Cod. comanda:">
                            <font>
-                               <Font name="Carlito" size="18.0"/>
+                               <Font name="Carlito" size="18.0" />
                            </font>
                        </Label>
-                       <Label fx:id="codComandaLabel" text="--">
+                       <Label fx:id="codComandaLabel" text="--" wrapText="true">
                            <font>
-                               <Font name="Carlito Bold" size="18.0"/>
+                               <Font name="Carlito Bold" size="18.0" />
                            </font>
                        </Label>
                    </HBox>
                    <HBox alignment="CENTER_LEFT">
                        <padding>
-                           <Insets left="5.0" right="5.0"/>
+                           <Insets left="5.0" right="5.0" />
                        </padding>
                        <VBox.margin>
-                           <Insets/>
+                           <Insets />
                        </VBox.margin>
                        <Label minWidth="125.0" prefWidth="125.0" text="Subtotal:">
                            <font>
-                               <Font name="Carlito" size="18.0"/>
+                               <Font name="Carlito" size="18.0" />
                            </font>
                        </Label>
-                       <Label fx:id="totalLabel" maxHeight="200.0" text="--">
+                       <Label fx:id="totalLabel" maxHeight="200.0" text="--" wrapText="true">
                            <font>
-                               <Font name="Carlito Bold" size="18.0"/>
+                               <Font name="Carlito Bold" size="18.0" />
                            </font>
                        </Label>
                    </HBox>
                </VBox>
-               <VBox prefHeight="100.0" prefWidth="600.0" spacing="5.0" style="-fx-border-color: #dddddd;"
-                     HBox.hgrow="ALWAYS">
+               <VBox prefHeight="100.0" prefWidth="600.0" spacing="5.0" style="-fx-border-color: #dddddd;" HBox.hgrow="ALWAYS">
                    <HBox style="-fx-background-color: #dddddd;">
                        <padding>
-                           <Insets left="5.0" right="5.0"/>
+                           <Insets left="5.0" right="5.0" />
                        </padding>
                        <Label text="Cod. do pedido: ">
                            <font>
-                               <Font name="Carlito Bold" size="22.0"/>
+                               <Font name="Carlito Bold" size="22.0" />
                            </font>
                        </Label>
                        <Label fx:id="codOrderLabel" text="--">
                            <font>
-                               <Font name="Carlito Bold" size="22.0"/>
+                               <Font name="Carlito Bold" size="22.0" />
                            </font>
                        </Label>
                    </HBox>
                    <ComboBox fx:id="employeeComboBox" prefHeight="35.0" prefWidth="1000.0" promptText="Atendente">
                        <VBox.margin>
-                           <Insets left="5.0" right="5.0"/>
+                           <Insets left="5.0" right="5.0" />
                        </VBox.margin>
                        <styleClass>
-                           <String fx:value="combo-box-view"/>
-                           <String fx:value="view"/>
+                           <String fx:value="combo-box-view" />
+                           <String fx:value="view" />
                        </styleClass>
                    </ComboBox>
-                   <TextField fx:id="customerBox" prefHeight="35.0" promptText="Nome do cliente"
-                              styleClass="combo-box-view">
+                   <TextField fx:id="customerBox" prefHeight="35.0" promptText="Nome do cliente" styleClass="combo-box-view">
                        <VBox.margin>
-                           <Insets left="5.0" right="5.0" top="3.0"/>
+                           <Insets left="5.0" right="5.0" top="3.0" />
                        </VBox.margin>
                    </TextField>
                    <HBox spacing="5.0">
                        <padding>
-                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                        </padding>
-                       <Button fx:id="changeTableButton" mnemonicParsing="false" prefHeight="35.0"
-                               prefWidth="600.0" text="Trocar mesa" HBox.hgrow="ALWAYS">
+                       <Button fx:id="changeTableButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="600.0" text="Trocar mesa" HBox.hgrow="ALWAYS">
                            <font>
-                               <Font name="Carlito" size="16.0"/>
+                               <Font name="Carlito" size="16.0" />
                            </font>
                            <styleClass>
-                               <String fx:value="view"/>
-                               <String fx:value="combo-box-view"/>
+                               <String fx:value="view" />
+                               <String fx:value="combo-box-view" />
                            </styleClass>
                        </Button>
-                       <Button fx:id="cancelOrderButton" mnemonicParsing="false" prefHeight="35.0"
-                               prefWidth="600.0" text="Cancelar pedido" HBox.hgrow="ALWAYS">
+                       <Button fx:id="cancelOrderButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="600.0" text="Cancelar pedido" HBox.hgrow="ALWAYS">
                            <font>
-                               <Font name="Carlito" size="16.0"/>
+                               <Font name="Carlito" size="16.0" />
                            </font>
                            <tooltip>
-                               <Tooltip text="Clique para cancelar pedido"/>
+                               <Tooltip text="Clique para cancelar pedido" />
                            </tooltip>
                            <styleClass>
-                               <String fx:value="view"/>
-                               <String fx:value="combo-box-view"/>
+                               <String fx:value="view" />
+                               <String fx:value="combo-box-view" />
                            </styleClass>
                        </Button>
                    </HBox>
@@ -178,88 +174,81 @@
                    <placeholder>
                        <Label opacity="0.7" text="O carrinho está vazio" textAlignment="CENTER" wrapText="true">
                            <font>
-                               <Font name="Carlito Bold" size="20"/>
+                               <Font name="Carlito Bold" size="20" />
                            </font>
                        </Label>
                    </placeholder>
                    <columns>
-                       <TableColumn fx:id="descriptionColumn" editable="false" minWidth="-1.0" prefWidth="161.0"
-                                    text="Descrição do produto"/>
-                       <TableColumn fx:id="priceColumn" editable="false" minWidth="-Infinity" text="Preço"/>
-                       <TableColumn fx:id="qtdColumn" prefWidth="70.0" text="Qtd"/>
-                       <TableColumn fx:id="totalColumn" editable="false" minWidth="-1.0" prefWidth="88.0"
-                                    text="Total"/>
+                       <TableColumn fx:id="descriptionColumn" editable="false" minWidth="-1.0" prefWidth="161.0" text="Descrição do produto" />
+                       <TableColumn fx:id="priceColumn" editable="false" minWidth="-Infinity" text="Preço" />
+                       <TableColumn fx:id="qtdColumn" prefWidth="70.0" text="Qtd" />
+                       <TableColumn fx:id="totalColumn" editable="false" minWidth="-1.0" prefWidth="88.0" text="Total" />
                    </columns>
                    <columnResizePolicy>
-                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                    </columnResizePolicy>
                    <VBox.margin>
-                       <Insets bottom="1.0"/>
+                       <Insets />
                    </VBox.margin>
                </TableView>
            </VBox>
-           <VBox alignment="TOP_RIGHT" prefHeight="57.0" prefWidth="558.0"
-                 style="-fx-background-color: black; -fx-border-color: gray; -fx-border-width: 2;">
+           <VBox alignment="TOP_RIGHT" prefHeight="57.0" prefWidth="558.0" style="-fx-background-color: black; -fx-border-color: gray; -fx-border-width: 2;">
                <padding>
-                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </padding>
                <Label text="Subtotal" textFill="#77d14db2">
                    <font>
-                       <Font name="Cantarell Regular" size="15.0"/>
+                       <Font name="Cantarell Regular" size="15.0" />
                    </font>
                </Label>
                <Label fx:id="subtotalLabel" text="R$ 54,90" textFill="#78d34e">
                    <font>
-                       <Font name="Cantarell Regular" size="27.0"/>
+                       <Font name="Cantarell Regular" size="27.0" />
                    </font>
                </Label>
            </VBox>
-           <HBox alignment="CENTER_LEFT" prefWidth="670.0" spacing="5.0" style="-fx-border-color: #dddddd;">
+           <HBox alignment="CENTER_LEFT" prefWidth="670.0" spacing="5.0" style="-fx-border-color: #CBCBCC;">
                <padding>
-                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <VBox.margin>
-                   <Insets/>
+                   <Insets bottom="-1.0" />
                </VBox.margin>
                <Button fx:id="removeButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Remover">
                    <font>
-                       <Font name="Carlito" size="16.0"/>
+                       <Font name="Carlito" size="16.0" />
                    </font>
                    <tooltip>
-                       <Tooltip id="Voc"
-                                text="Você também pode pressionar o atalho F3 para abrir a lista de produtos"/>
+                       <Tooltip id="Voc" text="Você também pode pressionar o atalho F3 para abrir a lista de produtos" />
                    </tooltip>
                    <styleClass>
-                       <String fx:value="view"/>
-                       <String fx:value="combo-box-view"/>
+                       <String fx:value="view" />
+                       <String fx:value="combo-box-view" />
                    </styleClass>
                </Button>
                <Button fx:id="clearButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Limpar">
                    <font>
-                       <Font name="Carlito" size="16.0"/>
+                       <Font name="Carlito" size="16.0" />
                    </font>
                    <tooltip>
-                       <Tooltip id="Voc"
-                                text="Você também pode pressionar o atalho F3 para abrir a lista de produtos"/>
+                       <Tooltip id="Voc" text="Você também pode pressionar o atalho F3 para abrir a lista de produtos" />
                    </tooltip>
                    <styleClass>
-                       <String fx:value="view"/>
-                       <String fx:value="combo-box-view"/>
+                       <String fx:value="view" />
+                       <String fx:value="combo-box-view" />
                    </styleClass>
                </Button>
-               <Pane HBox.hgrow="ALWAYS"/>
-               <Button fx:id="updateButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0"
-                       text="Atualizar lista">
+               <Pane HBox.hgrow="ALWAYS" />
+               <Button fx:id="updateButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Atualizar lista">
                    <font>
-                       <Font name="Carlito" size="16.0"/>
+                       <Font name="Carlito" size="16.0" />
                    </font>
                    <tooltip>
-                       <Tooltip id="Voc"
-                                text="Você também pode pressionar o atalho F3 para abrir a lista de produtos"/>
+                       <Tooltip id="Voc" text="Você também pode pressionar o atalho F3 para abrir a lista de produtos" />
                    </tooltip>
                    <styleClass>
-                       <String fx:value="view"/>
-                       <String fx:value="combo-box-view"/>
+                       <String fx:value="view" />
+                       <String fx:value="combo-box-view" />
                    </styleClass>
                </Button>
            </HBox>
@@ -268,135 +257,126 @@
    <right>
        <VBox prefHeight="554.0" prefWidth="415.0" spacing="5.0" BorderPane.alignment="BOTTOM_CENTER">
            <BorderPane.margin>
-               <Insets left="5.0" right="5.0"/>
+               <Insets left="5.0" right="5.0" />
            </BorderPane.margin>
            <HBox style="-fx-background-color: #dddddd;">
                <VBox.margin>
-                   <Insets top="5.0"/>
+                   <Insets top="5.0" />
                </VBox.margin>
                <Label text="Lista de produtos">
                    <font>
-                       <Font name="Carlito Bold" size="22.0"/>
+                       <Font name="Carlito Bold" size="22.0" />
                    </font>
                    <HBox.margin>
-                       <Insets/>
+                       <Insets />
                    </HBox.margin>
                    <padding>
-                       <Insets left="5.0" right="5.0"/>
+                       <Insets left="5.0" right="5.0" />
                    </padding>
                </Label>
            </HBox>
            <HBox prefWidth="350.0" spacing="10.0">
-               <TextField fx:id="searchBox" prefHeight="31.0" promptText="Pesquisar produto"
-                          style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;"
-                          HBox.hgrow="ALWAYS"/>
+               <TextField fx:id="searchBox" prefHeight="31.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" HBox.hgrow="ALWAYS" />
            </HBox>
-           <Separator prefWidth="200.0"/>
-           <ListView fx:id="productsListView"
-                     style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent; -fx-border-color: #dddddd;"
-                     VBox.vgrow="ALWAYS">
+           <Separator prefWidth="200.0" />
+           <ListView fx:id="productsListView" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent; -fx-border-color: #dddddd;" VBox.vgrow="ALWAYS">
               <placeholder>
                   <VBox alignment="TOP_CENTER" spacing="5">
                       <padding>
-                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                       </padding>
-                      <Label opacity="0.7" text="Nenhum produto encontrado com essa descrição." textAlignment="CENTER"
-                             wrapText="true">
+                      <Label opacity="0.7" text="Nenhum produto encontrado com essa descrição." textAlignment="CENTER" wrapText="true">
                           <font>
-                              <Font name="Carlito" size="18"/>
+                              <Font name="Carlito" size="18" />
                           </font>
                       </Label>
-                      <Label opacity="0.7" text="Pressione F3 para começar a fazer uma nova busca rápida."
-                             textAlignment="CENTER" wrapText="true">
+                      <Label opacity="0.7" text="Pressione F3 para começar a fazer uma nova busca rápida." textAlignment="CENTER" wrapText="true">
                           <font>
-                              <Font name="Carlito Bold" size="18"/>
+                              <Font name="Carlito Bold" size="18" />
                           </font>
                       </Label>
                   </VBox>
               </placeholder>
               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
               </padding>
            </ListView>
            <VBox fx:id="detailsWrapperBox" style="-fx-border-color: #CBCBCC;">
                <VBox.margin>
-                   <Insets bottom="5.0"/>
+                   <Insets />
                </VBox.margin>
                <HBox prefWidth="467.0" spacing="5.0">
                    <VBox.margin>
-                       <Insets bottom="5.0"/>
+                       <Insets bottom="5.0" />
                    </VBox.margin>
                    <padding>
-                       <Insets left="5.0" right="5.0"/>
+                       <Insets left="5.0" right="5.0" />
                    </padding>
                    <VBox prefWidth="267.0" HBox.hgrow="ALWAYS">
-                       <Label fx:id="contentLabel" alignment="TOP_LEFT" prefHeight="65.0" prefWidth="268.0"
-                              text="Coca-cola 2L Garrafa retornável" wrapText="true" VBox.vgrow="ALWAYS">
+                       <Label fx:id="contentLabel" alignment="TOP_LEFT" prefHeight="65.0" prefWidth="268.0" text="Coca-cola 2L Garrafa retornável" wrapText="true" VBox.vgrow="ALWAYS">
                            <font>
-                               <Font name="Carlito Bold" size="16.0"/>
+                               <Font name="Carlito Bold" size="16.0" />
                            </font>
                        </Label>
                        <HBox alignment="CENTER">
                            <Label text="Preço unit." HBox.hgrow="ALWAYS">
                                <font>
-                                   <Font name="Carlito" size="15.0"/>
+                                   <Font name="Carlito" size="15.0" />
                                </font>
                            </Label>
-                           <Pane prefWidth="120.0" HBox.hgrow="ALWAYS"/>
+                           <Pane prefWidth="120.0" HBox.hgrow="ALWAYS" />
                            <Label fx:id="unitPriceLabel" text="R$ 5,50">
                                <font>
-                                   <Font name="Carlito Bold" size="17.0"/>
+                                   <Font name="Carlito Bold" size="17.0" />
                                </font>
                            </Label>
                        </HBox>
                    </VBox>
-                   <Pane HBox.hgrow="ALWAYS"/>
+                   <Pane HBox.hgrow="ALWAYS" />
                    <VBox>
                        <Label text="Qtd">
                            <font>
-                               <Font name="Carlito Bold" size="16.0"/>
+                               <Font name="Carlito Bold" size="16.0" />
                            </font>
                        </Label>
-                       <Pane VBox.vgrow="ALWAYS"/>
-                       <Spinner fx:id="qtySpinner" minHeight="-Infinity" opacity="0.8" prefHeight="31.0"
-                                prefWidth="72.0"/>
+                       <Pane VBox.vgrow="ALWAYS" />
+                       <Spinner fx:id="qtySpinner" minHeight="-Infinity" opacity="0.8" prefHeight="31.0" prefWidth="72.0" />
                    </VBox>
                    <VBox alignment="BOTTOM_CENTER">
-                       <Button fx:id="addProductButton" mnemonicParsing="false" opacity="0.65" prefHeight="31.0"
-                               prefWidth="100.0" text="Adicionar">
+                       <Button fx:id="addProductButton" mnemonicParsing="false" opacity="0.65" prefHeight="31.0" prefWidth="100.0" text="Adicionar">
                            <font>
-                               <Font name="Carlito" size="15.0"/>
+                               <Font name="Carlito" size="15.0" />
                            </font>
                        </Button>
                    </VBox>
                </HBox>
-               <Separator prefWidth="200.0"/>
+               <Separator prefWidth="200.0" />
                <HBox alignment="CENTER" prefWidth="467.0">
                    <padding>
-                       <Insets left="5.0" right="5.0" top="-2.0"/>
+                       <Insets left="5.0" right="5.0" top="-2.0" />
                    </padding>
                    <VBox prefWidth="127.0" HBox.hgrow="ALWAYS">
                        <Label text="Cod. do produto">
                            <font>
-                               <Font name="Carlito Bold" size="18.0"/>
+                               <Font name="Carlito Bold" size="18.0" />
                            </font>
                        </Label>
                        <Label fx:id="codProductLabel" text="5444">
                            <font>
-                               <Font name="Carlito" size="15.0"/>
+                               <Font name="Carlito" size="15.0" />
                            </font>
                        </Label>
                    </VBox>
-                   <Separator orientation="VERTICAL"/>
+                   <Separator orientation="VERTICAL" />
                    <VBox alignment="TOP_CENTER" prefWidth="116.0" HBox.hgrow="ALWAYS">
                        <Label text="Categoria">
                            <font>
-                               <Font name="Carlito Bold" size="18.0"/>
+                               <Font name="Carlito Bold" size="18.0" />
                            </font>
                        </Label>
                        <Label fx:id="categoryLabel" text="Bebidas">
                            <font>
-                               <Font name="Carlito" size="15.0"/>
+                               <Font name="Carlito" size="15.0" />
                            </font>
                        </Label>
                    </VBox>
@@ -405,30 +385,29 @@
        </VBox>
    </right>
    <bottom>
-       <HBox prefWidth="200.0" spacing="10.0" style="-fx-border-color: #dddddd;" BorderPane.alignment="CENTER">
-           <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-           </padding>
+       <HBox prefWidth="200.0" BorderPane.alignment="CENTER">
            <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Sair (Esc)">
               <font>
-                  <Font name="Carlito Bold" size="16.0"/>
+                  <Font name="Carlito Bold" size="16.0" />
               </font>
               <styleClass>
-                  <String fx:value="view"/>
-                  <String fx:value="combo-box-view"/>
+                  <String fx:value="view" />
+                  <String fx:value="combo-box-view" />
               </styleClass>
            </Button>
-           <Pane HBox.hgrow="ALWAYS"/>
-           <Button fx:id="finalizeOrderButton" defaultButton="true" mnemonicParsing="false" prefHeight="35.0"
-                   prefWidth="145.0" text="Fechar conta (F2)">
+           <Pane HBox.hgrow="ALWAYS" />
+           <Button fx:id="finalizeOrderButton" defaultButton="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" text="Fechar conta (F2)">
               <font>
-                  <Font name="Carlito Bold" size="16.0"/>
+                  <Font name="Carlito Bold" size="16.0" />
               </font>
               <styleClass>
-                  <String fx:value="view"/>
-                  <String fx:value="combo-box-view"/>
+                  <String fx:value="view" />
+                  <String fx:value="combo-box-view" />
               </styleClass>
            </Button>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
        </HBox>
    </bottom>
 </BorderPane>
