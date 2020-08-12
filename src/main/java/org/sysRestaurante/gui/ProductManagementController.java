@@ -15,6 +15,7 @@ import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Product;
 import org.sysRestaurante.util.LoggerHandler;
 
+import java.sql.SQLException;
 import java.text.Format;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -42,10 +43,11 @@ public class ProductManagementController {
     @FXML
     private Label categoryLabel;
 
-    private static final ObservableList<ProductDao> products = Product.getProducts();
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ProductManagementController.class.getName());
+    private static ObservableList<ProductDao> products;
 
     public void initialize() {
+        getProductsFromDatabase();
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
         productsListView.focusedProperty().addListener((observable) -> refreshDetailsBoxSelectable());
@@ -69,7 +71,8 @@ public class ProductManagementController {
         startSearchControls();
         updateTables();
 
-        addProductButton.setOnMouseClicked(mouseEvent -> LOGGER.info("Mouse clicked. Working fine!"));
+        addProductButton.setOnMouseClicked(mouseEvent -> AppController
+                .showDialog(SceneNavigator.REGISTER_NEW_PRODUCT_FORM, true));
     }
 
     public void refreshProductsList() {
@@ -82,8 +85,10 @@ public class ProductManagementController {
         }
         else {
             filteredData.setPredicate(s -> s.getDescription().toUpperCase().contains(filter) ||
-                    s.getCategory().toUpperCase().contains(filter) ||
-                    String.valueOf(s.getIdProduct()).contains(filter));
+                    s.getCategoryDao()
+                            .getDescription()
+                            .toUpperCase()
+                            .contains(filter) || String.valueOf(s.getIdProduct()).contains(filter));
         }
 
         productsListView.setItems(filteredData);
@@ -104,7 +109,7 @@ public class ProductManagementController {
         unitPriceLabel.setText(format.format(product.getSellPrice()));
         contentLabel.setText(product.getDescription());
         codProductLabel.setText(String.valueOf(product.getIdProduct()));
-        categoryLabel.setText(product.getCategory());
+        categoryLabel.setText(product.getCategoryDao().getDescription());
     }
 
     public void updateDetailsBox() {
@@ -121,6 +126,14 @@ public class ProductManagementController {
             updateDetailsBox();
         } else {
             updateDetailsBox(productsListView.getSelectionModel().getSelectedItem());
+        }
+    }
+
+    public void getProductsFromDatabase() {
+        try {
+            products = Product.getProducts();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 }
