@@ -24,6 +24,7 @@ public class AppFactory {
     private static ReceiptViewController receiptViewController;
     private static ToolBarController toolBarController;
     private static CashierHistoryController cashierHistoryController;
+    private static ProductManagementController productManagementController;
     private static MainGUI mainGUI;
 
     public static void clearWorkspace() {
@@ -193,5 +194,13 @@ public class AppFactory {
 
     public static void setReceiptViewController(ReceiptViewController receiptViewController) {
         AppFactory.receiptViewController = receiptViewController;
+    }
+
+    public static void setProductManagementController(ProductManagementController productManagementController) {
+        AppFactory.productManagementController = productManagementController;
+    }
+
+    public static ProductManagementController getProductManagementController() {
+        return AppFactory.productManagementController;
     }
 }

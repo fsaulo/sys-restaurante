@@ -47,6 +47,7 @@ public class ProductManagementController {
     private static ObservableList<ProductDao> products;
 
     public void initialize() {
+        AppFactory.setProductManagementController(this);
         getProductsFromDatabase();
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
@@ -135,5 +136,9 @@ public class ProductManagementController {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void searchByCategory(String category) {
+        searchBox.setText(category);
     }
 }

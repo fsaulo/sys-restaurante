@@ -72,7 +72,17 @@ public class ProductListViewCell extends ListCell<ProductDao> {
                 description.setTooltip(new Tooltip(product.getDescription()));
                 id.setText(String.valueOf(product.getIdProduct()));
                 category.setText(product.getCategoryDao().getDescription());
-                category.setOnMouseClicked(event -> AppFactory.getPos().searchByCategory(category.getText()));
+                category.setOnMouseClicked(event -> {
+                    try {
+                        AppFactory.getPos().searchByCategory(category.getText());
+                    } catch (NullPointerException exception) {
+                        try {
+                            AppFactory.getProductManagementController().searchByCategory(category.getText());
+                        } catch (NullPointerException exception1) {
+                            LOGGER.warning("Illegal Class Access. Not possible to search by product lagel from here");
+                        }
+                    }
+                });
                 wrapperBox.setOnMouseClicked(event -> {
                     if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                         try {
