@@ -144,7 +144,7 @@ public class POS {
         }
         else {
             filteredData.setPredicate(s -> s.getDescription().toUpperCase().contains(filter) ||
-                            s.getCategory().toUpperCase().contains(filter) ||
+                            s.getCategoryDao().getDescription().toUpperCase().contains(filter) ||
                             String.valueOf(s.getIdProduct()).contains(filter));
         }
 
@@ -377,7 +377,7 @@ public class POS {
         unitPriceLabel.setText(format.format(product.getSellPrice()));
         contentLabel.setText(product.getDescription());
         codProductLabel.setText(String.valueOf(product.getIdProduct()));
-        categoryLabel.setText(product.getCategory());
+        categoryLabel.setText(product.getCategoryDao().getDescription());
     }
 
     public void updateDetailsBox() {

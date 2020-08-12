@@ -15,6 +15,7 @@ import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Product;
 import org.sysRestaurante.model.Receipt;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -69,6 +70,9 @@ public class CashierPOSController extends POS {
     private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
     private final ObservableList<ProductDao> products = Product.getProducts();
     private final OrderDao order = new OrderDao();
+
+    public CashierPOSController() throws SQLException {
+    }
 
     public void initialize() {
         AppFactory.setPos(this);

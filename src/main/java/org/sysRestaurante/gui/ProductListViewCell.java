@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.logging.Logger;
 
-@SuppressWarnings("unused")
 public class ProductListViewCell extends ListCell<ProductDao> {
 
     @FXML
@@ -72,7 +71,7 @@ public class ProductListViewCell extends ListCell<ProductDao> {
             if (setLabel) {
                 description.setTooltip(new Tooltip(product.getDescription()));
                 id.setText(String.valueOf(product.getIdProduct()));
-                category.setText(product.getCategory());
+                category.setText(product.getCategoryDao().getDescription());
                 category.setOnMouseClicked(event -> AppFactory.getPos().searchByCategory(category.getText()));
                 wrapperBox.setOnMouseClicked(event -> {
                     if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {

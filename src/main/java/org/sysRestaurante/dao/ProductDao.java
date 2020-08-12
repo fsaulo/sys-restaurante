@@ -10,12 +10,14 @@ public class ProductDao {
     private double total;
     private String description;
     private String category;
+    private CategoryDao categoryDao;
 
     public ProductDao() {
         quantity = 1;
         total = 0.0;
     }
 
+    @Deprecated
     public void setCategory(int idCategory) {
         switch (idCategory) {
             case 1:
@@ -35,8 +37,17 @@ public class ProductDao {
         }
     }
 
+    @Deprecated
     public String getCategory() {
         return this.category;
+    }
+
+    public CategoryDao getCategoryDao() {
+        return categoryDao;
+    }
+
+    public void setCategoryDao(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
     }
 
     public void setTotal(double total) {
@@ -109,5 +120,30 @@ public class ProductDao {
 
     public void incrementsQuantity(int qty) {
         this.quantity += qty;
+    }
+
+    public static class CategoryDao {
+        private String description;
+        private int idCategory;
+
+        public CategoryDao() {
+            description = "Sem categoria";
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public int getIdCategory() {
+            return idCategory;
+        }
+
+        public void setIdCategory(int idCategory) {
+            this.idCategory = idCategory;
+        }
     }
 }

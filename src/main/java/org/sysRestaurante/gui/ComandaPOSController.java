@@ -33,6 +33,7 @@ import org.sysRestaurante.model.Product;
 import org.sysRestaurante.util.ExceptionHandler;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -108,6 +109,9 @@ public class ComandaPOSController extends POS {
     private final ComandaDao comanda = AppFactory.getComandaDao();
     private final ObservableList<ProductDao> selectedProductsList = observableArrayList();
     private final ObservableList<ProductDao> products = Product.getProducts();
+
+    public ComandaPOSController() throws SQLException {
+    }
 
     @FXML
     public void initialize() {
