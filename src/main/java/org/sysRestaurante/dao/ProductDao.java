@@ -4,12 +4,12 @@ public class ProductDao {
     private int idProduct;
     private int idCategory;
     private int quantity;
+    private int stock;
     private long barCode;
     private double sellPrice;
     private double buyPrice;
     private double total;
     private String description;
-    private String category;
     private CategoryDao categoryDao;
 
     public ProductDao() {
@@ -17,29 +17,12 @@ public class ProductDao {
         total = 0.0;
     }
 
-    @Deprecated
-    public void setCategory(int idCategory) {
-        switch (idCategory) {
-            case 1:
-                category = "Bebidas";
-                break;
-            case 2:
-                category = "Almoços";
-                break;
-            case 3:
-                category = "Tira-gosto";
-                break;
-            case 4:
-                category = "Porção extra";
-            default:
-                category = "Sem categoria";
-                break;
-        }
+    public int getStock() {
+        return stock;
     }
 
-    @Deprecated
-    public String getCategory() {
-        return this.category;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public CategoryDao getCategoryDao() {
