@@ -19,11 +19,13 @@ import org.sysRestaurante.gui.formatter.CellFormatter;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.SpinnerCellFactory;
 import org.sysRestaurante.model.Order;
+import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class POS {
@@ -50,6 +52,8 @@ public class POS {
     private ObservableList<ProductDao> products = FXCollections.observableArrayList();
     private double total = 0;
     private boolean fromPOS = false;
+
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(POS.class.getName());
 
     public void setFromPOS(boolean fromPOS) {
         this.fromPOS = fromPOS;
@@ -357,10 +361,14 @@ public class POS {
     }
 
     protected void updateSelectedList() {
-        selectedProductsTableView.setEditable(!selectedProductsTableView.getItems().isEmpty());
-        selectedProductsTableView.setItems(selectedProductsList);
-        selectedProductsTableView.refresh();
-        updateTotalCashierLabel();
+        try {
+            selectedProductsTableView.setEditable(!selectedProductsTableView.getItems().isEmpty());
+            selectedProductsTableView.setItems(selectedProductsList);
+            selectedProductsTableView.refresh();
+            updateTotalCashierLabel();
+        } catch (NullPointerException exception) {
+            LOGGER.warning("Not possible to update the selected items.");
+        }
     }
 
     protected void updateTotalCashierLabel() {
@@ -483,12 +491,16 @@ public class POS {
     }
 
     public void removeItem() {
-        if (!selectedProductsTableView.getSelectionModel().isEmpty()) {
-            ProductDao selected = selectedProductsTableView.getSelectionModel().getSelectedItem();
-            selected.setQuantity(0);
-            selectedProductsTableView.getItems().remove(selected);
-            selectedProductsList.remove(selected);
-            updateSelectedList();
+        try {
+            if (!selectedProductsTableView.getSelectionModel().isEmpty()) {
+                ProductDao selected = selectedProductsTableView.getSelectionModel().getSelectedItem();
+                selected.setQuantity(0);
+                selectedProductsTableView.getItems().remove(selected);
+                selectedProductsList.remove(selected);
+                updateSelectedList();
+            }
+        } catch (NullPointerException exception) {
+            LOGGER.info("There's no selected item to remove.");
         }
     }
 
