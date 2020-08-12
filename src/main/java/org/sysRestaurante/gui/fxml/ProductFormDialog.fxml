@@ -20,51 +20,48 @@
    <center>
       <TabPane>
          <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
          <Tab closable="false" text="Item">
             <VBox>
-               <VBox alignment="CENTER_LEFT" spacing="5.0"
-                     style="-fx-border-color: #CBCBCC; -fx-background-color: white;" VBox.vgrow="ALWAYS">
+               <VBox alignment="CENTER_LEFT" spacing="5.0" style="-fx-border-color: #CBCBCC; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                   <padding>
-                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                   </padding>
                   <VBox.margin>
-                     <Insets top="5.0"/>
+                     <Insets top="5.0" />
                   </VBox.margin>
                   <Label text="Detalhes">
                      <font>
-                        <Font name="Carlito Bold" size="16.0"/>
+                        <Font name="Carlito Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Separator/>
+                  <Separator />
                   <HBox spacing="5.0">
                      <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                         <Label text="Título *">
                            <font>
-                              <Font name="Carlito" size="16.0"/>
+                              <Font name="Carlito" size="16.0" />
                            </font>
                         </Label>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <TextField fx:id="productName" prefHeight="35.0"
-                                      promptText="Descrição do produto" HBox.hgrow="ALWAYS">
+                           <TextField fx:id="productName" prefHeight="35.0" promptText="Descrição do produto" HBox.hgrow="ALWAYS">
                               <font>
-                                 <Font name="Carlito" size="15.0"/>
+                                 <Font name="Carlito" size="15.0" />
                               </font>
                               <tooltip>
-                                 <Tooltip text="Nome do produto"/>
+                                 <Tooltip text="Nome do produto" />
                               </tooltip>
                            </TextField>
                         </HBox>
                      </VBox>
                      <VBox spacing="5.0">
-                        <Label text="Categoria *"/>
+                        <Label text="Categoria *" />
                         <HBox alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="ALWAYS">
-                           <ComboBox prefHeight="35.0" prefWidth="120.0" promptText="Bebidas"/>
-                           <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="35.0"
-                                   style="-fx-cursor: hand;" text="+">
+                           <ComboBox fx:id="categoryComboBox" prefHeight="35.0" prefWidth="150.0" promptText="Bebidas" />
+                           <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="35.0" style="-fx-cursor: hand;" text="+">
                               <font>
-                                 <Font name="System Bold" size="15.0"/>
+                                 <Font name="System Bold" size="15.0" />
                               </font>
                            </Button>
                         </HBox>
@@ -72,57 +69,53 @@
                   </HBox>
                   <Label text="Preço de venda *">
                      <font>
-                        <Font name="Carlito" size="16.0"/>
+                        <Font name="Carlito" size="16.0" />
                      </font>
                   </Label>
                   <HBox fx:id="priceBox" alignment="CENTER" spacing="10.0">
                      <TextField fx:id="decoy1" prefHeight="35.0" promptText="R$ 54,00" HBox.hgrow="ALWAYS">
                         <font>
-                           <Font name="Carlito" size="15.0"/>
+                           <Font name="Carlito" size="15.0" />
                         </font>
                         <tooltip>
-                           <Tooltip text="Preço de venda do produto"/>
+                           <Tooltip text="Preço de venda do produto" />
                         </tooltip>
                      </TextField>
-                     <CheckBox fx:id="hidePrice" mnemonicParsing="false" style="-fx-cursor: hand;"
-                               text="Esconder da lista (ingrediente)" HBox.hgrow="ALWAYS">
+                     <CheckBox fx:id="hidePrice" mnemonicParsing="false" style="-fx-cursor: hand;" text="Esconder da lista (ingrediente)" HBox.hgrow="ALWAYS">
                         <font>
-                           <Font name="Carlito" size="16.0"/>
+                           <Font name="Carlito" size="16.0" />
                         </font>
                         <tooltip>
-                           <Tooltip
-                                   text="Esconde o produto da lista. Nesse caso, este produto não terá preço de venda."/>
+                           <Tooltip text="Esconde o produto da lista. Nesse caso, este produto não terá preço de venda." />
                         </tooltip>
                      </CheckBox>
                   </HBox>
-                  <Separator/>
+                  <Separator />
                   <Label text="Informações adicionais">
                      <font>
-                        <Font name="Carlito Bold" size="16.0"/>
+                        <Font name="Carlito Bold" size="16.0" />
                      </font>
                   </Label>
-                  <Separator/>
+                  <Separator />
                   <HBox>
-                     <CheckBox fx:id="trackStock" mnemonicParsing="false" style="-fx-cursor: hand;"
-                               text="Incluir estoque">
+                     <CheckBox fx:id="trackStock" mnemonicParsing="false" style="-fx-cursor: hand;" text="Incluir estoque">
                         <font>
-                           <Font name="Carlito" size="16.0"/>
+                           <Font name="Carlito" size="16.0" />
                         </font>
                         <tooltip>
-                           <Tooltip text="Acompanhe a disponibilidade desse produto no estoque"/>
+                           <Tooltip text="Acompanhe a disponibilidade desse produto no estoque" />
                         </tooltip>
                      </CheckBox>
                   </HBox>
                   <Label text="Preço de compra">
                      <font>
-                        <Font name="Carlito" size="16.0"/>
+                        <Font name="Carlito" size="16.0" />
                      </font>
                   </Label>
                   <HBox fx:id="buyPriceBox" spacing="5.0">
-                     <TextField fx:id="decoy2" disable="true" prefHeight="35.0" promptText="Preço de compra"
-                                text="R$ 32,04" HBox.hgrow="ALWAYS">
+                     <TextField fx:id="decoy2" disable="true" prefHeight="35.0" promptText="Preço de compra" text="R$ 32,04" HBox.hgrow="ALWAYS">
                         <font>
-                           <Font name="Carlito" size="15.0"/>
+                           <Font name="Carlito" size="15.0" />
                         </font>
                      </TextField>
                   </HBox>
@@ -130,68 +123,64 @@
                      <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                         <Label text="Quantidade em estoque *">
                            <font>
-                              <Font name="Carlito" size="16.0"/>
+                              <Font name="Carlito" size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="qtyStock" disable="true" prefHeight="35.0"
-                                   promptText="Qtd. em estoque">
+                        <TextField fx:id="qtyStock" disable="true" prefHeight="35.0" promptText="Qtd. em estoque">
                            <font>
-                              <Font name="Carlito" size="15.0"/>
+                              <Font name="Carlito" size="15.0" />
                            </font>
                            <tooltip>
-                              <Tooltip text="Cadastrar quantidade em estoque"/>
+                              <Tooltip text="Cadastrar quantidade em estoque" />
                            </tooltip>
                         </TextField>
                      </VBox>
                      <VBox spacing="5.0" HBox.hgrow="ALWAYS">
                         <Label text="Estoque crítico *">
                            <font>
-                              <Font name="Carlito" size="16.0"/>
+                              <Font name="Carlito" size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="criticStock" disable="true" prefHeight="35.0"
-                                   promptText="Qtd. estoque crítico">
+                        <TextField fx:id="criticStock" disable="true" prefHeight="35.0" promptText="Qtd. estoque crítico">
                            <font>
-                              <Font name="Carlito" size="15.0"/>
+                              <Font name="Carlito" size="15.0" />
                            </font>
                            <tooltip>
-                              <Tooltip text="Quantidade mínima no estoque."/>
+                              <Tooltip text="Quantidade mínima no estoque." />
                            </tooltip>
                         </TextField>
                      </VBox>
                   </HBox>
-                  <Separator/>
+                  <Separator />
                   <Label text="Esse produto é um prato?">
                      <font>
-                        <Font name="Carlito Bold" size="16.0"/>
+                        <Font name="Carlito Bold" size="16.0" />
                      </font>
                      <tooltip>
-                        <Tooltip
-                                text="Opções reservadas para itens do cardápio. Necessário cadastrar ingredientes antes."/>
+                        <Tooltip text="Opções reservadas para itens do cardápio. Necessário cadastrar ingredientes antes." />
                      </tooltip>
                   </Label>
-                  <Separator/>
+                  <Separator />
                   <HBox>
-                     <CheckBox fx:id="menuItem" mnemonicParsing="false" style="-fx-cursor: hand;"
-                               text="Item do cardápio">
+                     <CheckBox fx:id="menuItem" mnemonicParsing="false" style="-fx-cursor: hand;" text="Item do cardápio">
                         <font>
-                           <Font name="Carlito" size="16.0"/>
+                           <Font name="Carlito" size="16.0" />
                         </font>
                         <tooltip>
-                           <Tooltip text="Marque essa caixa se esse produto for um item do cardápio"/>
+                           <Tooltip text="Marque essa caixa se esse produto for um item do cardápio" />
                         </tooltip>
                      </CheckBox>
                   </HBox>
-                  <HBox/>
-                  <Pane VBox.vgrow="ALWAYS"/>
-                  <Separator/>
+                  <HBox />
+                  <Pane VBox.vgrow="ALWAYS" />
+                  <Separator />
                   <HBox>
                      <Label text="* Item obrigatório">
                         <font>
-                           <Font name="Carlito Bold" size="15.0"/>
+                           <Font name="Carlito Bold" size="15.0" />
                         </font>
                         <tooltip>
-                           <Tooltip text="Preencher todos os itens marcados com o (*)"/>
+                           <Tooltip text="Preencher todos os itens marcados com o (*)" />
                         </tooltip>
                      </Label>
                   </HBox>
@@ -200,13 +189,12 @@
          </Tab>
          <Tab closable="false" text="Cardápio">
             <VBox>
-               <VBox alignment="CENTER_LEFT" spacing="5.0"
-                     style="-fx-border-color: #CBCBCC; -fx-background-color: white;" VBox.vgrow="ALWAYS">
+               <VBox alignment="CENTER_LEFT" spacing="5.0" style="-fx-border-color: #CBCBCC; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                   <padding>
-                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                   </padding>
                   <VBox.margin>
-                     <Insets top="5.0"/>
+                     <Insets top="5.0" />
                   </VBox.margin>
                </VBox>
             </VBox>
@@ -214,75 +202,71 @@
       </TabPane>
    </center>
    <top>
-      <HBox alignment="CENTER" prefHeight="41.0" prefWidth="590.0"
-            style="-fx-border-color: #CBCBCC; -fx-background-color: white;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="41.0" prefWidth="590.0" style="-fx-border-color: #CBCBCC; -fx-background-color: white;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
          <Label fx:id="label" text="Adicionar novo produto">
             <font>
-               <Font name="Carlito Bold" size="23.0"/>
+               <Font name="Carlito Bold" size="23.0" />
             </font>
          </Label>
       </HBox>
    </top>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0"
-            style="-fx-background-color: white; -fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: white; -fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
          <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0"/>
+            <Insets bottom="5.0" left="5.0" right="5.0" />
          </BorderPane.margin>
          <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" prefWidth="100.0" text="Cancelar">
             <font>
-               <Font name="Carlito" size="16.0"/>
+               <Font name="Carlito" size="16.0" />
             </font>
          </Button>
          <Pane HBox.hgrow="ALWAYS">
             <HBox.margin>
-               <Insets/>
+               <Insets />
             </HBox.margin>
          </Pane>
          <Button fx:id="confirmButton" defaultButton="true" mnemonicParsing="false" prefWidth="100.0" text="Adicionar">
             <font>
-               <Font name="Carlito Bold" size="16.0"/>
+               <Font name="Carlito Bold" size="16.0" />
             </font>
          </Button>
       </HBox>
    </bottom>
    <right>
-      <VBox prefHeight="421.0" prefWidth="181.0" spacing="20.0"
-            style="-fx-background-color: white; -fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="421.0" prefWidth="181.0" spacing="20.0" style="-fx-background-color: white; -fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="5.0" right="5.0" top="4.0"/>
+            <Insets bottom="5.0" right="5.0" top="4.0" />
          </BorderPane.margin>
          <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <VBox alignment="CENTER" spacing="5.0">
             <Label text="Dicas">
                <font>
-                  <Font name="Comfortaa Bold" size="15.0"/>
+                  <Font name="Comfortaa Bold" size="15.0" />
                </font>
             </Label>
-            <Separator prefWidth="200.0"/>
+            <Separator prefWidth="200.0" />
          </VBox>
          <Label text="- Além de produtos, é possível adicionar também ingredientes e pratos." wrapText="true">
             <font>
-               <Font name="Comfortaa Regular" size="15.0"/>
+               <Font name="Comfortaa Regular" size="15.0" />
             </font>
          </Label>
-         <Label text="- Se estiver adicionando um novo prato, é necessário que os ingredientes estejam cadastrados no sistema."
-                wrapText="true">
+         <Label text="- Se estiver adicionando um novo prato, é necessário que os ingredientes estejam cadastrados no sistema." wrapText="true">
             <font>
-               <Font name="Comfortaa Regular" size="15.0"/>
+               <Font name="Comfortaa Regular" size="15.0" />
             </font>
          </Label>
          <Label text="- Isso lhe ajudará no futuro a entender melhor seu estoque." wrapText="true">
             <font>
-               <Font name="Comfortaa Regular" size="15.0"/>
+               <Font name="Comfortaa Regular" size="15.0" />
             </font>
          </Label>
       </VBox>

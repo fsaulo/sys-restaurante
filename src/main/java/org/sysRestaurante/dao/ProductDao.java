@@ -127,7 +127,8 @@ public class ProductDao {
         private int idCategory;
 
         public CategoryDao() {
-            description = "Sem categoria";
+            setIdCategory(5);
+            setDescription("Sem categoria");
         }
 
         public String getDescription() {

@@ -76,28 +76,34 @@ public class Product {
         return null;
     }
 
-    public static String getProductCategory() {
+    public static List<ProductDao.CategoryDao> getProductCategory() {
         String query = "SELECT * FROM categoria_produto";
-        String category = "Sem categoria";
         PreparedStatement ps;
         ResultSet rs;
+        ProductDao.CategoryDao categoryDao;
+        List<ProductDao.CategoryDao> categories = new ArrayList<>();
 
         try {
             Connection con = DBConnection.getConnection();
             ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
 
-            if (rs.next()) {
-                category = rs.getString("descricao");
+            while (rs.next()) {
+                categoryDao = new ProductDao.CategoryDao();
+                categoryDao.setDescription(rs.getString("descricao"));
+                categoryDao.setIdCategory(rs.getInt("id_categoria_produto"));
+                categories.add(categoryDao);
             }
 
             con.close();
             rs.close();
             ps.close();
-            return category;
+
+            return categories;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+
         return null;
     }
 }
