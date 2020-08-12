@@ -75,12 +75,14 @@ public class ProductListViewCell extends ListCell<ProductDao> {
                 category.setOnMouseClicked(event -> {
                     try {
                         AppFactory.getPos().searchByCategory(category.getText());
-                    } catch (NullPointerException exception) {
-                        try {
-                            AppFactory.getProductManagementController().searchByCategory(category.getText());
-                        } catch (NullPointerException exception1) {
-                            LOGGER.warning("Illegal Class Access. Not possible to search by product lagel from here");
-                        }
+                    } catch (NullPointerException ignored) {
+                        ExceptionHandler.doNothing();
+                    }
+
+                    try {
+                        AppFactory.getProductManagementController().searchByCategory(category.getText());
+                    } catch (NullPointerException ignored1) {
+                        ExceptionHandler.doNothing();
                     }
                 });
                 wrapperBox.setOnMouseClicked(event -> {

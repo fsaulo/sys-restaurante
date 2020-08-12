@@ -22,7 +22,7 @@
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
-         <Tab closable="false" text="Item">
+         <Tab closable="false" text="Produto">
             <VBox>
                <VBox alignment="CENTER_LEFT" spacing="5.0" style="-fx-border-color: #CBCBCC; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                   <padding>
@@ -56,15 +56,21 @@
                         </HBox>
                      </VBox>
                      <VBox spacing="5.0">
-                        <Label text="Categoria *" />
-                        <HBox alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="ALWAYS">
+                        <Label text="Categoria" />
+                        <HBox alignment="CENTER_LEFT" prefWidth="190.0" spacing="5.0" VBox.vgrow="ALWAYS">
                            <ComboBox fx:id="categoryComboBox" prefHeight="35.0" prefWidth="150.0" promptText="Bebidas" />
                            <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="35.0" style="-fx-cursor: hand;" text="+">
                               <font>
                                  <Font name="System Bold" size="15.0" />
                               </font>
                            </Button>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </HBox>
+                        <HBox.margin>
+                           <Insets bottom="-2.0" />
+                        </HBox.margin>
                      </VBox>
                   </HBox>
                   <Label text="Preço de venda *">
@@ -214,14 +220,14 @@
       </HBox>
    </top>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: white; -fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0" style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" />
          </BorderPane.margin>
-         <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" prefWidth="100.0" text="Cancelar">
+         <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Cancelar">
             <font>
                <Font name="Carlito" size="16.0" />
             </font>
@@ -231,7 +237,7 @@
                <Insets />
             </HBox.margin>
          </Pane>
-         <Button fx:id="confirmButton" defaultButton="true" mnemonicParsing="false" prefWidth="100.0" text="Adicionar">
+         <Button fx:id="confirmButton" defaultButton="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="Adicionar">
             <font>
                <Font name="Carlito Bold" size="16.0" />
             </font>

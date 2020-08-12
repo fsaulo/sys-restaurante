@@ -469,7 +469,7 @@ public class POS {
             alert.setContentText("Essa ação não poderá ser desfeita.");
             alert.initOwner(wrapperBox.getScene().getWindow());
             alert.showAndWait();
-
+        
             if (alert.getResult().equals(ButtonType.OK)) {
                 for (ProductDao item : selectedProductsTableView.getSelectionModel().getSelectedItems()) {
                     item.setQuantity(0);

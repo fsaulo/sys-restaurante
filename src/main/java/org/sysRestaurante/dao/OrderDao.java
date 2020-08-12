@@ -20,7 +20,7 @@ public class OrderDao {
     private String details;
     private String note;
     private String status;
-    private String custumerName;
+    private String customerName;
 
     public void setDetails(int idCategory) {
         switch (idCategory) {
@@ -81,12 +81,12 @@ public class OrderDao {
         this.taxes = taxes;
     }
 
-    public String getCustumerName() {
-        return custumerName;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setCustumerName(String custumerName) {
-        this.custumerName = custumerName;
+    public void setCustomerName(String custumerName) {
+        this.customerName = custumerName;
     }
 
     public double getDiscount() {
