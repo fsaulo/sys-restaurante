@@ -48,8 +48,6 @@ public class ComandaPOSController extends POS {
     @FXML
     private Button finalizeOrderButton;
     @FXML
-    private Button updateButton;
-    @FXML
     private Button addProductButton;
     @FXML
     private Button removeButton;
@@ -148,7 +146,6 @@ public class ComandaPOSController extends POS {
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
         subtotalLabel.setText(format.format(comanda.getTotal()));
         totalLabel.setText(format.format(comanda.getTotal()));
-        updateButton.setOnMouseClicked(ac -> updateComandaItems());
         cancelOrderButton.setOnMouseClicked(e -> onCancelOrder());
 
         finalizeOrderButton.setOnMouseClicked(e -> {
