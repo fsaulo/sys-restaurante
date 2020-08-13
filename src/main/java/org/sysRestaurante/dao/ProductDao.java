@@ -4,11 +4,15 @@ public class ProductDao {
     private int idProduct;
     private int idCategory;
     private int quantity;
-    private int stock;
+    private int supply;
+    private int minSupply;
     private long barCode;
     private double sellPrice;
     private double buyPrice;
     private double total;
+    private boolean menuItem;
+    private boolean trackStock;
+    private boolean ingredient;
     private String description;
     private CategoryDao categoryDao;
 
@@ -17,12 +21,44 @@ public class ProductDao {
         total = 0.0;
     }
 
-    public int getStock() {
-        return stock;
+    public boolean isIngredient() {
+        return ingredient;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setIngredient(boolean ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public boolean isMenuItem() {
+        return menuItem;
+    }
+
+    public void setMenuItem(boolean menuItem) {
+        this.menuItem = menuItem;
+    }
+
+    public boolean isTrackStock() {
+        return trackStock;
+    }
+
+    public void setTrackStock(boolean trackStock) {
+        this.trackStock = trackStock;
+    }
+
+    public int getMinSupply() {
+        return minSupply;
+    }
+
+    public void setMinSupply(int minSupply) {
+        this.minSupply = minSupply;
+    }
+
+    public int getSupply() {
+        return supply;
+    }
+
+    public void setSupply(int supply) {
+        this.supply = supply;
     }
 
     public CategoryDao getCategoryDao() {

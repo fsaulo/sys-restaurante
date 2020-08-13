@@ -6,6 +6,7 @@ import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.util.NotificationHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -105,5 +106,33 @@ public class Product {
         }
 
         return null;
+    }
+
+    public static void insert(ProductDao product) {
+        String query = "INSERT INTO produto " +
+                "(id_categoria, qtd_estoque, descricao, preco_venda, preco_varejo, check_estoque, is_cardapio, " +
+                "is_ingrediente, qtd_estoque_minimo) " +
+                "VALUES (?,?,?,?,?,?,?,?,?)";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, product.getCategoryDao().getIdCategory());
+            ps.setInt(2, product.getSupply());
+            ps.setString(3, product.getDescription());
+            ps.setDouble(4, product.getSellPrice());
+            ps.setDouble(5, product.getBuyPrice());
+            ps.setBoolean(6, product.isTrackStock());
+            ps.setBoolean(7, product.isMenuItem());
+            ps.setBoolean(8, product.isIngredient());
+            ps.setInt(9, product.getMinSupply());
+            ps.executeUpdate();
+
+        } catch (SQLException exception) {
+            NotificationHandler.errorDialog(exception);
+            LOGGER.severe("Couldn't insert product into database due to SQLException.");
+            exception.printStackTrace();
+        }
     }
 }

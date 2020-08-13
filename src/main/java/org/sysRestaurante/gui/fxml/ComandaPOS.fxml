@@ -46,16 +46,16 @@
                    </HBox>
                    <VBox alignment="CENTER">
                        <VBox.margin>
-                           <Insets/>
+                           <Insets />
                        </VBox.margin>
                        <Label text="Aberto em:">
                            <font>
-                               <Font name="Carlito" size="18.0"/>
+                               <Font name="Carlito" size="18.0" />
                            </font>
                        </Label>
                        <Label fx:id="dateLabel" maxHeight="200.0" text="--">
                            <font>
-                               <Font name="Carlito Bold" size="18.0"/>
+                               <Font name="Carlito Bold" size="18.0" />
                            </font>
                        </Label>
                    </VBox>
@@ -250,7 +250,7 @@
                <VBox.margin>
                    <Insets />
                </VBox.margin>
-               <Button fx:id="removeButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Remover">
+               <Button fx:id="removeButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Remover">
                    <font>
                        <Font name="Carlito" size="16.0" />
                    </font>
@@ -263,7 +263,7 @@
                    </styleClass>
                </Button>
                <Pane HBox.hgrow="ALWAYS" />
-               <Button fx:id="clearButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Limpar">
+               <Button fx:id="clearButton" minWidth="100.0" mnemonicParsing="false" prefHeight="30.0" text="Limpar">
                    <font>
                        <Font name="Carlito" size="16.0" />
                    </font>
@@ -279,7 +279,7 @@
        </VBox>
    </left>
    <bottom>
-       <HBox prefWidth="200.0" style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
+       <HBox style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
            <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Sair">
               <font>
                   <Font name="Carlito Bold" size="16.0" />
@@ -290,7 +290,7 @@
               </styleClass>
            </Button>
            <Pane HBox.hgrow="ALWAYS" />
-           <Button fx:id="finalizeOrderButton" defaultButton="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="145.0" text="Fechar conta">
+           <Button fx:id="finalizeOrderButton" defaultButton="true" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" text="Fechar conta">
               <font>
                   <Font name="Carlito Bold" size="16.0" />
               </font>
@@ -303,7 +303,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <BorderPane.margin>
-            <Insets left="5.0" right="5.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" />
          </BorderPane.margin>
        </HBox>
    </bottom>
@@ -393,10 +393,10 @@
                            </font>
                        </Label>
                        <Pane VBox.vgrow="ALWAYS" />
-                       <Spinner fx:id="qtySpinner" minHeight="-Infinity" opacity="0.8" prefHeight="31.0" prefWidth="72.0" />
+                       <Spinner fx:id="qtySpinner" minHeight="-Infinity" opacity="0.8" prefHeight="35.0" prefWidth="72.0" />
                    </VBox>
                    <VBox alignment="BOTTOM_CENTER">
-                       <Button fx:id="addProductButton" mnemonicParsing="false" opacity="0.65" prefHeight="31.0" prefWidth="100.0" text="Adicionar">
+                       <Button fx:id="addProductButton" mnemonicParsing="false" opacity="0.65" prefHeight="35.0" prefWidth="100.0" text="Adicionar">
                            <font>
                                <Font name="Carlito" size="15.0" />
                            </font>

@@ -20,7 +20,7 @@
    <center>
       <TabPane>
          <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" />
          </BorderPane.margin>
          <Tab closable="false" text="Produto">
             <VBox>
@@ -45,7 +45,7 @@
                            </font>
                         </Label>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <TextField fx:id="productName" prefHeight="35.0" promptText="Descrição do produto" HBox.hgrow="ALWAYS">
+                           <TextField id="required-text-field" fx:id="productName" prefHeight="35.0" promptText="Descrição do produto" HBox.hgrow="ALWAYS">
                               <font>
                                  <Font name="Carlito" size="15.0" />
                               </font>
@@ -79,7 +79,7 @@
                      </font>
                   </Label>
                   <HBox fx:id="priceBox" alignment="CENTER" spacing="10.0">
-                     <TextField fx:id="decoy1" prefHeight="35.0" promptText="R$ 54,00" HBox.hgrow="ALWAYS">
+                     <TextField id="required-text-field" fx:id="decoy1" prefHeight="35.0" promptText="R$ 54,00" HBox.hgrow="ALWAYS">
                         <font>
                            <Font name="Carlito" size="15.0" />
                         </font>
@@ -132,7 +132,7 @@
                               <Font name="Carlito" size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="qtyStock" disable="true" prefHeight="35.0" promptText="Qtd. em estoque">
+                        <TextField fx:id="qtyStock" disable="true" prefHeight="35.0" promptText="Qtd. em estoque" styleClass="required-text-field">
                            <font>
                               <Font name="Carlito" size="15.0" />
                            </font>
@@ -147,7 +147,7 @@
                               <Font name="Carlito" size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="criticStock" disable="true" prefHeight="35.0" promptText="Qtd. estoque crítico">
+                        <TextField fx:id="criticStock" disable="true" prefHeight="35.0" promptText="Qtd. estoque crítico" styleClass="required-text-field">
                            <font>
                               <Font name="Carlito" size="15.0" />
                            </font>
@@ -247,7 +247,7 @@
    <right>
       <VBox prefHeight="421.0" prefWidth="181.0" spacing="20.0" style="-fx-background-color: white; -fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="5.0" right="5.0" top="4.0" />
+            <Insets bottom="5.0" right="5.0" />
          </BorderPane.margin>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

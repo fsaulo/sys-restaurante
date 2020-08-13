@@ -141,4 +141,8 @@ public class ProductManagementController {
     public void searchByCategory(String category) {
         searchBox.setText(category);
     }
+
+    public void reload() {
+        initialize();
+    }
 }
