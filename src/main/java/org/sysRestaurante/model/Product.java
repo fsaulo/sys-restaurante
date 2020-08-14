@@ -56,6 +56,11 @@ public class Product {
                 productDao.setDescription(rs.getString("descricao"));
                 productDao.setSellPrice(rs.getDouble("preco_venda"));
                 productDao.setBuyPrice(rs.getDouble("preco_varejo"));
+                productDao.setTrackStock(rs.getBoolean("check_estoque"));
+                productDao.setIngredient(rs.getBoolean("is_ingrediente"));
+                productDao.setMenuItem(rs.getBoolean("is_cardapio"));
+                productDao.setSupply(rs.getInt("qtd_estoque"));
+                productDao.setMinSupply(rs.getInt("qtd_estoque_minimo"));
                 productDao.setCategoryDao(categories.stream().filter(e -> e.getIdCategory() == categoryId)
                         .findFirst()
                         .orElse(new ProductDao.CategoryDao()));
@@ -134,6 +139,37 @@ public class Product {
         } catch (SQLException exception) {
             NotificationHandler.errorDialog(exception);
             LOGGER.severe("Couldn't insert product into database due to SQLException.");
+            exception.printStackTrace();
+        }
+    }
+
+    public static void update(ProductDao product) {
+        String query = "UPDATE produto " +
+                "SET id_categoria = ?, qtd_estoque = ?, descricao = ?, preco_venda = ?, preco_varejo = ?, " +
+                "check_estoque = ?, is_cardapio = ?, is_ingrediente = ?, qtd_estoque_minimo = ? " +
+                "WHERE id_produto = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, product.getCategoryDao().getIdCategory());
+            ps.setInt(2, product.getSupply());
+            ps.setString(3, product.getDescription());
+            ps.setDouble(4, product.getSellPrice());
+            ps.setDouble(5, product.getBuyPrice());
+            ps.setBoolean(6, product.isTrackStock());
+            ps.setBoolean(7, product.isMenuItem());
+            ps.setBoolean(8, product.isIngredient());
+            ps.setInt(9, product.getMinSupply());
+            ps.setInt(10, product.getIdProduct());
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException exception) {
+            NotificationHandler.errorDialog(exception);
+            LOGGER.severe("Couldn't update product due to SQLException.");
             exception.printStackTrace();
         }
     }

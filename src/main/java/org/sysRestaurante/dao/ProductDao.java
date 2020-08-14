@@ -146,8 +146,8 @@ public class ProductDao {
         private int idCategory;
 
         public CategoryDao() {
-            setIdCategory(5);
-            setDescription("Sem categoria");
+            this.description = "Sem categoria";
+            this.idCategory = 5;
         }
 
         public String getDescription() {

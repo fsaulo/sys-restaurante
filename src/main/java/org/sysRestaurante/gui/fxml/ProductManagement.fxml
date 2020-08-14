@@ -229,7 +229,7 @@
                                     </font>
                                 </Label>
                             </VBox>
-                            <VBox alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
+                            <VBox fx:id="editProductButton" alignment="CENTER" prefWidth="20.0" styleClass="cashier-button" HBox.hgrow="ALWAYS">
                                 <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                 </padding>
@@ -270,7 +270,7 @@
                         </Label>
                         <Separator prefWidth="200.0" />
                         <TextField fx:id="searchBox" prefHeight="35.0" promptText="Pesquisar produto" style="-fx-border-color: #CBCBCC; -fx-background-radius: 2; -fx-border-width: 2; -fx-border-radius: 2;" />
-                        <ComboBox prefHeight="35.0" prefWidth="230.0" promptText="Filtrar por categoria" style="-fx-font-weight: bold; -fx-font-family: Carlito; -fx-font-size: 15;" />
+                        <ComboBox fx:id="categoryComboBox" prefHeight="35.0" prefWidth="230.0" promptText="Filtrar por categoria" style="-fx-font-weight: bold; -fx-font-family: Carlito; -fx-font-size: 15;" />
                         <Separator prefWidth="200.0" />
                         <HBox>
                             <VBox.margin>

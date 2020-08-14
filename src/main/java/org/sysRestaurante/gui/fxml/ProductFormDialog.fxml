@@ -45,7 +45,7 @@
                            </font>
                         </Label>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <TextField id="required-text-field" fx:id="productName" prefHeight="35.0" promptText="Descrição do produto" HBox.hgrow="ALWAYS">
+                           <TextField id="required-text-field" fx:id="productDescription" prefHeight="35.0" promptText="Descrição do produto" HBox.hgrow="ALWAYS">
                               <font>
                                  <Font name="Carlito" size="15.0" />
                               </font>

@@ -36,7 +36,6 @@ public class ProductListViewCell extends ListCell<ProductDao> {
 
     private FXMLLoader mLLoader;
     private boolean setLabel = true;
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ProductListViewCell.class.getName());
 
     public ProductListViewCell() {
     }
@@ -91,7 +90,6 @@ public class ProductListViewCell extends ListCell<ProductDao> {
                             AppFactory.getPos().addToSelectedProductsList(product);
                         } catch (NullPointerException ignored) {
                             ExceptionHandler.doNothing();
-                            LOGGER.warning("Illegal Class Access. Not possible to add product to basket here.");
                         }
                     }
                 });

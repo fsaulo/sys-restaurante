@@ -12,6 +12,7 @@ public class AppFactory {
     private static LoginController loginController;
     private static CashierDao cashierDao;
     private static OrderDao orderDao;
+    private static ProductDao productDao;
     private static SessionDao sessionDao;
     private static ComandaDao comandaDao;
     private static MainGUIController mainController;
@@ -202,5 +203,13 @@ public class AppFactory {
 
     public static ProductManagementController getProductManagementController() {
         return AppFactory.productManagementController;
+    }
+
+    public static ProductDao getProductDao() {
+        return productDao;
+    }
+
+    public static void setProductDao(ProductDao productDao) {
+        AppFactory.productDao = productDao;
     }
 }

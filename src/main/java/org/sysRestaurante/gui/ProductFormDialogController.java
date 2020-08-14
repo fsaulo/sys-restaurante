@@ -21,7 +21,7 @@ import java.util.Locale;
 public class ProductFormDialogController {
 
     @FXML
-    private TextField productName;
+    private TextField productDescription;
     @FXML
     private TextField decoy1;
     @FXML
@@ -54,14 +54,15 @@ public class ProductFormDialogController {
     private final List<Node> stackNodes = new ArrayList<>();
 
     public void initialize() {
+        Platform.runLater(this::resetEditingProperty);
+
         priceField = new CurrencyField(new Locale("pt", "BR"), NodeOrientation.LEFT_TO_RIGHT);
         buyPriceField = new CurrencyField(new Locale("pt", "BR"), NodeOrientation.LEFT_TO_RIGHT);
 
         setPriceFields();
         handleCategoryComboBox();
-        addToRequiredFields(productName, priceField);
+        addToRequiredFields(productDescription, priceField);
 
-        Platform.runLater(() -> label.requestFocus());
         trackStock.selectedProperty().addListener(observable -> {
             qtyStock.setDisable(!qtyStock.isDisabled());
             criticStock.setDisable(!criticStock.isDisabled());
@@ -103,12 +104,15 @@ public class ProductFormDialogController {
         tooltip.setStyle("-fx-font-size: 14");
 
         priceField.setTooltip(tooltip);
-        productName.setOnKeyTyped(keyEvent -> productName.setStyle(""));
+        productDescription.setOnKeyTyped(keyEvent -> productDescription.setStyle(""));
         priceField.setOnKeyTyped(keyEvent -> priceField.setStyle(""));
         qtyStock.setOnKeyTyped(keyEvent -> qtyStock.setStyle(""));
         criticStock.setOnKeyTyped(keyEvent -> criticStock.setStyle(""));
         confirmButton.setOnMouseClicked(e -> confirm());
-        cancelButton.setOnAction(actionEvent -> label.getParent().getScene().getWindow().hide());
+        cancelButton.setOnAction(actionEvent -> {
+            label.getParent().getScene().getWindow().hide();
+            AppFactory.getProductManagementController().setEditing(false);
+        });
 
         qtyStock.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -122,6 +126,34 @@ public class ProductFormDialogController {
             }
         });
 
+        if (AppFactory.getProductManagementController().isEditing()) {
+            confirmButton.setText("Atualizar");
+            fillInFields();
+        }
+    }
+
+    private void resetEditingProperty() {
+        label.requestFocus();
+        cancelButton.getParent().getScene().getWindow().setOnCloseRequest(windowEvent ->
+                AppFactory.getProductManagementController().setEditing(false));
+    }
+
+    private void fillInFields() {
+        List<ProductDao.CategoryDao> categories = categoryComboBox.getItems();
+        ProductDao product = AppFactory.getProductDao();
+
+        productDescription.setText(product.getDescription());
+        priceField.setAmount(product.getSellPrice());
+        buyPriceField.setAmount(product.getBuyPrice());
+        trackStock.setSelected(product.isTrackStock());
+        hidePrice.setSelected(product.isIngredient());
+        menuItem.setSelected(product.isMenuItem());
+        qtyStock.setText(String.valueOf(product.getSupply()));
+        criticStock.setText(String.valueOf(product.getMinSupply()));
+        categoryComboBox.getSelectionModel().select(categories.stream()
+                .filter(e -> e.getIdCategory() == product.getCategoryDao().getIdCategory())
+                .findFirst()
+                .orElse(new ProductDao.CategoryDao()));
     }
 
     public void setDisableStockFields(boolean disable) {
@@ -231,7 +263,7 @@ public class ProductFormDialogController {
             alert.showAndWait();
         } else {
             ProductDao productDao = new ProductDao();
-            productDao.setDescription(productName.getText());
+            productDao.setDescription(productDescription.getText());
             productDao.setCategoryDao(categoryComboBox.getSelectionModel().getSelectedItem());
             productDao.setMenuItem(menuItem.isSelected());
             productDao.setSellPrice(priceField.getAmount());
@@ -244,15 +276,18 @@ public class ProductFormDialogController {
                 productDao.setBuyPrice(buyPriceField.getAmount());
             }
 
-            try {
+            if (AppFactory.getProductManagementController().isEditing()) {
+                productDao.setIdProduct(AppFactory.getProductDao().getIdProduct());
+                Product.update(productDao);
+                NotificationHandler.showInfo("Produto atualizado com sucesso!");
+            } else {
                 Product.insert(productDao);
-                label.getParent().getScene().getWindow().hide();
-
-                AppFactory.getProductManagementController().reload();
                 NotificationHandler.showInfo("Produto inserido com sucesso!");
-            } catch (Exception ex) {
-                NotificationHandler.errorDialog(ex);
             }
+
+            AppFactory.getProductManagementController().reload();
+            AppFactory.getProductManagementController().setEditing(false);
+            label.getParent().getScene().getWindow().hide();
         }
     }
 }

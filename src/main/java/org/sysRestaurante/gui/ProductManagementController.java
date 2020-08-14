@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
@@ -15,6 +16,7 @@ import org.sysRestaurante.util.NotificationHandler;
 
 import java.sql.SQLException;
 import java.text.Format;
+import java.util.List;
 import java.util.Objects;
 
 public class ProductManagementController {
@@ -23,6 +25,8 @@ public class ProductManagementController {
     private VBox addProductButton;
     @FXML
     private VBox removeProductButton;
+    @FXML
+    private VBox editProductButton;
     @FXML
     private VBox detailsWrapperBox;
     @FXML
@@ -41,8 +45,11 @@ public class ProductManagementController {
     private Label codProductLabel;
     @FXML
     private Label categoryLabel;
+    @FXML
+    private ComboBox<ProductDao.CategoryDao> categoryComboBox;
 
     private static ObservableList<ProductDao> products;
+    private boolean editing;
 
     public void initialize() {
         AppFactory.setProductManagementController(this);
@@ -69,10 +76,12 @@ public class ProductManagementController {
         updateDetailsBox();
         startSearchControls();
         updateTables();
+        handleCategoryComboBox();
 
+        editProductButton.setOnMouseClicked(mouseEvent -> openEditingForm());
         removeProductButton.setOnMouseClicked(mouseEvent -> confirmDelete());
-        addProductButton.setOnMouseClicked(mouseEvent -> AppController
-                .showDialog(SceneNavigator.REGISTER_NEW_PRODUCT_FORM, true));
+        addProductButton.setOnMouseClicked(mouseEvent ->
+                AppController.showDialog(SceneNavigator.REGISTER_NEW_PRODUCT_FORM, true));
     }
 
     public void refreshProductsList() {
@@ -165,6 +174,51 @@ public class ProductManagementController {
         } catch (NullPointerException ex) {
             ex.printStackTrace();
             NotificationHandler.errorDialog(ex);
+        }
+    }
+
+    public void openEditingForm() {
+        if (!productsListView.getSelectionModel().isEmpty()) {
+            ProductDao selectedProduct = productsListView.getSelectionModel().getSelectedItem();
+            setEditing(true);
+            AppFactory.setProductDao(selectedProduct);
+            AppController.showDialog(SceneNavigator.REGISTER_NEW_PRODUCT_FORM, true);
+        }
+    }
+
+    public boolean isEditing() {
+        return editing;
+    }
+
+    public void setEditing(boolean editing) {
+        this.editing = editing;
+    }
+
+    public void handleCategoryComboBox() {
+        List<ProductDao.CategoryDao> categories = Product.getProductCategory();
+        Callback<ListView<ProductDao.CategoryDao>, ListCell<ProductDao.CategoryDao>> cellFactory = new Callback<>() {
+            @Override
+            public ListCell<ProductDao.CategoryDao> call(ListView<ProductDao.CategoryDao> l) {
+                return new ListCell<>() {
+                    @Override
+                    protected void updateItem(ProductDao.CategoryDao item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setGraphic(null);
+                        } else {
+                            setText(item.getDescription());
+                        }
+                    }
+                };
+            }
+        };
+
+        categoryComboBox.setButtonCell(cellFactory.call(null));
+        categoryComboBox.setCellFactory(cellFactory);
+
+        assert categories != null;
+        for (ProductDao.CategoryDao category : categories) {
+            categoryComboBox.getItems().add(category);
         }
     }
 }
