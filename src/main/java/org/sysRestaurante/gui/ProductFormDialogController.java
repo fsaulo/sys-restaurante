@@ -246,11 +246,10 @@ public class ProductFormDialogController {
 
             try {
                 Product.insert(productDao);
-
-                NotificationHandler.showInfo("Produto inserido com sucesso!");
-
                 label.getParent().getScene().getWindow().hide();
+
                 AppFactory.getProductManagementController().reload();
+                NotificationHandler.showInfo("Produto inserido com sucesso!");
             } catch (Exception ex) {
                 NotificationHandler.errorDialog(ex);
             }

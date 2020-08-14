@@ -129,10 +129,31 @@ public class Product {
             ps.setInt(9, product.getMinSupply());
             ps.executeUpdate();
 
+            ps.close();
+            con.close();
         } catch (SQLException exception) {
             NotificationHandler.errorDialog(exception);
             LOGGER.severe("Couldn't insert product into database due to SQLException.");
             exception.printStackTrace();
+        }
+    }
+
+    public static void remove(int idProduct) {
+        String query = "DELETE FROM produto WHERE id_produto = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, idProduct);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            LOGGER.severe("Error while trying to delete product from database.");
+            NotificationHandler.errorDialog(ex);
         }
     }
 }

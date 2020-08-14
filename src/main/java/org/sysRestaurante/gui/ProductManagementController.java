@@ -3,9 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -13,17 +11,18 @@ import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Product;
-import org.sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.util.NotificationHandler;
 
 import java.sql.SQLException;
 import java.text.Format;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 public class ProductManagementController {
 
     @FXML
     private VBox addProductButton;
+    @FXML
+    private VBox removeProductButton;
     @FXML
     private VBox detailsWrapperBox;
     @FXML
@@ -43,7 +42,6 @@ public class ProductManagementController {
     @FXML
     private Label categoryLabel;
 
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ProductManagementController.class.getName());
     private static ObservableList<ProductDao> products;
 
     public void initialize() {
@@ -72,6 +70,7 @@ public class ProductManagementController {
         startSearchControls();
         updateTables();
 
+        removeProductButton.setOnMouseClicked(mouseEvent -> confirmDelete());
         addProductButton.setOnMouseClicked(mouseEvent -> AppController
                 .showDialog(SceneNavigator.REGISTER_NEW_PRODUCT_FORM, true));
     }
@@ -144,5 +143,28 @@ public class ProductManagementController {
 
     public void reload() {
         initialize();
+    }
+
+    public void confirmDelete() {
+        try {
+            if (!productsListView.getSelectionModel().isEmpty()) {
+                ProductDao selectedProduct = productsListView.getSelectionModel().getSelectedItem();
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmação do sistema");
+                alert.setHeaderText("Tem certeza que deseja remover este item da base de dados?");
+                alert.setContentText("Essa ação não poderá ser desfeita.");
+                alert.showAndWait();
+
+                if (alert.getResult().equals(ButtonType.OK)) {
+                    Product.remove(selectedProduct.getIdProduct());
+                    NotificationHandler.showInfo("Produto removido com sucesso.");
+                    this.reload();
+                }
+            }
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            NotificationHandler.errorDialog(ex);
+        }
     }
 }
