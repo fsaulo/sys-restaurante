@@ -13,11 +13,9 @@ import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.util.ExceptionHandler;
-import org.sysRestaurante.util.LoggerHandler;
 
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.logging.Logger;
 
 public class ProductListViewCell extends ListCell<ProductDao> {
 
@@ -70,7 +68,7 @@ public class ProductListViewCell extends ListCell<ProductDao> {
             if (setLabel) {
                 description.setTooltip(new Tooltip(product.getDescription()));
                 id.setText(String.valueOf(product.getIdProduct()));
-                category.setText(product.getCategoryDao().getDescription());
+                category.setText(product.getCategoryDao().getCategoryDescription());
                 category.setOnMouseClicked(event -> {
                     try {
                         AppFactory.getPos().searchByCategory(category.getText());

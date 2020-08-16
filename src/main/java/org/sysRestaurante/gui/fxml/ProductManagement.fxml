@@ -5,20 +5,20 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ProductManagementController">
+<GridPane prefHeight="690.0" prefWidth="913.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ProductManagementController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
     </columnConstraints>
@@ -32,7 +32,7 @@
     <padding>
         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
     </padding>
-    <BorderPane fx:id="borderPaneHolder">
+    <BorderPane fx:id="borderPaneHolder" prefWidth="937.0">
         <center>
             <VBox spacing="5.0" styleClass="box-content" BorderPane.alignment="CENTER">
                 <padding>
@@ -41,7 +41,7 @@
                 <BorderPane.margin>
                     <Insets bottom="3.0" top="3.0" />
                 </BorderPane.margin>
-                <VBox alignment="TOP_RIGHT">
+                <VBox alignment="CENTER_RIGHT">
                     <padding>
                         <Insets bottom="5.0" left="5.0" top="5.0" />
                     </padding>
@@ -66,114 +66,39 @@
                             </font>
                         </Label>
                     </HBox>
-                    <VBox styleClass="box-content" VBox.vgrow="ALWAYS">
-                        <padding>
-                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                        </padding>
-                        <HBox spacing="10.0" />
-                        <ListView fx:id="productsListView" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent; -fx-border-color: #dddddd;" VBox.vgrow="ALWAYS">
-                            <placeholder>
-                                <VBox alignment="TOP_CENTER">
-                                    <padding>
-                                        <Insets left="5.0" right="5.0" />
-                                    </padding>
-                                    <Label opacity="0.7" text="Nenhum produto encontrado com essa descrição." textAlignment="CENTER" wrapText="true">
-                                        <font>
-                                            <Font name="Carlito" size="18" />
-                                        </font>
-                                    </Label>
-                                    <Label opacity="0.7" text="Pressione F3 para começar a fazer uma nova busca rápida." textAlignment="CENTER" wrapText="true">
-                                        <font>
-                                            <Font name="Carlito Bold" size="18" />
-                                        </font>
-                                    </Label>
-                                </VBox>
-                            </placeholder>
-                            <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                            </padding>
-                        </ListView>
-                        <Separator>
-                            <VBox.margin>
-                                <Insets top="5.0" />
-                            </VBox.margin>
-                        </Separator>
-                        <VBox fx:id="detailsWrapperBox" spacing="5.0" VBox.vgrow="NEVER">
-                            <VBox.margin>
-                                <Insets />
-                            </VBox.margin>
-                            <padding>
-                                <Insets bottom="5.0" />
-                            </padding>
-                            <Label text="Detalhes">
-                                <font>
-                                    <Font name="Carlito Bold" size="20.0" />
-                                </font>
-                            </Label>
-                            <Separator />
-                            <VBox style="-fx-border-color: #CBCBCC;">
-                                <HBox spacing="5.0">
-                                    <VBox.margin>
-                                        <Insets bottom="5.0" />
-                                    </VBox.margin>
-                                    <padding>
-                                        <Insets left="5.0" right="5.0" />
-                                    </padding>
-                                    <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
-                                        <Label fx:id="contentLabel" alignment="TOP_LEFT" text="Coca-cola 2L Garrafa retornável" wrapText="true" VBox.vgrow="ALWAYS">
-                                            <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                            </font>
-                                        </Label>
-                                        <HBox alignment="CENTER">
-                                            <Label text="Preço unit." HBox.hgrow="ALWAYS">
-                                                <font>
-                                                    <Font name="Carlito" size="18.0" />
-                                                </font>
-                                            </Label>
-                                            <Pane HBox.hgrow="ALWAYS" />
-                                            <Label fx:id="unitPriceLabel" text="R$ 5,50">
-                                                <font>
-                                                    <Font name="Cantarell Bold" size="18.0" />
-                                                </font>
-                                            </Label>
-                                        </HBox>
-                                    </VBox>
-                                </HBox>
-                                <Separator />
-                                <HBox alignment="CENTER">
-                                    <padding>
-                                        <Insets left="5.0" right="5.0" top="-2.0" />
-                                    </padding>
-                                    <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                                        <Label text="Cod. do produto">
-                                            <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="codProductLabel" text="5444">
-                                            <font>
-                                                <Font name="Carlito" size="18.0" />
-                                            </font>
-                                        </Label>
-                                    </VBox>
-                                    <Separator orientation="VERTICAL" />
-                                    <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
-                                        <Label text="Categoria">
-                                            <font>
-                                                <Font name="Carlito Bold" size="20.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="categoryLabel" text="Bebidas">
-                                            <font>
-                                                <Font name="Carlito" size="18.0" />
-                                            </font>
-                                        </Label>
-                                    </VBox>
-                                </HBox>
-                            </VBox>
-                        </VBox>
-                    </VBox>
+                     <TableView fx:id="productTableView" VBox.vgrow="ALWAYS">
+                         <placeholder>
+                             <VBox alignment="TOP_CENTER" style="-fx-font-size: 16;">
+                                 <padding>
+                                     <Insets left="5.0" right="5.0" top="10.0" />
+                                 </padding>
+                                 <Label opacity="0.7" text="Nenhum produto encontrado com essa descrição." textAlignment="CENTER" wrapText="true">
+                                     <font>
+                                         <Font name="Carlito" size="18" />
+                                     </font>
+                                 </Label>
+                                 <Label opacity="0.7" text="Pressione F3 para começar a fazer uma nova busca rápida." textAlignment="CENTER" wrapText="true">
+                                     <font>
+                                         <Font name="Carlito Bold" size="18" />
+                                     </font>
+                                 </Label>
+                             </VBox>
+                         </placeholder>
+                  <columns>
+                     <TableColumn fx:id="codTableColoumn" prefWidth="75.0" text="Cod." />
+                     <TableColumn fx:id="descriptionTableColumn" prefWidth="107.0" text="Descrição" />
+                     <TableColumn fx:id="unitPriceTableColumn" prefWidth="75.0" text="Preço unit." />
+                     <TableColumn fx:id="categoryTableColumn" prefWidth="94.0" text="Categoria" />
+                     <TableColumn prefWidth="75.0" text="Estoque">
+                        <columns>
+                           <TableColumn fx:id="currentStockTableColumn" prefWidth="75.0" text="Atual" />
+                           <TableColumn fx:id="criticalStockTableColumn" prefWidth="75.0" text="Mínimo" />
+                        </columns></TableColumn>
+                  </columns>
+                  <columnResizePolicy>
+                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                  </columnResizePolicy>
+                     </TableView>
                 </VBox>
             </VBox>
         </center>

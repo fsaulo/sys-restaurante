@@ -39,7 +39,7 @@ public class Product {
 
             while (rs.next()) {
                 categoryDao = new ProductDao.CategoryDao();
-                categoryDao.setDescription(rs.getString("descricao"));
+                categoryDao.setCategoryDescription(rs.getString("descricao"));
                 categoryDao.setIdCategory(rs.getInt("id_categoria_produto"));
                 categories.add(categoryDao);
             }
@@ -96,7 +96,7 @@ public class Product {
 
             while (rs.next()) {
                 categoryDao = new ProductDao.CategoryDao();
-                categoryDao.setDescription(rs.getString("descricao"));
+                categoryDao.setCategoryDescription(rs.getString("descricao"));
                 categoryDao.setIdCategory(rs.getInt("id_categoria_produto"));
                 categories.add(categoryDao);
             }

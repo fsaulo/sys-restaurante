@@ -187,7 +187,7 @@ public class ProductFormDialogController {
                         if (item == null || empty) {
                             setGraphic(null);
                         } else {
-                            setText(item.getDescription());
+                            setText(item.getCategoryDescription());
                         }
                     }
                 };

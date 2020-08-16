@@ -14,6 +14,7 @@ public class ProductDao {
     private boolean trackStock;
     private boolean ingredient;
     private String description;
+    private String categoryDescription;
     private CategoryDao categoryDao;
 
     public ProductDao() {
@@ -63,6 +64,10 @@ public class ProductDao {
 
     public CategoryDao getCategoryDao() {
         return categoryDao;
+    }
+
+    public String getCategoryDescription() {
+        return categoryDao.getCategoryDescription();
     }
 
     public void setCategoryDao(CategoryDao categoryDao) {
@@ -142,20 +147,20 @@ public class ProductDao {
     }
 
     public static class CategoryDao {
-        private String description;
+        private String categoryDescription;
         private int idCategory;
 
         public CategoryDao() {
-            this.description = "Sem categoria";
+            this.categoryDescription = "Sem categoria";
             this.idCategory = 5;
         }
 
-        public String getDescription() {
-            return description;
+        public String getCategoryDescription() {
+            return categoryDescription;
         }
 
-        public void setDescription(String description) {
-            this.description = description;
+        public void setCategoryDescription(String categoryDescription) {
+            this.categoryDescription = categoryDescription;
         }
 
         public int getIdCategory() {
