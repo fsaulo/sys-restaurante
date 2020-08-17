@@ -137,8 +137,8 @@ public class ToolBarController extends AppFactory {
     @FXML
     public void menuFerramentas(Event event) {
         unfoldSubmenus(vBoxMenuFerramentas,
-                g2a,
                 toggleGerenciarProdutos,
+                g2a,
                 g2c,
                 g2d);
         event.consume();
