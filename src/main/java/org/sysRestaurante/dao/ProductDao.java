@@ -6,6 +6,7 @@ public class ProductDao {
     private int quantity;
     private int supply;
     private int minSupply;
+    private int sold;
     private long barCode;
     private double sellPrice;
     private double buyPrice;
@@ -20,6 +21,14 @@ public class ProductDao {
     public ProductDao() {
         quantity = 1;
         total = 0.0;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
     }
 
     public boolean isIngredient() {
@@ -64,10 +73,6 @@ public class ProductDao {
 
     public CategoryDao getCategoryDao() {
         return categoryDao;
-    }
-
-    public String getCategoryDescription() {
-        return categoryDao.getCategoryDescription();
     }
 
     public void setCategoryDao(CategoryDao categoryDao) {
@@ -144,6 +149,10 @@ public class ProductDao {
 
     public void incrementsQuantity(int qty) {
         this.quantity += qty;
+    }
+
+    public String getCategoryDescription() {
+        return categoryDao.getCategoryDescription();
     }
 
     public static class CategoryDao {

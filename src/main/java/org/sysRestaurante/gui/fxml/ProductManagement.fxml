@@ -66,9 +66,9 @@
                             </font>
                         </Label>
                     </HBox>
-                     <TableView fx:id="productTableView" VBox.vgrow="ALWAYS">
+                     <TableView fx:id="productTableView" fixedCellSize="0.0" VBox.vgrow="ALWAYS">
                          <placeholder>
-                             <VBox alignment="TOP_CENTER" style="-fx-font-size: 16;">
+                             <VBox alignment="TOP_CENTER">
                                  <padding>
                                      <Insets left="5.0" right="5.0" top="10.0" />
                                  </padding>
@@ -85,14 +85,15 @@
                              </VBox>
                          </placeholder>
                   <columns>
-                     <TableColumn fx:id="codTableColoumn" prefWidth="75.0" text="Cod." />
-                     <TableColumn fx:id="descriptionTableColumn" prefWidth="107.0" text="Descrição" />
-                     <TableColumn fx:id="unitPriceTableColumn" prefWidth="75.0" text="Preço unit." />
-                     <TableColumn fx:id="categoryTableColumn" prefWidth="94.0" text="Categoria" />
+                     <TableColumn fx:id="codTableColoumn" minWidth="-1.0" prefWidth="-1.0" text="Cod." />
+                     <TableColumn fx:id="descriptionTableColumn" minWidth="100.0" prefWidth="130.0" text="Descrição" />
+                     <TableColumn fx:id="unitPriceTableColumn" minWidth="20.0" prefWidth="-1.0" text="Preço" />
+                     <TableColumn fx:id="categoryTableColumn" prefWidth="77.0" text="Categoria" />
                      <TableColumn prefWidth="75.0" text="Estoque">
                         <columns>
                            <TableColumn fx:id="currentStockTableColumn" prefWidth="75.0" text="Atual" />
                            <TableColumn fx:id="criticalStockTableColumn" prefWidth="75.0" text="Mínimo" />
+                           <TableColumn fx:id="soldTableColumn" prefWidth="75.0" text="Vendidos" />
                         </columns></TableColumn>
                   </columns>
                   <columnResizePolicy>
@@ -172,7 +173,7 @@
                             </font>
                         </Label>
                         <Separator prefWidth="200.0" />
-                        <VBox alignment="CENTER" prefHeight="50.0" styleClass="cashier-button">
+                        <VBox fx:id="refresh" alignment="CENTER" prefHeight="50.0" styleClass="cashier-button">
                             <padding>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </padding>
@@ -201,7 +202,7 @@
                             <VBox.margin>
                                 <Insets top="-3.0" />
                             </VBox.margin>
-                            <CheckBox mnemonicParsing="false" text="Em estoque">
+                            <CheckBox fx:id="stockCheckBox" mnemonicParsing="false" text="Em estoque">
                                 <font>
                                     <Font name="Carlito" size="15.0" />
                                 </font>

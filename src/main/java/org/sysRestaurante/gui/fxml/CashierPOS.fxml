@@ -154,7 +154,7 @@
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
    <left>
-        <VBox prefWidth="440.0" spacing="5.0" BorderPane.alignment="CENTER">
+        <VBox spacing="5.0" BorderPane.alignment="CENTER">
            <Label text="Itens no carrinho">
               <font>
                   <Font name="Carlito Bold" size="20.0" />
@@ -219,21 +219,20 @@
    <bottom>
        <HBox style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
            <padding>
-               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
            </padding>
            <BorderPane.margin>
-               <Insets top="5.0"/>
+               <Insets top="5.0" />
            </BorderPane.margin>
            <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" prefHeight="35.0" text="Cancelar">
               <font>
-                  <Font name="Carlito" size="16.0"/>
+                  <Font name="Carlito" size="16.0" />
               </font>
            </Button>
-           <Pane HBox.hgrow="ALWAYS"/>
-           <Button fx:id="finalizeSellButton" defaultButton="true" mnemonicParsing="false" prefHeight="35.0"
-                   text="Concluir venda">
+           <Pane HBox.hgrow="ALWAYS" />
+           <Button fx:id="finalizeSellButton" defaultButton="true" mnemonicParsing="false" prefHeight="35.0" text="Concluir venda">
               <font>
-                  <Font name="Carlito" size="16.0"/>
+                  <Font name="Carlito" size="16.0" />
               </font>
            </Button>
        </HBox>

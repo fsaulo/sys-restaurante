@@ -61,6 +61,7 @@ public class Product {
                 productDao.setMenuItem(rs.getBoolean("is_cardapio"));
                 productDao.setSupply(rs.getInt("qtd_estoque"));
                 productDao.setMinSupply(rs.getInt("qtd_estoque_minimo"));
+                productDao.setSold(rs.getInt("qtd_vendidos"));
                 productDao.setCategoryDao(categories.stream().filter(e -> e.getIdCategory() == categoryId)
                         .findFirst()
                         .orElse(new ProductDao.CategoryDao()));

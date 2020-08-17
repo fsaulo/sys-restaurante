@@ -108,7 +108,7 @@ public class ProductFormDialogController {
         priceField.setOnKeyTyped(keyEvent -> priceField.setStyle(""));
         qtyStock.setOnKeyTyped(keyEvent -> qtyStock.setStyle(""));
         criticStock.setOnKeyTyped(keyEvent -> criticStock.setStyle(""));
-        confirmButton.setOnMouseClicked(e -> confirm());
+        confirmButton.setOnAction(actionEvent -> confirm());
         cancelButton.setOnAction(actionEvent -> {
             label.getParent().getScene().getWindow().hide();
             AppFactory.getProductManagementController().setEditing(false);
