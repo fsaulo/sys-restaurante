@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="hBoxResizable" alignment="TOP_RIGHT" prefHeight="55.0" styleClass="box-content"
+      xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox fx:id="cashierDateDetailsBox" alignment="CENTER_LEFT" opacity="0.6">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <Label fx:id="dateLabel" text="Caixa aberto em 02/01/2020 11:22">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+            <tooltip>
+                <Tooltip fx:id="toolTip" text="Caixa aberto em {data} por {pessoa}"/>
+            </tooltip>
+        </Label>
+        <Label fx:id="userLabel" text="por Saulo (ADMINISTRADOR)">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+            <tooltip>
+                <Tooltip text="Funcionário responsável pela abertura do caixa"/>
+            </tooltip>
+        </Label>
+    </VBox>
+    <Separator orientation="VERTICAL"/>
+    <Pane HBox.hgrow="ALWAYS"/>
+    <Separator fx:id="invisibleSeparator" orientation="VERTICAL" visible="false">
+        <opaqueInsets>
+          <Insets/>
+        </opaqueInsets>
+    </Separator>
+    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="90.0">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <Label text="Retiradas">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+        </Label>
+        <Label fx:id="withdrawalLabel" text="R$ 0,00" textFill="#6d423e">
+            <font>
+                <Font name="Cantarell Bold" size="16.0"/>
+            </font>
+        </Label>
+    </VBox>
+    <Separator orientation="VERTICAL"/>
+    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="112.0">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <Label text="Total à vista">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+        </Label>
+        <Label fx:id="inCashLabel" text="R$ 0,00" textFill="#289e2c">
+            <font>
+                <Font name="Cantarell Bold" size="16.0"/>
+            </font>
+        </Label>
+    </VBox>
+    <Separator orientation="VERTICAL"/>
+    <VBox alignment="TOP_RIGHT" opacity="0.6" prefWidth="112.0">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <Label text="Total no cartão">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+        </Label>
+        <Label fx:id="byCardLabel" text="R$ 0,00" textFill="#289e2c">
+            <font>
+                <Font name="Cantarell Bold" size="16.0"/>
+            </font>
+        </Label>
+    </VBox>
+    <Separator orientation="VERTICAL"/>
+    <VBox alignment="TOP_RIGHT" prefWidth="90.0">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <Label opacity="0.7" text="Balanço">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+        </Label>
+        <Label fx:id="revenueLabel" text="R$ 0,00" textFill="#289e2c">
+            <font>
+                <Font name="Cantarell Bold" size="16.0"/>
+            </font>
+        </Label>
+    </VBox>
+</HBox>

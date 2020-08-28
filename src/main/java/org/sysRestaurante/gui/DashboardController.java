@@ -1,33 +1,26 @@
 package org.sysRestaurante.gui;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
-import javafx.scene.paint.Color;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.NoteDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Reminder;
-import org.sysRestaurante.gui.formatter.DateFormatter;
+import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.io.IOException;
@@ -35,6 +28,7 @@ import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class DashboardController {
@@ -148,7 +142,7 @@ public class DashboardController {
                 "-fx-font-style: italic");
         String date = DateFormatter
                 .TIME_DETAILS_FORMAT
-                .format(Cashier.getCashierDateTimeDetailsById(AppFactory.getCashierDao().getIdCashier()));
+                .format(Objects.requireNonNull(Cashier.getCashierDateTimeDetailsById(AppFactory.getCashierDao().getIdCashier())));
 
         if (isCashierOpenned) {
             statusCashierLabel.setText("CAIXA LIVRE");
@@ -166,57 +160,94 @@ public class DashboardController {
         notesList.add(noteDao);
     }
 
-    public static void wait(int ms){
-        try
-        {
-            Thread.sleep(ms);
-        }
-        catch(InterruptedException ex)
-        {
-            Thread.currentThread().interrupt();
-        }
-    }
-
     public void buildChart() {
         XYChart.Series series = new XYChart.Series();
+        final int listSize = 15;
 
         List<CashierDao> data = Cashier.getCashier();
-        data = data.subList(data.size() - 11, data.size() - 1);
+        List<CashierDao> subListData = new ArrayList<>();
+        CashierDao previousElement = Objects.requireNonNull(data).get(0);
+        double totalRevenue = previousElement.getRevenue();
+
+        for (int i = 1; i < data.size(); i++) {
+            CashierDao nextElement = data.get(i);
+
+            try {
+                if (previousElement.getDateClosing().isEqual(nextElement.getDateClosing())) {
+                    totalRevenue += nextElement.getRevenue();
+                } else {
+                    totalRevenue = nextElement.getRevenue();
+                    previousElement.setRevenue(totalRevenue);
+                    previousElement.setDateClosing(nextElement.getDateClosing());
+                    previousElement.setTimeClosing(nextElement.getTimeClosing());
+                    previousElement.setDateOpening(nextElement.getDateOpening());
+                    previousElement.setTimeOpening(nextElement.getTimeOpening());
+                    subListData.add(previousElement);
+                }
+            } catch (Exception ex) {
+                ExceptionHandler.doNothing();
+            }
+
+            previousElement = nextElement;
+        }
+
+        if (subListData.size() < listSize) {
+            data = subListData;
+        } else {
+            data = subListData.subList(subListData.size() - listSize, subListData.size() - 1);
+        }
 
         for (CashierDao value : data) {
-            final String date = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(value.getDateOpening());
-            final XYChart.Data<String, Number> d1 = new XYChart.Data(date, value.getRevenue());
+            String dateString;
+            String dateString2;
+
+            try {
+                dateString = DateTimeFormatter.ofPattern("d MMM").format(value.getDateClosing());
+                dateString2 = DateTimeFormatter.ofPattern("d MMM uuuu").format(value.getDateClosing());
+            } catch (Exception ex) {
+                dateString = DateTimeFormatter.ofPattern("d MMM").format(value.getDateOpening());
+                dateString2 = DateTimeFormatter.ofPattern("d MMM uuuu").format(value.getDateClosing());
+            }
+
+            final XYChart.Data<String, Number> d1 = new XYChart.Data(dateString, value.getRevenue());
 
             StackPane stackPane = new StackPane();
             VBox box = new VBox();
             box.setPadding(new Insets(15));
 
             Label label1 = new Label(CurrencyField.getBRLCurrencyFormat().format(value.getRevenue()));
-            Label label2 = new Label(date);
+            Label label2 = new Label(dateString2);
 
             label1.setStyle("-fx-font-weight: bold; -fx-font-size: 13");
             label2.setStyle("-fx-font-size: 13");
             box.getChildren().addAll(label1, label2);
+            box.setCursor(Cursor.HAND);
+            box.setOnMouseClicked(mouseEvent -> openHistoryPane(mouseEvent, value));
 
             PopOver legend = new PopOver(box);
+
+            box.setOnMouseExited(mouseEvent -> {
+                stackPane.setCursor(Cursor.DEFAULT);
+                legend.hide();
+            });
+
             legend.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
             legend.setDetachable(false);
 
             stackPane.setOnMouseEntered(mouseDragEvent -> {
                 legend.show(stackPane);
                 stackPane.setCursor(Cursor.HAND);
-
             });
-            box.setOnMouseExited(mouseEvent -> {
-                stackPane.setCursor(Cursor.DEFAULT);
-                legend.hide();
-            });
-
 
             d1.setNode(stackPane);
             series.getData().add(d1);
         }
 
         lineChart.getData().add(series);
+    }
+
+    public void openHistoryPane(Event mouseEvent, CashierDao cashier) {
+        AppFactory.getToolBarController().submenuHistoricoCaixa(mouseEvent);
+        AppFactory.getCashierHistoryController().buildTableOrderDetails(cashier);
     }
 }

@@ -5,21 +5,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-
 import javafx.stage.Window;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
@@ -29,11 +19,13 @@ import org.sysRestaurante.gui.formatter.CellFormatter;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.SpinnerCellFactory;
 import org.sysRestaurante.model.Order;
+import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class POS {
@@ -60,6 +52,8 @@ public class POS {
     private ObservableList<ProductDao> products = FXCollections.observableArrayList();
     private double total = 0;
     private boolean fromPOS = false;
+
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(POS.class.getName());
 
     public void setFromPOS(boolean fromPOS) {
         this.fromPOS = fromPOS;
@@ -149,12 +143,12 @@ public class POS {
         FilteredList<ProductDao> filteredData = new FilteredList<>(products, null);
         String filter = searchBox.getText().toUpperCase();
 
-        if(filter == null || filter.length() == 0) {
+        if(filter.length() == 0) {
             filteredData.setPredicate(null);
         }
         else {
             filteredData.setPredicate(s -> s.getDescription().toUpperCase().contains(filter) ||
-                            s.getCategory().toUpperCase().contains(filter) ||
+                            s.getCategoryDao().getCategoryDescription().toUpperCase().contains(filter) ||
                             String.valueOf(s.getIdProduct()).contains(filter));
         }
 
@@ -367,10 +361,14 @@ public class POS {
     }
 
     protected void updateSelectedList() {
-        selectedProductsTableView.setEditable(!selectedProductsTableView.getItems().isEmpty());
-        selectedProductsTableView.setItems(selectedProductsList);
-        selectedProductsTableView.refresh();
-        updateTotalCashierLabel();
+        try {
+            selectedProductsTableView.setEditable(!selectedProductsTableView.getItems().isEmpty());
+            selectedProductsTableView.setItems(selectedProductsList);
+            selectedProductsTableView.refresh();
+            updateTotalCashierLabel();
+        } catch (NullPointerException exception) {
+            LOGGER.warning("Not possible to update the selected items.");
+        }
     }
 
     protected void updateTotalCashierLabel() {
@@ -387,7 +385,7 @@ public class POS {
         unitPriceLabel.setText(format.format(product.getSellPrice()));
         contentLabel.setText(product.getDescription());
         codProductLabel.setText(String.valueOf(product.getIdProduct()));
-        categoryLabel.setText(product.getCategory());
+        categoryLabel.setText(product.getCategoryDao().getCategoryDescription());
     }
 
     public void updateDetailsBox() {
@@ -471,7 +469,7 @@ public class POS {
             alert.setContentText("Essa ação não poderá ser desfeita.");
             alert.initOwner(wrapperBox.getScene().getWindow());
             alert.showAndWait();
-
+        
             if (alert.getResult().equals(ButtonType.OK)) {
                 for (ProductDao item : selectedProductsTableView.getSelectionModel().getSelectedItems()) {
                     item.setQuantity(0);
@@ -486,18 +484,23 @@ public class POS {
     public void updateComandaItems() {
         OrderDao order = AppFactory.getOrderDao();
         List<ProductDao> products = Order.getItemsByOrderId(order.getIdOrder());
+        assert products != null;
         for (ProductDao product : products) {
             addToSelectedProductsList(product, product.getQuantity());
         }
     }
 
     public void removeItem() {
-        if (!selectedProductsTableView.getSelectionModel().isEmpty()) {
-            ProductDao selected = selectedProductsTableView.getSelectionModel().getSelectedItem();
-            selected.setQuantity(0);
-            selectedProductsTableView.getItems().remove(selected);
-            selectedProductsList.remove(selected);
-            updateSelectedList();
+        try {
+            if (!selectedProductsTableView.getSelectionModel().isEmpty()) {
+                ProductDao selected = selectedProductsTableView.getSelectionModel().getSelectedItem();
+                selected.setQuantity(0);
+                selectedProductsTableView.getItems().remove(selected);
+                selectedProductsList.remove(selected);
+                updateSelectedList();
+            }
+        } catch (NullPointerException exception) {
+            LOGGER.info("There's no selected item to remove.");
         }
     }
 

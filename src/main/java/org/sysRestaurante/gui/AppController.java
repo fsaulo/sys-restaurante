@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -14,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -26,10 +26,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.util.Duration;
+
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.SessionDao;
-import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.gui.formatter.DateFormatter;
+import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
@@ -56,21 +57,27 @@ public class AppController implements DateFormatter {
         AppFactory.setAppController(this);
         AppFactory.setSessionDao(session);
 
+        borderPaneHolder.leftProperty()
+                .setValue(FXMLLoader.load(AppController.class.getResource(SceneNavigator.MENU_TOOL_BAR)));
 
-        borderPaneHolder.leftProperty().setValue(
-                FXMLLoader.load(AppController.class.getResource(SceneNavigator.MENU_TOOL_BAR)));
+        borderPaneHolder.centerProperty()
+                .setValue(FXMLLoader.load(AppController.class.getResource(SceneNavigator.DASHBOARD)));
 
-        borderPaneHolder.centerProperty().setValue(
-                FXMLLoader.load(AppController.class.getResource(SceneNavigator.DASHBOARD)));
+        BorderPane.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
 
-        borderPaneHolder.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
 
         SceneNavigator.loadScene(borderPaneHolder);
         Stage stage = (Stage) borderPaneHolder.getScene().getWindow();
-        stage.setWidth(1215);
+        stage.setMinWidth(810);
+        stage.setMinHeight(470);
+        stage.setWidth(1200);
         stage.setHeight(700);
         stage.centerOnScreen();
         Platform.runLater(this::setFullScreenShortcut);
+    }
+
+    public Stage getMainStage() {
+        return (Stage) borderPaneHolder.getScene().getWindow();
     }
 
     public void setFullScreenShortcut() {
@@ -84,26 +91,31 @@ public class AppController implements DateFormatter {
         String lastSessionDate = DATE_FORMAT.format(certs.getLastSessionDate());
         Label timeStatusLabel = new Label("Logado em: " + lastSessionDate);
 
-        timeStatusLabel.setStyle("-fx-font: Carlito 14");
+        timeStatusLabel.setStyle("-fx-font: Carlito; -fx-font-size: 13");
         timeStatusLabel.setOpacity(0.6);
 
         Label copyleftLabel = new Label("(C) 2020 Saulo Felix GNU SysRestaurante");
 
-        copyleftLabel.setStyle("-fx-font: Carlito 14");
+        copyleftLabel.setStyle("-fx-font: Carlito 25; -fx-font-size: 13");
         copyleftLabel.setOpacity(0.6);
 
         Pane growPane = new Pane();
         HBox footer = new HBox();
+        Separator sep1 = new Separator(Orientation.VERTICAL);
+        Separator sep2 = new Separator(Orientation.VERTICAL);
 
+        sep1.setPadding(new Insets(-1, 0, -1, 0));
+        sep2.setPadding(new Insets(-1, 0, -1, 0));
         footer.setSpacing(3);
-        footer.setPadding(new Insets(2, 3, 1, 3));
+        footer.setMinHeight(23);
+        footer.setPadding(new Insets(1, 3, 1, 3));
         footer.setStyle("-fx-border-color: #CBCBCC");
         footer.setAlignment(Pos.CENTER);
-        footer.setHgrow(growPane, Priority.ALWAYS);
+        HBox.setHgrow(growPane, Priority.ALWAYS);
         footer.getChildren().addAll(timeStatusLabel,
-                new Separator(Orientation.VERTICAL),
+                sep1,
                 sessionTimer,
-                new Separator(Orientation.VERTICAL),
+                sep2,
                 growPane,
                 copyleftLabel);
         return footer;
@@ -113,7 +125,9 @@ public class AppController implements DateFormatter {
         Label titleLabel = new Label("Bar & Restaurante Frutos do Mar");
         titleLabel.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 30));
         HBox header = new HBox();
-        header.setPadding(new Insets(1));
+        header.setMinHeight(40);
+        header.setPadding(new Insets(1,5,1,5));
+        header.setStyle("-fx-border-color: #CBCBCC");
         header.getChildren().add(titleLabel);
         return header;
     }
@@ -127,8 +141,7 @@ public class AppController implements DateFormatter {
             long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(initialTime, LocalDateTime.now());
             String elapsedTime = LocalTime.ofSecondOfDay(elapsedTimeInSeconds).toString();
             sessionTimer.setText("" + elapsedTime);
-            sessionTimer.setStyle("-fx-font: Carlito 14");
-            sessionTimer.setPadding(new Insets(0, 5, 0, 5));
+            sessionTimer.setStyle("-fx-font: Carlito; -fx-font-size: 13");
             sessionTimer.setOpacity(0.6);
             timerInMillies += 1L;
         }), new KeyFrame(Duration.millis(1000)));
@@ -143,7 +156,7 @@ public class AppController implements DateFormatter {
         return timerInMillies;
     }
 
-    public void loadPage(MouseEvent e, String fxml) {
+    public void loadPage(Event e, String fxml) {
         try {
             borderPaneHolder.centerProperty().setValue(FXMLLoader.load(AppController.class.getResource(fxml)));
             e.consume();
@@ -166,7 +179,7 @@ public class AppController implements DateFormatter {
 
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(AppController.class.getResource(fxml));
-            Scene scene = null;
+            Scene scene;
 
             try {
                 scene = new Scene(loader.load());
@@ -216,11 +229,9 @@ public class AppController implements DateFormatter {
             Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setTitle("SysRestaurante: Point of Sale");
-            stage.setMinWidth(720);
-            stage.setMinHeight(430);
-            stage.setMinWidth(840);
-            stage.setWidth(1090);
-            stage.setResizable(true);
+            stage.setWidth(875);
+            stage.setHeight(600);
+            stage.setResizable(false);
             stage.showAndWait();
         } catch (IOException ex) {
             ex.printStackTrace();

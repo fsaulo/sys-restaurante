@@ -10,8 +10,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>13</maven.compiler.source>
-        <maven.compiler.target>13</maven.compiler.target>
     </properties>
 
     <build>
@@ -19,11 +17,11 @@
             <plugin>
         	    <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <release>13</release>
-        	        <target>13</target>
-                    <source>13</source>
+                    <release>11</release>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
 
@@ -72,37 +70,37 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-media</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-swing</artifactId>
-            <version>14-ea+8</version>
+            <version>14</version>
         </dependency>
 
         <dependency>
@@ -123,6 +121,17 @@
             <version>11.0.1</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.7.0-M1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.0-M1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

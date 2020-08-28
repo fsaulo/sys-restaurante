@@ -11,76 +11,78 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="335.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.NewComandaDialogController">
-   <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
-         <children>
-            <Label text="Selecione uma mesa">
-               <font>
-                  <Font name="Carlito Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-         <padding>
-            <Insets left="5.0" right="5.0" />
-         </padding>
-      </HBox>
-      <TextField fx:id="searchBox" prefHeight="35.0" promptText="Digite o código da mesa" style="-fx-background-radius: 0; -fx-faint-focus-color: transparent; -fx-focus-color: gray; -fx-border-color: #dddddd;">
-         <font>
-            <Font name="Carlito" size="16.0" />
-         </font></TextField>
-      <ListView fx:id="tableListView" prefHeight="200.0" prefWidth="200.0" style="-fx-faint-focus-color: transparent; -fx-border-color: #dddddd; -fx-focus-color: transparent;" VBox.vgrow="ALWAYS">
-         <placeholder>
-            <VBox alignment="TOP_CENTER" spacing="5">
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-               <Label opacity="0.7" text="Nenhuma mesa foi encontrada com esse código." textAlignment="CENTER" wrapText="true">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0"
+      prefWidth="335.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.sysRestaurante.gui.NewComandaDialogController">
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
+    <stylesheets>
+        <URL value="@../css/menu.css"/>
+        <URL value="@../css/controls.css"/>
+    </stylesheets>
+    <HBox alignment="CENTER_LEFT" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
+        <padding>
+            <Insets left="5.0" right="5.0"/>
+        </padding>
+        <Label text="Selecione uma mesa">
+            <font>
+                <Font name="Carlito Bold" size="24.0"/>
+            </font>
+        </Label>
+    </HBox>
+    <TextField fx:id="searchBox" prefHeight="35.0" promptText="Digite o código da mesa"
+               style="-fx-background-radius: 0; -fx-faint-focus-color: transparent; -fx-focus-color: gray; -fx-border-color: #dddddd;">
+        <font>
+          <Font name="Carlito" size="16.0"/>
+        </font>
+    </TextField>
+    <ListView fx:id="tableListView" prefHeight="200.0" prefWidth="200.0"
+              style="-fx-faint-focus-color: transparent; -fx-border-color: #dddddd; -fx-focus-color: transparent;"
+              VBox.vgrow="ALWAYS">
+        <placeholder>
+          <VBox alignment="TOP_CENTER" spacing="5">
+              <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+              </padding>
+              <Label opacity="0.7" text="Nenhuma mesa foi encontrada com esse código." textAlignment="CENTER"
+                     wrapText="true">
                   <font>
-                     <Font name="Carlito" size="16" />
+                      <Font name="Carlito" size="16"/>
                   </font>
-               </Label>
-               <Label opacity="0.7" text="Pressione F3 para começar a fazer uma nova busca rápida." textAlignment="CENTER" wrapText="true">
+              </Label>
+              <Label opacity="0.7" text="Pressione F3 para começar a fazer uma nova busca rápida."
+                     textAlignment="CENTER" wrapText="true">
                   <font>
-                     <Font name="Carlito Bold" size="16" />
+                      <Font name="Carlito Bold" size="16"/>
                   </font>
-               </Label>
-            </VBox>
-         </placeholder>
-      </ListView>
-      <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-         <children>
-            <Label fx:id="selectedTableLabel" opacity="0.75" text="Mesa selecionada: 45">
-               <font>
-                  <Font name="Carlito Bold" size="17.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <ComboBox fx:id="employeeList" prefHeight="35.0" prefWidth="600.0" promptText="Selecionar atendente" style="-fx-font-family: Carlito; -fx-font-weight: bold; -fx-font-size: 16; -fx-focus-color: gray; -fx-faint-focus-color: transparent;" />
-      <HBox spacing="5.0" styleClass="view">
-         <children>
-            <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" text="Cancelar">
-               <font>
-                  <Font name="Carlito Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="confirmButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" text="Confirmar">
-               <font>
-                  <Font name="Carlito Bold" size="16.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-   </children>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
-   <stylesheets>
-      <URL value="@../css/menu.css" />
-      <URL value="@../css/controls.css" />
-   </stylesheets>
+              </Label>
+          </VBox>
+        </placeholder>
+    </ListView>
+    <HBox alignment="CENTER_LEFT" prefHeight="35.0" spacing="5.0"
+          style="-fx-background-color: white; -fx-border-color: #dddddd;">
+        <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+        </padding>
+        <Label fx:id="selectedTableLabel" opacity="0.75" text="Mesa selecionada: 45">
+            <font>
+                <Font name="Carlito Bold" size="17.0"/>
+            </font>
+        </Label>
+    </HBox>
+    <ComboBox fx:id="employeeList" prefHeight="35.0" prefWidth="600.0" promptText="Selecionar atendente"
+              style="-fx-font-family: Carlito; -fx-font-weight: bold; -fx-font-size: 16; -fx-focus-color: gray; -fx-faint-focus-color: transparent;"/>
+    <HBox spacing="5.0" styleClass="view">
+        <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" text="Cancelar">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+        </Button>
+        <Button fx:id="confirmButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" text="Confirmar">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+        </Button>
+    </HBox>
 </VBox>

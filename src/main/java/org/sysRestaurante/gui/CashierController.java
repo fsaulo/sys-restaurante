@@ -1,12 +1,13 @@
 package org.sysRestaurante.gui;
 
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -29,19 +30,18 @@ import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
+import org.sysRestaurante.gui.formatter.CellFormatter;
+import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.gui.formatter.StatusCellFormatter;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
-import org.sysRestaurante.gui.formatter.CellFormatter;
-import org.sysRestaurante.gui.formatter.CurrencyField;
-import org.sysRestaurante.gui.formatter.DateFormatter;
-import org.sysRestaurante.gui.formatter.StatusCellFormatter;
-import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
-import java.text.NumberFormat;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class CashierController {
 
@@ -60,16 +60,6 @@ public class CashierController {
     @FXML
     private Label statusCashierLabel;
     @FXML
-    private Label revenueLabel;
-    @FXML
-    private VBox cashierDateDetailsBox;
-    @FXML
-    private Label inCashLabel;
-    @FXML
-    private Label byCardLabel;
-    @FXML
-    private Label withdrawalLabel;
-    @FXML
     private TableColumn<OrderDao, Integer> codOrder;
     @FXML
     private TableColumn<OrderDao, String> details;
@@ -85,6 +75,8 @@ public class CashierController {
     private TableView<OrderDao> orderListTableView;
     @FXML
     private HBox wrapperBoxPicker;
+    @FXML
+    private VBox wrapperVBox;
 
     private DatePicker datePicker;
 
@@ -128,6 +120,19 @@ public class CashierController {
 
             return row;
         });
+
+        CashierDao cashier = AppFactory.getCashierDao();
+        Parent detailsBox = null;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.DETAILS_CASHIER_BOX));
+        loader.setController(new DetailsCashierBoxController(cashier));
+
+        try {
+            detailsBox = loader.load();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+        wrapperVBox.getChildren().add(detailsBox);
     }
 
     private void setSearchProperties() {
@@ -195,7 +200,7 @@ public class CashierController {
     @FXML
     public void onNewOrder() {
         newOrderBox.setDisable(true);
-        AppFactory.getAppController().showPOS();
+        AppController.showPOS();
 
         if (AppController.isSellConfirmed()) {
             AppController.setSellConfirmed(false);
@@ -231,7 +236,7 @@ public class CashierController {
 
             if (order.getDetails().equals("Pedido em comanda")) {
                 ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
-                int idComanda = comanda.getIdComanda();
+                int idComanda = Objects.requireNonNull(comanda).getIdComanda();
                 int idTable = comanda.getIdTable();
                 Order.closeComanda(idComanda, total);
                 Order.updateOrderStatus(idComanda, CANCELED);
@@ -267,21 +272,18 @@ public class CashierController {
     }
 
     public void updateCashierStatus() {
-        AppFactory.setCashierController(this);
         boolean isCashierOpenned = Cashier.isOpen();
-        CashierDao cashierDao;
+        AppFactory.setCashierController(this);
+        Cashier.getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
 
         if (isCashierOpenned) {
-            cashierDao = new Cashier().getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
             setDisableCashierOptions(false);
             openOrCloseCashierLabel.setText("Fechar caixa");
             statusCashierLabel.setText("CAIXA LIVRE");
             statusCashierBox.setStyle("-fx-background-color: #58996A; -fx-background-radius: 5");
             statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
             statusCashierBox.getChildren().add(statusCashierLabel);
-            changeCashierDetails(true);
         } else {
-            cashierDao = new CashierDao();
             setDisableCashierOptions(true);
             openOrCloseCashierLabel.setText("Abrir caixa");
             Label statusMessage = new Label("Use o atalho F10 para abrir o caixa");
@@ -294,14 +296,7 @@ public class CashierController {
                     "-fx-font-style: italic");
             statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
             statusCashierBox.getChildren().addAll(statusCashierLabel, statusMessage);
-            changeCashierDetails(false);
         }
-
-        NumberFormat brlCurrencyFormat = CurrencyField.getBRLCurrencyFormat();
-        revenueLabel.setText(brlCurrencyFormat.format(cashierDao.getRevenue()));
-        inCashLabel.setText(brlCurrencyFormat.format(cashierDao.getInCash()));
-        byCardLabel.setText(brlCurrencyFormat.format(cashierDao.getByCard()));
-        withdrawalLabel.setText(brlCurrencyFormat.format(cashierDao.getWithdrawal()));
     }
 
     public void updateOrderTableList() {
@@ -323,6 +318,7 @@ public class CashierController {
     public void setFilterByDate() {
         int idCashier = AppFactory.getCashierDao().getIdCashier();
         ObservableList<OrderDao> data = Order.getOrderByIdCashier(idCashier);
+        assert data != null;
         FilteredList<OrderDao> filteredList = new FilteredList<>(data);
         datePicker.valueProperty().addListener((newValue) ->
             filteredList.setPredicate(orderDao -> {
@@ -340,6 +336,7 @@ public class CashierController {
     public void setFilterByCod(Number cod) {
         int idCashier = AppFactory.getCashierDao().getIdCashier();
         ObservableList<OrderDao> data = Order.getOrderByIdCashier(idCashier);
+        assert data != null;
         FilteredList<OrderDao> filteredList = new FilteredList<>(data);
         filteredList.setPredicate(orderDao -> {
             if (cod == null) {
@@ -353,29 +350,9 @@ public class CashierController {
         orderListTableView.setItems(sortedData);
     }
 
-
     public void setDisableCashierOptions(boolean status) {
         searchOrderBox.setDisable(status);
         cancelOrderBox.setDisable(status);
         newOrderBox.setDisable(status);
-    }
-
-    public void changeCashierDetails(boolean isCashierOpenned) {
-        cashierDateDetailsBox.getChildren().removeAll(cashierDateDetailsBox.getChildren());
-
-        if (isCashierOpenned) {
-            Label message = new Label("Caixa aberto em");
-            Label date = new Label();
-            message.setStyle("-fx-font-family: carlito; -fx-font-size: 15; -fx-font-weight: bold");
-            date.setStyle("-fx-font-family: carlito; -fx-font-size: 15; -fx-font-weight: bold");
-            date.setText(DateFormatter
-                    .TIME_DETAILS_FORMAT
-                    .format(Cashier.getCashierDateTimeDetailsById(AppFactory.getCashierDao().getIdCashier())));
-            cashierDateDetailsBox.getChildren().addAll(message, date);
-        } else {
-            Label message = new Label("Caixa está fechado");
-            message.setStyle("-fx-font-family: carlito; -fx-font-size: 15; -fx-font-weight: bold");
-            cashierDateDetailsBox.getChildren().add(message);
-        }
     }
 }

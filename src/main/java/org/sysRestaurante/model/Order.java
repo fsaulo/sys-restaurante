@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,7 +44,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps = Objects.requireNonNull(con).prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUser);
             ps.setInt(2, idCashier);
             ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
@@ -93,7 +94,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps = Objects.requireNonNull(con).prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idCashier);
             ps.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
             ps.setInt(3, idTable);
@@ -121,7 +122,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idCashier);
             rs = ps.executeQuery();
 
@@ -167,7 +168,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idOrder);
             rs = ps.executeQuery();
 
@@ -211,7 +212,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setDate(1, Date.valueOf(LocalDate.now()));
             ps.setTime(2, Time.valueOf(LocalTime.now()));
             ps.setDouble(3, total);
@@ -235,7 +236,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, CANCELED);
             ps.setInt(2, idOrder);
             ps.executeUpdate();
@@ -258,7 +259,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query1);
+            ps = Objects.requireNonNull(con).prepareStatement(query1);
             ps.setInt(1, idComanda);
             rs = ps.executeQuery();
             if (rs.next()) idOrder = rs.getInt("id_pedido");
@@ -284,7 +285,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query1);
+            ps = Objects.requireNonNull(con).prepareStatement(query1);
             ps.setInt(1, idComanda);
             rs = ps.executeQuery();
             if (rs.next()) idOrder = rs.getInt("id_pedido");
@@ -309,7 +310,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idEmployee);
             ps.setInt(2, idOrder);
             ps.executeUpdate();
@@ -328,7 +329,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setString(1, customerName);
             ps.setInt(2, idOrder);
             ps.executeUpdate();
@@ -349,7 +350,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idOrder);
             rs = ps.executeQuery();
 
@@ -375,7 +376,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idOrder);
             rs = ps.executeQuery();
 
@@ -408,7 +409,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             for (ProductDao item : productsList) {
                 ps.setInt(1, item.getIdProduct());
                 ps.setInt(2, idOrder);
@@ -428,11 +429,11 @@ public class Order {
 
     public static void removeProductsFromOrder(int idOrder) {
         String query = "DELETE FROM pedido_has_produtos WHERE id_pedido = ?";
-        PreparedStatement ps = null;
+        PreparedStatement ps;
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idOrder);
             ps.executeUpdate();
 
@@ -455,24 +456,28 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idCashier);
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                orderDao = new OrderDao();
-                orderDao.setIdOrder(rs.getInt("id_pedido"));
-                orderDao.setInCash(rs.getDouble("valor_avista"));
-                orderDao.setByCard(rs.getDouble("valor_cartao"));
-                orderDao.setNote(rs.getString("observacao"));
-                orderDao.setDetails(rs.getInt("id_categoria_pedido"));
-                orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
-                orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
-                orderDao.setStatus(rs.getInt("status"));
-                orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
-                orderDao.setTaxes(rs.getDouble("taxas"));
-                orderDao.setDiscount(rs.getDouble("descontos"));
-                orderList.add(orderDao);
+                try {
+                    orderDao = new OrderDao();
+                    orderDao.setIdOrder(rs.getInt("id_pedido"));
+                    orderDao.setInCash(rs.getDouble("valor_avista"));
+                    orderDao.setByCard(rs.getDouble("valor_cartao"));
+                    orderDao.setNote(rs.getString("observacao"));
+                    orderDao.setDetails(rs.getInt("id_categoria_pedido"));
+                    orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
+                    orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
+                    orderDao.setStatus(rs.getInt("status"));
+                    orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
+                    orderDao.setTaxes(rs.getDouble("taxas"));
+                    orderDao.setDiscount(rs.getDouble("descontos"));
+                    orderList.add(orderDao);
+                } catch (NullPointerException ignored) {
+                    ExceptionHandler.doNothing();
+                }
             }
 
             ps.close();
@@ -494,7 +499,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -518,7 +523,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idTable);
             ps.setInt(2, idComanda);
             ps.executeUpdate();
@@ -537,7 +542,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setDouble(1, value);
             ps.setInt(2, idOrder);
             ps.executeUpdate();
@@ -556,7 +561,7 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setDouble(1, value);
             ps.setInt(2, idOrder);
             ps.executeUpdate();

@@ -3,27 +3,22 @@ package org.sysRestaurante.gui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Product;
 
+import java.sql.SQLException;
+
 public class CashierPOSController extends POS {
 
     @FXML
-    private VBox cancelButton;
+    private Button cancelButton;
     @FXML
-    private VBox finalizeSell;
+    private Button finalizeSellButton;
     @FXML
     private VBox detailsWrapperBox;
     @FXML
@@ -62,7 +57,10 @@ public class CashierPOSController extends POS {
     private Spinner<Integer> qtySpinner;
 
     private final ObservableList<ProductDao> selectedProductsList = FXCollections.observableArrayList();
-    private final ObservableList<ProductDao> products = new Product().getProducts();
+    private final ObservableList<ProductDao> products = Product.getProducts();
+
+    public CashierPOSController() throws SQLException {
+    }
 
     public void initialize() {
         AppFactory.setPos(this);
@@ -102,6 +100,6 @@ public class CashierPOSController extends POS {
         updateDetailsBox();
 
         cancelButton.setOnMouseClicked(event -> onCancelButton());
-        finalizeSell.setOnMouseClicked(event -> this.onFinalizeOrder());
+        finalizeSellButton.setOnMouseClicked(event -> this.onFinalizeOrder());
     }
 }

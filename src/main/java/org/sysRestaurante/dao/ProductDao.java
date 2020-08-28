@@ -4,39 +4,79 @@ public class ProductDao {
     private int idProduct;
     private int idCategory;
     private int quantity;
+    private int supply;
+    private int minSupply;
+    private int sold;
     private long barCode;
     private double sellPrice;
     private double buyPrice;
     private double total;
+    private boolean menuItem;
+    private boolean trackStock;
+    private boolean ingredient;
     private String description;
-    private String category;
+    private String categoryDescription;
+    private CategoryDao categoryDao;
 
     public ProductDao() {
         quantity = 1;
         total = 0.0;
     }
 
-    public void setCategory(int idCategory) {
-        switch (idCategory) {
-            case 1:
-                category = "Bebidas";
-                break;
-            case 2:
-                category = "Almoços";
-                break;
-            case 3:
-                category = "Tira-gosto";
-                break;
-            case 4:
-                category = "Porção extra";
-            default:
-                category = "Sem categoria";
-                break;
-        }
+    public int getSold() {
+        return sold;
     }
 
-    public String getCategory() {
-        return this.category;
+    public void setSold(int sold) {
+        this.sold = sold;
+    }
+
+    public boolean isIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(boolean ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public boolean isMenuItem() {
+        return menuItem;
+    }
+
+    public void setMenuItem(boolean menuItem) {
+        this.menuItem = menuItem;
+    }
+
+    public boolean isTrackStock() {
+        return trackStock;
+    }
+
+    public void setTrackStock(boolean trackStock) {
+        this.trackStock = trackStock;
+    }
+
+    public int getMinSupply() {
+        return minSupply;
+    }
+
+    public void setMinSupply(int minSupply) {
+        this.minSupply = minSupply;
+    }
+
+    public int getSupply() {
+        return supply;
+    }
+
+    public void setSupply(int supply) {
+        this.supply = supply;
+    }
+
+    public CategoryDao getCategoryDao() {
+        return categoryDao;
+    }
+
+    public void setCategoryDao(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
     }
 
     public void setTotal(double total) {
@@ -109,5 +149,35 @@ public class ProductDao {
 
     public void incrementsQuantity(int qty) {
         this.quantity += qty;
+    }
+
+    public String getCategoryDescription() {
+        return categoryDao.getCategoryDescription();
+    }
+
+    public static class CategoryDao {
+        private String categoryDescription;
+        private int idCategory;
+
+        public CategoryDao() {
+            this.categoryDescription = "Sem categoria";
+            this.idCategory = 5;
+        }
+
+        public String getCategoryDescription() {
+            return categoryDescription;
+        }
+
+        public void setCategoryDescription(String categoryDescription) {
+            this.categoryDescription = categoryDescription;
+        }
+
+        public int getIdCategory() {
+            return idCategory;
+        }
+
+        public void setIdCategory(int idCategory) {
+            this.idCategory = idCategory;
+        }
     }
 }

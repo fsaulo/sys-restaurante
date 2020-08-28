@@ -26,6 +26,7 @@ import org.sysRestaurante.model.Management;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class NewComandaDialogController {
 
@@ -82,7 +83,7 @@ public class NewComandaDialogController {
         String filter = searchBox.getText().toUpperCase();
         String AVAILABLE = "DISPONIVEL;DISPONÍVEL";
 
-        if (filter == null || filter.length() == 0) {
+        if (filter.length() == 0) {
             filteredData.setPredicate(null);
         }
         else if (AVAILABLE.contains(filter.toUpperCase())) {
@@ -97,8 +98,8 @@ public class NewComandaDialogController {
 
     public void onConfirmClicked(Event event) {
         Order cashier = new Order();
-        OrderDao order = new OrderDao();
-        int idTable = 0;
+        OrderDao order;
+        int idTable;
 
         boolean empty = false;
         boolean available = false;
@@ -112,7 +113,7 @@ public class NewComandaDialogController {
         }
 
 
-        if (available && !empty) {
+        if (available) {
             idTable = tableListView.getSelectionModel().getSelectedItem().getIdTable();
         } else  {
             if (empty) {
@@ -130,7 +131,7 @@ public class NewComandaDialogController {
         }
 
         int idCashier = AppFactory.getCashierDao().getIdCashier();
-        int idEmployee = 0;
+        int idEmployee;
 
         try {
             EmployeeDao employee = employeeList.getSelectionModel().getSelectedItem();
@@ -140,13 +141,13 @@ public class NewComandaDialogController {
         }
 
         String defaultMessage = "Cliente na mesa #" + selectedTable.getIdTable();
-        order = cashier.newOrder(idCashier, 0, 0, 2, 0,0, defaultMessage);
+        order = Order.newOrder(idCashier, 0, 0, 2, 0,0, defaultMessage);
 
         // A bug occurs whenever we try to fetch the auto-generated keys in the prepared statement.
         // This bug populates the table that contains a list of selected products with garbage.
         // So we clear the basket every time we create a fresh order. This procedure doesn't corrects the problem
         // thus should be fixed.
-        Order.removeProductsFromOrder(order.getIdOrder());
+        Order.removeProductsFromOrder(Objects.requireNonNull(order).getIdOrder());
         cashier.newComanda(idTable, order.getIdOrder(), idCashier, idEmployee,2);
         Management.changeTableStatus(idTable, 2);
         AppFactory.getManageComandaController().refreshTileList();

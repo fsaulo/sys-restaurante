@@ -16,10 +16,8 @@ public class DBConnection {
             Class.forName("org.sqlite.JDBC");
             LOGGER.config("New request.");
             Connection con = DriverManager.getConnection(DB_LOCAL_CONNECTION);
+            assert con != null;
             DBConnection.incrementGlobalDBRequestsCount();
-            if (con == null){
-                LOGGER.severe("Connection failed.");
-            }
             return con;
         } catch (ClassNotFoundException ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();

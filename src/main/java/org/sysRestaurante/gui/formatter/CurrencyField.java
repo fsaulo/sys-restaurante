@@ -1,9 +1,5 @@
 package org.sysRestaurante.gui.formatter;
 
-import java.text.NumberFormat;
-import java.util.Currency;
-import java.util.Locale;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
@@ -11,17 +7,27 @@ import javafx.geometry.NodeOrientation;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
+import java.text.NumberFormat;
+import java.util.Currency;
+import java.util.Locale;
+
 public class CurrencyField extends TextField {
 
     private NumberFormat format;
     private final SimpleDoubleProperty amount;
+    private NodeOrientation orientation = NodeOrientation.RIGHT_TO_LEFT;
 
     public CurrencyField(Locale locale) {
         this(locale, 0.00);
     }
 
+    public CurrencyField(Locale locale, NodeOrientation orientation) {
+        this(locale, 0.00);
+        setNodeOrientation(orientation);
+    }
+
     public CurrencyField(Locale locale, Double initialAmount) {
-        setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
+        setNodeOrientation(orientation);
         amount = new SimpleDoubleProperty(this, "amount", initialAmount);
         format = NumberFormat.getCurrencyInstance(locale);
         setText(format.format(initialAmount));
@@ -98,5 +104,9 @@ public class CurrencyField extends TextField {
         brlCurrencyFormat.setCurrency(brl);
         brlCurrencyFormat.setMaximumFractionDigits(brl.getDefaultFractionDigits());
         return brlCurrencyFormat;
+    }
+
+    public void setOrientation(NodeOrientation orientation) {
+        this.orientation = orientation;
     }
 }

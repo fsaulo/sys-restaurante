@@ -11,7 +11,7 @@ import java.text.NumberFormat;
 
 public class PercentageField extends TextField {
 
-    private NumberFormat format;
+    private final NumberFormat format;
     private final SimpleDoubleProperty amount;
 
     public PercentageField() {

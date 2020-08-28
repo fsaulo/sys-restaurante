@@ -9,67 +9,66 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="335.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.RegisterTableController">
-   <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
-         <children>
-            <Label text="Registrar uma nova mesa">
-               <font>
-                  <Font name="Carlito Bold" size="24.0" />
-               </font>
-            </Label>
-         </children>
-         <padding>
-            <Insets left="5.0" right="5.0" />
-         </padding>
-      </HBox>
-      <ListView fx:id="tableListView" prefHeight="200.0" prefWidth="200.0" style="-fx-faint-focus-color: transparent; -fx-border-color: #dddddd; -fx-focus-color: transparent;" VBox.vgrow="ALWAYS">
-         <placeholder>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0"
+      prefWidth="335.0" spacing="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.sysRestaurante.gui.RegisterTableController">
+    <padding>
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+    </padding>
+    <stylesheets>
+        <URL value="@../css/menu.css"/>
+        <URL value="@../css/controls.css"/>
+    </stylesheets>
+    <HBox alignment="CENTER_LEFT" prefHeight="35.0" style="-fx-background-color: white; -fx-border-color: #dddddd;">
+        <padding>
+            <Insets left="5.0" right="5.0"/>
+        </padding>
+        <Label text="Registrar uma nova mesa">
+            <font>
+                <Font name="Carlito Bold" size="24.0"/>
+            </font>
+        </Label>
+    </HBox>
+    <ListView fx:id="tableListView" prefHeight="200.0" prefWidth="200.0"
+              style="-fx-faint-focus-color: transparent; -fx-border-color: #dddddd; -fx-focus-color: transparent;"
+              VBox.vgrow="ALWAYS">
+        <placeholder>
             <VBox alignment="TOP_CENTER" spacing="5">
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-               <children>
-                  <Label opacity="0.7" text="Ainda não há nenhuma mesa registrada" textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font name="Carlito" size="16.0" />
-                     </font>
-                  </Label>
-                  <Label opacity="0.7" text="Aqui irá aparecer todas as mesas registradas" textAlignment="CENTER" wrapText="true">
-                     <font>
-                        <Font name="Carlito Bold" size="16.0" />
-                     </font>
-                  </Label>
-               </children>
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                </padding>
+                <Label opacity="0.7" text="Ainda não há nenhuma mesa registrada" textAlignment="CENTER"
+                       wrapText="true">
+                    <font>
+                        <Font name="Carlito" size="16.0"/>
+                    </font>
+                </Label>
+                <Label opacity="0.7" text="Aqui irá aparecer todas as mesas registradas" textAlignment="CENTER"
+                       wrapText="true">
+                    <font>
+                        <Font name="Carlito Bold" size="16.0"/>
+                    </font>
+                </Label>
             </VBox>
-         </placeholder>
-      </ListView>
-      <VBox fx:id="fieldVBox" />
-      <HBox spacing="5.0" styleClass="view">
-         <children>
-            <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" text="Cancelar">
-               <font>
-                  <Font name="Carlito Bold" size="16.0" />
-               </font>
-            </Button>
-            <Button fx:id="removeButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" text="Remover">
-               <font>
-                  <Font name="Carlito Bold" size="16.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-      <Button fx:id="confirmButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="550.0" text="Confirmar" VBox.vgrow="ALWAYS">
-         <font>
-            <Font name="Carlito Bold" size="16.0" />
-         </font>
-      </Button>
-   </children>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
-   <stylesheets>
-      <URL value="@../css/menu.css" />
-      <URL value="@../css/controls.css" />
-   </stylesheets>
+        </placeholder>
+    </ListView>
+    <VBox fx:id="fieldVBox"/>
+    <HBox spacing="5.0" styleClass="view">
+        <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" text="Cancelar">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+        </Button>
+        <Button fx:id="removeButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="300.0" text="Remover">
+            <font>
+                <Font name="Carlito Bold" size="16.0"/>
+            </font>
+        </Button>
+    </HBox>
+    <Button fx:id="confirmButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="550.0" text="Confirmar"
+            VBox.vgrow="ALWAYS">
+        <font>
+          <Font name="Carlito Bold" size="16.0"/>
+        </font>
+    </Button>
 </VBox>

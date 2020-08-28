@@ -11,11 +11,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.util.Animation;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
-import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class ToolBarController extends AppFactory {
@@ -24,6 +25,8 @@ public class ToolBarController extends AppFactory {
     private VBox vBoxMenuPrincipal;
     @FXML
     private ToggleButton toggleMenuPrincipal;
+    @FXML
+    private ToggleButton toggleMenuFerramentas;
     @FXML
     private ToggleButton toggleGerenciarBalcao;
     @FXML
@@ -41,7 +44,7 @@ public class ToolBarController extends AppFactory {
     @FXML
     private ToggleButton g2a;
     @FXML
-    private ToggleButton g2b;
+    private ToggleButton toggleGerenciarProdutos;
     @FXML
     private ToggleButton g2c;
     @FXML
@@ -67,7 +70,7 @@ public class ToolBarController extends AppFactory {
     @FXML
     private ToggleButton g5c;
     @FXML
-    private VBox vboxG2;
+    private VBox vBoxMenuFerramentas;
     @FXML
     private VBox vboxG3;
     @FXML
@@ -82,9 +85,27 @@ public class ToolBarController extends AppFactory {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ToolBarController.class.getName());
 
     public void initialize() {
+        AppFactory.setToolBarController(this);
+        UserDao user = null;
+        String adminAccessString = "SysRestaurante | Adminstração";
+        String employeeAccessString = "SysRestaurante | Funcionário";
+
+        try {
+            user = AppFactory.getUserDao();
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            LOGGER.severe("Trying to access null user object.");
+        }
+
         this.clearToggleGroup(menuGroup, submenuGroup);
-        userLabel.setText("Olá, Saulo");
-        dashboardLinkLabel.setText("SysRestaurante | Adminstração");
+        userLabel.setText("Olá, " + Objects.requireNonNull(user).getName());
+
+        if (user.isAdmin()) {
+            dashboardLinkLabel.setText(adminAccessString);
+        } else {
+            dashboardLinkLabel.setText(employeeAccessString);
+        }
     }
 
     public void unfoldSubmenus(VBox box, ToggleButton... toggleSubmenus) {
@@ -102,15 +123,24 @@ public class ToolBarController extends AppFactory {
         }
     }
 
+    @FXML
     public void menuPrincipal(Event event) {
-        unfoldSubmenus(
-                vBoxMenuPrincipal,
+        unfoldSubmenus(vBoxMenuPrincipal,
                 toggleGerenciarBalcao,
                 toggleComandas,
                 toggleHistoricoCaixa,
                 togglePainelCardapio,
-                togglePedidos
-        );
+                togglePedidos);
+        event.consume();
+    }
+
+    @FXML
+    public void menuFerramentas(Event event) {
+        unfoldSubmenus(vBoxMenuFerramentas,
+                toggleGerenciarProdutos,
+                g2a,
+                g2c,
+                g2d);
         event.consume();
     }
 
@@ -118,36 +148,56 @@ public class ToolBarController extends AppFactory {
         toggleMenuPrincipal.setSelected(true);
     }
 
+    public void selectMenuFerramentas() {
+        toggleMenuFerramentas.setSelected(true);
+    }
+
+    @FXML
     public void dashboard(MouseEvent event) {
         untoggleGroup(submenuGroup);
         AppFactory.getAppController().loadPage(event, SceneNavigator.DASHBOARD);
     }
 
+    @FXML
     public void submenuGerenciarBalcao(MouseEvent event) {
-        if (!toggleGerenciarBalcao.isSelected()) toggleGerenciarBalcao.setSelected(true);
+        if (!toggleGerenciarBalcao.isSelected()) {
+            toggleGerenciarBalcao.setSelected(true);
+        }
+
         selectMenuPrincipal();
         AppFactory.getAppController().loadPage(event, SceneNavigator.CASHIER);
     }
 
+    @FXML
     public void submenuComandas(MouseEvent event) {
         selectMenuPrincipal();
         AppFactory.getAppController().loadPage(event, SceneNavigator.MANAGE_COMANDA);
     }
 
+    @FXML
+    public void submenuHistoricoCaixa(Event event) {
+        selectMenuPrincipal();
+        AppFactory.getAppController().loadPage(event, SceneNavigator.CASHIER_HISTORY_VIEW);
+    }
+
+    @FXML
     public void submenuPedidos() {
         selectMenuPrincipal();
     }
 
-    public void submenuHistoricoCaixa() {
-        selectMenuPrincipal();
-    }
-
+    @FXML
     public void submenuPainelCardapio() {
         selectMenuPrincipal();
     }
 
-    public void menuG2(ActionEvent event) {
-        unfoldSubmenus(vboxG2, g2a, g2b, g2c, g2d);
+    @FXML
+    public void submenuProdutos(Event event) {
+        if (!toggleGerenciarProdutos.isSelected()) {
+            toggleGerenciarProdutos.setSelected(true);
+        }
+
+        selectMenuFerramentas();
+        AppFactory.getAppController().loadPage(event, SceneNavigator.PRODUCT_MANAGEMENT_VIEW);
     }
 
     public void menuG3(ActionEvent event) {
@@ -165,8 +215,8 @@ public class ToolBarController extends AppFactory {
     public void clearToggleGroup(ToggleGroup... grupoMenu) {
         for (ToggleGroup grupo : grupoMenu)
         {
-            grupo.selectedToggleProperty().addListener(
-                    (ObservableValue<? extends Toggle> obs, Toggle old, Toggle novo) -> {
+            grupo.selectedToggleProperty()
+                    .addListener((ObservableValue<? extends Toggle> obs, Toggle old, Toggle novo) -> {
                     if (grupo.getSelectedToggle() == null) {
                         grupo.selectToggle(old);
                     }});
@@ -185,10 +235,10 @@ public class ToolBarController extends AppFactory {
             AppFactory.setUserDao(null);
             LOGGER.info("User logged out");
             AppFactory.getLoginController().storeLastSessionDuration();
-            MainGUI.restartProgram();
-        } catch (IOException e) {
+            AppFactory.getMainGUI().restartProgram();
+        } catch (Exception e) {
             ExceptionHandler.incrementGlobalExceptionsCount();
-            LOGGER.severe("Couldn't log out due to IOException.");
+            LOGGER.severe("Couldn't log out due to an exception.");
             e.printStackTrace();
         }
     }

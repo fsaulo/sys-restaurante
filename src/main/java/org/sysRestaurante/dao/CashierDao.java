@@ -1,6 +1,9 @@
 package org.sysRestaurante.dao;
 
+import org.sysRestaurante.util.ExceptionHandler;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class CashierDao {
@@ -18,8 +21,27 @@ public class CashierDao {
     private LocalDate dateClosing;
     private LocalTime timeOpening;
     private LocalTime timeClosing;
+    private LocalDateTime dateTimeOpening;
+    private LocalDateTime dateTimeClosing;
 
     public CashierDao() { }
+
+    public void configDateTimeEvent() {
+        try {
+            dateTimeClosing = dateClosing.atTime(timeClosing);
+            dateTimeOpening = dateOpening.atTime(timeOpening);
+        } catch (Exception exception) {
+            ExceptionHandler.doNothing();
+        }
+    }
+
+    public LocalDateTime getDateTimeOpening() {
+        return dateTimeOpening;
+    }
+
+    public LocalDateTime getDateTimeClosing() {
+        return dateTimeClosing;
+    }
 
     public CashierDao(int idCashier) {
         this.idCashier = idCashier;

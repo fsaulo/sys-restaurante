@@ -3,30 +3,23 @@ package org.sysRestaurante.gui;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
+import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.model.Cashier;
+import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
-import org.sysRestaurante.gui.formatter.CurrencyField;
-import org.sysRestaurante.util.LoggerHandler;
-import org.sysRestaurante.model.Management;
 import org.sysRestaurante.util.PercentageField;
 
 import java.io.IOException;
@@ -36,10 +29,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.logging.Logger;
+import java.util.Objects;
 
 public class FinishSellController {
 
+    public ToggleGroup discountGroup;
+    public ToggleGroup taxGroup;
     @FXML
     private HBox box1;
     @FXML
@@ -105,14 +100,12 @@ public class FinishSellController {
     @FXML
     private Button cc2;
 
-    private ArrayList<ProductDao> products;
     private CurrencyField payInCash;
     private CurrencyField payByCard;
     private PercentageField percentageField1;
     private PercentageField percentageField2;
     private final OrderDao order = AppFactory.getOrderDao();
     private static final String GREEN = "#4a8d2c";
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(FinishSellController.class.getName());
 
     @FXML
     public void initialize() {
@@ -221,7 +214,7 @@ public class FinishSellController {
 
         PopOver popOver = new PopOver(node);
         popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
-        products = AppFactory.getSelectedProducts();
+        ArrayList<ProductDao> products = AppFactory.getSelectedProducts();
 
         if (products.size() >= 15) {
             popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_CENTER);
@@ -260,11 +253,9 @@ public class FinishSellController {
             OrderDao orderDao = AppFactory.getOrderDao();
 
             if (orderDao instanceof ComandaDao || orderDao == null) {
-                int idOrder = orderDao.getIdOrder();
+                int idOrder = Objects.requireNonNull(orderDao).getIdOrder();
                 int idComanda = ((ComandaDao) orderDao).getIdComanda();
                 int idTable = ((ComandaDao) orderDao).getIdTable();
-
-                LOGGER.info("Instance of 'Comanda' Data Access Object");
 
                 Order.closeComanda(idComanda, payByCard + payInCash);
                 Order.addProductsToOrder(orderDao.getIdOrder(), items);
@@ -277,7 +268,6 @@ public class FinishSellController {
 
                 AppFactory.getManageComandaController().refreshTileList();
             } else {
-                LOGGER.info("Instance of 'Order' Data Access Object");
                 Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
 
                 orderDao = Order.newOrder(AppFactory.getCashierDao().getIdCashier(),
@@ -288,7 +278,7 @@ public class FinishSellController {
                         taxes,
                         note.toString());
 
-                Order.addProductsToOrder(orderDao.getIdOrder(), items);
+                Order.addProductsToOrder(Objects.requireNonNull(orderDao).getIdOrder(), items);
                 AppFactory.getCashierController().updateCashierElements();
             }
 
@@ -378,14 +368,10 @@ public class FinishSellController {
     }
 
     public double getTotal() {
-        double subtotal = getSubtotal();
-        double discount = getDiscount();
-        double tax = getTax();
-        return subtotal + tax - discount;
+		return getSubtotal() + getTax() - getDiscount();
     }
 
     public double getChange() {
-        double total = getTotal();
-        return Math.round(((payInCash.getAmount() + payByCard.getAmount()) - (total))*100)/100.0;
+        return Math.round(((payInCash.getAmount() + payByCard.getAmount()) - (getTotal()))*100)/100.0;
     }
 }

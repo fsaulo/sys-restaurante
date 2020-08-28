@@ -7,14 +7,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
-
 import javafx.stage.Window;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
@@ -22,15 +16,17 @@ import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.dao.SessionDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Cashier;
-import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Management;
+import org.sysRestaurante.model.Order;
 
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
 public class ManageComandaController {
 
@@ -52,6 +48,14 @@ public class ManageComandaController {
     private Label averageIncome;
     @FXML
     private VBox registerTableButton;
+    @FXML
+    private HBox wrapperBoxPicker1;
+    @FXML
+    private HBox wrapperBoxPicker2;
+    @FXML
+    private VBox statusCashierBox;
+    @FXML
+    private Label statusCashierLabel;
 
     private SessionDao session;
     private List<ComandaDao> comandas;
@@ -75,6 +79,7 @@ public class ManageComandaController {
         setController();
         initSessionDetails();
         updateInfo();
+        updateCashierStatus();
 
         Platform.runLater(this::listBusyTable);
     }
@@ -83,16 +88,41 @@ public class ManageComandaController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.NEW_COMANDA_DIALOG));
         VBox node = loader.load();
         PopOver popOver = new PopOver(node);
-        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_CENTER);
-        newComandaButton.setOnMouseClicked(e1 -> popOver.show(newComandaButton));
+        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.RIGHT_TOP);
+        popOver.setDetachable(false);
+        newComandaButton.setOnMouseClicked(e1 -> popOver.show(wrapperBoxPicker1));
     }
 
     public void handleRegisterTable() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.REGISTER_TABLE_VIEW));
         VBox node = loader.load();
         PopOver popOver = new PopOver(node);
-        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.BOTTOM_CENTER);
-        registerTableButton.setOnMouseClicked(e1 -> popOver.show(registerTableButton));
+        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.RIGHT_TOP);
+        popOver.setDetachable(false);
+        registerTableButton.setOnMouseClicked(e1 -> popOver.show(wrapperBoxPicker2));
+    }
+
+    public void updateCashierStatus() {
+        boolean isCashierOpenned = Cashier.isOpen();
+        Cashier.getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
+
+        if (isCashierOpenned) {
+            statusCashierLabel.setText("CAIXA LIVRE");
+            statusCashierBox.setStyle("-fx-background-color: #58996A; -fx-background-radius: 5");
+            statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
+            statusCashierBox.getChildren().add(statusCashierLabel);
+        } else {
+            Label statusMessage = new Label("Use o atalho F10 para abrir o caixa");
+            statusCashierLabel.setText("CAIXA FECHADO");
+            statusCashierBox.setStyle("-fx-background-color: #bababa; -fx-background-radius: 5");
+            statusCashierBox.getChildren().add(statusMessage);
+            statusMessage.setStyle("-fx-font-family: carlito; " +
+                    "-fx-font-size: 15; " +
+                    "-fx-text-fill: white; " +
+                    "-fx-font-style: italic");
+            statusCashierBox.getChildren().removeAll(statusCashierBox.getChildren());
+            statusCashierBox.getChildren().addAll(statusCashierLabel, statusMessage);
+        }
     }
 
     public void setController() {
@@ -105,16 +135,17 @@ public class ManageComandaController {
     }
 
     public void initSessionDetails() {
-        int busy = Management.getBusyTables().size();
+        int busy = Objects.requireNonNull(Management.getBusyTables()).size();
         session = AppFactory.getSessionDao();
         session.setIdCashier(AppFactory.getCashierDao().getIdCashier());
         session.setBusyTablesCount(busy);
-        session.setAvailableTablesCount(Management.getTables().size() - busy);
+        session.setAvailableTablesCount(Objects.requireNonNull(Management.getTables()).size() - busy);
     }
 
     public void updateInfo() {
+        long averageTimeInMinutes = session.getAveragePermanencyInMinutes();
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
-        averageTime.setText(session.getAveragePermanencyInMinutes() + " minutos");
+        averageTime.setText(DateFormatter.translateTimeFromMinutes(averageTimeInMinutes));
         busyTables.setText(String.valueOf(session.getBusyTablesCount()));
         availableTables.setText(String.valueOf(session.getAvailableTablesCount()));
         averageIncome.setText(format.format(averageIncome()));
@@ -158,7 +189,7 @@ public class ManageComandaController {
     public void computeTotalComanda(ComandaDao comanda) {
         double total = 0;
         List<ProductDao> list = Order.getItemsByOrderId(comanda.getIdOrder());
-        for (ProductDao product : list) {
+        for (ProductDao product : Objects.requireNonNull(list)) {
             total += product.getQuantity() * product.getSellPrice();
             comanda.setTotal(total);
         }
@@ -184,8 +215,8 @@ public class ManageComandaController {
         Pane pane = new Pane();
         HBox topTile = new HBox();
         HBox.setHgrow(pane, Priority.ALWAYS);
-        topTile.getChildren().addAll(comandaCod, pane, tableCod);
         Circle icon = new Circle(4);
+        topTile.getChildren().addAll(comandaCod, pane, tableCod);
         icon.getStyleClass().add("circle-status");
         comandaCod.setStyle("-fx-font-size: 13px; -fx-opacity: 0.5");
         tableCod.setStyle("-fx-font-size: 17px;");
@@ -233,7 +264,7 @@ public class ManageComandaController {
 
     public String calculateTimePeriod(ComandaDao comanda) {
         LocalDateTime dateTimeOpenned = comanda.getDateOpening().atTime(comanda.getTimeOpening());
-        String durationText = null;
+        String durationText;
 
         if (ChronoUnit.DAYS.between(dateTimeOpenned, LocalDateTime.now()) > 1) {
             durationText = ChronoUnit.DAYS.between(dateTimeOpenned, LocalDateTime.now()) + " dias";

@@ -1,22 +1,7 @@
 package org.sysRestaurante.applet;
 
-import org.sysRestaurante.dao.CashierDao;
-import org.sysRestaurante.dao.ComandaDao;
-import org.sysRestaurante.dao.OrderDao;
-import org.sysRestaurante.dao.ProductDao;
-import org.sysRestaurante.dao.SessionDao;
-import org.sysRestaurante.dao.UserDao;
-import org.sysRestaurante.gui.AppController;
-import org.sysRestaurante.gui.CashierController;
-import org.sysRestaurante.gui.CashierPOSController;
-import org.sysRestaurante.gui.ComandaPOSController;
-import org.sysRestaurante.gui.DashboardController;
-import org.sysRestaurante.gui.LoginController;
-import org.sysRestaurante.gui.MainGUIController;
-import org.sysRestaurante.gui.ManageComandaController;
-import org.sysRestaurante.gui.POS;
-import org.sysRestaurante.gui.ReceiptViewController;
-import org.sysRestaurante.model.Receipt;
+import org.sysRestaurante.dao.*;
+import org.sysRestaurante.gui.*;
 
 import java.util.ArrayList;
 
@@ -27,6 +12,7 @@ public class AppFactory {
     private static LoginController loginController;
     private static CashierDao cashierDao;
     private static OrderDao orderDao;
+    private static ProductDao productDao;
     private static SessionDao sessionDao;
     private static ComandaDao comandaDao;
     private static MainGUIController mainController;
@@ -37,6 +23,51 @@ public class AppFactory {
     private static ComandaPOSController comandaPOSController;
     private static POS pos;
     private static ReceiptViewController receiptViewController;
+    private static ToolBarController toolBarController;
+    private static CashierHistoryController cashierHistoryController;
+    private static ProductManagementController productManagementController;
+    private static MainGUI mainGUI;
+
+    public static void clearWorkspace() {
+        setReceiptViewController(null);
+        setSelectedProducts(null);
+        setOrderDao(null);
+        setComandaDao(null);
+        setComandaPOSController(null);
+        setCashierDao(null);
+        setUserDao(null);
+        setCashierController(null);
+        setPos(null);
+        setMainGUI(null);
+        setCashierPOSController(null);
+        setSessionDao(null);
+        setManageComandaController(null);
+        setToolBarController(null);
+    }
+
+    public static MainGUI getMainGUI() {
+        return mainGUI;
+    }
+
+    public static void setMainGUI(MainGUI mainGUI) {
+        AppFactory.mainGUI = mainGUI;
+    }
+
+    public static CashierHistoryController getCashierHistoryController() {
+        return cashierHistoryController;
+    }
+
+    public static void setCashierHistoryController(CashierHistoryController cashierHistoryController) {
+        AppFactory.cashierHistoryController = cashierHistoryController;
+    }
+
+    public static ToolBarController getToolBarController() {
+        return toolBarController;
+    }
+
+    public static void setToolBarController(ToolBarController toolBarController) {
+        AppFactory.toolBarController = toolBarController;
+    }
 
     public static SessionDao getSessionDao() {
         return sessionDao;
@@ -164,5 +195,21 @@ public class AppFactory {
 
     public static void setReceiptViewController(ReceiptViewController receiptViewController) {
         AppFactory.receiptViewController = receiptViewController;
+    }
+
+    public static void setProductManagementController(ProductManagementController productManagementController) {
+        AppFactory.productManagementController = productManagementController;
+    }
+
+    public static ProductManagementController getProductManagementController() {
+        return AppFactory.productManagementController;
+    }
+
+    public static ProductDao getProductDao() {
+        return productDao;
+    }
+
+    public static void setProductDao(ProductDao productDao) {
+        AppFactory.productDao = productDao;
     }
 }

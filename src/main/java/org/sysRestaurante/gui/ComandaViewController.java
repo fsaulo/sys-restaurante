@@ -7,12 +7,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
-
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.EmployeeDao;
@@ -21,6 +18,7 @@ import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ComandaViewController {
 
@@ -33,13 +31,11 @@ public class ComandaViewController {
     @FXML
     private Button addOrder;
     @FXML
-    private VBox popOverVbox;
-    @FXML
     private ComboBox<EmployeeDao> employeeComboBox;
     @FXML
     private ListView<ProductDao> productsListView;
 
-    private ComandaDao comanda;
+    private final ComandaDao comanda;
     private ArrayList<ProductDao> list;
 
     public ComandaViewController(ComandaDao comanda) {
@@ -51,7 +47,7 @@ public class ComandaViewController {
         handleEmployeesComboBox();
         tableLabel.setText("MESA " + comanda.getIdTable());
         comandaLabel.setText("#" + comanda.getIdComanda());
-        list = new ArrayList<>(Order.getItemsByOrderId(comanda.getIdOrder()));
+        list = new ArrayList<>(Objects.requireNonNull(Order.getItemsByOrderId(comanda.getIdOrder())));
 
         productsListView.setItems(FXCollections.observableList(list));
         productsListView.setCellFactory(plv -> new ProductListViewCell(false));

@@ -1,6 +1,7 @@
 package org.sysRestaurante.model;
 
 import org.sysRestaurante.dao.EmployeeDao;
+import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -12,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Personnel {
@@ -26,7 +28,7 @@ public class Personnel {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setString(1, nome);
             ps.setString(2, password);
             ps.setString(3, username);
@@ -54,7 +56,7 @@ public class Personnel {
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idEmployee);
             rs = ps.executeQuery();
 
@@ -74,15 +76,15 @@ public class Personnel {
     }
 
     public ArrayList<EmployeeDao> list() {
-        PreparedStatement ps = null;
-        Connection con = null;
-        ResultSet rs = null;
+        PreparedStatement ps;
+        Connection con;
+        ResultSet rs;
         String query = "SELECT * FROM funcionario";
         ArrayList<EmployeeDao> employees = new ArrayList<>();
 
         try {
             con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -104,6 +106,39 @@ public class Personnel {
             ex.printStackTrace();
         }
 
+        return null;
+    }
+
+    public static UserDao getUserInfoById(int idUser) throws SQLException {
+        String query = "SELECT nome, username, email, is_admin FROM usuario WHERE id_usuario = ?";
+        UserDao userDao = new UserDao();
+        PreparedStatement ps = null;
+        Connection connection = null;
+        ResultSet rs = null;
+
+        try {
+            connection = DBConnection.getConnection();
+            ps = Objects.requireNonNull(connection).prepareStatement(query);
+            ps.setInt(1, idUser);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                userDao.setAdmin(rs.getBoolean("is_admin"));
+                userDao.setName(rs.getString("nome"));
+                userDao.setUsername(rs.getString("username"));
+                userDao.setEmail(rs.getString("email"));
+            }
+
+            return userDao;
+        } catch (SQLException exception) {
+            LOGGER.severe("An error has occurred while trying to fetch user data access from the database");
+            exception.printStackTrace();
+            NotificationHandler.errorDialog(exception);
+        } finally {
+            Objects.requireNonNull(ps).close();
+            Objects.requireNonNull(rs).close();
+            Objects.requireNonNull(connection).close();
+        }
         return null;
     }
 }

@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Management {
@@ -22,7 +23,7 @@ public class Management {
         PreparedStatement ps;
 
         Connection con = DBConnection.getConnection();
-        ps = con.prepareStatement(query);
+        ps = Objects.requireNonNull(con).prepareStatement(query);
         ps.setInt(1, idTable);
         ps.setInt(2, 1);
         ps.executeUpdate();
@@ -38,7 +39,7 @@ public class Management {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, 1);
             ps.setInt(2, idTable);
             ps.executeUpdate();
@@ -59,7 +60,7 @@ public class Management {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -86,7 +87,7 @@ public class Management {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, type);
             ps.setInt(2, idTable);
             ps.executeUpdate();
@@ -106,7 +107,7 @@ public class Management {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, 2);
             ps.setInt(2, 3);
             rs = ps.executeQuery();
@@ -132,11 +133,11 @@ public class Management {
 
     public static void deleteTable(int idTable) {
         String query = "DELETE FROM mesa WHERE id_mesa = ?";
-        PreparedStatement ps = null;
+        PreparedStatement ps;
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idTable);
             ps.executeUpdate();
 
@@ -157,7 +158,7 @@ public class Management {
 
         try {
             Connection con = DBConnection.getConnection();
-            ps = con.prepareStatement(query);
+            ps = Objects.requireNonNull(con).prepareStatement(query);
             ps.setInt(1, idCategory);
             rs = ps.executeQuery();
 

@@ -34,7 +34,10 @@ public class SceneNavigator {
     public static final String REGISTER_TABLE_VIEW = "fxml/RegisterTable.fxml";
     public static final String SELEC_NEW_TABLE_VIEW = "fxml/SwitchTable.fxml";
     public static final String ORDER_DETAILS_DIALOG = "fxml/OrderDetails.fxml";
-    public static final KeyCombination ESC_CLOSE = new KeyCodeCombination(KeyCode.ESCAPE);
+    public static final String CASHIER_HISTORY_VIEW = "fxml/CashierHistory.fxml";
+    public static final String DETAILS_CASHIER_BOX = "fxml/DetailsCashierBox.fxml";
+    public static final String PRODUCT_MANAGEMENT_VIEW = "fxml/ProductManagement.fxml";
+    public static final String REGISTER_NEW_PRODUCT_FORM = "fxml/ProductFormDialog.fxml";
     public static final KeyCombination F2_CONFIRMATION = new KeyCodeCombination(KeyCode.F2);
     public static final KeyCombination F3_SEARCH = new KeyCodeCombination(KeyCode.F3);
     public static final KeyCombination F4_CANCEL = new KeyCodeCombination(KeyCode.F4);
@@ -47,6 +50,10 @@ public class SceneNavigator {
 
     public static void setMainGUIController(MainGUIController mainController) {
         SceneNavigator.mainController = mainController;
+    }
+
+    public static MainGUIController getMainController() {
+        return mainController;
     }
 
     public static void loadScene(String fxml) {

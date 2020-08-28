@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.util.ExceptionHandler;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -67,14 +68,26 @@ public class ProductListViewCell extends ListCell<ProductDao> {
             if (setLabel) {
                 description.setTooltip(new Tooltip(product.getDescription()));
                 id.setText(String.valueOf(product.getIdProduct()));
-                category.setText(product.getCategory());
-                category.setOnMouseClicked(event -> AppFactory.getPos().searchByCategory(category.getText()));
+                category.setText(product.getCategoryDao().getCategoryDescription());
+                category.setOnMouseClicked(event -> {
+                    try {
+                        AppFactory.getPos().searchByCategory(category.getText());
+                    } catch (NullPointerException ignored) {
+                        ExceptionHandler.doNothing();
+                    }
+
+                    try {
+                        AppFactory.getProductManagementController().searchByCategory(category.getText());
+                    } catch (NullPointerException ignored1) {
+                        ExceptionHandler.doNothing();
+                    }
+                });
                 wrapperBox.setOnMouseClicked(event -> {
                     if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                        if (product != null) {
+                        try {
                             AppFactory.getPos().addToSelectedProductsList(product);
-                        } else {
-                            event.consume();
+                        } catch (NullPointerException ignored) {
+                            ExceptionHandler.doNothing();
                         }
                     }
                 });

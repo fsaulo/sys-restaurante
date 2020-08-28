@@ -26,6 +26,7 @@ import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
+import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.io.IOException;
@@ -33,6 +34,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OrderDetailsController {
 
@@ -88,7 +90,7 @@ public class OrderDetailsController {
         timeLabel.setText("Sem registro");
         exitButton.setOnAction(actionEvent -> exit());
         codComandaLabel.setText("CAIXA #" + AppFactory.getCashierDao().getIdCashier());
-        dateLabel.setText(DateFormatter.TIME_DETAILS_FORMAT.format(order.getOrderDate().atTime(order.getOrderTime())));
+        dateLabel.setText(DateFormatter.DATE_TIME_FORMAT.format(order.getOrderDate().atTime(order.getOrderTime())));
         cancelOrderButton.setOnAction(actionEvent -> onCancelOrder());
 
         receiptButton.setOnMouseClicked(event -> {
@@ -100,14 +102,14 @@ public class OrderDetailsController {
 
         if (order.getDetails().equals("Pedido em comanda")) {
             ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
-            String employee = Personnel.getEmployeeNameById(comanda.getIdEmployee());
+            String employee = Personnel.getEmployeeNameById(Objects.requireNonNull(comanda).getIdEmployee());
             String customer = Order.getCustomerName(order.getIdOrder());
             tableLabel.setText("MESA #" + comanda.getIdTable());
             codComandaLabel.setText(String.valueOf(comanda.getIdComanda()));
             employeeLabel.setText(employee);
             employeeComboBox.getItems().add("Atendente");
 
-            if (!employee.equals("Nenhum")) {
+            if (!Objects.requireNonNull(employee).equals("Nenhum")) {
                 employeeComboBox.getItems().add(employee);
                 employeeComboBox.getSelectionModel().select(employee);
             } else {
@@ -175,7 +177,7 @@ public class OrderDetailsController {
 
             if (order.getDetails().equals("Pedido em comanda")) {
                 ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
-                int idComanda = comanda.getIdComanda();
+                int idComanda = Objects.requireNonNull(comanda).getIdComanda();
                 int idTable = comanda.getIdTable();
                 Order.closeComanda(idComanda, total);
                 Order.updateOrderStatus(idComanda, CANCELED);
@@ -208,13 +210,17 @@ public class OrderDetailsController {
             e.printStackTrace();
         }
 
-        PopOver popOver = new PopOver(node);
-        return popOver;
+        return new PopOver(node);
     }
 
     public void exit() {
-        AppFactory.getCashierController().updateOrderTableList();
-        AppFactory.getCashierController().updateCashierElements();
+        try {
+            AppFactory.getCashierController().updateOrderTableList();
+            AppFactory.getCashierController().updateCashierElements();
+        } catch (Exception ex) {
+            ExceptionHandler.doNothing();
+        }
+
         totalLabel.getParent().getScene().getWindow().hide();
     }
 }

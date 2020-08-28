@@ -13,4 +13,6 @@
 *.class
 
 # Ignore configuration folder
-\.idea
+.idea
+
+# Ignore project files
