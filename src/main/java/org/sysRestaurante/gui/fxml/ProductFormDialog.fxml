@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ProductFormDialogController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ProductFormDialogController">
    <center>
       <TabPane>
          <BorderPane.margin>
@@ -158,7 +158,7 @@
                      </VBox>
                   </HBox>
                   <Separator />
-                  <Label text="Esse produto é um prato?">
+                  <Label disable="true" text="Esse produto é um prato?">
                      <font>
                         <Font name="Carlito Bold" size="16.0" />
                      </font>
@@ -168,7 +168,7 @@
                   </Label>
                   <Separator />
                   <HBox>
-                     <CheckBox fx:id="menuItem" mnemonicParsing="false" style="-fx-cursor: hand;" text="Item do cardápio">
+                     <CheckBox fx:id="menuItem" disable="true" mnemonicParsing="false" style="-fx-cursor: hand;" text="Item do cardápio">
                         <font>
                            <Font name="Carlito" size="16.0" />
                         </font>
@@ -208,7 +208,7 @@
       </TabPane>
    </center>
    <top>
-      <HBox alignment="CENTER" prefHeight="41.0" prefWidth="590.0" style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="41.0" prefWidth="590.0" style="-fx-border-color: #CBCBCC; -fx-background-color: white;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
@@ -245,7 +245,7 @@
       </HBox>
    </bottom>
    <left>
-      <VBox prefHeight="519.0" prefWidth="151.0" spacing="15.0" style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="421.0" prefWidth="181.0" spacing="20.0" style="-fx-background-color: white; -fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" />
          </BorderPane.margin>
@@ -255,10 +255,10 @@
          <VBox alignment="CENTER" spacing="5.0">
             <Label text="Dicas">
                <font>
-                  <Font name="Calibri Bold" size="16.0" />
+                  <Font name="Comfortaa Bold" size="15.0" />
                </font>
             </Label>
-            <Separator />
+            <Separator prefWidth="200.0" />
          </VBox>
          <Label text="- Além de produtos, é possível adicionar também ingredientes e pratos." wrapText="true">
             <font>
