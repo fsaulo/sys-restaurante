@@ -158,7 +158,7 @@
                      </VBox>
                   </HBox>
                   <Separator />
-                  <Label text="Esse produto é um prato?">
+                  <Label disable="true" text="Esse produto é um prato?">
                      <font>
                         <Font name="Carlito Bold" size="16.0" />
                      </font>
@@ -168,7 +168,7 @@
                   </Label>
                   <Separator />
                   <HBox>
-                     <CheckBox fx:id="menuItem" mnemonicParsing="false" style="-fx-cursor: hand;" text="Item do cardápio">
+                     <CheckBox fx:id="menuItem" disable="true" mnemonicParsing="false" style="-fx-cursor: hand;" text="Item do cardápio">
                         <font>
                            <Font name="Carlito" size="16.0" />
                         </font>
@@ -193,7 +193,7 @@
                </VBox>
             </VBox>
          </Tab>
-         <Tab closable="false" text="Cardápio">
+         <Tab closable="false" disable="true" text="Cardápio">
             <VBox>
                <VBox alignment="CENTER_LEFT" spacing="5.0" style="-fx-border-color: #CBCBCC; -fx-background-color: white;" VBox.vgrow="ALWAYS">
                   <padding>
@@ -244,10 +244,10 @@
          </Button>
       </HBox>
    </bottom>
-   <right>
+   <left>
       <VBox prefHeight="421.0" prefWidth="181.0" spacing="20.0" style="-fx-background-color: white; -fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="5.0" right="5.0" />
+            <Insets bottom="5.0" left="5.0" />
          </BorderPane.margin>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -276,5 +276,5 @@
             </font>
          </Label>
       </VBox>
-   </right>
+   </left>
 </BorderPane>
