@@ -13,13 +13,10 @@ import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.util.ExceptionHandler;
-import org.sysRestaurante.util.LoggerHandler;
 
 import java.io.IOException;
 import java.text.NumberFormat;
-import java.util.logging.Logger;
 
-@SuppressWarnings("unused")
 public class ProductListViewCell extends ListCell<ProductDao> {
 
     @FXML
@@ -37,7 +34,6 @@ public class ProductListViewCell extends ListCell<ProductDao> {
 
     private FXMLLoader mLLoader;
     private boolean setLabel = true;
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ProductListViewCell.class.getName());
 
     public ProductListViewCell() {
     }
@@ -72,15 +68,26 @@ public class ProductListViewCell extends ListCell<ProductDao> {
             if (setLabel) {
                 description.setTooltip(new Tooltip(product.getDescription()));
                 id.setText(String.valueOf(product.getIdProduct()));
-                category.setText(product.getCategory());
-                category.setOnMouseClicked(event -> AppFactory.getPos().searchByCategory(category.getText()));
+                category.setText(product.getCategoryDao().getCategoryDescription());
+                category.setOnMouseClicked(event -> {
+                    try {
+                        AppFactory.getPos().searchByCategory(category.getText());
+                    } catch (NullPointerException ignored) {
+                        ExceptionHandler.doNothing();
+                    }
+
+                    try {
+                        AppFactory.getProductManagementController().searchByCategory(category.getText());
+                    } catch (NullPointerException ignored1) {
+                        ExceptionHandler.doNothing();
+                    }
+                });
                 wrapperBox.setOnMouseClicked(event -> {
                     if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                         try {
                             AppFactory.getPos().addToSelectedProductsList(product);
                         } catch (NullPointerException ignored) {
                             ExceptionHandler.doNothing();
-                            LOGGER.warning("Illegal Class Access. Not possible to add product to basket here.");
                         }
                     }
                 });
