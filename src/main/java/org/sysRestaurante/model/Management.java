@@ -1,5 +1,6 @@
 package org.sysRestaurante.model;
 
+import org.sysRestaurante.dao.SessionDao;
 import org.sysRestaurante.dao.TableDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
@@ -150,30 +151,36 @@ public class Management {
         }
     }
 
-    public static String getTableCategoryById(int idCategory) {
-        String query = "SELECT descricao FROM categoria_mesa WHERE id_categoria_mesa = ?";
-        String category = "Sem categoria";
+    public static SessionDao getBusinessInfo() {
+        String query = "SELECT business_name, cnpj, phone, address FROM metadata";
         PreparedStatement ps;
         ResultSet rs;
 
         try {
+            SessionDao businessInfo = new SessionDao();
             Connection con = DBConnection.getConnection();
             ps = Objects.requireNonNull(con).prepareStatement(query);
-            ps.setInt(1, idCategory);
             rs = ps.executeQuery();
 
-            if (rs.next()) {
-                category = rs.getString("descricao");
+
+            while (rs.next()) {
+                businessInfo.setBusinessName(rs.getString("business_name"));
+                businessInfo.setBusinessCNPJ(rs.getString("cnpj"));
+                businessInfo.setBusinessAddress(rs.getString("address"));
+                businessInfo.setBusinessPhone(rs.getString("phone"));
             }
 
             ps.close();
             rs.close();
             con.close();
-            return category;
+
+            return businessInfo;
         } catch (SQLException ex) {
+            LOGGER.severe("Error trying to get info about business.");
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
         }
+
         return null;
     }
 }
