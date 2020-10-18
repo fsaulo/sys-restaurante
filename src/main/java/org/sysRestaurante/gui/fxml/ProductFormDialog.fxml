@@ -208,7 +208,7 @@
       </TabPane>
    </center>
    <top>
-      <HBox alignment="CENTER" prefHeight="41.0" prefWidth="590.0" style="-fx-border-color: #CBCBCC; -fx-background-color: white;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="41.0" prefWidth="590.0" style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </BorderPane.margin>
@@ -245,7 +245,7 @@
       </HBox>
    </bottom>
    <left>
-      <VBox prefHeight="421.0" prefWidth="181.0" spacing="20.0" style="-fx-background-color: white; -fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="519.0" prefWidth="151.0" spacing="15.0" style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" />
          </BorderPane.margin>
@@ -255,10 +255,10 @@
          <VBox alignment="CENTER" spacing="5.0">
             <Label text="Dicas">
                <font>
-                  <Font name="Comfortaa Bold" size="15.0" />
+                  <Font name="Calibri Bold" size="16.0" />
                </font>
             </Label>
-            <Separator prefWidth="200.0" />
+            <Separator />
          </VBox>
          <Label text="- Além de produtos, é possível adicionar também ingredientes e pratos." wrapText="true">
             <font>
