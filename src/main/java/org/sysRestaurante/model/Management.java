@@ -183,4 +183,23 @@ public class Management {
 
         return null;
     }
+
+    public static void setMetadata(int id) {
+        String query = "INSERT INTO metadata (id) VALUES(?)";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, id);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            LOGGER.severe("Could not set metadata");
+        }
+    }
 }
