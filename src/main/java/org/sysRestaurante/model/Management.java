@@ -1,6 +1,6 @@
 package org.sysRestaurante.model;
 
-import org.sysRestaurante.dao.SessionDao;
+import org.sysRestaurante.dao.MetadataDao;
 import org.sysRestaurante.dao.TableDao;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.ExceptionHandler;
@@ -151,13 +151,13 @@ public class Management {
         }
     }
 
-    public static SessionDao getBusinessInfo() {
+    public static MetadataDao getBusinessInfo() {
         String query = "SELECT business_name, cnpj, phone, address FROM metadata";
         PreparedStatement ps;
         ResultSet rs;
 
         try {
-            SessionDao businessInfo = new SessionDao();
+            MetadataDao businessInfo = new MetadataDao();
             Connection con = DBConnection.getConnection();
             ps = Objects.requireNonNull(con).prepareStatement(query);
             rs = ps.executeQuery();
@@ -182,6 +182,28 @@ public class Management {
         }
 
         return null;
+    }
+
+    public static void updateBusinessInfo(MetadataDao metadata) {
+        String query = "UPDATE metadata SET business_name = ?, cnpj = ?, phone = ?, address = ? WHERE id = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setString(1, metadata.getBusinessName());
+            ps.setString(2, metadata.getBusinessCNPJ());
+            ps.setString(3, metadata.getBusinessPhone());
+            ps.setString(4, metadata.getBusinessAddress());
+            ps.setInt(5, metadata.getId());
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            LOGGER.severe("Error while trying to get business info");
+            ex.printStackTrace();
+        }
     }
 
     public static void setMetadata(int id) {

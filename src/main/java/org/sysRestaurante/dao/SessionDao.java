@@ -18,10 +18,7 @@ public class SessionDao {
     private LocalDate dateSession;
     private LocalTime timeSession;
     private long sessionDuration;
-    private String businessName;
-    private String businessPhone;
-    private String businessCNPJ;
-    private String businessAddress;
+
 
     public int getAveragePermanencyInMinutes() {
         return averagePermanencyInMinutes;
@@ -133,37 +130,5 @@ public class SessionDao {
 
     public void setSessionDuration(long sessionDuration) {
         this.sessionDuration = sessionDuration;
-    }
-
-    public String getBusinessName() {
-        return businessName;
-    }
-
-    public void setBusinessName(String businessName) {
-        this.businessName = businessName;
-    }
-
-    public String getBusinessPhone() {
-        return businessPhone;
-    }
-
-    public void setBusinessPhone(String businessPhone) {
-        this.businessPhone = businessPhone;
-    }
-
-    public String getBusinessCNPJ() {
-        return businessCNPJ;
-    }
-
-    public void setBusinessCNPJ(String businessCNPJ) {
-        this.businessCNPJ = businessCNPJ;
-    }
-
-    public String getBusinessAddress() {
-        return businessAddress;
-    }
-
-    public void setBusinessAddress(String businessAddress) {
-        this.businessAddress = businessAddress;
     }
 }
