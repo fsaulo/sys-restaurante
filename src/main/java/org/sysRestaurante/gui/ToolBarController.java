@@ -217,8 +217,8 @@ public class ToolBarController extends AppFactory {
 
     @FXML
     public void submenuInformacaoNegocio(Event event) {
-        if (!toggleMenuPreferencias.isSelected()) {
-            toggleMenuPreferencias.setSelected(true);
+        if (!toggleInformacao.isSelected()) {
+            toggleInformacao.setSelected(true);
         }
 
         selectMenuPreferencias();
