@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ProductFormDialogController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ProductFormDialogController">
    <center>
       <TabPane>
          <BorderPane.margin>
@@ -158,7 +158,7 @@
                      </VBox>
                   </HBox>
                   <Separator />
-                  <Label disable="true" text="Esse produto é um prato?">
+                  <Label text="Esse produto é um prato?">
                      <font>
                         <Font name="Carlito Bold" size="16.0" />
                      </font>
@@ -168,7 +168,7 @@
                   </Label>
                   <Separator />
                   <HBox>
-                     <CheckBox fx:id="menuItem" disable="true" mnemonicParsing="false" style="-fx-cursor: hand;" text="Item do cardápio">
+                     <CheckBox fx:id="menuItem" mnemonicParsing="false" style="-fx-cursor: hand;" text="Item do cardápio">
                         <font>
                            <Font name="Carlito" size="16.0" />
                         </font>
