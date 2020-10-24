@@ -4,28 +4,18 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
-
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.EmployeeDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
@@ -33,12 +23,14 @@ import org.sysRestaurante.model.Product;
 import org.sysRestaurante.util.ExceptionHandler;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Objects;
 
-import static javafx.collections.FXCollections.*;
+import static javafx.collections.FXCollections.observableArrayList;
 
 public class ComandaPOSController extends POS {
 
@@ -46,8 +38,6 @@ public class ComandaPOSController extends POS {
     private Button exitButton;
     @FXML
     private Button finalizeOrderButton;
-    @FXML
-    private Button updateButton;
     @FXML
     private Button addProductButton;
     @FXML
@@ -104,10 +94,15 @@ public class ComandaPOSController extends POS {
     private VBox detailsWrapperBox;
     @FXML
     private Label totalLabel;
+	@FXML
+	private Label dateLabel;
 
     private final ComandaDao comanda = AppFactory.getComandaDao();
     private final ObservableList<ProductDao> selectedProductsList = observableArrayList();
     private final ObservableList<ProductDao> products = Product.getProducts();
+
+    public ComandaPOSController() throws SQLException {
+    }
 
     @FXML
     public void initialize() {
@@ -131,7 +126,7 @@ public class ComandaPOSController extends POS {
         tableLabel.setText("MESA #" + this.comanda.getIdTable());
         codOrderLabel.setText(String.valueOf(comanda.getIdOrder()));
         codComandaLabel.setText(String.valueOf(comanda.getIdComanda()));
-        customerLabel.setText(Order.getCustomerName(comanda.getIdOrder()));
+		customerLabel.setText(parseCustomerName());
 
         customerBox.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.ENTER)) {
@@ -144,8 +139,10 @@ public class ComandaPOSController extends POS {
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
         subtotalLabel.setText(format.format(comanda.getTotal()));
         totalLabel.setText(format.format(comanda.getTotal()));
-        updateButton.setOnMouseClicked(ac -> updateComandaItems());
         cancelOrderButton.setOnMouseClicked(e -> onCancelOrder());
+		dateLabel.setText(DateFormatter.DETAILED_TIME.format(comanda
+					.getDateOpening()
+					.atTime(comanda.getTimeOpening())));
 
         finalizeOrderButton.setOnMouseClicked(e -> {
             saveChanges();
@@ -195,6 +192,12 @@ public class ComandaPOSController extends POS {
         setRemoveButton(removeButton);
         setClearButton(clearButton);
     }
+
+	public String parseCustomerName() {
+		String customerName = Order.getCustomerName(comanda.getIdOrder());
+		String defaultName = "Não fornecido";
+        return Objects.requireNonNullElse(customerName, defaultName);
+	}
 
     public void updateEmployee() {
         int idEmployee;
@@ -311,6 +314,6 @@ public class ComandaPOSController extends POS {
             Order.updateOrderAmount(idComanda, total, 0, 0);
             Management.closeTable(idTable);
             exit();
-        }
+		}
     }
 }

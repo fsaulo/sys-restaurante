@@ -12,6 +12,7 @@ public class AppFactory {
     private static LoginController loginController;
     private static CashierDao cashierDao;
     private static OrderDao orderDao;
+    private static ProductDao productDao;
     private static SessionDao sessionDao;
     private static ComandaDao comandaDao;
     private static MainGUIController mainController;
@@ -24,6 +25,7 @@ public class AppFactory {
     private static ReceiptViewController receiptViewController;
     private static ToolBarController toolBarController;
     private static CashierHistoryController cashierHistoryController;
+    private static ProductManagementController productManagementController;
     private static MainGUI mainGUI;
 
     public static void clearWorkspace() {
@@ -193,5 +195,21 @@ public class AppFactory {
 
     public static void setReceiptViewController(ReceiptViewController receiptViewController) {
         AppFactory.receiptViewController = receiptViewController;
+    }
+
+    public static void setProductManagementController(ProductManagementController productManagementController) {
+        AppFactory.productManagementController = productManagementController;
+    }
+
+    public static ProductManagementController getProductManagementController() {
+        return AppFactory.productManagementController;
+    }
+
+    public static ProductDao getProductDao() {
+        return productDao;
+    }
+
+    public static void setProductDao(ProductDao productDao) {
+        AppFactory.productDao = productDao;
     }
 }
