@@ -48,6 +48,8 @@ public class ToolBarController extends AppFactory {
     @FXML
     private ToggleButton g2c;
     @FXML
+    private ToggleButton toggleMenuPreferencias;
+    @FXML
     private ToggleButton g2d;
     @FXML
     private ToggleButton g3a;
@@ -58,7 +60,7 @@ public class ToolBarController extends AppFactory {
     @FXML
     private ToggleButton g3d;
     @FXML
-    private ToggleButton g4a;
+    private ToggleButton toggleInformacao;
     @FXML
     private ToggleButton g4b;
     @FXML
@@ -74,7 +76,7 @@ public class ToolBarController extends AppFactory {
     @FXML
     private VBox vboxG3;
     @FXML
-    private VBox vboxG4;
+    private VBox vBoxPreferencias;
     @FXML
     private VBox vboxG5;
     @FXML
@@ -144,12 +146,25 @@ public class ToolBarController extends AppFactory {
         event.consume();
     }
 
+    @FXML
+    public void menuPreferencias(ActionEvent event) {
+        unfoldSubmenus(vBoxPreferencias,
+                toggleInformacao,
+                g4b,
+                g4c);
+        event.consume();
+    }
+
     public void selectMenuPrincipal() {
         toggleMenuPrincipal.setSelected(true);
     }
 
     public void selectMenuFerramentas() {
         toggleMenuFerramentas.setSelected(true);
+    }
+
+    public void selectMenuPreferencias() {
+        toggleMenuPreferencias.setSelected(true);
     }
 
     @FXML
@@ -200,16 +215,25 @@ public class ToolBarController extends AppFactory {
         AppFactory.getAppController().loadPage(event, SceneNavigator.PRODUCT_MANAGEMENT_VIEW);
     }
 
-    public void menuG3(ActionEvent event) {
-        unfoldSubmenus(vboxG3, g3a, g3b, g3c, g3d);
+    @FXML
+    public void submenuInformacaoNegocio(Event event) {
+        if (!toggleMenuPreferencias.isSelected()) {
+            toggleMenuPreferencias.setSelected(true);
+        }
+
+        selectMenuPreferencias();
+        AppFactory.getAppController().loadPage(event, SceneNavigator.BUSINESS_INFO);
     }
 
-    public void menuG4(ActionEvent event) {
-        unfoldSubmenus(vboxG4, g4a, g4b, g4c);
+    @FXML
+    public void menuG3(ActionEvent event) {
+        unfoldSubmenus(vboxG3, g3a, g3b, g3c, g3d);
+        event.consume();
     }
 
     public void menuG5(ActionEvent event) {
         unfoldSubmenus(vboxG5, g5a, g5b, g5c);
+        event.consume();
     }
 
     public void clearToggleGroup(ToggleGroup... grupoMenu) {
