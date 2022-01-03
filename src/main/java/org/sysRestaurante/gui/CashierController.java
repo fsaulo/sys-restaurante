@@ -80,7 +80,6 @@ public class CashierController {
 
     private DatePicker datePicker;
     private Parent detailsBox = null;
-    private CashierDao cashier;
 
     @FXML
     public void initialize() {
@@ -127,7 +126,7 @@ public class CashierController {
 
     private void updateTableAndDetailBox() {
         Cashier.getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
-        cashier = AppFactory.getCashierDao();
+        CashierDao cashier = AppFactory.getCashierDao();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.DETAILS_CASHIER_BOX));
         loader.setController(new DetailsCashierBoxController(cashier));
