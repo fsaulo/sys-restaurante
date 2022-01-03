@@ -50,7 +50,7 @@ public class DetailsCashierBoxController {
         StringBuilder userTypeLabel = new StringBuilder("por " + Objects.requireNonNull(user).getName());
 
         if (user.isAdmin()) {
-            userTypeLabel.append(" (ADMINSTRADOR)");
+            userTypeLabel.append(" (ADMINISTRADOR)");
         } else {
             userTypeLabel.append(" (FUNCIONÁRIO)");
         }
