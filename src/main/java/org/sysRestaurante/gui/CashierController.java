@@ -79,6 +79,8 @@ public class CashierController {
     private VBox wrapperVBox;
 
     private DatePicker datePicker;
+    private Parent detailsBox = null;
+    private CashierDao cashier;
 
     @FXML
     public void initialize() {
@@ -93,7 +95,6 @@ public class CashierController {
         });
 
         setSearchProperties();
-        updateOrderTableList();
         updateCashierElements();
         handleKeyEvent();
 
@@ -121,18 +122,28 @@ public class CashierController {
             return row;
         });
 
-        CashierDao cashier = AppFactory.getCashierDao();
-        Parent detailsBox = null;
+        updateTableAndDetailBox();
+    }
+
+    private void updateTableAndDetailBox() {
+        Cashier.getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
+        cashier = AppFactory.getCashierDao();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.DETAILS_CASHIER_BOX));
         loader.setController(new DetailsCashierBoxController(cashier));
 
         try {
+            if (detailsBox != null) {
+                wrapperVBox.getChildren().remove(detailsBox);
+            }
+
             detailsBox = loader.load();
+            wrapperVBox.getChildren().add(detailsBox);
         } catch (IOException exception) {
             exception.printStackTrace();
         }
 
-        wrapperVBox.getChildren().add(detailsBox);
+        updateOrderTableList();
     }
 
     private void setSearchProperties() {
@@ -253,7 +264,8 @@ public class CashierController {
             Order.cancel(idOrder);
             order.setStatus(CANCELED);
             NotificationHandler.showInfo("Pedido cancelado com sucesso!");
-            initialize();
+
+            updateTableAndDetailBox();
         }
     }
 
@@ -272,11 +284,11 @@ public class CashierController {
     }
 
     public void updateCashierStatus() {
-        boolean isCashierOpenned = Cashier.isOpen();
+        boolean isCashierOpened = Cashier.isOpen();
         AppFactory.setCashierController(this);
         Cashier.getCashierDataAccessObject(AppFactory.getCashierDao().getIdCashier());
 
-        if (isCashierOpenned) {
+        if (isCashierOpened) {
             setDisableCashierOptions(false);
             openOrCloseCashierLabel.setText("Fechar caixa");
             statusCashierLabel.setText("CAIXA LIVRE");
