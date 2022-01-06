@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierController">
+<GridPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.CashierController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
     </columnConstraints>
@@ -180,20 +180,23 @@
                             </font>
                         </Label>
                         <Separator layoutX="15.0" layoutY="533.0" prefWidth="200.0" />
-                        <VBox alignment="CENTER" layoutX="15.0" layoutY="513.0" prefHeight="50.0" styleClass="cashier-button">
-                            <padding>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                            </padding>
-                            <Label text="Nova mesa/comanda" textAlignment="CENTER" wrapText="true">
-                                <font>
-                                    <Font name="Carlito Bold" size="16.0" />
-                                </font>
-                            </Label>
-                            <Label text="(F8)" textAlignment="CENTER" wrapText="true">
-                                <font>
-                                    <Font name="Carlito Bold" size="16.0" />
-                                </font>
-                            </Label>
+                        <VBox fx:id="wrapperBoxPicker1">
+                            <VBox fx:id="viewMesaComanda" alignment="CENTER" prefHeight="50.0"
+                                  styleClass="cashier-button">
+                                <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                                </padding>
+                                <Label text="Nova mesa/comanda" textAlignment="CENTER" wrapText="true">
+                                    <font>
+                                        <Font name="Carlito Bold" size="16.0"/>
+                                    </font>
+                                </Label>
+                                <Label text="(F8)" textAlignment="CENTER" wrapText="true">
+                                    <font>
+                                        <Font name="Carlito Bold" size="16.0"/>
+                                    </font>
+                                </Label>
+                            </VBox>
                         </VBox>
                         <VBox alignment="CENTER" layoutX="15.0" layoutY="717.0" prefHeight="50.0" styleClass="cashier-button">
                             <padding>
