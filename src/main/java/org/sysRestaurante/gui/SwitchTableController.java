@@ -122,7 +122,7 @@ public class SwitchTableController {
 
         Management.changeTableStatus(order.getIdTable(), 1);
         Order.changeTable(order.getIdComanda(), idTable);
-        Management.changeTableStatus(idTable, 2);
+        Management.changeTableStatus(idTable, Management.UNAVAILABLE);
         order.setIdTable(idTable);
         AppFactory.setComandaDao(order);
         ((Node) event.getSource()).getScene().getWindow().hide();

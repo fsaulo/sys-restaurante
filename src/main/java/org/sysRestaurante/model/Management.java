@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 public class Management {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Management.class.getName());
+    public static int AVAILABLE = 1;
+    public static int UNAVAILABLE = 2;
 
     public static void newTable(int idTable) throws SQLException {
         String query = "INSERT INTO mesa (id_mesa, id_categoria_mesa) VALUES(?, ?)";

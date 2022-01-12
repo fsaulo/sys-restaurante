@@ -107,7 +107,7 @@ public class NewComandaDialogController {
 
         try {
             selectedTable = tableListView.getSelectionModel().getSelectedItem();
-            available = selectedTable.getIdStatus() == 1;
+            available = selectedTable.getIdStatus() == Management.AVAILABLE;
         } catch (NullPointerException ex) {
             empty = true;
         }

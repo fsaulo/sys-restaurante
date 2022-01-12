@@ -1,6 +1,7 @@
 package org.sysRestaurante.dao;
 
 public class TableDao {
+
     private int idTable;
     private int idStatus;
 
