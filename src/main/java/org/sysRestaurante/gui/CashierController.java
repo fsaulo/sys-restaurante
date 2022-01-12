@@ -218,8 +218,10 @@ public class CashierController {
         }
 
         newOrderBox.setDisable(false);
+        updateTableAndDetailBox();
     }
 
+    @FXML
     public void onCancelOrder(OrderDao order) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Alerta do sistema");
