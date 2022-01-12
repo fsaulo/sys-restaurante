@@ -87,9 +87,17 @@ public class ManageComandaController {
     public void handleAddComanda() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.NEW_COMANDA_DIALOG));
         VBox node = loader.load();
+        NewComandaDialogController controller = loader.getController();
+
         PopOver popOver = new PopOver(node);
+
         popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.RIGHT_TOP);
         popOver.setDetachable(false);
+        popOver.setOnHiding(e -> {
+            if (controller.isAccepted()) {
+                refreshTileList();
+            }
+        });
         newComandaButton.setOnMouseClicked(e1 -> popOver.show(wrapperBoxPicker1));
     }
 
