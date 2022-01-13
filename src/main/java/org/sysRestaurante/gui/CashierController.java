@@ -77,12 +77,16 @@ public class CashierController {
     private HBox wrapperBoxPicker;
     @FXML
     private VBox wrapperVBox;
+    @FXML
+    private VBox viewMesaComanda;
+    @FXML
+    private VBox wrapperBoxPicker1;
 
     private DatePicker datePicker;
     private Parent detailsBox = null;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         AppFactory.setCashierController(this);
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
@@ -115,13 +119,14 @@ public class CashierController {
             optionDeleteOrder.setOnAction(actionEvent -> onCancelOrder(row.getItem()));
             contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
             row.contextMenuProperty().bind(Bindings.when(row.emptyProperty().not())
-            .then(contextMenu)
-            .otherwise((ContextMenu) null));
+                    .then(contextMenu)
+                    .otherwise((ContextMenu) null));
 
             return row;
         });
 
         updateTableAndDetailBox();
+        handleAddComanda();
     }
 
     private void updateTableAndDetailBox() {
@@ -160,7 +165,7 @@ public class CashierController {
             try {
                 int cod = Integer.parseInt(codField.getText());
                 setFilterByCod(cod);
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 setFilterByDate();
             }
         });
@@ -334,12 +339,12 @@ public class CashierController {
         assert data != null;
         FilteredList<OrderDao> filteredList = new FilteredList<>(data);
         datePicker.valueProperty().addListener((newValue) ->
-            filteredList.setPredicate(orderDao -> {
-                if (newValue == null) {
-                    return true;
-                }
-                return orderDao.getOrderDate().isEqual(datePicker.getValue());
-            }));
+                filteredList.setPredicate(orderDao -> {
+                    if (newValue == null) {
+                        return true;
+                    }
+                    return orderDao.getOrderDate().isEqual(datePicker.getValue());
+                }));
 
         SortedList<OrderDao> sortedData = new SortedList<>(filteredList);
         sortedData.comparatorProperty().bind(orderListTableView.comparatorProperty());
@@ -367,5 +372,15 @@ public class CashierController {
         searchOrderBox.setDisable(status);
         cancelOrderBox.setDisable(status);
         newOrderBox.setDisable(status);
+    }
+
+
+    public void handleAddComanda() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.NEW_COMANDA_DIALOG));
+        VBox node = loader.load();
+        PopOver popOver = new PopOver(node);
+        popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.RIGHT_TOP);
+        popOver.setDetachable(false);
+        viewMesaComanda.setOnMouseClicked(e1 -> popOver.show(wrapperBoxPicker1));
     }
 }
