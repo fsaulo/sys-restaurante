@@ -55,6 +55,8 @@ public class ManageComandaController {
     @FXML
     private VBox statusCashierBox;
     @FXML
+    private VBox update;
+    @FXML
     private Label statusCashierLabel;
 
     private SessionDao session;
@@ -71,6 +73,7 @@ public class ManageComandaController {
         scrollPane.setFitToWidth(true);
         tilePane.setPrefColumns(50);
         tilePane.getChildren().clear();
+        update.setOnMouseClicked(e -> refreshTileList());
 
         if (!Cashier.isOpen()) {
             newComandaButton.setDisable(true);
