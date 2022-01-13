@@ -33,7 +33,7 @@ public class Receipt {
     public String strSubtotal;
     public String strDiscount;
     public String strTotal;
-    public String strFuncName;
+    public final String strFuncName;
     public String strDate;
     public String strTime;
     public String strCompanyName;
@@ -42,7 +42,7 @@ public class Receipt {
     public String strCompanyCNPJ;
     public String strTaxes;
     public ArrayList<ProductDao> productList;
-    public static String NON_THIN = "[^iIl1\\.,']";
+    public static final String NON_THIN = "[^iIl1\\.,']";
     public int length;
 
     public Receipt(OrderDao order, ArrayList<ProductDao> productList) {
@@ -230,7 +230,7 @@ public class Receipt {
     }
 
     public static class ThinReceipt extends Receipt {
-        ArrayList<ProductDao> productList;
+        final ArrayList<ProductDao> productList;
         StringBuilder rc;
 
         public ThinReceipt(OrderDao order, ArrayList<ProductDao> pdL) {

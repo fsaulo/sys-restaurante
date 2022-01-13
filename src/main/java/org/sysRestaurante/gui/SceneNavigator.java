@@ -9,6 +9,7 @@ import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class SceneNavigator {
@@ -59,7 +60,7 @@ public class SceneNavigator {
 
     public static void loadScene(String fxml) {
         try {
-            mainController.setScene(FXMLLoader.load(SceneNavigator.class.getResource(fxml)));
+            mainController.setScene(FXMLLoader.load(Objects.requireNonNull(SceneNavigator.class.getResource(fxml))));
         } catch (IOException e) {
             ExceptionHandler.incrementGlobalExceptionsCount();
             LOGGER.severe("Scene couldn't be loaded.");

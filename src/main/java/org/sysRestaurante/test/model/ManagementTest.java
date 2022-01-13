@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.sysRestaurante.dao.MetadataDao;
 import org.sysRestaurante.model.Management;
 
-import java.util.Random;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -39,6 +37,7 @@ class ManagementTest {
         Management.updateBusinessInfo(info);
         MetadataDao updatedInfo = Management.getBusinessInfo();
 
+        assert updatedInfo != null;
         assertEquals(updatedInfo.getBusinessAddress(), "String: Adress");
         assertEquals(updatedInfo.getBusinessName(), "String: Business Name");
         assertEquals(updatedInfo.getBusinessPhone(), "String: Phone");

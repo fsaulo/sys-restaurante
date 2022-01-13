@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class AppController implements DateFormatter {
@@ -58,10 +59,12 @@ public class AppController implements DateFormatter {
         AppFactory.setSessionDao(session);
 
         borderPaneHolder.leftProperty()
-                .setValue(FXMLLoader.load(AppController.class.getResource(SceneNavigator.MENU_TOOL_BAR)));
+                .setValue(FXMLLoader.load(Objects.requireNonNull(AppController.class
+                        .getResource(SceneNavigator.MENU_TOOL_BAR))));
 
         borderPaneHolder.centerProperty()
-                .setValue(FXMLLoader.load(AppController.class.getResource(SceneNavigator.DASHBOARD)));
+                .setValue(FXMLLoader.load(Objects.requireNonNull(AppController.class
+                        .getResource(SceneNavigator.DASHBOARD))));
 
         BorderPane.setAlignment(borderPaneHolder.getCenter(), Pos.CENTER);
 
@@ -126,7 +129,7 @@ public class AppController implements DateFormatter {
         titleLabel.setFont(Font.font("carlito", FontWeight.BOLD, FontPosture.REGULAR, 30));
         HBox header = new HBox();
         header.setMinHeight(40);
-        header.setPadding(new Insets(1,5,1,5));
+        header.setPadding(new Insets(1, 5, 1, 5));
         header.setStyle("-fx-border-color: #CBCBCC");
         header.getChildren().add(titleLabel);
         return header;
@@ -158,7 +161,8 @@ public class AppController implements DateFormatter {
 
     public void loadPage(Event e, String fxml) {
         try {
-            borderPaneHolder.centerProperty().setValue(FXMLLoader.load(AppController.class.getResource(fxml)));
+            borderPaneHolder.centerProperty().setValue(FXMLLoader
+                    .load(Objects.requireNonNull(AppController.class.getResource(fxml))));
             e.consume();
         } catch (IOException ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();
@@ -263,7 +267,7 @@ public class AppController implements DateFormatter {
     }
 
     public static void showPaymentDialog(Object owner, Node object) {
-            ColorAdjust colorAdjust = new ColorAdjust();
+        ColorAdjust colorAdjust = new ColorAdjust();
         try {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);

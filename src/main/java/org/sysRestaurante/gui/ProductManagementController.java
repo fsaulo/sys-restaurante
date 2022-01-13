@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("unchecked")
 public class ProductManagementController {
 
     @FXML

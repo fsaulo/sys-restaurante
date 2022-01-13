@@ -44,7 +44,7 @@ public class Encryption {
         } catch (Exception ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
-            LOGGER.severe("Error while ecrypting " + ex.toString());
+            LOGGER.severe("Error while ecrypting " + ex);
         }
         return null;
     }
@@ -56,7 +56,7 @@ public class Encryption {
             cipher.init(Cipher.DECRYPT_MODE, Encryption.getKey());
             return new String(cipher.doFinal(Base64.getDecoder().decode(word)));
         } catch (Exception ex) {
-            LOGGER.warning("Couldn't decrypt due to something that might be an error: " + ex.toString());
+            LOGGER.warning("Couldn't decrypt due to something that might be an error: " + ex);
         }
         return null;
     }
