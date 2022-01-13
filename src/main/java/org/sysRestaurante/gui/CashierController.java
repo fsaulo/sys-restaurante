@@ -36,12 +36,14 @@ import org.sysRestaurante.gui.formatter.StatusCellFormatter;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
+import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class CashierController {
 
@@ -82,6 +84,7 @@ public class CashierController {
     @FXML
     private VBox wrapperBoxPicker1;
 
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(CashierController.class.getName());
     private DatePicker datePicker;
     private Parent detailsBox = null;
 
@@ -116,10 +119,13 @@ public class CashierController {
             });
 
             optionSeeReceipt.setDisable(true);
-            optionDeleteOrder.setOnAction(actionEvent ->
-                    onCancelOrder(Objects.requireNonNull(row.getItem())));
+            optionDeleteOrder.setOnAction(actionEvent -> {
+                onCancelOrder(row.getItem());
+                actionEvent.consume();
+            });
             contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
-            row.contextMenuProperty().bind(Bindings.when(row.emptyProperty().not())
+            row.contextMenuProperty()
+                    .bind(Bindings.when(row.emptyProperty().not())
                     .then(contextMenu)
                     .otherwise((ContextMenu) null));
 
@@ -127,7 +133,7 @@ public class CashierController {
         });
 
         updateTableAndDetailBox();
-        handleAddComanda();
+        resetControllers();
     }
 
     private void updateTableAndDetailBox() {
@@ -227,53 +233,56 @@ public class CashierController {
         updateTableAndDetailBox();
     }
 
-    @FXML
     public void onCancelOrder(OrderDao order) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Alerta do sistema");
 
-        if (order.getStatus().equals("Cancelado")) {
-            alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Não foi possível cancelar o pedido!");
-            alert.setContentText("Esse pedido já foi cancelado.");
-            alert.initOwner(borderPaneHolder.getScene().getWindow());
-            alert.showAndWait();
-            return;
-        } else {
-            alert.setHeaderText("Tem certeza que deseja cancelar o pedido?");
-            alert.setContentText("Essa operação não poderá ser desfeita.");
-            alert.initOwner(borderPaneHolder.getScene().getWindow());
-            alert.showAndWait();
-        }
-
-        if (alert.getResult() == ButtonType.OK) {
-            final int CANCELED = 3;
-            int idOrder = order.getIdOrder();
-            int idCashier = AppFactory.getCashierDao().getIdCashier();
-            double total = order.getTotal();
-
-            if (order.getDetails().equals("Pedido em comanda")) {
-                ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
-                int idComanda = Objects.requireNonNull(comanda).getIdComanda();
-                int idTable = comanda.getIdTable();
-                Order.closeComanda(idComanda, total);
-                Order.updateOrderStatus(idComanda, CANCELED);
-                Order.updateOrderAmount(idComanda, total, 0, 0);
-                Management.closeTable(idTable);
+        try {
+            if (order.getStatus().equals("Cancelado")) {
+                alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText("Não foi possível cancelar o pedido!");
+                alert.setContentText("Esse pedido já foi cancelado.");
+                alert.initOwner(borderPaneHolder.getScene().getWindow());
+                alert.showAndWait();
+                return;
+            } else {
+                alert.setHeaderText("Tem certeza que deseja cancelar o pedido?");
+                alert.setContentText("Essa operação não poderá ser desfeita.");
+                alert.initOwner(borderPaneHolder.getScene().getWindow());
+                orderListTableView.setDisable(true);
+                alert.showAndWait();
             }
 
-            if (order.getStatus().equals("Concluído")) {
-                double inCash = order.getInCash();
-                double byCard = order.getByCard();
-                Cashier.setRevenue(idCashier, -inCash, -byCard, 0);
+            if (alert.getResult() == ButtonType.OK) {
+                int idOrder = order.getIdOrder();
+                int idCashier = AppFactory.getCashierDao().getIdCashier();
+                double total = order.getTotal();
+
+                if (order.getDetails().equals("Pedido em comanda")) {
+                    ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
+                    int idComanda = Objects.requireNonNull(comanda).getIdComanda();
+                    int idTable = comanda.getIdTable();
+                    Order.closeComanda(idComanda, total);
+                    Order.updateOrderStatus(idComanda, Order.CANCELED);
+                    Order.updateOrderAmount(idComanda, total, 0, 0);
+                    Management.closeTable(idTable);
+                }
+
+                if (order.getStatus().equals("Concluído")) {
+                    double inCash = order.getInCash();
+                    double byCard = order.getByCard();
+                    Cashier.setRevenue(idCashier, -inCash, -byCard, 0);
+                }
+
+                Order.cancel(idOrder);
+                order.setStatus(Order.CANCELED);
+                NotificationHandler.showInfo("Pedido cancelado com sucesso!");
             }
-
-            Order.cancel(idOrder);
-            order.setStatus(CANCELED);
-            NotificationHandler.showInfo("Pedido cancelado com sucesso!");
-
-            updateTableAndDetailBox();
+        } catch (NullPointerException ex) {
+            LOGGER.warning("Trying to access null object. Probably it was already reloaded in memory.");
         }
+
+        updateTableAndDetailBox();
     }
 
     public void handleKeyEvent() {
@@ -332,6 +341,7 @@ public class CashierController {
         total.setCellFactory((CellFormatter<OrderDao, Double>) value -> CurrencyField.getBRLCurrencyFormat()
                 .format(value));
         orderListTableView.refresh();
+        orderListTableView.setDisable(false);
     }
 
     public void setFilterByDate() {

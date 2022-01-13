@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 public class Order {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Order.class.getName());
+    public static final int CANCELED = 3;
 
     public static OrderDao newOrder(int idCashier, double inCash, double byCard, int type, double discount,
                                     double taxes, String note) {
