@@ -266,7 +266,7 @@ public class FinishSellController {
                 Management.closeTable(idTable);
                 Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
 
-                AppFactory.getManageComandaController().refreshTileList();
+                AppFactory.getManageComandaController().update();
             } else {
                 Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
 

@@ -67,38 +67,44 @@ public class ManageComandaController {
     @FXML
     public void initialize() {
         AppFactory.setManageComandaController(this);
+        comandas = Order.getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
+
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
-        comandas = Order.getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
         scrollPane.setFitToWidth(true);
         tilePane.setPrefColumns(50);
         tilePane.getChildren().clear();
-        update.setOnMouseClicked(e -> refreshTileList());
+        update.setOnMouseClicked(e -> update());
 
         if (!Cashier.isOpen()) {
             newComandaButton.setDisable(true);
         }
 
-        setController();
-        initSessionDetails();
-        updateInfo();
-        updateCashierStatus();
+        update();
 
         Platform.runLater(this::listBusyTable);
+    }
+
+    public void update() {
+        comandas = Order.getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
+        resetControllers();
+        initSessionDetails();
+        listBusyTable();
+        updateInfo();
+        updateCashierStatus();
     }
 
     public void handleAddComanda() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.NEW_COMANDA_DIALOG));
         VBox node = loader.load();
         NewComandaDialogController controller = loader.getController();
-
         PopOver popOver = new PopOver(node);
 
         popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.RIGHT_TOP);
         popOver.setDetachable(false);
         popOver.setOnHiding(e -> {
             if (controller.isAccepted()) {
-                refreshTileList();
+                update();
             }
         });
         newComandaButton.setOnMouseClicked(e1 -> popOver.show(wrapperBoxPicker1));
@@ -136,7 +142,7 @@ public class ManageComandaController {
         }
     }
 
-    public void setController() {
+    public void resetControllers() {
         try {
             handleAddComanda();
             handleRegisterTable();
@@ -263,14 +269,6 @@ public class ManageComandaController {
             for (Label label : labels)
                 label.getStyleClass().remove("label-tile-hover");
         }
-    }
-
-    public void refreshTileList() {
-        comandas = Order.getComandasByIdCashier(AppFactory.getCashierDao().getIdCashier());
-        setController();
-        initSessionDetails();
-        listBusyTable();
-        updateInfo();
     }
 
     public String calculateTimePeriod(ComandaDao comanda) {

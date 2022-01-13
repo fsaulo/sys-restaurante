@@ -75,7 +75,7 @@ public class ComandaViewController {
             AppFactory.setOrderDao(comanda);
             AppFactory.setSelectedProducts(list);
             AppController.showPaymentDialog();
-            AppFactory.getManageComandaController().refreshTileList();
+            AppFactory.getManageComandaController().update();
         }
     }
 

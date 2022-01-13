@@ -69,7 +69,7 @@ public class RegisterTableController {
                     Management.newTable(cod);
                     fieldVBox.getScene().getWindow().hide();
                     NotificationHandler.showInfo("Mesa adicionada com sucesso!");
-                    AppFactory.getManageComandaController().refreshTileList();
+                    AppFactory.getManageComandaController().update();
                 } catch (SQLException ex) {
                     if (ex.getErrorCode() == SQLiteErrorCode.SQLITE_CONSTRAINT.code) {
                         alert.setHeaderText("Não foi possível adicionar mesa");
@@ -104,7 +104,7 @@ public class RegisterTableController {
                 if (alert.getResult() == ButtonType.OK) {
                     Management.deleteTable(tableListView.getSelectionModel().getSelectedItem().getIdTable());
                     tableListView.getSelectionModel().clearSelection();
-                    AppFactory.getManageComandaController().refreshTileList();
+                    AppFactory.getManageComandaController().update();
                 }
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);

@@ -235,7 +235,7 @@ public class ComandaPOSController extends POS {
     public void saveChanges() {
         clear();
         saveProductList();
-        AppFactory.getManageComandaController().refreshTileList();
+        AppFactory.getManageComandaController().update();
     }
 
     public void handleEmployeesComboBox() {

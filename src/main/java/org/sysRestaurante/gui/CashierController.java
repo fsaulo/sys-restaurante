@@ -116,7 +116,8 @@ public class CashierController {
             });
 
             optionSeeReceipt.setDisable(true);
-            optionDeleteOrder.setOnAction(actionEvent -> onCancelOrder(row.getItem()));
+            optionDeleteOrder.setOnAction(actionEvent ->
+                    onCancelOrder(Objects.requireNonNull(row.getItem())));
             contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
             row.contextMenuProperty().bind(Bindings.when(row.emptyProperty().not())
                     .then(contextMenu)
@@ -374,6 +375,13 @@ public class CashierController {
         newOrderBox.setDisable(status);
     }
 
+    public void resetControllers() {
+        try {
+            handleAddComanda();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     public void handleAddComanda() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.NEW_COMANDA_DIALOG));
@@ -381,6 +389,10 @@ public class CashierController {
         PopOver popOver = new PopOver(node);
         popOver.arrowLocationProperty().setValue(PopOver.ArrowLocation.RIGHT_TOP);
         popOver.setDetachable(false);
+        popOver.setOnHiding(e -> {
+            updateTableAndDetailBox();
+            resetControllers();
+        });
         viewMesaComanda.setOnMouseClicked(e1 -> popOver.show(wrapperBoxPicker1));
     }
 }
