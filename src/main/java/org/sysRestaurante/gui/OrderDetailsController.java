@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("unchecked")
 public class OrderDetailsController {
 
     @FXML
@@ -78,7 +79,8 @@ public class OrderDetailsController {
     private final OrderDao order = AppFactory.getOrderDao();
 
     public void initialize() {
-        ObservableList items = FXCollections.observableArrayList(Order.getItemsByOrderId(order.getIdOrder()));
+        ObservableList<ProductDao> items = FXCollections
+                .observableArrayList(Order.getItemsByOrderId(order.getIdOrder()));
         updateTables();
 
         selectedProductsTableView.setItems(items);

@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+@SuppressWarnings("unchecked")
 public class DashboardController {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DashboardController.class.getName());

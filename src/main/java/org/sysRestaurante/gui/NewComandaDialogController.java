@@ -44,6 +44,7 @@ public class NewComandaDialogController {
     private TextField searchBox;
 
     private final ObservableList<TableDao> tables = FXCollections.observableArrayList(Management.getTables());
+    private boolean accepted = false;
 
     @FXML
     public void initialize() {
@@ -64,11 +65,12 @@ public class NewComandaDialogController {
 
         cancelButton.setOnMouseClicked(this::onCancelClicked);
         confirmButton.setOnMouseClicked(this::onConfirmClicked);
+
         searchBox.textProperty().addListener((observable -> refreshTables()));
         searchBox.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER) && !tableListView.getItems().isEmpty()) {
                 tableListView.getSelectionModel().selectFirst();
-                onConfirmClicked(event);
+               onConfirmClicked(event);
             } else if (event.getCode().equals(KeyCode.ESCAPE)) {
                 searchBox.clear();
                 selectedTableLabel.requestFocus();
@@ -76,6 +78,18 @@ public class NewComandaDialogController {
         });
 
         Platform.runLater(() -> selectedTableLabel.requestFocus());
+    }
+
+    private void comandaAccepted() {
+        NotificationHandler.showInfo("Comanda aberta com sucesso!");
+        this.accepted = true;
+    }
+
+    public boolean isAccepted() {
+        // If signal checked once, it resets to its initial state.
+        boolean oldResult = this.accepted;
+        this.accepted = false;
+        return oldResult;
     }
 
     public void refreshTables() {
@@ -107,11 +121,10 @@ public class NewComandaDialogController {
 
         try {
             selectedTable = tableListView.getSelectionModel().getSelectedItem();
-            available = selectedTable.getIdStatus() == 1;
+            available = selectedTable.getIdStatus() == Management.AVAILABLE;
         } catch (NullPointerException ex) {
             empty = true;
         }
-
 
         if (available) {
             idTable = tableListView.getSelectionModel().getSelectedItem().getIdTable();
@@ -120,13 +133,11 @@ public class NewComandaDialogController {
                 String empySelectionMessage = "Selecione uma mesa!";
                 selectedTableLabel.setText(empySelectionMessage);
                 selectedTableLabel.setStyle("-fx-text-fill: red");
-
             } else {
                 String tableNotAvailableMessage = "Mesa #" + selectedTable.getIdTable() + " não está disponível.";
                 selectedTableLabel.setText(tableNotAvailableMessage);
                 selectedTableLabel.setStyle("-fx-text-fill: red");
             }
-            event.consume();
             return;
         }
 
@@ -141,19 +152,26 @@ public class NewComandaDialogController {
         }
 
         String defaultMessage = "Cliente na mesa #" + selectedTable.getIdTable();
+
+        // FIXME: Needs exception handler.
+        // User should be aware when an order placement wasn't successfully concluded.
         order = Order.newOrder(idCashier, 0, 0, 2, 0,0, defaultMessage);
 
-        // A bug occurs whenever we try to fetch the auto-generated keys in the prepared statement.
+        // FIXME: A bug occurs whenever we try to fetch the auto-generated keys in the prepared statement.
         // This bug populates the table that contains a list of selected products with garbage.
         // So we clear the basket every time we create a fresh order. This procedure doesn't corrects the problem
         // thus should be fixed.
         Order.removeProductsFromOrder(Objects.requireNonNull(order).getIdOrder());
-        cashier.newComanda(idTable, order.getIdOrder(), idCashier, idEmployee,2);
-        Management.changeTableStatus(idTable, 2);
-        AppFactory.getManageComandaController().refreshTileList();
-        ((Node) event.getSource()).getScene().getWindow().hide();
 
-        NotificationHandler.showInfo("Comanda aberta com sucesso!");
+        // FIXME: Needs exception handler.
+        // Should check for errors before continuing.
+        cashier.newComanda(idTable, order.getIdOrder(), idCashier, idEmployee,2);
+        Management.changeTableStatus(idTable, Management.UNAVAILABLE);
+
+        // Toggle accepted signal. Useful when refreshing tiles based on opened tables.
+        comandaAccepted();
+
+        ((Node) event.getSource()).getScene().getWindow().hide();
     }
 
     public void handleEmployeesComboBox() {

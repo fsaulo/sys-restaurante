@@ -27,6 +27,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.logging.Logger;
 
+@SuppressWarnings("unchecked")
 public class CloseCashierDialogController {
 
     @FXML

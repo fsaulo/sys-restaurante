@@ -13,8 +13,8 @@ public interface DateFormatter {
     DateTimeFormatter DETAILED_TIME = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");
 
     /**
-     * Translate given minutes to human readable format.
-     * Returns a formated string.
+     * Translate given minutes to human-readable format.
+     * Returns a formatted string.
      */
 
     static String translateTimeFromMinutes(long minutes) {

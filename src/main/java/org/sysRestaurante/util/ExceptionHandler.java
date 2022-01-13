@@ -1,5 +1,6 @@
 package org.sysRestaurante.util;
 
+@SuppressWarnings("EmptyMethod")
 public class ExceptionHandler {
 
     private static int globalExceptionsCount = 0;

@@ -37,8 +37,13 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+@SuppressWarnings("unchecked")
 public class CashierHistoryController {
 
+    @FXML
+    public Label openOrCloseCashierLabel1;
+    @FXML
+    public Label openOrCloseCashierLabel2;
     @FXML
     private BorderPane borderPaneHolder;
     @FXML
