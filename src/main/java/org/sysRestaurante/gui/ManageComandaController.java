@@ -7,6 +7,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Window;
@@ -257,6 +259,16 @@ public class ManageComandaController {
         PopOver popOver = new PopOver(loader.load());
         tile.setOnMouseClicked(event -> {
             AppFactory.setOrderDao(comanda);
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                if (event.getClickCount() == 2) {
+                    AppController.showDialog(
+                            SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
+                            AppFactory.getMainController()
+                                    .getScene()
+                                    .getWindow()
+                    );
+                }
+            }
             popOver.show(tile);
         });
     }
