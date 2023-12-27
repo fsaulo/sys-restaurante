@@ -28,9 +28,10 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.4</version>
+                <version>0.0.8</version>
                 <configuration>
                     <mainClass>org.sysRestaurante.gui.MainGUI</mainClass>
+                    <executable>${java.home}/bin/java</executable>
                 </configuration>
             </plugin>
 
