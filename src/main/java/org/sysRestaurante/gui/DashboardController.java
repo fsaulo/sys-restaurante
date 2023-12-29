@@ -1,5 +1,7 @@
 package org.sysRestaurante.gui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -12,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.CashierDao;
@@ -210,10 +213,10 @@ public class DashboardController {
                 dateString2 = DateTimeFormatter.ofPattern("d MMM uuuu").format(value.getDateClosing());
             }
 
-            final XYChart.Data<String, Number> d1 = new XYChart.Data(dateString, value.getRevenue());
+            final XYChart.Data<String, Number> d1 = new XYChart.Data<>(dateString, value.getRevenue());
+            final StackPane stackPane = new StackPane();
+            final VBox box = new VBox();
 
-            StackPane stackPane = new StackPane();
-            VBox box = new VBox();
             box.setPadding(new Insets(15));
 
             Label label1 = new Label(CurrencyField.getBRLCurrencyFormat().format(value.getRevenue()));
@@ -221,23 +224,34 @@ public class DashboardController {
 
             label1.setStyle("-fx-font-weight: bold; -fx-font-size: 13");
             label2.setStyle("-fx-font-size: 13");
+
             box.getChildren().addAll(label1, label2);
             box.setCursor(Cursor.HAND);
             box.setOnMouseClicked(mouseEvent -> openHistoryPane(mouseEvent, value));
 
             PopOver legend = new PopOver(box);
 
-            box.setOnMouseExited(mouseEvent -> {
-                stackPane.setCursor(Cursor.DEFAULT);
-                legend.hide();
+            final Timeline timeline = new Timeline();
+            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500)));
+            timeline.setOnFinished(finishEvent -> {
+                if (stackPane.isHover() || box.isHover()) timeline.play();
+                else legend.hide(Duration.millis(500));
             });
 
-            legend.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+            legend.getRoot().setOnMouseEntered(event -> box.setCursor(Cursor.HAND));
+            legend.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
             legend.setDetachable(false);
 
+            stackPane.setOnMouseClicked(event -> openHistoryPane(event, value));
             stackPane.setOnMouseEntered(mouseDragEvent -> {
-                legend.show(stackPane);
+                if (!legend.isShowing()) legend.show(stackPane, -2);
                 stackPane.setCursor(Cursor.HAND);
+                mouseDragEvent.consume();
+            });
+
+            stackPane.setOnMouseExited(event -> {
+                timeline.play();
+                event.consume();
             });
 
             d1.setNode(stackPane);
