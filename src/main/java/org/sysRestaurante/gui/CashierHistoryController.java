@@ -3,6 +3,7 @@ package org.sysRestaurante.gui;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -18,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -109,9 +111,13 @@ public class CashierHistoryController {
                 .getBRLCurrencyFormat()
                 .format(value));
 
-        searchOrderBox.setOnMouseClicked(e -> {
-            CashierDao cashier;
+        orderListTableView.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+                expandTabWithOrderDetails(event);
+            }
+        });
 
+        searchOrderBox.setOnMouseClicked(e -> {
             if (orderListTableView.getSelectionModel().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Alerta do sistema");
@@ -121,14 +127,7 @@ public class CashierHistoryController {
                 alert.showAndWait();
                 return;
             }
-
-            try {
-                cashier = orderListTableView.getSelectionModel().getSelectedItem();
-                orderListTableView.getSelectionModel().clearSelection();
-                buildTableOrderDetails(cashier);
-            } catch (Exception ignored) {
-                ExceptionHandler.doNothing();
-            }
+            expandTabWithOrderDetails(e);
         });
 
         updateCashierStatus();
@@ -166,7 +165,7 @@ public class CashierHistoryController {
             ExceptionHandler.doNothing();
         }
 
-        Tab newTab = new Tab("Caixa: " + DateTimeFormatter
+        Tab newTab = new Tab("Caixa " + cashier.getIdCashier() + ": " + DateTimeFormatter
                 .ofPattern("dd/MM/yyyy")
                 .format(cashier.getDateOpening()));
 
@@ -198,6 +197,13 @@ public class CashierHistoryController {
             optionSeeReceipt.setDisable(true);
             optionDeleteOrder.setDisable(true);
             contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
+
+            row.setOnMouseClicked(e1 -> {
+                if (e1.getButton().equals(MouseButton.PRIMARY) && e1.getClickCount() == 2) {
+                    AppFactory.setOrderDao(row.getItem());
+                    AppController.showDialog(SceneNavigator.ORDER_DETAILS_DIALOG, true);
+                }
+            });
 
             row.contextMenuProperty().bind(Bindings
                             .when(row.emptyProperty().not())
@@ -242,5 +248,18 @@ public class CashierHistoryController {
         wrapper.setPadding(new Insets(5,0,0,0));
         wrapper.setSpacing(5);
         newTab.setContent(wrapper);
+    }
+
+    private void expandTabWithOrderDetails(Event e1) {
+        try {
+            CashierDao cashier;
+            cashier = orderListTableView.getSelectionModel().getSelectedItem();
+            orderListTableView.getSelectionModel().clearSelection();
+            buildTableOrderDetails(cashier);
+        } catch (Exception ignored) {
+            ExceptionHandler.doNothing();
+        } finally {
+            e1.consume();
+        }
     }
 }
