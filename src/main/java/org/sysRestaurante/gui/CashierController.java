@@ -21,6 +21,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -123,7 +124,20 @@ public class CashierController {
                 onCancelOrder(row.getItem());
                 actionEvent.consume();
             });
-            contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
+
+            contextMenu.getItems().addAll(
+                    optionDetailsOrder,
+                    optionSeeReceipt,
+                    separator,
+                    optionDeleteOrder
+            );
+
+            row.setOnMouseClicked(e1 -> {
+                if (e1.getButton().equals(MouseButton.PRIMARY) && e1.getClickCount() == 2) {
+                    AppFactory.setOrderDao(row.getItem());
+                    AppController.showDialog(SceneNavigator.ORDER_DETAILS_DIALOG, true);
+                }
+            });
             row.contextMenuProperty()
                     .bind(Bindings.when(row.emptyProperty().not())
                     .then(contextMenu)
