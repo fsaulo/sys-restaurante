@@ -1,16 +1,19 @@
 package org.sysRestaurante.gui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Window;
+import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
@@ -251,43 +254,53 @@ public class ManageComandaController {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.COMANDA_VIEW));
         loader.setController(new ComandaViewController(comanda));
-        PopOver popOver = new PopOver(loader.load());
-        popOver.getContentNode().setOnMouseExited(event -> popOver.hide());
+        Parent parent = loader.load();
+        PopOver popOver = new PopOver(parent);
 
-        tile.setOnMouseExited(event -> setSelectedLabels(
-                false,
-                comandaCod,
-                statusLabel,
-                cashSpent,
-                tableCod,
-                timeDuration
-        ));
+        final Timeline timeline = new Timeline();
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(200)));
+        timeline.setOnFinished(finishEvent -> {
+            ComandaViewController controller = loader.getController();
+            if (tile.isHover() || popOver.getContentNode().isHover() || controller.isEmployeeListViewHover()) {
+                timeline.play();
+            } else popOver.hide();
+        });
 
-        tile.setOnMouseEntered(event -> setSelectedLabels(
-                true,
-                comandaCod,
-                statusLabel,
-                cashSpent,
-                tableCod,
-                timeDuration
-        ));
+        tile.setOnMouseExited(event -> {
+            timeline.play();
+            setSelectedLabels(
+                    false,
+                    comandaCod,
+                    statusLabel,
+                    cashSpent,
+                    tableCod,
+                    timeDuration
+            );
+        });
+
+        tile.setOnMouseEntered(event -> {
+            popOver.show(tile);
+            setSelectedLabels(
+                    true,
+                    comandaCod,
+                    statusLabel,
+                    cashSpent,
+                    tableCod,
+                    timeDuration
+            );
+        });
 
         tilePane.getChildren().addAll(tile);
         session.setTotalComandaIncome(session.getTotalComandaIncome() + comanda.getTotal());
 
         tile.setOnMouseClicked(event -> {
-            AppFactory.setOrderDao(comanda);
-            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
-                AppFactory.setComandaDao(comanda);
-                AppController.showDialog(
-                        SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
-                        AppFactory.getMainController()
-                                .getScene()
-                                .getWindow()
-                );
-            } else if (event.getClickCount() == 1) {
-                popOver.show(tile);
-            }
+            AppFactory.setComandaDao(comanda);
+            AppController.showDialog(
+                SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
+                AppFactory.getMainController()
+                        .getScene()
+                        .getWindow()
+            );
         });
     }
 

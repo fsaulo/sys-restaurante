@@ -38,6 +38,8 @@ public class ComandaViewController {
     private final ComandaDao comanda;
     private ArrayList<ProductDao> list;
 
+    private boolean isEmployeeListViewHover = false;
+
     public ComandaViewController(ComandaDao comanda) {
         this.comanda = comanda;
     }
@@ -62,6 +64,8 @@ public class ComandaViewController {
         });
         Platform.runLater(() -> tableLabel.requestFocus());
     }
+
+    public boolean isEmployeeListViewHover() { return isEmployeeListViewHover; }
 
     public void handleCloseComanda() {
         if (list.isEmpty()) {
@@ -102,6 +106,8 @@ public class ComandaViewController {
                     @Override
                     protected void updateItem(EmployeeDao item, boolean empty) {
                         super.updateItem(item, empty);
+                        setOnMouseExited(e2 -> isEmployeeListViewHover = false);
+                        setOnMouseEntered(e1 -> isEmployeeListViewHover = true);
                         if (item == null || empty) {
                             setGraphic(null);
                         } else {
