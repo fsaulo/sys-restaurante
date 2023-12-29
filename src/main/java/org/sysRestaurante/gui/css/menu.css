@@ -192,7 +192,7 @@
     -fx-background-radius: 5;
 }
 
-.category-label: hover {
+.category-label:hover {
     -fx-background-color: #C3DBE8;
     -fx-border-color: #7D8C94;
     -fx-cursor: hand;
@@ -206,7 +206,7 @@
     -fx-background-radius: 0;
 }
 
-.availability-label-green: hover {
+.availability-label-green:hover {
     -fx-background-color: #8bc9a1;
     -fx-border-color: #72a584;
     -fx-cursor: hand;
@@ -234,7 +234,7 @@
     -fx-opacity: 0.8;
 }
 
-.comanda-tile: hover {
+.comanda-tile:hover {
     -fx-background-color: #9E9B8F;
     -fx-cursor: hand;
     -fx-text-fill: white;
@@ -251,11 +251,11 @@
     -fx-fill: orange;
 }
 
-.circle-status: hover {
+.circle-status:hover {
     -fx-radius: 6
 }
 
-.toggle-service: selected {
+.toggle-service:selected {
     -fx-opacity: 1;
 }
 
