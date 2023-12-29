@@ -7,10 +7,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
+import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import org.sysRestaurante.applet.AppFactory;
@@ -184,11 +181,22 @@ public class Receipt {
         TextFlow receipt = new TextFlow();
         receipt.getChildren().add(rpp);
         receipt.setTextAlignment(TextAlignment.JUSTIFY);
-        receipt.setMinWidth(395);
+        receipt.setMinWidth(calculateMinWidth(receipt));
         StackPane stackPane = new StackPane();
         stackPane.setPadding(new Insets(3));
         stackPane.getChildren().add(receipt);
         return stackPane;
+    }
+
+    private double calculateMinWidth(TextFlow textFlow) {
+        double minWidth = 0;
+        for (javafx.scene.Node node : textFlow.getChildren()) {
+            if (node instanceof Text) {
+                Text text = (Text) node;
+                minWidth += text.getLayoutBounds().getWidth();
+            }
+        }
+        return minWidth;
     }
 
     public WritableImage getReceiptImageFile() {
