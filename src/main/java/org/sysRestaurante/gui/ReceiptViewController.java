@@ -2,6 +2,7 @@ package org.sysRestaurante.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.sysRestaurante.applet.AppFactory;
@@ -22,7 +23,7 @@ public class ReceiptViewController {
         Receipt receipt = new Receipt(orderDao, products);
         receipt.buildReceipt();
         Text rpp = new Text(receipt.getReceipt());
-        rpp.setFont(new Font("DejaVu Sans Mono", 13));
+        rpp.setFont(Font.font("Consolas", FontWeight.THIN, 13));
         receiptText.getChildren().add(rpp);
     }
 }

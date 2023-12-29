@@ -180,7 +180,7 @@ public class Receipt {
 
     public Node getReceiptAsNode() {
         Text rpp = new Text(getReceipt());
-        rpp.setFont(new Font("DejaVu Sans Mono", 13));
+        rpp.setFont(Font.font("Consolas", FontWeight.THIN, 13));
         TextFlow receipt = new TextFlow();
         receipt.getChildren().add(rpp);
         receipt.setTextAlignment(TextAlignment.JUSTIFY);
