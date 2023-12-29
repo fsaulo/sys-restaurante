@@ -143,7 +143,7 @@ public class POS {
         FilteredList<ProductDao> filteredData = new FilteredList<>(products, null);
         String filter = searchBox.getText().toUpperCase();
 
-        if(filter.length() == 0) {
+        if(filter.isEmpty()) {
             filteredData.setPredicate(null);
         }
         else {

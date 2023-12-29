@@ -8,11 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Window;
-import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
@@ -193,13 +191,13 @@ public class ManageComandaController {
         LocalDateTime dateTimeOpen = comanda.getDateOpening().atTime(comanda.getTimeOpening());
 
         if (comanda.isOpen()) {
-            permanencyDurationInMinutes += ChronoUnit.MINUTES.between(dateTimeOpen, LocalDateTime.now());
+            permanencyDurationInMinutes += (int) ChronoUnit.MINUTES.between(dateTimeOpen, LocalDateTime.now());
         } else {
             LocalDateTime dateTimeClose = comanda.getDateClosing().atTime(comanda.getTimeClosing());
-            permanencyDurationInMinutes += ChronoUnit.MINUTES.between(dateTimeOpen, dateTimeClose);
+            permanencyDurationInMinutes += (int) ChronoUnit.MINUTES.between(dateTimeOpen, dateTimeClose);
         }
 
-        if (comandas.size() > 0) {
+        if (!comandas.isEmpty()) {
             session.setAveragePermanencyInMinutes(permanencyDurationInMinutes / comandas.size());
         } else {
             session.setAveragePermanencyInMinutes(0);
@@ -221,7 +219,7 @@ public class ManageComandaController {
     }
 
     public double averageIncome() {
-        if (comandas.size() <= 0) return (0);
+        if (comandas.isEmpty()) return (0);
         else return session.getTotalComandaIncome() / comandas.size();
     }
 
@@ -256,13 +254,23 @@ public class ManageComandaController {
         PopOver popOver = new PopOver(loader.load());
         popOver.getContentNode().setOnMouseExited(event -> popOver.hide());
 
-        tile.setOnMouseExited(event -> {
-            setSelectedLabels(false, comandaCod, statusLabel, cashSpent, tableCod, timeDuration);
-        });
+        tile.setOnMouseExited(event -> setSelectedLabels(
+                false,
+                comandaCod,
+                statusLabel,
+                cashSpent,
+                tableCod,
+                timeDuration
+        ));
 
-        tile.setOnMouseEntered(event -> {
-            setSelectedLabels(true, comandaCod, statusLabel, cashSpent, tableCod, timeDuration);
-        });
+        tile.setOnMouseEntered(event -> setSelectedLabels(
+                true,
+                comandaCod,
+                statusLabel,
+                cashSpent,
+                tableCod,
+                timeDuration
+        ));
 
         tilePane.getChildren().addAll(tile);
         session.setTotalComandaIncome(session.getTotalComandaIncome() + comanda.getTotal());
@@ -277,7 +285,7 @@ public class ManageComandaController {
                                 .getScene()
                                 .getWindow()
                 );
-            } else {
+            } else if (event.getClickCount() == 1) {
                 popOver.show(tile);
             }
         });
