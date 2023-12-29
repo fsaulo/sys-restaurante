@@ -259,17 +259,17 @@ public class ManageComandaController {
         PopOver popOver = new PopOver(loader.load());
         tile.setOnMouseClicked(event -> {
             AppFactory.setOrderDao(comanda);
-            if (event.getButton().equals(MouseButton.PRIMARY)) {
-                if (event.getClickCount() == 2) {
-                    AppController.showDialog(
-                            SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
-                            AppFactory.getMainController()
-                                    .getScene()
-                                    .getWindow()
-                    );
-                }
+            if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+                AppFactory.setComandaDao(comanda);
+                AppController.showDialog(
+                        SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
+                        AppFactory.getMainController()
+                                .getScene()
+                                .getWindow()
+                );
+            } else {
+                popOver.show(tile);
             }
-            popOver.show(tile);
         });
     }
 

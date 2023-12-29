@@ -106,6 +106,8 @@ public class ComandaPOSController extends POS {
 
     @FXML
     public void initialize() {
+        assert(comanda != null);
+        
         AppFactory.setComandaPOSController(this);
         AppFactory.setPos(this);
         AppFactory.setOrderDao(comanda);
