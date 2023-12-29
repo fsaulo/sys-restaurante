@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Window;
+import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
@@ -249,14 +250,23 @@ public class ManageComandaController {
         tile.setMinWidth(190);
         tile.getStylesheets().add("css/menu.css");
         tile.getStyleClass().add("comanda-tile");
-        tile.setOnMouseEntered(event -> setSelectedLabels(true, comandaCod, statusLabel, cashSpent, tableCod, timeDuration));
-        tile.setOnMouseExited(event -> setSelectedLabels(false, comandaCod, statusLabel, cashSpent, tableCod, timeDuration));
-        tilePane.getChildren().addAll(tile);
-        session.setTotalComandaIncome(session.getTotalComandaIncome() + comanda.getTotal());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.COMANDA_VIEW));
         loader.setController(new ComandaViewController(comanda));
         PopOver popOver = new PopOver(loader.load());
+        popOver.getContentNode().setOnMouseExited(event -> popOver.hide());
+
+        tile.setOnMouseExited(event -> {
+            setSelectedLabels(false, comandaCod, statusLabel, cashSpent, tableCod, timeDuration);
+        });
+
+        tile.setOnMouseEntered(event -> {
+            setSelectedLabels(true, comandaCod, statusLabel, cashSpent, tableCod, timeDuration);
+        });
+
+        tilePane.getChildren().addAll(tile);
+        session.setTotalComandaIncome(session.getTotalComandaIncome() + comanda.getTotal());
+
         tile.setOnMouseClicked(event -> {
             AppFactory.setOrderDao(comanda);
             if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {

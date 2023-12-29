@@ -143,7 +143,7 @@ public class AppController implements DateFormatter {
         Timeline chronometer = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             long elapsedTimeInSeconds = ChronoUnit.SECONDS.between(initialTime, LocalDateTime.now());
             String elapsedTime = LocalTime.ofSecondOfDay(elapsedTimeInSeconds).toString();
-            sessionTimer.setText("" + elapsedTime);
+            sessionTimer.setText(elapsedTime);
             sessionTimer.setStyle("-fx-font: Carlito; -fx-font-size: 13");
             sessionTimer.setOpacity(0.6);
             timerInMillies += 1L;
