@@ -1,5 +1,7 @@
 package org.sysRestaurante.gui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
@@ -66,6 +69,8 @@ public class FinishSellController {
     @FXML
     private Label discountLabel;
     @FXML
+    private Label codOrderLabel;
+    @FXML
     private Label taxLabel;
     @FXML
     private ToggleButton ba0;
@@ -109,6 +114,8 @@ public class FinishSellController {
 
     @FXML
     public void initialize() {
+        assert(order != null);
+
         setInputFilds();
         triggerActions();
 
@@ -137,13 +144,21 @@ public class FinishSellController {
         if (AppFactory.getOrderDao() instanceof ComandaDao) cancelButton.setDisable(true);
         buildReceiptContent();
 
-        seeReceiptBox.setOnMouseClicked(event -> {
-            PopOver popOver = viewReceipt();
-            hBoxControl.setDisable(true);
-            popOver.setOnHidden(e1 -> hBoxControl.setDisable(false));
-            popOver.show(seeReceiptBox);
+        PopOver popOver = viewReceipt();
+        final Timeline timeline = new Timeline();
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(200)));
+        timeline.setOnFinished(finishEvent -> {
+            if (seeReceiptBox.isHover() || popOver.getContentNode().isHover()) {
+                timeline.play();
+            } else popOver.hide();
         });
 
+        seeReceiptBox.setOnMouseEntered(event -> {
+            if (!popOver.isShowing()) popOver.show(seeReceiptBox, -5);
+        });
+        seeReceiptBox.setOnMouseExited(event -> timeline.play());
+
+        codOrderLabel.setText(Integer.toString(AppFactory.getOrderDao().getIdOrder()));
         totalLabel.setText(format.format(getTotal()));
         subtotalLabel.setText(format.format(getSubtotal()));
         discountLabel.setText(format.format(getDiscount()));
@@ -218,6 +233,7 @@ public class FinishSellController {
 
         PopOver popOver = new PopOver(node);
         popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_RIGHT);
+        popOver.setHideOnEscape(true);
         ArrayList<ProductDao> products = AppFactory.getSelectedProducts();
 
         if (products.size() >= 15) {

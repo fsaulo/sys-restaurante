@@ -279,6 +279,7 @@ public class ManageComandaController {
         });
 
         tile.setOnMouseEntered(event -> {
+            AppFactory.setOrderDao(comanda);
             popOver.show(tile);
             setSelectedLabels(
                     true,
@@ -295,6 +296,7 @@ public class ManageComandaController {
 
         tile.setOnMouseClicked(event -> {
             AppFactory.setComandaDao(comanda);
+            AppFactory.setOrderDao(comanda);
             AppController.showDialog(
                 SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
                 AppFactory.getMainController()
