@@ -24,7 +24,7 @@
             </font>
         </Label>
         <Pane HBox.hgrow="ALWAYS" />
-        <Label opacity="0.8" text="#2144">
+        <Label fx:id="codOrderLabel" opacity="0.8" text="#2144">
             <font>
                 <Font name="Carlito Italic" size="18.0" />
             </font>

@@ -192,10 +192,14 @@ public class FinishSellController {
     }
 
     public void buildReceiptContent() {
+        OrderDao orderDao = AppFactory.getOrderDao();
+        assert (orderDao != null);
+        if (!(orderDao instanceof ComandaDao)) {
+            orderDao.setIdOrder(Order.getLastOrderId() + 1);
+        }
         order.setOrderDate(LocalDate.now());
         order.setOrderTime(LocalTime.now());
         order.setTotal(getSubtotal());
-        order.setIdOrder(Order.getLastOrderId() + 1);
         order.setDiscount(percentageField1.getAmount() * getSubtotal());
         order.setTaxes(percentageField2.getAmount() * getSubtotal());
         AppFactory.setOrderDao(order);
