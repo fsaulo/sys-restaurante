@@ -256,17 +256,20 @@ public class ManageComandaController {
         loader.setController(new ComandaViewController(comanda));
         Parent parent = loader.load();
         PopOver popOver = new PopOver(parent);
+        popOver.setAutoHide(true);
 
         final Timeline timeline = new Timeline();
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(200)));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100)));
         timeline.setOnFinished(finishEvent -> {
             ComandaViewController controller = loader.getController();
             if (tile.isHover() || popOver.getContentNode().isHover() || controller.isEmployeeListViewHover()) {
                 timeline.play();
             } else popOver.hide();
+            finishEvent.consume();
         });
 
         tile.setOnMouseExited(event -> {
+            AppFactory.setOrderDao(comanda);
             timeline.play();
             setSelectedLabels(
                     false,
@@ -276,6 +279,7 @@ public class ManageComandaController {
                     tableCod,
                     timeDuration
             );
+            event.consume();
         });
 
         tile.setOnMouseEntered(event -> {
@@ -289,12 +293,14 @@ public class ManageComandaController {
                     tableCod,
                     timeDuration
             );
+            event.consume();
         });
 
         tilePane.getChildren().addAll(tile);
         session.setTotalComandaIncome(session.getTotalComandaIncome() + comanda.getTotal());
 
         tile.setOnMouseClicked(event -> {
+            popOver.hide();
             AppFactory.setComandaDao(comanda);
             AppFactory.setOrderDao(comanda);
             AppController.showDialog(
@@ -303,6 +309,7 @@ public class ManageComandaController {
                         .getScene()
                         .getWindow()
             );
+            event.consume();
         });
     }
 
