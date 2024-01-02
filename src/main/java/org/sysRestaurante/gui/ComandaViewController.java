@@ -54,8 +54,11 @@ public class ComandaViewController {
         productsListView.setItems(FXCollections.observableList(list));
         productsListView.setCellFactory(plv -> new ProductListViewCell(false));
         productsListView.setFocusTraversable(true);
-        employeeComboBox.setOnAction(event -> updateEmployee());
         closeComandaButton.setOnMouseClicked(event -> handleCloseComanda());
+        employeeComboBox.setOnAction(event -> {
+            updateEmployee();
+            isEmployeeListViewHover = true;
+        });
 
         addOrder.setOnMouseClicked(event -> {
             AppFactory.setComandaDao(comanda);
