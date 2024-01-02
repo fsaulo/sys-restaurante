@@ -196,8 +196,9 @@ public class ToolBarController extends AppFactory {
     }
 
     @FXML
-    public void submenuPedidos() {
+    public void submenuPedidos(Event event) {
         selectMenuPrincipal();
+        AppFactory.getAppController().loadPage(event, SceneNavigator.MANAGE_KDS);
     }
 
     @FXML
