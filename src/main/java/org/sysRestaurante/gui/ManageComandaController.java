@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.stage.Window;
@@ -284,7 +285,6 @@ public class ManageComandaController {
 
         tile.setOnMouseEntered(event -> {
             AppFactory.setOrderDao(comanda);
-            popOver.show(tile);
             setSelectedLabels(
                     true,
                     comandaCod,
@@ -300,15 +300,26 @@ public class ManageComandaController {
         session.setTotalComandaIncome(session.getTotalComandaIncome() + comanda.getTotal());
 
         tile.setOnMouseClicked(event -> {
-            popOver.hide();
-            AppFactory.setComandaDao(comanda);
-            AppFactory.setOrderDao(comanda);
-            AppController.showDialog(
-                SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
-                AppFactory.getMainController()
-                        .getScene()
-                        .getWindow()
-            );
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                switch (event.getClickCount()) {
+                    case 1:
+                        if (!popOver.isShowing()) popOver.show(tile);
+                        else popOver.hide();
+                        break;
+                    case 2:
+                        AppFactory.setComandaDao(comanda);
+                        AppFactory.setOrderDao(comanda);
+                        AppController.showDialog(
+                                SceneNavigator.ADD_PRODUCTS_TO_COMANDA,
+                                AppFactory.getMainController()
+                                        .getScene()
+                                        .getWindow()
+                        );
+                        break;
+                    default:
+                        break;
+                }
+            }
             event.consume();
         });
     }
