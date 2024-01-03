@@ -12,7 +12,9 @@ import javafx.scene.layout.HBox;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.ExceptionHandler;
+import org.sysRestaurante.util.NotificationHandler;
 
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -86,6 +88,22 @@ public class ProductListViewCell extends ListCell<ProductDao> {
                     if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                         try {
                             AppFactory.getPos().addToSelectedProductsList(product);
+                            int productType = product.getCategoryDao().getIdCategory();
+                            if (product.isMenuItem() || productType == ProductDao.CategoryDao.Type.LUNCH.getValue()
+                                    || productType == ProductDao.CategoryDao.Type.TASTE.getValue()
+                                    || productType == ProductDao.CategoryDao.Type.EXTRA_PORTION.getValue()) {
+                                int idOrder = Order.newKitchenOrder(
+                                        AppFactory.getComandaDao().getIdComanda(),
+                                        1,
+                                        "Sem observações"
+                                );
+                                if (idOrder > 0) {
+                                    Order.addProductToKitchenOrder(idOrder, product);
+                                    NotificationHandler.showInfo("Pedido enviado para cozinha");
+                                } else {
+                                    NotificationHandler.showInfo("Não foi possível registrar o pedido na cozinha");
+                                }
+                            }
                         } catch (NullPointerException ignored) {
                             ExceptionHandler.doNothing();
                         }

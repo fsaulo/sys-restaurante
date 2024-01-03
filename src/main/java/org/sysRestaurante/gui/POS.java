@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,6 +26,7 @@ import org.sysRestaurante.util.NotificationHandler;
 import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -35,6 +37,8 @@ public class POS {
     private Button addProductButton;
     private Button removeButton;
     private Button clearButton;
+    @FXML
+    private TextArea orderDetailsTextArea;
     private Label unitPriceLabel;
     private Label contentLabel;
     private Label codProductLabel;
@@ -178,8 +182,19 @@ public class POS {
 
         addProductButton.setOnAction(event -> {
             if (!productsListView.getItems().isEmpty()) {
-                addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem(), qtySpinner.getValue());
+                ProductDao productDao = productsListView.getSelectionModel().getSelectedItem();
+                int qtyProduct = qtySpinner.getValue();
+                addToSelectedProductsList(productDao, qtyProduct);
                 qtySpinner.decrement(qtySpinner.getValue() - 1);
+
+                int productType = productDao.getCategoryDao().getIdCategory();
+                if (productDao.isMenuItem() || productType == ProductDao.CategoryDao.Type.LUNCH.getValue()
+                    || productType == ProductDao.CategoryDao.Type.TASTE.getValue()
+                    || productType == ProductDao.CategoryDao.Type.EXTRA_PORTION.getValue()) {
+                    productDao.setQuantity(qtyProduct);
+                    registerKitchenOrder(productDao);
+                    orderDetailsTextArea.clear();
+                }
             }
         });
 
@@ -251,7 +266,16 @@ public class POS {
                     break;
                 case ENTER:
                     ProductDao product = productsListView.getSelectionModel().getSelectedItem();
-                    if (product != null) addToSelectedProductsList(product);
+                    if (product != null) {
+                        addToSelectedProductsList(product);
+                        int productType = product.getCategoryDao().getIdCategory();
+                        if (product.isMenuItem() || productType == ProductDao.CategoryDao.Type.LUNCH.getValue()
+                                || productType == ProductDao.CategoryDao.Type.TASTE.getValue()
+                                || productType == ProductDao.CategoryDao.Type.EXTRA_PORTION.getValue()) {
+                            registerKitchenOrder(product);
+                            orderDetailsTextArea.clear();
+                        }
+                    }
                     break;
                 default:
                     searchBox.setText(searchBox.getText().concat(keyEvent.getText()));
@@ -385,6 +409,8 @@ public class POS {
         unitPriceLabel.setText(format.format(product.getSellPrice()));
         contentLabel.setText(product.getDescription());
         codProductLabel.setText(String.valueOf(product.getIdProduct()));
+
+        // TODO: fix NullPointerException when double clicking selected products ListView
         categoryLabel.setText(product.getCategoryDao().getCategoryDescription());
     }
 
@@ -514,5 +540,15 @@ public class POS {
 
     public void searchByCategory(String category) {
         searchBox.setText(category);
+    }
+
+    private void registerKitchenOrder(ProductDao product) {
+        String notes = Objects.equals(orderDetailsTextArea.getText(), "")? "Sem observações" : orderDetailsTextArea.getText();
+        int idOrder = Order.newKitchenOrder(AppFactory.getComandaDao().getIdComanda(), 1, notes);
+        if (idOrder > 0) {
+            Order.addProductToKitchenOrder(idOrder, product);
+            NotificationHandler.showInfo("Pedido enviado para cozinha");
+        }
+        else NotificationHandler.showInfo("Não foi possível registrar o pedido na cozinha");
     }
 }

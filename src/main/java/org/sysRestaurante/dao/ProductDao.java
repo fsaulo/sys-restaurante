@@ -156,6 +156,20 @@ public class ProductDao {
     }
 
     public static class CategoryDao {
+
+        public enum Type {
+            DRINK(1), LUNCH(2), TASTE(3), EXTRA_PORTION(4), NONE(5);
+
+            private int value;
+            Type(int value) {
+                this.value = value;
+            }
+
+            public int getValue() {
+                return value;
+            }
+        }
+
         private String categoryDescription;
         private int idCategory;
 
