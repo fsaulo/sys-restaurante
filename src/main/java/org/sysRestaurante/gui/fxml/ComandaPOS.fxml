@@ -22,7 +22,7 @@
 
 <BorderPane fx:id="wrapperBox" prefHeight="601.0" prefWidth="992.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ComandaPOSController">
    <left>
-       <VBox prefHeight="554.0" prefWidth="530.0" spacing="5.0" BorderPane.alignment="CENTER">
+       <VBox maxWidth="1.7976931348623157E308" prefHeight="554.0" prefWidth="530.0" spacing="5.0" BorderPane.alignment="CENTER">
            <stylesheets>
                <URL value="@../css/menu.css" />
                <URL value="@../css/controls.css" />
@@ -286,7 +286,7 @@
        <HBox style="-fx-border-color: #CBCBCC;" BorderPane.alignment="CENTER">
            <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="110.0" text="Sair">
               <font>
-                  <Font size="16.0" />
+                  <Font name="Carlito Bold" size="16.0" />
               </font>
               <styleClass>
                   <String fx:value="view" />
