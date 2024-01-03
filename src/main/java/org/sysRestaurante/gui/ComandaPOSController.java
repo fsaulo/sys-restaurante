@@ -63,6 +63,8 @@ public class ComandaPOSController extends POS {
     @FXML
     private TextField customerBox;
     @FXML
+    private Button addCustomerButton;
+    @FXML
     private Label customerLabel;
     @FXML
     private Label subtotalLabel;
@@ -129,6 +131,13 @@ public class ComandaPOSController extends POS {
         codOrderLabel.setText(String.valueOf(comanda.getIdOrder()));
         codComandaLabel.setText(String.valueOf(comanda.getIdComanda()));
 		customerLabel.setText(parseCustomerName());
+        changeTableButton.setStyle("-fx-cursor: hand;");
+
+        addCustomerButton.setOnAction(e -> {
+            Order.insertCustomerName(comanda.getIdOrder(), customerBox.getText());
+            customerLabel.setText(customerBox.getText());
+            customerBox.clear();
+        });
 
         customerBox.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.ENTER)) {
