@@ -186,15 +186,6 @@ public class POS {
                 int qtyProduct = qtySpinner.getValue();
                 addToSelectedProductsList(productDao, qtyProduct);
                 qtySpinner.decrement(qtySpinner.getValue() - 1);
-
-                int productType = productDao.getCategoryDao().getIdCategory();
-                if (productDao.isMenuItem() || productType == ProductDao.CategoryDao.Type.LUNCH.getValue()
-                    || productType == ProductDao.CategoryDao.Type.TASTE.getValue()
-                    || productType == ProductDao.CategoryDao.Type.EXTRA_PORTION.getValue()) {
-                    productDao.setQuantity(qtyProduct);
-                    registerKitchenOrder(productDao);
-                    orderDetailsTextArea.clear();
-                }
             }
         });
 
@@ -268,13 +259,6 @@ public class POS {
                     ProductDao product = productsListView.getSelectionModel().getSelectedItem();
                     if (product != null) {
                         addToSelectedProductsList(product);
-                        int productType = product.getCategoryDao().getIdCategory();
-                        if (product.isMenuItem() || productType == ProductDao.CategoryDao.Type.LUNCH.getValue()
-                                || productType == ProductDao.CategoryDao.Type.TASTE.getValue()
-                                || productType == ProductDao.CategoryDao.Type.EXTRA_PORTION.getValue()) {
-                            registerKitchenOrder(product);
-                            orderDetailsTextArea.clear();
-                        }
                     }
                     break;
                 default:
@@ -458,6 +442,10 @@ public class POS {
             selectedProductsList.add(product);
         }
 
+        if (registerKitchenOrder(product)) {
+            orderDetailsTextArea.clear();
+        }
+
         product.setTotal(product.getSellPrice() * product.getQuantity());
         updateSelectedList();
     }
@@ -475,6 +463,10 @@ public class POS {
         } else {
             product.setQuantity(qty);
             selectedProductsList.add(product);
+        }
+
+        if (registerKitchenOrder(product)) {
+            orderDetailsTextArea.clear();
         }
 
         product.setTotal(product.getSellPrice() * product.getQuantity());
@@ -540,13 +532,26 @@ public class POS {
         searchBox.setText(category);
     }
 
-    private void registerKitchenOrder(ProductDao product) {
-        String notes = Objects.equals(orderDetailsTextArea.getText(), "")? "Sem observações" : orderDetailsTextArea.getText();
-        int idOrder = Order.newKitchenOrder(AppFactory.getComandaDao().getIdComanda(), 1, notes);
-        if (idOrder > 0) {
-            Order.addProductToKitchenOrder(idOrder, product);
-            NotificationHandler.showInfo("Pedido enviado para cozinha");
+    private boolean registerKitchenOrder(ProductDao product) {
+        OrderDao order = AppFactory.getOrderDao();
+        if (order instanceof ComandaDao) {
+            int productType = product.getCategoryDao().getIdCategory();
+            if (product.isMenuItem() || productType == ProductDao.CategoryDao.Type.LUNCH.getValue()
+                    || productType == ProductDao.CategoryDao.Type.TASTE.getValue()
+                    || productType == ProductDao.CategoryDao.Type.EXTRA_PORTION.getValue()) {
+
+                String notes = Objects.equals(orderDetailsTextArea.getText(), "") ? "Sem observações" : orderDetailsTextArea.getText();
+                int idOrder = Order.newKitchenOrder(((ComandaDao) order).getIdComanda(), 1, notes);
+
+                if (idOrder > 0) {
+                    Order.addProductToKitchenOrder(idOrder, product);
+                    NotificationHandler.showInfo("Pedido enviado para cozinha");
+                } else {
+                    NotificationHandler.showInfo("Não foi possível registrar o pedido na cozinha");
+                }
+                return true;
+            }
         }
-        else NotificationHandler.showInfo("Não foi possível registrar o pedido na cozinha");
+        return false;
     }
 }
