@@ -48,12 +48,12 @@ public class Order {
             ps = Objects.requireNonNull(con).prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUser);
             ps.setInt(2, idCashier);
-            ps.setDate(3, java.sql.Date.valueOf(LocalDate.now()));
+            ps.setDate(3, Date.valueOf(LocalDate.now()));
             ps.setString(4, note);
             ps.setDouble(5, byCard);
             ps.setDouble(6, inCash);
             ps.setInt(7, type);
-            ps.setTime(8, java.sql.Time.valueOf(LocalTime.now()));
+            ps.setTime(8, Time.valueOf(LocalTime.now()));
             ps.setDouble(9, discount);
             ps.setInt(10, type);
             ps.setDouble(11, taxes);
@@ -97,10 +97,10 @@ public class Order {
             Connection con = DBConnection.getConnection();
             ps = Objects.requireNonNull(con).prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idCashier);
-            ps.setDate(2, java.sql.Date.valueOf(LocalDate.now()));
+            ps.setDate(2, Date.valueOf(LocalDate.now()));
             ps.setInt(3, idTable);
             ps.setInt(4, type);
-            ps.setTime(5, java.sql.Time.valueOf(LocalTime.now()));
+            ps.setTime(5, Time.valueOf(LocalTime.now()));
             ps.setInt(6, idOrder);
             ps.setInt(7, idEmployee);
             ps.setBoolean(8, true);
@@ -570,6 +570,65 @@ public class Order {
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
+            ex.printStackTrace();
+        }
+    }
+
+    public static int newKitchenOrder(int idComanda, int status, String details) {
+        PreparedStatement ps;
+        ResultSet rs;
+        String query = "INSERT INTO pedido_cozinha (id_comanda,status,observacoes,data_pedido) " +
+                "VALUES (?,?,?,?)";
+        int idOrder = -1;
+
+        try {
+            Connection con = DBConnection.getConnection();
+
+            ps = Objects.requireNonNull(con).prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, idComanda);
+            ps.setInt(2, status);
+            ps.setString(3, details);
+            ps.setDate(4, Date.valueOf(LocalDate.now()));
+            ps.executeUpdate();
+            rs = ps.getGeneratedKeys();
+
+            while (rs.next()) {
+                idOrder = rs.getInt(1);
+            }
+
+            LOGGER.info("Kitchen's order was registered successfully.");
+
+            ps.close();
+            rs.close();
+            con.close();
+
+        } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
+            ex.printStackTrace();
+        }
+
+        return idOrder;
+    }
+
+    public static void addProductToKitchenOrder(int idKitchenOrder, ProductDao product) {
+        String query = "INSERT INTO pedido_cozinha_has_produtos (id_pedido_cozinha, id_produto, qtd_produto) VALUES (?, ?, ?)";
+        PreparedStatement ps;
+        LOGGER.setLevel(Level.ALL);
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, idKitchenOrder);
+            ps.setInt(2, product.getIdProduct());
+            ps.setInt(3, product.getQuantity());
+
+            ps.executeUpdate();
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            LOGGER.severe("Error trying to register products in order.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
             NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
