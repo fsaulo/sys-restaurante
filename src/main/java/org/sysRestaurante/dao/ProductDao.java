@@ -16,7 +16,7 @@ public class ProductDao {
     private boolean ingredient;
     private String description;
     private String categoryDescription;
-    private CategoryDao categoryDao;
+    private CategoryDao categoryDao = new CategoryDao();
 
     public ProductDao() {
         quantity = 1;

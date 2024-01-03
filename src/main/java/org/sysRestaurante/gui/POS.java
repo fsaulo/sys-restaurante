@@ -409,8 +409,6 @@ public class POS {
         unitPriceLabel.setText(format.format(product.getSellPrice()));
         contentLabel.setText(product.getDescription());
         codProductLabel.setText(String.valueOf(product.getIdProduct()));
-
-        // TODO: fix NullPointerException when double clicking selected products ListView
         categoryLabel.setText(product.getCategoryDao().getCategoryDescription());
     }
 
