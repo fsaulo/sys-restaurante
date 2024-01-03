@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
+import org.sysRestaurante.dao.KitchenOrderDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.util.DBConnection;
@@ -11,15 +12,9 @@ import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.sql.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -270,6 +265,7 @@ public class Order {
             ps.executeUpdate();
 
             ps.close();
+            rs.close();
             con.close();
         } catch (SQLException ex) {
             NotificationHandler.errorDialog(ex);
@@ -298,6 +294,7 @@ public class Order {
             ps.executeUpdate();
 
             ps.close();
+            rs.close();
             con.close();
         } catch (SQLException ex) {
             NotificationHandler.errorDialog(ex);
@@ -359,6 +356,7 @@ public class Order {
 
             ps.close();
             con.close();
+            rs.close();
             return name;
         } catch (SQLException ex) {
             NotificationHandler.errorDialog(ex);
@@ -589,7 +587,7 @@ public class Order {
             ps.setInt(1, idComanda);
             ps.setInt(2, status);
             ps.setString(3, details);
-            ps.setDate(4, Date.valueOf(LocalDate.now()));
+            ps.setString(4, LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
 
@@ -604,8 +602,8 @@ public class Order {
             con.close();
 
         } catch (SQLException ex) {
-            NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
+            NotificationHandler.errorDialog(ex);
         }
 
         return idOrder;
@@ -627,10 +625,93 @@ public class Order {
             ps.close();
             con.close();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             LOGGER.severe("Error trying to register products in order.");
             ExceptionHandler.incrementGlobalExceptionsCount();
             NotificationHandler.errorDialog(ex);
-            ex.printStackTrace();
         }
+    }
+
+    public static boolean updateKitchenOrderStatus(int idKitchenOrder, int status) {
+        PreparedStatement ps;
+        String query = "UPDATE pedido_cozinha SET status = ? WHERE id_pedido_cozinha = ?";
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, status);
+            ps.setInt(2, idKitchenOrder);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            NotificationHandler.errorDialog(ex);
+        }
+        return false;
+    }
+
+    public static boolean updateKitchenOrderStatusWithDateTime(int idKitchenOrder, int status, LocalDateTime dateTime) {
+        PreparedStatement ps;
+        String query = "UPDATE pedido_cozinha SET status = ?, data_conclusao = ? WHERE id_pedido_cozinha = ?";
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, status);
+            ps.setString(2, dateTime.format(DateTimeFormatter.ISO_DATE_TIME));
+            ps.setInt(3, idKitchenOrder);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+            return true;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            NotificationHandler.errorDialog(ex);
+        }
+        return false;
+    }
+
+    public static KitchenOrderDao getKitchenOrder(int idKitchenOrder) {
+        String query = "SELECT * FROM pedido_cozinha WHERE id_pedido_cozinha = ?";
+        String name = null;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        KitchenOrderDao order = new KitchenOrderDao();
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, idKitchenOrder);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String kitchenOrderDateString = rs.getString("data_pedido");
+                String finalKitchenOrderDateString = rs.getString("data_conclusao");
+
+                DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+                LocalDateTime kitchenOrderDateTime = LocalDateTime.parse(kitchenOrderDateString, formatter);
+                LocalDateTime finalKitchenOrderDateTime = LocalDateTime.parse(finalKitchenOrderDateString, formatter);
+
+                order.setKitchenOrderDateTime(kitchenOrderDateTime);
+                order.setIdKitchenOrder(rs.getInt("id_pedido_cozinha"));
+                order.setKitchenOrderStatus(KitchenOrderDao.KitchenOrderStatus.getByValue(rs.getInt("status")));
+                order.setKitchenOrderDetails(rs.getString("observacoes"));
+                order.setFinalKitchenOrderDateTime(finalKitchenOrderDateTime);
+            }
+
+            ps.close();
+            rs.close();
+            con.close();
+            return order;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            NotificationHandler.errorDialog(ex);
+        }
+        return null;
     }
 }
