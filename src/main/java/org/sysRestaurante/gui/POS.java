@@ -365,12 +365,12 @@ public class POS {
         totalColumn.setCellFactory((CellFormatter<ProductDao, Double>) value -> CurrencyField.getBRLCurrencyFormat()
                 .format(value));
         qtdColumn.setCellFactory(tc -> new SpinnerCellFactory(1, 999, 1, 1));
-        qtdColumn.setEditable(true);
+        qtdColumn.setEditable(false);
     }
 
     protected void updateSelectedList() {
         try {
-            selectedProductsTableView.setEditable(!selectedProductsTableView.getItems().isEmpty());
+            selectedProductsTableView.setEditable(false);
             selectedProductsTableView.setItems(selectedProductsList);
             selectedProductsTableView.refresh();
             updateTotalCashierLabel();
