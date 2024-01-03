@@ -276,6 +276,7 @@
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 3, 2, 1;
     -fx-font-weight: bold;
+    -fx-font-family: "Carlito";
     -fx-font-size: 16px;
 }
 
