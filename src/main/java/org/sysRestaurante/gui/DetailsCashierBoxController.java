@@ -57,9 +57,13 @@ public class DetailsCashierBoxController {
 
         NumberFormat formatter = CurrencyField.getBRLCurrencyFormat();
         withdrawalLabel.setText(formatter.format(cashierDao.getWithdrawal()));
+        withdrawalLabel.setTooltip(new Tooltip(formatter.format(cashierDao.getWithdrawal())));
         revenueLabel.setText(formatter.format(cashierDao.getRevenue()));
+        revenueLabel.setTooltip(new Tooltip(formatter.format(cashierDao.getRevenue())));
         inCashLabel.setText(formatter.format(cashierDao.getInCash()));
+        inCashLabel.setTooltip(new Tooltip(formatter.format(cashierDao.getInCash())));
         byCardLabel.setText(formatter.format(cashierDao.getByCard()));
+        byCardLabel.setTooltip(new Tooltip(formatter.format(cashierDao.getByCard())));
         dateLabel.setText("Caixa aberto em " + dateOpening);
         userLabel.setText(userTypeLabel.toString());
         toolTip.setText("Caixa aberto no dia: " + dateOpening);
