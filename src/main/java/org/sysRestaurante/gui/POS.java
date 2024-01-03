@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
+import org.sysRestaurante.dao.KitchenOrderDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CellFormatter;
@@ -174,7 +175,7 @@ public class POS {
         searchBox.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER) && !productsListView.getItems().isEmpty()) {
                 productsListView.getSelectionModel().selectFirst();
-                addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem());
+                addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem(), 1, true);
             } else if (event.getCode().equals(KeyCode.ESCAPE)) {
                 wrapperBox.requestFocus();
             }
@@ -184,7 +185,7 @@ public class POS {
             if (!productsListView.getItems().isEmpty()) {
                 ProductDao productDao = productsListView.getSelectionModel().getSelectedItem();
                 int qtyProduct = qtySpinner.getValue();
-                addToSelectedProductsList(productDao, qtyProduct);
+                addToSelectedProductsList(productDao, qtyProduct, true);
                 qtySpinner.decrement(qtySpinner.getValue() - 1);
             }
         });
@@ -258,7 +259,7 @@ public class POS {
                 case ENTER:
                     ProductDao product = productsListView.getSelectionModel().getSelectedItem();
                     if (product != null) {
-                        addToSelectedProductsList(product);
+                        addToSelectedProductsList(product, 1, true);
                     }
                     break;
                 default:
@@ -427,30 +428,13 @@ public class POS {
         return list.stream().anyMatch(o -> o.getIdProduct() == id);
     }
 
-    public void addToSelectedProductsList(ProductDao product) {
-        if (selectedProductsList.contains(product)) {
-            product.incrementsQuantity();
-        } else if (containsId(selectedProductsList, product.getIdProduct())) {
-            final ProductDao selectedProduct = product;
-            product = selectedProductsList.stream().filter(pr -> pr.getDescription()
-                    .equals(selectedProduct.getDescription()))
-                    .collect(Collectors.toList())
-                    .get(0);
-            product.incrementsQuantity();
-        } else {
-            product.setQuantity(1);
-            selectedProductsList.add(product);
+    public void addToSelectedProductsList(ProductDao product, int qty, boolean sendToKitchen) {
+        if (sendToKitchen) {
+            if (registerKitchenOrder(product)) {
+                orderDetailsTextArea.clear();
+            }
         }
 
-        if (registerKitchenOrder(product)) {
-            orderDetailsTextArea.clear();
-        }
-
-        product.setTotal(product.getSellPrice() * product.getQuantity());
-        updateSelectedList();
-    }
-
-    public void addToSelectedProductsList(ProductDao product, int qty) {
         if (selectedProductsList.contains(product)) {
             product.setQuantity(product.getQuantity() + qty);
         } else if (containsId(selectedProductsList, product.getIdProduct())) {
@@ -463,10 +447,6 @@ public class POS {
         } else {
             product.setQuantity(qty);
             selectedProductsList.add(product);
-        }
-
-        if (registerKitchenOrder(product)) {
-            orderDetailsTextArea.clear();
         }
 
         product.setTotal(product.getSellPrice() * product.getQuantity());
@@ -502,7 +482,7 @@ public class POS {
         List<ProductDao> products = Order.getItemsByOrderId(order.getIdOrder());
         assert products != null;
         for (ProductDao product : products) {
-            addToSelectedProductsList(product, product.getQuantity());
+            addToSelectedProductsList(product, product.getQuantity(), false);
         }
     }
 
@@ -541,7 +521,7 @@ public class POS {
                     || productType == ProductDao.CategoryDao.Type.EXTRA_PORTION.getValue()) {
 
                 String notes = Objects.equals(orderDetailsTextArea.getText(), "") ? "Sem observações" : orderDetailsTextArea.getText();
-                int idOrder = Order.newKitchenOrder(((ComandaDao) order).getIdComanda(), 1, notes);
+                int idOrder = Order.newKitchenOrder(((ComandaDao) order).getIdComanda(), KitchenOrderDao.KitchenOrderStatus.CANCELLED.getValue(), notes);
 
                 if (idOrder > 0) {
                     Order.addProductToKitchenOrder(idOrder, product);

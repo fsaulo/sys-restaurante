@@ -160,7 +160,7 @@ public class ProductDao {
         public enum Type {
             DRINK(1), LUNCH(2), TASTE(3), EXTRA_PORTION(4), NONE(5);
 
-            private int value;
+            final private int value;
             Type(int value) {
                 this.value = value;
             }
@@ -175,7 +175,7 @@ public class ProductDao {
 
         public CategoryDao() {
             this.categoryDescription = "Sem categoria";
-            this.idCategory = 5;
+            this.idCategory = Type.NONE.getValue();
         }
 
         public String getCategoryDescription() {

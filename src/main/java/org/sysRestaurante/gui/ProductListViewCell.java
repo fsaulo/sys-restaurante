@@ -85,7 +85,7 @@ public class ProductListViewCell extends ListCell<ProductDao> {
                 wrapperBox.setOnMouseClicked(event -> {
                     if(event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
                         try {
-                            AppFactory.getPos().addToSelectedProductsList(product);
+                            AppFactory.getPos().addToSelectedProductsList(product, 1, true);
                         } catch (NullPointerException ignored) {
                             ExceptionHandler.doNothing();
                         }
