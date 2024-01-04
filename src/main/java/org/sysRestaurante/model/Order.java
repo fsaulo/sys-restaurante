@@ -131,11 +131,11 @@ public class Order {
                 comanda.setTotal(rs.getDouble("total"));
                 comanda.setIdCategory(rs.getInt("id_categoria_pedido"));
                 comanda.setIdEmployee(rs.getInt("id_funcionario"));
-                comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
-                comanda.setDateOpening(rs.getDate("data_abertura").toLocalDate());
                 comanda.setOpen(rs.getBoolean("is_aberto"));
 
                 try {
+                    comanda.setTimeOpening(rs.getTime("hora_abertura").toLocalTime());
+                    comanda.setDateOpening(rs.getDate("data_abertura").toLocalDate());
                     comanda.setDateClosing(rs.getDate("data_fechamento").toLocalDate());
                     comanda.setTimeClosing(rs.getTime("hora_fechamento").toLocalTime());
                 } catch (NullPointerException ignored) {
