@@ -28,6 +28,7 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -430,23 +431,26 @@ public class POS {
 
     public void addToSelectedProductsList(ProductDao product, int qty, boolean sendToKitchen) {
         if (sendToKitchen) {
-            ProductDao tempProduct;
-            tempProduct = product;
+            ProductDao tempProduct = new ProductDao(product);
             tempProduct.setQuantity(qty);
             if (registerKitchenOrder(tempProduct)) {
                 orderDetailsTextArea.clear();
             }
         }
 
-        if (selectedProductsList.contains(product)) {
-            product.setQuantity(product.getQuantity() + qty);
-        } else if (containsId(selectedProductsList, product.getIdProduct())) {
-            final ProductDao selectedProduct = product;
-            product = selectedProductsList.stream().filter(pr -> pr.getDescription()
-                    .equals(selectedProduct.getDescription()))
-                    .collect(Collectors.toList())
-                    .get(0);
-            product.incrementsQuantity(qty);
+        if (selectedProductsList.contains(product) || containsId(selectedProductsList, product.getIdProduct())) {
+            final ProductDao tempProduct = product;
+            ProductDao selectedProduct = new ProductDao();
+            Optional<ProductDao> optionalProductDao = selectedProductsList
+                    .stream()
+                    .filter(pr -> pr.getIdProduct() == tempProduct.getIdProduct())
+                    .findFirst();
+
+            if (optionalProductDao.isPresent()){
+                selectedProduct = optionalProductDao.get();
+            }
+
+            selectedProduct.incrementsQuantity(qty);
         } else {
             product.setQuantity(qty);
             selectedProductsList.add(product);
