@@ -16,6 +16,7 @@ import java.sql.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -675,7 +676,7 @@ public class Order {
         return false;
     }
 
-    public static KitchenOrderDao getKitchenOrder(int idKitchenOrder) {
+    public static KitchenOrderDao getKitchenOrderById(int idKitchenOrder) {
         String query = "SELECT * FROM pedido_cozinha WHERE id_pedido_cozinha = ?";
         String name = null;
         PreparedStatement ps;
@@ -708,6 +709,160 @@ public class Order {
             rs.close();
             con.close();
             return order;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            NotificationHandler.errorDialog(ex);
+        }
+        return null;
+    }
+
+    public static ArrayList<KitchenOrderDao> getKitchenTicketsByComandaId(int idComanda) {
+        String query1 = "SELECT * FROM comanda WHERE id_comanda = ?";
+        String query2 = "SELECT * FROM pedido_cozinha WHERE id_comanda = ?";
+
+        ArrayList<KitchenOrderDao> orderList = new ArrayList<>();
+        KitchenOrderDao orderDao;
+        PreparedStatement ps1, ps2;
+        ResultSet rs1, rs2;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps1 = Objects.requireNonNull(con).prepareStatement(query1);
+            ps1.setInt(1, idComanda);
+            rs1 = ps1.executeQuery();
+
+            ComandaDao order = new ComandaDao();
+
+            while (rs1.next()) {
+                order.setIdComanda(idComanda);
+                order.setIdCashier(rs1.getInt("id_caixa"));
+                order.setIdTable(rs1.getInt("id_mesa"));
+                order.setIdOrder(rs1.getInt("id_pedido"));
+                order.setTotal(rs1.getDouble("total"));
+                order.setIdCategory(rs1.getInt("id_categoria_pedido"));
+                order.setIdEmployee(rs1.getInt("id_funcionario"));
+                order.setOpen(rs1.getBoolean("is_aberto"));
+
+                try {
+                    order.setDateOpening(rs1.getDate("data_abertura").toLocalDate());
+                    order.setTimeOpening(rs1.getTime("hora_abertura").toLocalTime());
+
+                } catch (NullPointerException ex) {
+                    ExceptionHandler.doNothing();
+                }
+            }
+
+            ps2 = con.prepareStatement(query2);
+            ps2.setInt(1, idComanda);
+            rs2 = ps2.executeQuery();
+
+            while (rs2.next()) {
+                try {
+                    orderDao = new KitchenOrderDao();
+
+                    orderDao.setIdKitchenOrder(rs2.getInt("id_pedido_cozinha"));
+                    orderDao.setKitchenOrderDetails(rs2.getString("observacoes"));
+                    orderDao.setKitchenOrderDateTime(LocalDateTime.parse(rs2.getString("data_pedido"), formatter));
+                    orderDao.setKitchenOrderStatus(KitchenOrderDao.KitchenOrderStatus.getByValue(rs2.getInt("status")));
+                    orderDao.setIdOrder(order.getIdOrder());
+                    orderDao.setIdCashier(order.getIdCashier());
+                    orderDao.setIdTable(order.getIdTable());
+                    orderDao.setTotal(order.getTotal());
+                    orderDao.setIdCategory(order.getIdCategory());
+                    orderDao.setIdEmployee(order.getIdEmployee());
+                    orderDao.setOpen(order.isOpen());
+
+                    orderList.add(orderDao);
+                } catch (NullPointerException ignored) {
+                    ExceptionHandler.doNothing();
+                }
+            }
+
+            ps1.close();
+            rs1.close();
+            ps2.close();
+            rs2.close();
+            con.close();
+            return orderList;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            NotificationHandler.errorDialog(ex);
+        }
+        return null;
+    }
+
+    public static List<KitchenOrderDao> getKitchenTicketsByCashierId(int idCashier) {
+        String query1 = "SELECT * FROM comanda WHERE id_caixa = ?";
+        String query2 = "SELECT * FROM pedido_cozinha WHERE id_comanda = ?";
+
+        List<KitchenOrderDao> orderList = new ArrayList<>();
+        KitchenOrderDao orderDao;
+        PreparedStatement ps1, ps2;
+        ResultSet rs1, rs2;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps1 = Objects.requireNonNull(con).prepareStatement(query1);
+            ps1.setInt(1, idCashier);
+            rs1 = ps1.executeQuery();
+
+            while (rs1.next()) {
+                ComandaDao order = new ComandaDao();
+                order.setIdCashier(idCashier);
+                order.setIdComanda(rs1.getInt("id_comanda"));
+                order.setIdTable(rs1.getInt("id_mesa"));
+                order.setIdOrder(rs1.getInt("id_pedido"));
+                order.setTotal(rs1.getDouble("total"));
+                order.setIdCategory(rs1.getInt("id_categoria_pedido"));
+                order.setIdEmployee(rs1.getInt("id_funcionario"));
+                order.setOpen(rs1.getBoolean("is_aberto"));
+
+                try {
+                    order.setDateOpening(rs1.getDate("data_abertura").toLocalDate());
+                    order.setTimeOpening(rs1.getTime("hora_abertura").toLocalTime());
+
+                } catch (NullPointerException ex) {
+                    ExceptionHandler.doNothing();
+                }
+
+                ps2 = con.prepareStatement(query2);
+                ps2.setInt(1, order.getIdComanda());
+                rs2 = ps2.executeQuery();
+
+                while (rs2.next()) {
+                    try {
+                        orderDao = new KitchenOrderDao();
+
+                        orderDao.setIdKitchenOrder(rs2.getInt("id_pedido_cozinha"));
+                        orderDao.setKitchenOrderDetails(rs2.getString("observacoes"));
+                        orderDao.setKitchenOrderDateTime(LocalDateTime.parse(rs2.getString("data_pedido"), formatter));
+                        orderDao.setKitchenOrderStatus(KitchenOrderDao.KitchenOrderStatus.getByValue(rs2.getInt("status")));
+                        orderDao.setIdOrder(order.getIdOrder());
+                        orderDao.setIdCashier(order.getIdCashier());
+                        orderDao.setIdTable(order.getIdTable());
+                        orderDao.setTotal(order.getTotal());
+                        orderDao.setIdCategory(order.getIdCategory());
+                        orderDao.setIdEmployee(order.getIdEmployee());
+                        orderDao.setOpen(order.isOpen());
+
+                        orderList.add(orderDao);
+                    } catch (NullPointerException ignored) {
+                        ExceptionHandler.doNothing();
+                    }
+                }
+
+                ps2.close();
+                rs2.close();
+            }
+
+            ps1.close();
+            rs1.close();
+            con.close();
+            return orderList;
         } catch (SQLException ex) {
             ex.printStackTrace();
             NotificationHandler.errorDialog(ex);

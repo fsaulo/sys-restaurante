@@ -30,7 +30,7 @@
     <padding>
         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
     </padding>
-    <BorderPane fx:id="borderPaneHolder">
+    <BorderPane fx:id="borderPaneHolder" prefHeight="396.0" prefWidth="639.0">
         <center>
             <VBox spacing="5.0" styleClass="box-content" BorderPane.alignment="CENTER">
                 <padding>
@@ -62,12 +62,15 @@
                     <Pane HBox.hgrow="ALWAYS" />
                 </HBox>
                 <HBox VBox.vgrow="ALWAYS">
-                    <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent;" styleClass="box-content" HBox.hgrow="ALWAYS">
+                    <ScrollPane fx:id="scrollPane" pannable="true" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent;" styleClass="box-content" HBox.hgrow="ALWAYS">
                         <padding>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                         </padding>
                         <HBox>
-                            <TilePane fx:id="tilePane" hgap="9.0" prefColumns="4" vgap="9.0" />
+                            <TilePane fx:id="tilePane" hgap="9.0" prefColumns="4" vgap="9.0">
+                        <opaqueInsets>
+                           <Insets />
+                        </opaqueInsets></TilePane>
                         </HBox>
                     </ScrollPane>
                 </HBox>
@@ -83,7 +86,7 @@
                                 <Font name="Carlito Bold" size="15.0" />
                             </font>
                         </Label>
-                        <Label fx:id="busyTables" text="13" textFill="#fc6310">
+                        <Label fx:id="pendingTickets" text="13" textFill="#fc6310">
                             <font>
                                 <Font name="Carlito Bold" size="20.0" />
                             </font>
@@ -214,6 +217,7 @@
                                 </font>
                             </Label>
                         </VBox>
+                  <Separator prefWidth="200.0" />
                     </VBox>
                 </ScrollPane>
                 <VBox fx:id="statusCashierBox" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" style="-fx-background-radius: 5; -fx-background-color: #58996A;">

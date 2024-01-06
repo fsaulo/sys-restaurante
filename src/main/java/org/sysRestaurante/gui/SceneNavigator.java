@@ -41,6 +41,7 @@ public class SceneNavigator {
     public static final String REGISTER_NEW_PRODUCT_FORM = "fxml/ProductFormDialog.fxml";
     public static final String BUSINESS_INFO = "fxml/BusinessInfo.fxml";
     public static final String MANAGE_KDS = "fxml/ManageKDS.fxml";
+    public static final String KITCHEN_TICKET_VIEW = "fxml/KitchenTicketView.fxml";
     public static final KeyCombination F2_CONFIRMATION = new KeyCodeCombination(KeyCode.F2);
     public static final KeyCombination F3_SEARCH = new KeyCodeCombination(KeyCode.F3);
     public static final KeyCombination F4_CANCEL = new KeyCodeCombination(KeyCode.F4);

@@ -521,7 +521,7 @@ public class POS {
                     || productType == ProductDao.CategoryDao.Type.EXTRA_PORTION.getValue()) {
 
                 String notes = Objects.equals(orderDetailsTextArea.getText(), "") ? "Sem observações" : orderDetailsTextArea.getText();
-                int idOrder = Order.newKitchenOrder(((ComandaDao) order).getIdComanda(), KitchenOrderDao.KitchenOrderStatus.CANCELLED.getValue(), notes);
+                int idOrder = Order.newKitchenOrder(((ComandaDao) order).getIdComanda(), KitchenOrderDao.KitchenOrderStatus.WAITING.getValue(), notes);
 
                 if (idOrder > 0) {
                     Order.addProductToKitchenOrder(idOrder, product);
