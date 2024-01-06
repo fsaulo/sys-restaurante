@@ -16,7 +16,6 @@ import java.sql.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -863,6 +862,51 @@ public class Order {
             rs1.close();
             con.close();
             return orderList;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            NotificationHandler.errorDialog(ex);
+        }
+        return null;
+    }
+
+    public static List<ProductDao> getTicketProductsById(int idKitchenOrder) {
+        String query1 = "SELECT * FROM pedido_cozinha_has_produtos WHERE id_pedido_cozinha = ?";
+        String query2 = "SELECT * FROM produto WHERE id_produto = ?";
+
+        ResultSet rs1, rs2;
+        PreparedStatement ps1, ps2;
+        List<ProductDao> productDaoList = new ArrayList<>();
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps1 = Objects.requireNonNull(con).prepareStatement(query1);
+            ps1.setInt(1, idKitchenOrder);
+            rs1 = ps1.executeQuery();
+
+            while (rs1.next()) {
+                int idProduct = rs1.getInt("id_produto");
+                int qtyProduct = rs1.getInt("qtd_produto");
+
+                ps2 = con.prepareStatement(query2);
+                ps2.setInt(1, idProduct);
+                rs2 = ps2.executeQuery();
+
+                while (rs2.next()) {
+                    ProductDao productDao = new ProductDao();
+                    productDao.setIdProduct(idProduct);
+                    productDao.setDescription(rs2.getString("descricao"));
+                    productDao.setQuantity(qtyProduct);
+                    productDaoList.add(productDao);
+                }
+
+                ps2.close();
+                rs2.close();
+            }
+
+            ps1.close();
+            rs1.close();
+            con.close();
+            return productDaoList;
         } catch (SQLException ex) {
             ex.printStackTrace();
             NotificationHandler.errorDialog(ex);
