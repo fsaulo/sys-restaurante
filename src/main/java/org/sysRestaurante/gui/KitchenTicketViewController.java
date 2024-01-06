@@ -54,6 +54,7 @@ public class KitchenTicketViewController {
         updateTimerLabel();
         setupAnimations();
         setupTicketTimer();
+        refreshTicketStatus();
     }
 
     private void setupTicketDetails() {
@@ -94,12 +95,19 @@ public class KitchenTicketViewController {
                 final KitchenOrderDao.KitchenOrderStatus cooking = KitchenOrderDao.KitchenOrderStatus.COOKING;
                 Order.updateKitchenOrderStatus(kitchenOrderDao.getIdKitchenOrder(), cooking.getValue());
                 kitchenOrderDao.setKitchenOrderStatus(cooking);
+                confirmButton.setText("Pronto");
                 NotificationHandler.showInfo("Pedido recebido pela cozinha.\nIniciando preparo.");
                 break;
             case DELIVERED:
             case CANCELLED:
             case LATE:
             case COOKING:
+                final KitchenOrderDao.KitchenOrderStatus ready = KitchenOrderDao.KitchenOrderStatus.READY;
+                Order.updateKitchenOrderStatus(kitchenOrderDao.getIdKitchenOrder(), ready.getValue());
+                kitchenOrderDao.setKitchenOrderStatus(ready);
+                NotificationHandler.showInfo("Pedido pronto");
+                confirmButton.setText("Entregue");
+                break;
             case RETURNED:
             default:
                 break;
@@ -118,6 +126,8 @@ public class KitchenTicketViewController {
                 timerLabel.setOpacity(1.0);
                 timerLabel.setStyle(cookingLabelStyle);
                 timerLabel.setVisible(true);
+                statusLabel.setText("Em preparo");
+                confirmButton.setText("Pronto");
                 break;
             case WAITING:
                 timerLabel.setStyle(waitingLabelStyle);
@@ -127,6 +137,7 @@ public class KitchenTicketViewController {
             case LATE:
                 timerLabel.setStyle(lateLabelStyle);
                 timerLabel.setVisible(true);
+
                 shouldBlink = true;
                 break;
             case CANCELLED:
