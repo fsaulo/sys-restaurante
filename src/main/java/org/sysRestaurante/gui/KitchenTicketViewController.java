@@ -134,7 +134,9 @@ public class KitchenTicketViewController {
     private void updateTimerLabel() {
         LocalDateTime currentTime = LocalDateTime.now();
         long seconds = java.time.Duration.between(ticketInitialTime, currentTime).getSeconds();
-        timerLabel.setText(String.valueOf(seconds));
+        long minutes = seconds/60;
+        long remainingSeconds = seconds%60;
+        timerLabel.setText(String.format("%02d:%02d", minutes, remainingSeconds));
     }
 
     public void setupAnimations() {
