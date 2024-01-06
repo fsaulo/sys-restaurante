@@ -1,5 +1,7 @@
 package org.sysRestaurante.dao;
 
+import java.security.PublicKey;
+
 public class ProductDao {
     private int idProduct;
     private int idCategory;
@@ -21,6 +23,18 @@ public class ProductDao {
     public ProductDao() {
         quantity = 1;
         total = 0.0;
+    }
+
+    public ProductDao(ProductDao copy)  {
+        this.setQuantity(copy.getQuantity());
+        this.setSold(copy.getSold());
+        this.setIdProduct(copy.getIdProduct());
+        this.setCategoryDao(copy.getCategoryDao());
+        this.setDescription(copy.getDescription());
+        this.setTotal(copy.getTotal());
+        this.setSupply(copy.getSupply());
+        this.setMinSupply(copy.getSupply());
+        this.setBarCode(copy.getBarCode());
     }
 
     public int getSold() {
