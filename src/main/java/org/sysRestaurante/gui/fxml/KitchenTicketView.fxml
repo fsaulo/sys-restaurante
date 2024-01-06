@@ -4,7 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -12,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="popOverVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="225.0" spacing="5.0" style="-fx-border-radius: 5; -fx-border-width: 2; -fx-border-color: #9E9B8F; -fx-background-radius: 5; -fx-background-color: #EAE7DE;" styleClass="view" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.KitchenTicketViewController">
+<VBox fx:id="popOverVbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="295.0" prefWidth="225.0" spacing="5.0" style="-fx-border-radius: 5; -fx-border-width: 2; -fx-border-color: #9E9B8F; -fx-background-radius: 5; -fx-background-color: #EAE7DE;" styleClass="view" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.KitchenTicketViewController">
     <stylesheets>
         <URL value="@../css/menu.css" />
         <URL value="@../css/controls.css" />
@@ -63,7 +62,18 @@
          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
       </padding>
     </HBox>
-    <ListView fx:id="itemsListView" prefHeight="88.0" prefWidth="298.0" style="-fx-border-color: #dddddd; -fx-background-radius: 5; -fx-border-radius: 5;" VBox.vgrow="ALWAYS" />
+   <HBox prefHeight="130.0" prefWidth="211.0" style="-fx-border-color: #dddddd; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: white;">
+      <children>
+         <Label fx:id="productsListLabel" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="67.0" prefWidth="198.0" wrapText="true" HBox.hgrow="ALWAYS">
+            <font>
+               <Font name="Carlito Bold" size="16.0" />
+            </font>
+         </Label>
+      </children>
+      <padding>
+         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      </padding>
+   </HBox>
    <Separator prefWidth="200.0" />
    <HBox alignment="CENTER">
       <children>
@@ -76,7 +86,7 @@
       </children>
    </HBox>
    <Separator prefWidth="200.0" />
-   <HBox prefHeight="65.0" prefWidth="241.0" style="-fx-border-color: #dddddd; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: white;">
+   <HBox prefHeight="100.0" prefWidth="211.0" style="-fx-border-color: #dddddd; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color: white;">
       <children>
          <Text fx:id="detailsText" strokeType="OUTSIDE" strokeWidth="0.0" text="Salada sem tomate">
             <font>

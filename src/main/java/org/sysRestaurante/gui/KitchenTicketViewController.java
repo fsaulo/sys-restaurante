@@ -4,19 +4,18 @@ import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.KitchenOrderDao;
 
+import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Order;
-import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class KitchenTicketViewController {
 
@@ -27,7 +26,7 @@ public class KitchenTicketViewController {
     @FXML
     private Text detailsText;
     @FXML
-    private ListView<KitchenOrderDao> itemsListView;
+    private Label productsListLabel;
     @FXML
     private Label orderIdLabel;
     @FXML
@@ -51,9 +50,26 @@ public class KitchenTicketViewController {
         confirmButton.setOnAction(mouseEvent -> updateTicketStatus());
         cancelButton.setOnAction(mouseEvent -> showCancelTicketConfirmDialog());
 
+        setupTicketDetails();
         updateTimerLabel();
         setupAnimations();
         setupTicketTimer();
+    }
+
+    private void setupTicketDetails() {
+        List<ProductDao> productDaoList = Order.getTicketProductsById(kitchenOrderDao.getIdKitchenOrder());
+
+        assert productDaoList != null;
+        assert !productDaoList.isEmpty();
+
+        StringBuilder productDescription = new StringBuilder();
+        for (var item : productDaoList) {
+            productDescription.append(item.getQuantity()).append("x ");
+            productDescription.append(item.getDescription()).append("\n");
+        }
+
+        productsListLabel.setText(productDescription.toString());
+        detailsText.setText(kitchenOrderDao.getKitchenOrderDetails());
     }
 
     private void setupTicketTimer() {
