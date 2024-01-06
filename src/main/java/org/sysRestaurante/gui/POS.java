@@ -430,7 +430,10 @@ public class POS {
 
     public void addToSelectedProductsList(ProductDao product, int qty, boolean sendToKitchen) {
         if (sendToKitchen) {
-            if (registerKitchenOrder(product)) {
+            ProductDao tempProduct;
+            tempProduct = product;
+            tempProduct.setQuantity(qty);
+            if (registerKitchenOrder(tempProduct)) {
                 orderDetailsTextArea.clear();
             }
         }
