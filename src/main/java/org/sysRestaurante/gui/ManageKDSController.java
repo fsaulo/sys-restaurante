@@ -45,10 +45,9 @@ public class ManageKDSController {
         int pending = 0;
         for (var item : kitchenTickets) {
             if (item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.WAITING) ||
-                item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.LATE  )
-                    || item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.COOKING  ) ) {
-                pending += 1;
-
+                item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.LATE) || 
+                item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.COOKING)) {
+                               
                 try {
                     buildAndAddTickets(item);
                 } catch (IOException ex) {
@@ -57,8 +56,6 @@ public class ManageKDSController {
                 }
             }
         }
-
-        pendingTickets.setText(String.valueOf(pending));
     }
 
     public void buildAndAddTickets(KitchenOrderDao ticket) throws IOException {
