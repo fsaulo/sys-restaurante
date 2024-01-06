@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class KitchenOrderDao extends ComandaDao {
     public enum KitchenOrderStatus {
-        WAITING(1), LATE(2), COOKING(3), DELIVERED(4), CANCELLED(5), RETURNED(6);
+        WAITING(1), LATE(2), COOKING(3), DELIVERED(4), CANCELLED(5), RETURNED(6), READY(7);
 
         final private int value;
         KitchenOrderStatus(int value) {

@@ -45,7 +45,8 @@ public class ManageKDSController {
         int pending = 0;
         for (var item : kitchenTickets) {
             if (item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.WAITING) ||
-                item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.LATE)) {
+                item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.LATE  )
+                    || item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.COOKING  ) ) {
                 pending += 1;
 
                 try {
