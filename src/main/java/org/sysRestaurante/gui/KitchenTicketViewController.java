@@ -4,6 +4,7 @@ import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -37,11 +38,14 @@ public class KitchenTicketViewController {
     private Label tableLabel;
     @FXML
     private Label timerLabel;
+    @FXML
+    private HBox statusBox;
 
     private KitchenOrderDao kitchenOrderDao;
     private LocalDateTime ticketInitialTime;
     private boolean lastStatusRed;
     private FadeTransition blinkStatusAnimationTransition;
+    private FadeTransition blinkConfirmButtonAnimationTransition;
 
     @FXML
     void initialize() {
@@ -49,6 +53,7 @@ public class KitchenTicketViewController {
         ticketInitialTime = kitchenOrderDao.getKitchenOrderDateTime();
         confirmButton.setOnAction(mouseEvent -> updateTicketStatus());
         cancelButton.setOnAction(mouseEvent -> showCancelTicketConfirmDialog());
+        orderIdLabel.setText("#" + kitchenOrderDao.getIdKitchenOrder());
 
         setupTicketDetails();
         updateTimerLabel();
@@ -120,6 +125,7 @@ public class KitchenTicketViewController {
         final String waitingLabelStyle = "-fx-background-color:  #e69900; -fx-background-radius: 5";
         final String lateLabelStyle = "-fx-background-color:  #EF4422FF; -fx-background-radius: 5";
         final String cookingLabelStyle = "-fx-background-color:  #6E7070; -fx-background-radius: 5";
+        final String ticketReadyStyle = "-fx-background-color: green; -fx-text-fill: white; -fx-background-radius: 5; -fx-border-radius: 5";
 
         switch (kitchenOrderDao.getKitchenOrderStatus()) {
             case COOKING:
@@ -137,9 +143,14 @@ public class KitchenTicketViewController {
             case LATE:
                 timerLabel.setStyle(lateLabelStyle);
                 timerLabel.setVisible(true);
-
                 shouldBlink = true;
                 break;
+            case READY:
+                statusLabel.setText("Aguardando retirada");
+                statusLabel.getStylesheets().add(ticketReadyStyle);
+                tableLabel.getStylesheets().add(ticketReadyStyle);
+                tableLabel.getStylesheets().add(ticketReadyStyle);
+                statusBox.setStyle(ticketReadyStyle);
             case CANCELLED:
             case DELIVERED:
             default:
@@ -150,11 +161,16 @@ public class KitchenTicketViewController {
         assert blinkStatusAnimationTransition != null;
         if (!shouldBlink) {
             blinkStatusAnimationTransition.pause();
+            blinkConfirmButtonAnimationTransition.pause();
             return;
         }
 
         if (!blinkStatusAnimationTransition.getStatus().equals(Animation.Status.RUNNING)) {
             blinkStatusAnimationTransition.play();
+        }
+
+        if (!blinkConfirmButtonAnimationTransition.getStatus().equals(Animation.Status.RUNNING)) {
+            blinkConfirmButtonAnimationTransition.play();
         }
     }
 
@@ -172,6 +188,12 @@ public class KitchenTicketViewController {
         blinkStatusAnimationTransition.setToValue(0.1);
         blinkStatusAnimationTransition.setCycleCount(Animation.INDEFINITE);
         blinkStatusAnimationTransition.setAutoReverse(true);
+
+        blinkConfirmButtonAnimationTransition = new FadeTransition(Duration.seconds(1), confirmButton);
+        blinkConfirmButtonAnimationTransition.setFromValue(1.0);
+        blinkConfirmButtonAnimationTransition.setToValue(0.1);
+        blinkConfirmButtonAnimationTransition.setCycleCount(2);
+        blinkConfirmButtonAnimationTransition.setAutoReverse(true);
     }
 
     public void setTableLabel(String text) {

@@ -200,6 +200,34 @@ public class Order {
         return null;
     }
 
+    public static boolean isComandaOpen(int idComanda) {
+        String query = "SELECT is_aberto FROM comanda WHERE id_comanda = ?";
+        PreparedStatement ps;
+        ResultSet rs;
+
+        boolean isOpen = false;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, idComanda);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                isOpen = rs.getBoolean("is_aberto");
+            }
+
+            ps.close();
+            rs.close();
+            con.close();
+        } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
+            ex.printStackTrace();
+        }
+
+        return isOpen;
+    }
+
     public static void closeComanda(int idComanda, double total) {
         PreparedStatement ps;
         String query = "UPDATE comanda " +
@@ -823,7 +851,6 @@ public class Order {
                 try {
                     order.setDateOpening(rs1.getDate("data_abertura").toLocalDate());
                     order.setTimeOpening(rs1.getTime("hora_abertura").toLocalTime());
-
                 } catch (NullPointerException ex) {
                     ExceptionHandler.doNothing();
                 }
@@ -847,6 +874,7 @@ public class Order {
                         orderDao.setIdCategory(order.getIdCategory());
                         orderDao.setIdEmployee(order.getIdEmployee());
                         orderDao.setOpen(order.isOpen());
+                        orderDao.setIdComanda(order.getIdComanda());
 
                         orderList.add(orderDao);
                     } catch (NullPointerException ignored) {

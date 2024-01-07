@@ -19,7 +19,7 @@
     <padding>
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
-    <HBox alignment="BOTTOM_CENTER" style="-fx-border-radius: 5; -fx-background-radius: 5;">
+    <HBox fx:id="statusBox" alignment="BOTTOM_CENTER" style="-fx-border-radius: 5; -fx-background-radius: 5;">
       <VBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
          <children>
             <HBox alignment="BASELINE_LEFT">

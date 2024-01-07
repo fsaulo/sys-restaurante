@@ -8,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.KitchenOrderDao;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.ExceptionHandler;
@@ -42,11 +43,13 @@ public class ManageKDSController {
         tilePane.getChildren().clear();
         kitchenTickets = Order.getKitchenTicketsByCashierId(AppFactory.getCashierDao().getIdCashier());
         assert kitchenTickets != null;
-        int pending = 0;
         for (var item : kitchenTickets) {
-            if (item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.WAITING) ||
+            if ((item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.WAITING) ||
                 item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.LATE) || 
-                item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.COOKING)) {
+                item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.COOKING)) &&
+                ((ComandaDao) item).isOpen()) {
+
+                System.out.println("comanda " + item.getIdComanda() + " isOpen ? " + item.isOpen());
                                
                 try {
                     buildAndAddTickets(item);
