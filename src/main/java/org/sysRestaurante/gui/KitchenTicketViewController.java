@@ -45,7 +45,6 @@ public class KitchenTicketViewController {
     private LocalDateTime ticketInitialTime;
     private boolean lastStatusRed;
     private FadeTransition blinkStatusAnimationTransition;
-    private FadeTransition blinkConfirmButtonAnimationTransition;
 
     @FXML
     void initialize() {
@@ -161,16 +160,11 @@ public class KitchenTicketViewController {
         assert blinkStatusAnimationTransition != null;
         if (!shouldBlink) {
             blinkStatusAnimationTransition.pause();
-            blinkConfirmButtonAnimationTransition.pause();
             return;
         }
 
         if (!blinkStatusAnimationTransition.getStatus().equals(Animation.Status.RUNNING)) {
             blinkStatusAnimationTransition.play();
-        }
-
-        if (!blinkConfirmButtonAnimationTransition.getStatus().equals(Animation.Status.RUNNING)) {
-            blinkConfirmButtonAnimationTransition.play();
         }
     }
 
@@ -188,12 +182,6 @@ public class KitchenTicketViewController {
         blinkStatusAnimationTransition.setToValue(0.1);
         blinkStatusAnimationTransition.setCycleCount(Animation.INDEFINITE);
         blinkStatusAnimationTransition.setAutoReverse(true);
-
-        blinkConfirmButtonAnimationTransition = new FadeTransition(Duration.seconds(1), confirmButton);
-        blinkConfirmButtonAnimationTransition.setFromValue(1.0);
-        blinkConfirmButtonAnimationTransition.setToValue(0.1);
-        blinkConfirmButtonAnimationTransition.setCycleCount(2);
-        blinkConfirmButtonAnimationTransition.setAutoReverse(true);
     }
 
     public void setTableLabel(String text) {
