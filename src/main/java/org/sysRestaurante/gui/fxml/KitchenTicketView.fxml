@@ -36,9 +36,9 @@
                     </Label>
                </children>
             </HBox>
-            <Label fx:id="statusLabel" text="Aguardando confirmaçao">
+            <Label fx:id="statusLabel" opacity="0.7" text="Aguardando confirmaçao">
                <font>
-                  <Font name="Carlito" size="13.0" />
+                  <Font name="Carlito Bold" size="13.0" />
                </font>
             </Label>
          </children>

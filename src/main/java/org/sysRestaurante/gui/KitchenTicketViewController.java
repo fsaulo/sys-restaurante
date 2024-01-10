@@ -2,7 +2,9 @@ package org.sysRestaurante.gui;
 
 import javafx.animation.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,6 +17,7 @@ import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.NotificationHandler;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -90,7 +93,25 @@ public class KitchenTicketViewController {
     }
 
     private void showCancelTicketConfirmDialog() {
-        System.out.println("NOT IMPLEMENTED");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Alerta do sistema");
+        alert.setHeaderText("Tem certeza que deseja cancelar pedido?");
+        alert.setContentText("O balcão será notificado dessa ação.");
+        alert.initOwner(statusLabel.getParent().getScene().getWindow());
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.OK && !kitchenOrderDao.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED)) {
+            final KitchenOrderDao.KitchenOrderStatus cancelled = KitchenOrderDao.KitchenOrderStatus.CANCELLED;
+            final LocalDateTime finalDateTime = LocalDateTime.now();
+            int ticketId = kitchenOrderDao.getIdKitchenOrder();
+            Order.removeProductFromOrderByKitchenOrderId(ticketId);
+            Order.updateKitchenOrderStatusWithDateTime(ticketId, cancelled.getValue(), LocalDateTime.now());
+            kitchenOrderDao.setKitchenOrderStatus(cancelled);
+            kitchenOrderDao.setFinalKitchenOrderDateTime(finalDateTime);
+            NotificationHandler.showInfo("O pedido #" + kitchenOrderDao.getIdKitchenOrder() + " foi cancelado.");
+            timerLabel.setText(timeBetweenLocalDateTimeAsMinSec(ticketInitialTime, finalDateTime));
+            refreshTicketStatus();
+        }
     }
 
     private void updateTicketStatus() {
@@ -102,9 +123,16 @@ public class KitchenTicketViewController {
                 confirmButton.setText("Pronto");
                 NotificationHandler.showInfo("Pedido recebido pela cozinha.\nIniciando preparo.");
                 break;
-            case DELIVERED:
-            case CANCELLED:
-            case LATE:
+            case READY:
+                final KitchenOrderDao.KitchenOrderStatus delivered = KitchenOrderDao.KitchenOrderStatus.DELIVERED;
+                final LocalDateTime finalDateTime = LocalDateTime.now();
+                Order.updateKitchenOrderStatusWithDateTime(kitchenOrderDao.getIdKitchenOrder(), delivered.getValue(), finalDateTime);
+                kitchenOrderDao.setKitchenOrderStatus(delivered);
+                kitchenOrderDao.setFinalKitchenOrderDateTime(finalDateTime);
+                confirmButton.setDisable(true);
+                timerLabel.setText(timeBetweenLocalDateTimeAsMinSec(ticketInitialTime, finalDateTime));
+                NotificationHandler.showInfo("Pedido finalizado.");
+                break;
             case COOKING:
                 final KitchenOrderDao.KitchenOrderStatus ready = KitchenOrderDao.KitchenOrderStatus.READY;
                 Order.updateKitchenOrderStatus(kitchenOrderDao.getIdKitchenOrder(), ready.getValue());
@@ -112,10 +140,13 @@ public class KitchenTicketViewController {
                 NotificationHandler.showInfo("Pedido pronto");
                 confirmButton.setText("Entregue");
                 break;
+            case CANCELLED:
+            case LATE:
             case RETURNED:
             default:
                 break;
         }
+        refreshTicketStatus();
     }
 
     private void refreshTicketStatus() {
@@ -125,6 +156,7 @@ public class KitchenTicketViewController {
         final String lateLabelStyle = "-fx-background-color:  #EF4422FF; -fx-background-radius: 5";
         final String cookingLabelStyle = "-fx-background-color:  #6E7070; -fx-background-radius: 5";
         final String ticketReadyStyle = "-fx-background-color: green; -fx-text-fill: white; -fx-background-radius: 5; -fx-border-radius: 5";
+        final String ticketCancelledStyle = "-fx-background-color: red; -fx-text-fill: white; -fx-background-radius: 5; -fx-border-radius: 5";
 
         switch (kitchenOrderDao.getKitchenOrderStatus()) {
             case COOKING:
@@ -135,23 +167,48 @@ public class KitchenTicketViewController {
                 confirmButton.setText("Pronto");
                 break;
             case WAITING:
+                statusLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-family: \"Carlito\";");
                 timerLabel.setStyle(waitingLabelStyle);
                 timerLabel.setVisible(true);
+                statusLabel.setText("Aguardando confirmação");
                 shouldBlink = true;
                 break;
             case LATE:
+                statusLabel.setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-family: \"Carlito\";");
                 timerLabel.setStyle(lateLabelStyle);
                 timerLabel.setVisible(true);
                 shouldBlink = true;
                 break;
             case READY:
                 statusLabel.setText("Aguardando retirada");
-                statusLabel.getStylesheets().add(ticketReadyStyle);
-                tableLabel.getStylesheets().add(ticketReadyStyle);
-                tableLabel.getStylesheets().add(ticketReadyStyle);
+                statusLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-family: \"Carlito\";");
+                tableLabel.setStyle("-fx-text-fill: white");
+                orderIdLabel.setStyle("-fx-text-fill: white");
                 statusBox.setStyle(ticketReadyStyle);
-            case CANCELLED:
+                break;
             case DELIVERED:
+                statusLabel.setText("Finalizado");
+                statusLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-family: \"Carlito\";");
+                tableLabel.setStyle("-fx-text-fill: white");
+                orderIdLabel.setStyle("-fx-text-fill: white");
+                statusBox.setStyle(ticketReadyStyle);
+                detailsText.setOpacity(0.6);
+                popOverVbox.setOpacity(0.4);
+                popOverVbox.setDisable(true);
+                timerLabel.setText(timeBetweenLocalDateTimeAsMinSec(ticketInitialTime, kitchenOrderDao.getFinalKitchenOrderDateTime()));
+                break;
+            case CANCELLED:
+                statusLabel.setText("Pedido cancelado");
+                statusLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-family: \"Carlito\";");
+                tableLabel.setStyle("-fx-text-fill: white");
+                orderIdLabel.setStyle("-fx-text-fill: white");
+                statusBox.setStyle(ticketCancelledStyle);
+                cancelButton.setDisable(true);
+                confirmButton.setDisable(true);
+                detailsText.setOpacity(0.6);
+                popOverVbox.setOpacity(0.4);
+                popOverVbox.setDisable(true);
+                break;
             default:
                 timerLabel.setVisible(false);
                 break;
@@ -186,5 +243,12 @@ public class KitchenTicketViewController {
 
     public void setTableLabel(String text) {
         tableLabel.setText(text);
+    }
+
+    public String timeBetweenLocalDateTimeAsMinSec(LocalDateTime dateTime1, LocalDateTime dateTime2) {
+        long seconds = java.time.Duration.between(dateTime1, dateTime2).getSeconds();
+        long minutes = seconds / 60;
+        long remainingSeconds = seconds % 60;
+        return String.format("%02d:%02d", minutes, remainingSeconds);
     }
 }

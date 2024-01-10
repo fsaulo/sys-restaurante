@@ -474,6 +474,37 @@ public class Order {
         }
     }
 
+    public static void removeProductFromOrderByKitchenOrderId(int idKitchenOrder) {
+        String query1 = "SELECT id_produto FROM pedido_cozinha_has_produtos WHERE id_pedido_cozinha = ?";
+        String query2 = "DELETE FROM pedido_has_produtos WHERE id_produto = ?";
+        PreparedStatement ps1, ps2;
+        ResultSet rs1;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps1 = Objects.requireNonNull(con).prepareStatement(query1);
+            ps1.setInt(1, idKitchenOrder);
+            rs1 = ps1.executeQuery();
+
+            if (rs1.next()) {
+                int idProduct = rs1.getInt("id_produto");
+                ps2 = con.prepareStatement(query2);
+                ps2.setInt(1, idProduct);
+                ps2.executeUpdate();
+                ps2.close();
+            }
+
+            ps1.close();
+            rs1.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            LOGGER.severe("Error trying to delete a product from order.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            NotificationHandler.errorDialog(ex);
+        }
+    }
+
     public static ObservableList<OrderDao> getOrderByIdCashier(int idCashier) {
         String query = "SELECT * FROM pedido where id_caixa = ?";
         ObservableList<OrderDao> orderList = FXCollections.observableArrayList();
