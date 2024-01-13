@@ -25,12 +25,8 @@ import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.text.Format;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class POS {
 
@@ -474,9 +470,20 @@ public class POS {
             alert.showAndWait();
         
             if (alert.getResult().equals(ButtonType.OK)) {
+                OrderDao order = AppFactory.getOrderDao();
+                if (order instanceof ComandaDao) {
+                    List<KitchenOrderDao> tickets = Order.getKitchenTicketsByComandaId(((ComandaDao) order).getIdComanda());
+                    assert tickets != null;
+                    for (var item : tickets) {
+                        Order.updateKitchenOrderStatus(item.getIdKitchenOrder(), KitchenOrderDao.KitchenOrderStatus.CANCELLED.getValue());
+                        LOGGER.info("Ticket #" + item.getIdKitchenOrder() + " was cancelled");
+                    }
+                }
+
                 for (ProductDao item : selectedProductsTableView.getSelectionModel().getSelectedItems()) {
                     item.setQuantity(0);
                 }
+
                 selectedProductsTableView.getItems().clear();
                 selectedProductsList.clear();
                 updateSelectedList();
@@ -497,6 +504,7 @@ public class POS {
         try {
             if (!selectedProductsTableView.getSelectionModel().isEmpty()) {
                 ProductDao selected = selectedProductsTableView.getSelectionModel().getSelectedItem();
+                tryToCancelTicketByProduct(selected);
                 selected.setQuantity(0);
                 selectedProductsTableView.getItems().remove(selected);
                 selectedProductsList.remove(selected);
@@ -504,6 +512,55 @@ public class POS {
             }
         } catch (NullPointerException exception) {
             LOGGER.info("There's no selected item to remove.");
+        }
+    }
+
+    public void tryToCancelTicketByProduct(ProductDao product) {
+        OrderDao order = AppFactory.getOrderDao();
+        if (!(order instanceof ComandaDao)) {
+            return;
+        }
+
+        ArrayList<KitchenOrderDao> kitchenOrdersList = Order.getKitchenTicketsByComandaId(
+                ((ComandaDao) order).getIdComanda()
+        );
+
+        assert kitchenOrdersList != null;
+        kitchenOrdersList.sort(Comparator.comparing(KitchenOrderDao::getKitchenOrderDateTime).reversed());
+        for (var item : kitchenOrdersList) {
+            ArrayList<ProductDao> products =
+                    (ArrayList<ProductDao>) Order.getTicketProductsById(item.getIdKitchenOrder());
+
+            assert products != null;
+            for (var productInTicket : products) {
+                // Cancel the first ticket that contains product id and quantity
+                if (productInTicket.getIdProduct() == product.getIdProduct() && productInTicket.getQuantity() == product.getQuantity() && !(
+                        item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED) ||
+                        item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.RETURNED))
+                ) {
+                    Order.updateKitchenOrderStatus(
+                            item.getIdKitchenOrder(),
+                            KitchenOrderDao.KitchenOrderStatus.CANCELLED.getValue()
+                    );
+                    LOGGER.info("Ticket #" + item.getIdKitchenOrder() + " was cancelled");
+                    return;
+                } else {
+                    int qtyToRemove = product.getQuantity();
+                    if (productInTicket.getIdProduct() == product.getIdProduct() && productInTicket.getQuantity() <= qtyToRemove && !(
+                            item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED) ||
+                            item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.RETURNED))
+                    ) {
+                        int qtyFinal = qtyToRemove - productInTicket.getQuantity();
+                        if (qtyFinal < 0) return;
+                        Order.updateKitchenOrderStatus(
+                                item.getIdKitchenOrder(),
+                                KitchenOrderDao.KitchenOrderStatus.CANCELLED.getValue()
+                        );
+                        product.setQuantity(qtyFinal);
+                        LOGGER.info("Ticket #" + item.getIdKitchenOrder() + " was cancelled");
+                    }
+                }
+            }
         }
     }
 

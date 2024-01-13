@@ -14,12 +14,15 @@ import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.KitchenOrderDao;
 
 import org.sysRestaurante.dao.ProductDao;
+import org.sysRestaurante.event.EventBus;
+import org.sysRestaurante.event.TicketStatusChangedEvent;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 public class KitchenTicketViewController {
 
@@ -49,8 +52,12 @@ public class KitchenTicketViewController {
     private boolean lastStatusRed;
     private FadeTransition blinkStatusAnimationTransition;
 
+    private EventBus eventBus;
+
     @FXML
     void initialize() {
+        this.eventBus = new EventBus();
+
         kitchenOrderDao = AppFactory.getKitchenOrderDao();
         ticketInitialTime = kitchenOrderDao.getKitchenOrderDateTime();
         confirmButton.setOnAction(mouseEvent -> updateTicketStatus());
@@ -100,6 +107,9 @@ public class KitchenTicketViewController {
         alert.initOwner(statusLabel.getParent().getScene().getWindow());
         alert.showAndWait();
 
+        // TODO: check product quantity before removing it from order.
+        //       Sometimes the ticket may contain less units than the total count.
+        //       In these cases, we want to update the total quantity instead of removing the product.
         if (alert.getResult() == ButtonType.OK && !kitchenOrderDao.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED)) {
             final KitchenOrderDao.KitchenOrderStatus cancelled = KitchenOrderDao.KitchenOrderStatus.CANCELLED;
             final LocalDateTime finalDateTime = LocalDateTime.now();
@@ -108,8 +118,9 @@ public class KitchenTicketViewController {
             Order.updateKitchenOrderStatusWithDateTime(ticketId, cancelled.getValue(), LocalDateTime.now());
             kitchenOrderDao.setKitchenOrderStatus(cancelled);
             kitchenOrderDao.setFinalKitchenOrderDateTime(finalDateTime);
-            NotificationHandler.showInfo("O pedido #" + kitchenOrderDao.getIdKitchenOrder() + " foi cancelado.");
+            NotificationHandler.showInfo("O pedido #" + kitchenOrderDao.getIdKitchenOrder() + " foi cancelado");
             timerLabel.setText(timeBetweenLocalDateTimeAsMinSec(ticketInitialTime, finalDateTime));
+            eventBus.fireEvent(new TicketStatusChangedEvent(cancelled));
             refreshTicketStatus();
         }
     }
@@ -121,7 +132,8 @@ public class KitchenTicketViewController {
                 Order.updateKitchenOrderStatus(kitchenOrderDao.getIdKitchenOrder(), cooking.getValue());
                 kitchenOrderDao.setKitchenOrderStatus(cooking);
                 confirmButton.setText("Pronto");
-                NotificationHandler.showInfo("Pedido recebido pela cozinha.\nIniciando preparo.");
+                NotificationHandler.showInfo("Pedido recebido pela cozinha\nIniciando preparo");
+                eventBus.fireEvent(new TicketStatusChangedEvent(cooking));
                 break;
             case READY:
                 final KitchenOrderDao.KitchenOrderStatus delivered = KitchenOrderDao.KitchenOrderStatus.DELIVERED;
@@ -131,7 +143,8 @@ public class KitchenTicketViewController {
                 kitchenOrderDao.setFinalKitchenOrderDateTime(finalDateTime);
                 confirmButton.setDisable(true);
                 timerLabel.setText(timeBetweenLocalDateTimeAsMinSec(ticketInitialTime, finalDateTime));
-                NotificationHandler.showInfo("Pedido finalizado.");
+                NotificationHandler.showInfo("Pedido finalizado");
+                eventBus.fireEvent(new TicketStatusChangedEvent(delivered));
                 break;
             case COOKING:
                 final KitchenOrderDao.KitchenOrderStatus ready = KitchenOrderDao.KitchenOrderStatus.READY;
@@ -139,8 +152,10 @@ public class KitchenTicketViewController {
                 kitchenOrderDao.setKitchenOrderStatus(ready);
                 NotificationHandler.showInfo("Pedido pronto");
                 confirmButton.setText("Entregue");
+                eventBus.fireEvent(new TicketStatusChangedEvent(ready));
                 break;
             case CANCELLED:
+                eventBus.fireEvent(new TicketStatusChangedEvent());
             case LATE:
             case RETURNED:
             default:
@@ -195,7 +210,11 @@ public class KitchenTicketViewController {
                 detailsText.setOpacity(0.6);
                 popOverVbox.setOpacity(0.4);
                 popOverVbox.setDisable(true);
-                timerLabel.setText(timeBetweenLocalDateTimeAsMinSec(ticketInitialTime, kitchenOrderDao.getFinalKitchenOrderDateTime()));
+                assert kitchenOrderDao.getFinalKitchenOrderDateTime() != null;
+                timerLabel.setText(timeBetweenLocalDateTimeAsMinSec(
+                        ticketInitialTime,
+                        Objects.requireNonNull(kitchenOrderDao.getFinalKitchenOrderDateTime())
+                ));
                 break;
             case CANCELLED:
                 statusLabel.setText("Pedido cancelado");
@@ -250,5 +269,9 @@ public class KitchenTicketViewController {
         long minutes = seconds / 60;
         long remainingSeconds = seconds % 60;
         return String.format("%02d:%02d", minutes, remainingSeconds);
+    }
+
+    public EventBus getEventBus() {
+        return this.eventBus;
     }
 }
