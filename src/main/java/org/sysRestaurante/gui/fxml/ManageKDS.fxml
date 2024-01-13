@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
@@ -16,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="wrapperPane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ManageKDSController">
+<GridPane fx:id="wrapperPane" prefHeight="509.0" prefWidth="643.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sysRestaurante.gui.ManageKDSController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
     </columnConstraints>
@@ -30,7 +31,7 @@
     <padding>
         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
     </padding>
-    <BorderPane fx:id="borderPaneHolder" prefHeight="396.0" prefWidth="639.0">
+    <BorderPane fx:id="borderPaneHolder" prefHeight="582.0" prefWidth="639.0">
         <center>
             <VBox spacing="5.0" styleClass="box-content" BorderPane.alignment="CENTER">
                 <padding>
@@ -62,12 +63,12 @@
                     <Pane HBox.hgrow="ALWAYS" />
                 </HBox>
                 <HBox VBox.vgrow="ALWAYS">
-                    <ScrollPane fx:id="scrollPane" pannable="true" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent;" styleClass="box-content" HBox.hgrow="ALWAYS">
+                    <ScrollPane fx:id="scrollPane" fitToWidth="true" pannable="true" style="-fx-faint-focus-color: transparent; -fx-focus-color: transparent;" styleClass="box-content" HBox.hgrow="ALWAYS">
                         <padding>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                         </padding>
                         <HBox>
-                            <TilePane fx:id="tilePane" hgap="9.0" prefColumns="4" vgap="9.0">
+                            <TilePane fx:id="tilePane" hgap="9.0" prefColumns="10" vgap="9.0">
                         <opaqueInsets>
                            <Insets />
                         </opaqueInsets></TilePane>
@@ -218,6 +219,34 @@
                             </Label>
                         </VBox>
                   <Separator prefWidth="200.0" />
+                  <Label text="Filtrar tickets">
+                     <font>
+                        <Font name="Carlito Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <VBox alignment="CENTER_LEFT" spacing="10.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Separator prefWidth="200.0" />
+                        <CheckBox fx:id="pendingCheckBox" mnemonicParsing="false" selected="true" text="Pendentes">
+                           <font>
+                              <Font name="Carlito" size="16.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="finishedCheckBox" mnemonicParsing="false" text="Concluídos">
+                           <font>
+                              <Font name="Carlito" size="16.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="cancelledCheckBox" mnemonicParsing="false" text="Cancelados">
+                           <font>
+                              <Font name="Carlito" size="16.0" />
+                           </font>
+                        </CheckBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </VBox>
                     </VBox>
                 </ScrollPane>
                 <VBox fx:id="statusCashierBox" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" style="-fx-background-radius: 5; -fx-background-color: #58996A;">
