@@ -907,6 +907,12 @@ public class Order {
                         orderDao.setOpen(order.isOpen());
                         orderDao.setIdComanda(order.getIdComanda());
 
+                        try {
+                            orderDao.setFinalKitchenOrderDateTime(LocalDateTime.parse(rs2.getString("data_conclusao"), formatter));
+                        } catch (NullPointerException ex) {
+                            ExceptionHandler.doNothing();
+                        }
+
                         orderList.add(orderDao);
                     } catch (NullPointerException ignored) {
                         ExceptionHandler.doNothing();
