@@ -33,7 +33,7 @@ public class SceneNavigator {
     public static final String COMANDA_VIEW = "fxml/ComandaView.fxml";
     public static final String ADD_PRODUCTS_TO_COMANDA = "fxml/ComandaPOS.fxml";
     public static final String REGISTER_TABLE_VIEW = "fxml/RegisterTable.fxml";
-    public static final String SELEC_NEW_TABLE_VIEW = "fxml/SwitchTable.fxml";
+    public static final String SELECT_NEW_TABLE_VIEW = "fxml/SwitchTable.fxml";
     public static final String ORDER_DETAILS_DIALOG = "fxml/OrderDetails.fxml";
     public static final String CASHIER_HISTORY_VIEW = "fxml/CashierHistory.fxml";
     public static final String DETAILS_CASHIER_BOX = "fxml/DetailsCashierBox.fxml";

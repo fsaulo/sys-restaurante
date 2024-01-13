@@ -167,7 +167,7 @@ public class ComandaPOSController extends POS {
     }
 
     public void handleChangeTable() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.SELEC_NEW_TABLE_VIEW));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.SELECT_NEW_TABLE_VIEW));
         PopOver popOver;
         try {
             popOver = new PopOver(loader.load());
