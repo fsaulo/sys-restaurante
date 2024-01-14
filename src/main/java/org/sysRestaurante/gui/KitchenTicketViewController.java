@@ -19,8 +19,8 @@ import org.sysRestaurante.event.TicketStatusChangedEvent;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.NotificationHandler;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,7 +72,7 @@ public class KitchenTicketViewController {
     }
 
     private void setupTicketDetails() {
-        List<ProductDao> productDaoList = Order.getTicketProductsById(kitchenOrderDao.getIdKitchenOrder());
+        List<ProductDao> productDaoList = Order.getItemsByKitchenOrderId(kitchenOrderDao.getIdKitchenOrder());
 
         assert productDaoList != null;
         assert !productDaoList.isEmpty();
@@ -107,14 +107,33 @@ public class KitchenTicketViewController {
         alert.initOwner(statusLabel.getParent().getScene().getWindow());
         alert.showAndWait();
 
-        // TODO: check product quantity before removing it from order.
-        //       Sometimes the ticket may contain less units than the total count.
-        //       In these cases, we want to update the total quantity instead of removing the product.
         if (alert.getResult() == ButtonType.OK && !kitchenOrderDao.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED)) {
             final KitchenOrderDao.KitchenOrderStatus cancelled = KitchenOrderDao.KitchenOrderStatus.CANCELLED;
             final LocalDateTime finalDateTime = LocalDateTime.now();
             int ticketId = kitchenOrderDao.getIdKitchenOrder();
-            Order.removeProductFromOrderByKitchenOrderId(ticketId);
+            int orderId = kitchenOrderDao.getIdOrder();
+
+            ArrayList<ProductDao> productsInTicket = (ArrayList<ProductDao>) Order.getItemsByKitchenOrderId(ticketId);
+            ArrayList<ProductDao> productsInComanda = (ArrayList<ProductDao>) Order.getItemsByOrderId(orderId);
+
+            assert productsInTicket != null;
+            assert productsInComanda != null;
+
+            // Sometimes the ticket may contain fewer units than the total count.
+            // In these cases, we want to update the total quantity instead of removing the product.
+            productsInComanda.forEach(comandaProduct ->
+                productsInTicket.stream()
+                    .filter(ticketProduct -> comandaProduct.getIdProduct() == (ticketProduct.getIdProduct()))
+                    .forEach(ticketProduct -> {
+                        int qtyFinal = comandaProduct.getQuantity() - ticketProduct.getQuantity();
+                        if (qtyFinal <= 0) {
+                            Order.removeProductFromOrderByKitchenOrderId(ticketId);
+                        } else {
+                            Order.updateItemQtyFromOrderByOrderId(orderId, qtyFinal);
+                        }
+                    })
+            );
+
             Order.updateKitchenOrderStatusWithDateTime(ticketId, cancelled.getValue(), LocalDateTime.now());
             kitchenOrderDao.setKitchenOrderStatus(cancelled);
             kitchenOrderDao.setFinalKitchenOrderDateTime(finalDateTime);

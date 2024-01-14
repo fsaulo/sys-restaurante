@@ -474,6 +474,27 @@ public class Order {
         }
     }
 
+    public static void updateItemQtyFromOrderByOrderId(int idOrder, int qty) {
+        String query = "UPDATE pedido_has_produtos SET qtd_pedido = ? WHERE id_pedido = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, qty);
+            ps.setInt(2, idOrder);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            LOGGER.severe("Error trying to delete a product from order.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            NotificationHandler.errorDialog(ex);
+            ex.printStackTrace();
+        }
+    }
+
     public static void removeProductFromOrderByKitchenOrderId(int idKitchenOrder) {
         String query1 = "SELECT id_produto FROM pedido_cozinha_has_produtos WHERE id_pedido_cozinha = ?";
         String query2 = "DELETE FROM pedido_has_produtos WHERE id_produto = ?";
@@ -934,7 +955,7 @@ public class Order {
         return null;
     }
 
-    public static List<ProductDao> getTicketProductsById(int idKitchenOrder) {
+    public static List<ProductDao> getItemsByKitchenOrderId(int idKitchenOrder) {
         String query1 = "SELECT * FROM pedido_cozinha_has_produtos WHERE id_pedido_cozinha = ?";
         String query2 = "SELECT * FROM produto WHERE id_produto = ?";
 
