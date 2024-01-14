@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import org.controlsfx.control.PopOver;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
+import org.sysRestaurante.dao.KitchenOrderDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.Format;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -283,9 +285,11 @@ public class FinishSellController {
                 Order.updateOrderAmount(idComanda, payInCash, payByCard, discount);
                 Order.setDiscounts(idOrder, discount);
                 Order.setTaxes(idOrder, taxes);
+
+                tryToClosePendingTickets(idComanda);
+
                 Management.closeTable(idTable);
                 Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
-
                 AppFactory.getManageComandaController().update();
             } else {
                 Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
@@ -308,6 +312,23 @@ public class FinishSellController {
         }
     }
 
+    public void tryToClosePendingTickets(int idComanda) {
+        ArrayList<KitchenOrderDao> tickets = Order.getKitchenTicketsByComandaId(idComanda);
+        assert tickets != null;
+        for (var ticket : tickets) {
+            if (ticket.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED) ||
+                    ticket.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.DELIVERED) ||
+                    ticket.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.RETURNED)) {
+                return;
+            }
+
+            Order.updateKitchenOrderStatusWithDateTime(
+                    ticket.getIdKitchenOrder(),
+                    KitchenOrderDao.KitchenOrderStatus.DELIVERED.getValue(),
+                    LocalDateTime.now()
+            );
+        }
+    }
 
     public void setInputFilds() {
         Font font = Font.font("consolas", FontWeight.BOLD, FontPosture.REGULAR, 20);
