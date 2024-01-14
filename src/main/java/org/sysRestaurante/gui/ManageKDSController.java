@@ -11,7 +11,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.KitchenOrderDao;
 import org.sysRestaurante.event.EventBus;
 import org.sysRestaurante.event.TicketStatusChangedEvent;
@@ -20,6 +19,7 @@ import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.ExceptionHandler;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class ManageKDSController {
@@ -35,18 +35,25 @@ public class ManageKDSController {
     @FXML
     private Label pendingTickets;
     @FXML
+    private Label deliveredTickets;
+    @FXML
+    private Label cancelledTickets;
+    @FXML
     private CheckBox cancelledCheckBox;
+    @FXML
+    private Label averageTime;
     @FXML
     private CheckBox finishedCheckBox;
     @FXML
     private CheckBox pendingCheckBox;
+    @FXML
+    private VBox updateVBox;
 
     private ObservableList<KitchenOrderDao> kitchenTickets = FXCollections.observableArrayList();
     private final ObservableList<KitchenOrderDao.KitchenOrderStatus> statusFilter = FXCollections.observableArrayList();
 
     public void initialize() {
         AppFactory.setManageKDSController(this);
-        kitchenTickets = FXCollections.observableArrayList(Order.getKitchenTicketsByCashierId(AppFactory.getCashierDao().getIdCashier()));
 
         statusFilter.add(KitchenOrderDao.KitchenOrderStatus.COOKING);
         statusFilter.add(KitchenOrderDao.KitchenOrderStatus.WAITING);
@@ -54,11 +61,15 @@ public class ManageKDSController {
         statusFilter.add(KitchenOrderDao.KitchenOrderStatus.READY);
 
         tilePane.setPrefColumns(10);
-        listKitchenTickets();
+
+        kitchenTickets = FXCollections.observableArrayList(fetchTicketsFromDatabase());
+        kitchenTickets.sort(Comparator.comparing(KitchenOrderDao::getKitchenOrderDateTime));
+
+        refreshTicketsTilePane();
 
         borderPaneHolder.setTop(AppFactory.getAppController().getHeader());
         borderPaneHolder.setBottom(AppFactory.getAppController().getFooter());
-
+        updateVBox.setOnMouseClicked(mouseEvent -> refreshTicketsTilePane());
 
         cancelledCheckBox.setOnAction(actionEvent -> {
             if (cancelledCheckBox.isSelected()) {
@@ -99,29 +110,24 @@ public class ManageKDSController {
         });
     }
 
-    public void listKitchenTickets() {
-        tilePane.getChildren().clear();
-        kitchenTickets = FXCollections.observableArrayList(fetchTicketsFromDatabase());
-        kitchenTickets.sort(Comparator.comparing(KitchenOrderDao::getKitchenOrderDateTime));
-        for (var item : kitchenTickets) {
-            boolean isCashierOpen = Cashier.isOpen(item.getIdCashier());
-            if (statusFilter.contains(item.getKitchenOrderStatus()) && isCashierOpen) {
-                try {
-                    buildAndAddTickets(item);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    ExceptionHandler.incrementGlobalExceptionsCount();
-                }
-            }
-        }
-    }
-
     public void refreshTicketsTilePane() {
         tilePane.getChildren().clear();
         assert kitchenTickets != null;
+
+        int totalCount = 0;
+        int cancelledCount = 0;
+        int pendingCount = 0;
+        int deliveredCount = 0;
+        long timeElapsedCount = 0;
+        LocalDateTime currentTime = LocalDateTime.now();
+
         for (var item : kitchenTickets) {
             boolean isCashierOpen = Cashier.isOpen(item.getIdCashier());
-            if (statusFilter.contains(item.getKitchenOrderStatus()) && isCashierOpen) {
+            if (!isCashierOpen) {
+                return;
+            }
+
+            if (statusFilter.contains(item.getKitchenOrderStatus())) {
                 try {
                     buildAndAddTickets(item);
                 } catch (IOException ex) {
@@ -129,7 +135,32 @@ public class ManageKDSController {
                     ExceptionHandler.incrementGlobalExceptionsCount();
                 }
             }
+
+            if (item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED) ||
+                item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.RETURNED)) {
+                cancelledCount += 1;
+            }
+
+            if (item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.COOKING) ||
+                item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.WAITING) ||
+                item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.LATE)) {
+                pendingCount += 1;
+                totalCount += 1;
+                timeElapsedCount += java.time.Duration.between(item.getKitchenOrderDateTime(), currentTime).getSeconds();
+            }
+
+            if (item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.DELIVERED)) {
+                deliveredCount += 1;
+                totalCount += 1;
+                timeElapsedCount += java.time.Duration.between(item.getKitchenOrderDateTime(), item.getFinalKitchenOrderDateTime()).getSeconds();
+            }
         }
+
+        deliveredTickets.setText(Integer.toString(deliveredCount));
+        pendingTickets.setText(Integer.toString(pendingCount));
+        cancelledTickets.setText(Integer.toString(cancelledCount));
+        totalCount = totalCount == 0 ? 1 : totalCount;
+        averageTime.setText((int) (timeElapsedCount / 60) / totalCount + " minutos");
     }
 
     private List<KitchenOrderDao> fetchTicketsFromDatabase() {
@@ -146,7 +177,6 @@ public class ManageKDSController {
 
         EventBus ticketEventBus = controller.getEventBus();
         ticketEventBus.addEventHandler(TicketStatusChangedEvent.TICKET_STATUS_CHANGED_EVENT_EVENT_TYPE, ticketStatusChangedEvent -> {
-            System.out.println("TICKET STATUS CHANGED " + ticketStatusChangedEvent.getTicketStatus());
             switch (ticketStatusChangedEvent.getTicketStatus()) {
                 case DELIVERED:
                 case CANCELLED:
