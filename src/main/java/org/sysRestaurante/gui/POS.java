@@ -529,7 +529,7 @@ public class POS {
         kitchenOrdersList.sort(Comparator.comparing(KitchenOrderDao::getKitchenOrderDateTime).reversed());
         for (var item : kitchenOrdersList) {
             ArrayList<ProductDao> products =
-                    (ArrayList<ProductDao>) Order.getTicketProductsById(item.getIdKitchenOrder());
+                    (ArrayList<ProductDao>) Order.getItemsByKitchenOrderId(item.getIdKitchenOrder());
 
             assert products != null;
             for (var productInTicket : products) {

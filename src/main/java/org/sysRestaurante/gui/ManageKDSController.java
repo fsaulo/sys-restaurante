@@ -104,7 +104,8 @@ public class ManageKDSController {
         kitchenTickets = FXCollections.observableArrayList(fetchTicketsFromDatabase());
         kitchenTickets.sort(Comparator.comparing(KitchenOrderDao::getKitchenOrderDateTime));
         for (var item : kitchenTickets) {
-            if (statusFilter.contains(item.getKitchenOrderStatus()) && ((ComandaDao) item).isOpen()) {
+            boolean isCashierOpen = Cashier.isOpen(item.getIdCashier());
+            if (statusFilter.contains(item.getKitchenOrderStatus()) && isCashierOpen) {
                 try {
                     buildAndAddTickets(item);
                 } catch (IOException ex) {
@@ -120,8 +121,7 @@ public class ManageKDSController {
         assert kitchenTickets != null;
         for (var item : kitchenTickets) {
             boolean isCashierOpen = Cashier.isOpen(item.getIdCashier());
-            System.out.println("is cashier " + item.getIdCashier() + " open ? " + isCashierOpen);
-            if (statusFilter.contains(item.getKitchenOrderStatus()) && ((ComandaDao) item).isOpen()) {
+            if (statusFilter.contains(item.getKitchenOrderStatus()) && isCashierOpen) {
                 try {
                     buildAndAddTickets(item);
                 } catch (IOException ex) {
