@@ -1,25 +1,7 @@
 package org.sysRestaurante.applet;
 
-import org.sysRestaurante.dao.CashierDao;
-import org.sysRestaurante.dao.ComandaDao;
-import org.sysRestaurante.dao.OrderDao;
-import org.sysRestaurante.dao.ProductDao;
-import org.sysRestaurante.dao.SessionDao;
-import org.sysRestaurante.dao.UserDao;
-import org.sysRestaurante.gui.AppController;
-import org.sysRestaurante.gui.CashierController;
-import org.sysRestaurante.gui.CashierHistoryController;
-import org.sysRestaurante.gui.CashierPOSController;
-import org.sysRestaurante.gui.ComandaPOSController;
-import org.sysRestaurante.gui.DashboardController;
-import org.sysRestaurante.gui.LoginController;
-import org.sysRestaurante.gui.MainGUI;
-import org.sysRestaurante.gui.MainGUIController;
-import org.sysRestaurante.gui.ManageComandaController;
-import org.sysRestaurante.gui.POS;
-import org.sysRestaurante.gui.ProductManagementController;
-import org.sysRestaurante.gui.ReceiptViewController;
-import org.sysRestaurante.gui.ToolBarController;
+import org.sysRestaurante.dao.*;
+import org.sysRestaurante.gui.*;
 
 import java.util.ArrayList;
 
@@ -31,6 +13,7 @@ public class AppFactory {
     private static CashierDao cashierDao;
     private static OrderDao orderDao;
     private static ProductDao productDao;
+    private static KitchenOrderDao kitchenOrderDao;
     private static SessionDao sessionDao;
     private static ComandaDao comandaDao;
     private static MainGUIController mainController;
@@ -38,6 +21,7 @@ public class AppFactory {
     private static CashierPOSController cashierPOSController;
     private static ArrayList<ProductDao> selectedProducts;
     private static ManageComandaController manageComandaController;
+    private static ManageKDSController manageKDSController;
     private static ComandaPOSController comandaPOSController;
     private static POS pos;
     private static ReceiptViewController receiptViewController;
@@ -119,6 +103,10 @@ public class AppFactory {
         AppFactory.manageComandaController = manageComandaController;
     }
 
+    public static void setManageKDSController(ManageKDSController manageKDSController) {
+        AppFactory.manageKDSController = manageKDSController;
+    }
+
     public static OrderDao getOrderDao() {
         return orderDao;
     }
@@ -191,6 +179,10 @@ public class AppFactory {
         AppFactory.userDao = userDao;
     }
 
+    public static ManageKDSController getManageKDSController() {
+        return manageKDSController;
+    }
+
     public static AppController getAppController() {
         return appController;
     }
@@ -229,5 +221,13 @@ public class AppFactory {
 
     public static void setProductDao(ProductDao productDao) {
         AppFactory.productDao = productDao;
+    }
+
+    public static KitchenOrderDao getKitchenOrderDao() {
+        return kitchenOrderDao;
+    }
+
+    public static void setKitchenOrderDao(KitchenOrderDao kitchenOrderDao) {
+        AppFactory.kitchenOrderDao = kitchenOrderDao;
     }
 }

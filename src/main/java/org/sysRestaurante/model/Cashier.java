@@ -137,7 +137,7 @@ public class Cashier {
         String query = "SELECT id_caixa, is_aberto FROM caixa ORDER BY id_caixa DESC LIMIT 1";
         PreparedStatement ps;
         ResultSet rs;
-        boolean isOpenned = false;
+        boolean isOpen = false;
         int idCashier = 0;
 
         try {
@@ -146,7 +146,7 @@ public class Cashier {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                isOpenned = rs.getBoolean("is_aberto");
+                isOpen = rs.getBoolean("is_aberto");
                 idCashier = rs.getInt("id_caixa");
             }
 
@@ -157,13 +157,37 @@ public class Cashier {
             ps.close();
             con.close();
             rs.close();
-            return isOpenned;
+            return isOpen;
         } catch (SQLException | NullPointerException ex) {
             ex.printStackTrace();
         }
         return false;
     }
 
+    public static boolean isOpen(int idCashier) {
+        String query = "SELECT is_aberto FROM caixa WHERE id_caixa = ?";
+        PreparedStatement ps;
+        ResultSet rs;
+        boolean isOpen = false;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, idCashier);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                isOpen = rs.getBoolean("is_aberto");
+            }
+
+            ps.close();
+            con.close();
+            rs.close();
+        } catch (SQLException | NullPointerException ex) {
+            ex.printStackTrace();
+        }
+        return isOpen;
+    }
     public static LocalDateTime getCashierDateTimeDetailsById(int idCashier) {
         String query = "SELECT data_abertura, hora_abertura FROM caixa WHERE id_caixa = ?";
         PreparedStatement ps;

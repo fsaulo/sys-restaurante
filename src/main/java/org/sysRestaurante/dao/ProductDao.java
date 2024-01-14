@@ -1,5 +1,7 @@
 package org.sysRestaurante.dao;
 
+import java.security.PublicKey;
+
 public class ProductDao {
     private int idProduct;
     private int idCategory;
@@ -16,11 +18,23 @@ public class ProductDao {
     private boolean ingredient;
     private String description;
     private String categoryDescription;
-    private CategoryDao categoryDao;
+    private CategoryDao categoryDao = new CategoryDao();
 
     public ProductDao() {
         quantity = 1;
         total = 0.0;
+    }
+
+    public ProductDao(ProductDao copy)  {
+        this.setQuantity(copy.getQuantity());
+        this.setSold(copy.getSold());
+        this.setIdProduct(copy.getIdProduct());
+        this.setCategoryDao(copy.getCategoryDao());
+        this.setDescription(copy.getDescription());
+        this.setTotal(copy.getTotal());
+        this.setSupply(copy.getSupply());
+        this.setMinSupply(copy.getSupply());
+        this.setBarCode(copy.getBarCode());
     }
 
     public int getSold() {
@@ -156,12 +170,26 @@ public class ProductDao {
     }
 
     public static class CategoryDao {
+
+        public enum Type {
+            DRINK(1), LUNCH(2), TASTE(3), EXTRA_PORTION(4), NONE(5);
+
+            final private int value;
+            Type(int value) {
+                this.value = value;
+            }
+
+            public int getValue() {
+                return value;
+            }
+        }
+
         private String categoryDescription;
         private int idCategory;
 
         public CategoryDao() {
             this.categoryDescription = "Sem categoria";
-            this.idCategory = 5;
+            this.idCategory = Type.NONE.getValue();
         }
 
         public String getCategoryDescription() {

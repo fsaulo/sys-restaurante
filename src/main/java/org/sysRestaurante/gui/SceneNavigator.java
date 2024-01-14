@@ -33,13 +33,15 @@ public class SceneNavigator {
     public static final String COMANDA_VIEW = "fxml/ComandaView.fxml";
     public static final String ADD_PRODUCTS_TO_COMANDA = "fxml/ComandaPOS.fxml";
     public static final String REGISTER_TABLE_VIEW = "fxml/RegisterTable.fxml";
-    public static final String SELEC_NEW_TABLE_VIEW = "fxml/SwitchTable.fxml";
+    public static final String SELECT_NEW_TABLE_VIEW = "fxml/SwitchTable.fxml";
     public static final String ORDER_DETAILS_DIALOG = "fxml/OrderDetails.fxml";
     public static final String CASHIER_HISTORY_VIEW = "fxml/CashierHistory.fxml";
     public static final String DETAILS_CASHIER_BOX = "fxml/DetailsCashierBox.fxml";
     public static final String PRODUCT_MANAGEMENT_VIEW = "fxml/ProductManagement.fxml";
     public static final String REGISTER_NEW_PRODUCT_FORM = "fxml/ProductFormDialog.fxml";
     public static final String BUSINESS_INFO = "fxml/BusinessInfo.fxml";
+    public static final String MANAGE_KDS = "fxml/ManageKDS.fxml";
+    public static final String KITCHEN_TICKET_VIEW = "fxml/KitchenTicketView.fxml";
     public static final KeyCombination F2_CONFIRMATION = new KeyCodeCombination(KeyCode.F2);
     public static final KeyCombination F3_SEARCH = new KeyCodeCombination(KeyCode.F3);
     public static final KeyCombination F4_CANCEL = new KeyCodeCombination(KeyCode.F4);

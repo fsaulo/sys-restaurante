@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Window;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
+import org.sysRestaurante.dao.KitchenOrderDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.gui.formatter.CellFormatter;
@@ -23,10 +25,9 @@ import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.text.Format;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class POS {
 
@@ -35,6 +36,8 @@ public class POS {
     private Button addProductButton;
     private Button removeButton;
     private Button clearButton;
+    @FXML
+    private TextArea orderDetailsTextArea;
     private Label unitPriceLabel;
     private Label contentLabel;
     private Label codProductLabel;
@@ -170,7 +173,7 @@ public class POS {
         searchBox.setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER) && !productsListView.getItems().isEmpty()) {
                 productsListView.getSelectionModel().selectFirst();
-                addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem());
+                addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem(), 1, true);
             } else if (event.getCode().equals(KeyCode.ESCAPE)) {
                 wrapperBox.requestFocus();
             }
@@ -178,7 +181,9 @@ public class POS {
 
         addProductButton.setOnAction(event -> {
             if (!productsListView.getItems().isEmpty()) {
-                addToSelectedProductsList(productsListView.getSelectionModel().getSelectedItem(), qtySpinner.getValue());
+                ProductDao productDao = productsListView.getSelectionModel().getSelectedItem();
+                int qtyProduct = qtySpinner.getValue();
+                addToSelectedProductsList(productDao, qtyProduct, true);
                 qtySpinner.decrement(qtySpinner.getValue() - 1);
             }
         });
@@ -251,7 +256,9 @@ public class POS {
                     break;
                 case ENTER:
                     ProductDao product = productsListView.getSelectionModel().getSelectedItem();
-                    if (product != null) addToSelectedProductsList(product);
+                    if (product != null) {
+                        addToSelectedProductsList(product, 1, true);
+                    }
                     break;
                 default:
                     searchBox.setText(searchBox.getText().concat(keyEvent.getText()));
@@ -357,12 +364,12 @@ public class POS {
         totalColumn.setCellFactory((CellFormatter<ProductDao, Double>) value -> CurrencyField.getBRLCurrencyFormat()
                 .format(value));
         qtdColumn.setCellFactory(tc -> new SpinnerCellFactory(1, 999, 1, 1));
-        qtdColumn.setEditable(true);
+        qtdColumn.setEditable(false);
     }
 
     protected void updateSelectedList() {
         try {
-            selectedProductsTableView.setEditable(!selectedProductsTableView.getItems().isEmpty());
+            selectedProductsTableView.setEditable(false);
             selectedProductsTableView.setItems(selectedProductsList);
             selectedProductsTableView.refresh();
             updateTotalCashierLabel();
@@ -419,35 +426,28 @@ public class POS {
         return list.stream().anyMatch(o -> o.getIdProduct() == id);
     }
 
-    public void addToSelectedProductsList(ProductDao product) {
-        if (selectedProductsList.contains(product)) {
-            product.incrementsQuantity();
-        } else if (containsId(selectedProductsList, product.getIdProduct())) {
-            final ProductDao selectedProduct = product;
-            product = selectedProductsList.stream().filter(pr -> pr.getDescription()
-                    .equals(selectedProduct.getDescription()))
-                    .collect(Collectors.toList())
-                    .get(0);
-            product.incrementsQuantity();
-        } else {
-            product.setQuantity(1);
-            selectedProductsList.add(product);
+    public void addToSelectedProductsList(ProductDao product, int qty, boolean sendToKitchen) {
+        if (sendToKitchen) {
+            ProductDao tempProduct = new ProductDao(product);
+            tempProduct.setQuantity(qty);
+            if (registerKitchenOrder(tempProduct)) {
+                orderDetailsTextArea.clear();
+            }
         }
 
-        product.setTotal(product.getSellPrice() * product.getQuantity());
-        updateSelectedList();
-    }
+        if (selectedProductsList.contains(product) || containsId(selectedProductsList, product.getIdProduct())) {
+            final ProductDao tempProduct = product;
+            ProductDao selectedProduct = new ProductDao();
+            Optional<ProductDao> optionalProductDao = selectedProductsList
+                    .stream()
+                    .filter(pr -> pr.getIdProduct() == tempProduct.getIdProduct())
+                    .findFirst();
 
-    public void addToSelectedProductsList(ProductDao product, int qty) {
-        if (selectedProductsList.contains(product)) {
-            product.setQuantity(product.getQuantity() + qty);
-        } else if (containsId(selectedProductsList, product.getIdProduct())) {
-            final ProductDao selectedProduct = product;
-            product = selectedProductsList.stream().filter(pr -> pr.getDescription()
-                    .equals(selectedProduct.getDescription()))
-                    .collect(Collectors.toList())
-                    .get(0);
-            product.incrementsQuantity(qty);
+            if (optionalProductDao.isPresent()){
+                selectedProduct = optionalProductDao.get();
+            }
+
+            selectedProduct.incrementsQuantity(qty);
         } else {
             product.setQuantity(qty);
             selectedProductsList.add(product);
@@ -471,9 +471,20 @@ public class POS {
             alert.showAndWait();
         
             if (alert.getResult().equals(ButtonType.OK)) {
+                OrderDao order = AppFactory.getOrderDao();
+                if (order instanceof ComandaDao) {
+                    List<KitchenOrderDao> tickets = Order.getKitchenTicketsByComandaId(((ComandaDao) order).getIdComanda());
+                    assert tickets != null;
+                    for (var item : tickets) {
+                        Order.updateKitchenOrderStatus(item.getIdKitchenOrder(), KitchenOrderDao.KitchenOrderStatus.CANCELLED.getValue());
+                        LOGGER.info("Ticket #" + item.getIdKitchenOrder() + " was cancelled");
+                    }
+                }
+
                 for (ProductDao item : selectedProductsTableView.getSelectionModel().getSelectedItems()) {
                     item.setQuantity(0);
                 }
+
                 selectedProductsTableView.getItems().clear();
                 selectedProductsList.clear();
                 updateSelectedList();
@@ -486,7 +497,7 @@ public class POS {
         List<ProductDao> products = Order.getItemsByOrderId(order.getIdOrder());
         assert products != null;
         for (ProductDao product : products) {
-            addToSelectedProductsList(product, product.getQuantity());
+            addToSelectedProductsList(product, product.getQuantity(), false);
         }
     }
 
@@ -494,6 +505,7 @@ public class POS {
         try {
             if (!selectedProductsTableView.getSelectionModel().isEmpty()) {
                 ProductDao selected = selectedProductsTableView.getSelectionModel().getSelectedItem();
+                tryToCancelTicketByProduct(selected);
                 selected.setQuantity(0);
                 selectedProductsTableView.getItems().remove(selected);
                 selectedProductsList.remove(selected);
@@ -501,6 +513,55 @@ public class POS {
             }
         } catch (NullPointerException exception) {
             LOGGER.info("There's no selected item to remove.");
+        }
+    }
+
+    public void tryToCancelTicketByProduct(ProductDao product) {
+        OrderDao order = AppFactory.getOrderDao();
+        if (!(order instanceof ComandaDao)) {
+            return;
+        }
+
+        ArrayList<KitchenOrderDao> kitchenOrdersList = Order.getKitchenTicketsByComandaId(
+                ((ComandaDao) order).getIdComanda()
+        );
+
+        assert kitchenOrdersList != null;
+        kitchenOrdersList.sort(Comparator.comparing(KitchenOrderDao::getKitchenOrderDateTime).reversed());
+        for (var item : kitchenOrdersList) {
+            ArrayList<ProductDao> products =
+                    (ArrayList<ProductDao>) Order.getItemsByKitchenOrderId(item.getIdKitchenOrder());
+
+            assert products != null;
+            for (var productInTicket : products) {
+                // Cancel the first ticket that contains product id and quantity
+                if (productInTicket.getIdProduct() == product.getIdProduct() && productInTicket.getQuantity() == product.getQuantity() && !(
+                        item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED) ||
+                        item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.RETURNED))
+                ) {
+                    Order.updateKitchenOrderStatus(
+                            item.getIdKitchenOrder(),
+                            KitchenOrderDao.KitchenOrderStatus.CANCELLED.getValue()
+                    );
+                    LOGGER.info("Ticket #" + item.getIdKitchenOrder() + " was cancelled");
+                    return;
+                } else {
+                    int qtyToRemove = product.getQuantity();
+                    if (productInTicket.getIdProduct() == product.getIdProduct() && productInTicket.getQuantity() <= qtyToRemove && !(
+                            item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED) ||
+                            item.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.RETURNED))
+                    ) {
+                        int qtyFinal = qtyToRemove - productInTicket.getQuantity();
+                        if (qtyFinal < 0) return;
+                        Order.updateKitchenOrderStatus(
+                                item.getIdKitchenOrder(),
+                                KitchenOrderDao.KitchenOrderStatus.CANCELLED.getValue()
+                        );
+                        product.setQuantity(qtyFinal);
+                        LOGGER.info("Ticket #" + item.getIdKitchenOrder() + " was cancelled");
+                    }
+                }
+            }
         }
     }
 
@@ -514,5 +575,28 @@ public class POS {
 
     public void searchByCategory(String category) {
         searchBox.setText(category);
+    }
+
+    private boolean registerKitchenOrder(ProductDao product) {
+        OrderDao order = AppFactory.getOrderDao();
+        if (order instanceof ComandaDao) {
+            int productType = product.getCategoryDao().getIdCategory();
+            if (product.isMenuItem() || productType == ProductDao.CategoryDao.Type.LUNCH.getValue()
+                    || productType == ProductDao.CategoryDao.Type.TASTE.getValue()
+                    || productType == ProductDao.CategoryDao.Type.EXTRA_PORTION.getValue()) {
+
+                String notes = Objects.equals(orderDetailsTextArea.getText(), "") ? "Sem observações" : orderDetailsTextArea.getText();
+                int idOrder = Order.newKitchenOrder(((ComandaDao) order).getIdComanda(), KitchenOrderDao.KitchenOrderStatus.WAITING.getValue(), notes);
+
+                if (idOrder > 0) {
+                    Order.addProductToKitchenOrder(idOrder, product);
+                    NotificationHandler.showInfo("Pedido enviado para cozinha");
+                } else {
+                    NotificationHandler.showInfo("Não foi possível registrar o pedido na cozinha");
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }

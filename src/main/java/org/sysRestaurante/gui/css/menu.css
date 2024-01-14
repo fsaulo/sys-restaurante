@@ -231,6 +231,8 @@
     -fx-padding: 3;
     -fx-cursor: hand;
     -fx-background-color: #EAE7DE;
+    -fx-background-radius: 2;
+    -fx-border-radius: 2;
     -fx-opacity: 0.8;
 }
 
@@ -268,4 +270,44 @@
     -fx-font-family: Carlito;
     -fx-font-weight: bold;
     -fx-font-size: 16;
+}
+
+.cancel-button {
+    -fx-base: #FEC4B7;
+    -fx-background-color: #FEC4B7, linear-gradient(#FEC4B7 0%, #F78168 100%), #FEC4B7;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 3, 2, 1;
+    -fx-font-weight: bold;
+    -fx-font-family: "Carlito";
+    -fx-font-size: 13px;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #FFB6A0, linear-gradient(#FFB6A0 0%, #F78168 50%, #FFB6A0 100%), #FFB6A0;
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+}
+
+.cancel-button:pressed {
+    -fx-background-color: #FF8C6A, linear-gradient(#FF8C6A 0%, #F78168 50%, #FF8C6A 100%), #FF8C6A;
+}
+
+.confirm-button {
+    -fx-base: #9AD1FF; /* Base color */
+    -fx-background-color: #9AD1FF, linear-gradient(#9AD1FF 0%, #5C9BFF 100%), #9AD1FF;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 3, 2, 1;
+    -fx-font-weight: bold;
+    -fx-font-family: "Carlito";
+    -fx-font-size: 13px;
+}
+
+.confirm-button:hover {
+    -fx-background-color: #7AA9FF, linear-gradient(#7AA9FF 0%, #5C9BFF 50%, #7AA9FF 100%), #7AA9FF;
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+}
+
+.confirm-button:pressed {
+    -fx-background-color: #4A81FF, linear-gradient(#4A81FF 0%, #5C9BFF 50%, #4A81FF 100%), #4A81FF;
 }

@@ -212,7 +212,7 @@ public class AppController implements DateFormatter {
             Scene scene = new Scene(loader.load());
             stage.setTitle("SysRestaurante: Dialog " + fxml);
             stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setResizable(true);
             stage.showAndWait();
         } catch (IOException e) {
             LOGGER.severe("Couldn't create stage.");
