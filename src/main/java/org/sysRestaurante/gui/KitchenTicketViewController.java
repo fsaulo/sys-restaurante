@@ -20,6 +20,7 @@ import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -221,7 +222,8 @@ public class KitchenTicketViewController {
                 statusBox.setStyle(ticketReadyStyle);
                 break;
             case DELIVERED:
-                statusLabel.setText("Finalizado");
+                LocalDateTime finalTime = kitchenOrderDao.getFinalKitchenOrderDateTime();
+                statusLabel.setText("Finalizado (" + finalTime.format(DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yy") )+ ")");
                 statusLabel.setStyle("-fx-text-fill: white; -fx-font-weight: bold; -fx-font-family: \"Carlito\";");
                 tableLabel.setStyle("-fx-text-fill: white");
                 orderIdLabel.setStyle("-fx-text-fill: white");
@@ -230,9 +232,10 @@ public class KitchenTicketViewController {
                 popOverVbox.setOpacity(0.4);
                 popOverVbox.setDisable(true);
                 assert kitchenOrderDao.getFinalKitchenOrderDateTime() != null;
+                timerLabel.setVisible(true);
                 timerLabel.setText(timeBetweenLocalDateTimeAsMinSec(
                         ticketInitialTime,
-                        Objects.requireNonNull(kitchenOrderDao.getFinalKitchenOrderDateTime())
+                        Objects.requireNonNull(finalTime)
                 ));
                 break;
             case CANCELLED:
