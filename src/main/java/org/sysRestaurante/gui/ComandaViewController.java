@@ -121,6 +121,7 @@ public class ComandaViewController {
             }
         };
 
+        // TODO: fix glitch that makes this button unusable
         employeeComboBox.setButtonCell(cellFactory.call(null));
         employeeComboBox.setCellFactory(cellFactory);
 
