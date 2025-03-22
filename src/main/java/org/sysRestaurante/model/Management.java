@@ -153,8 +153,8 @@ public class Management {
         }
     }
 
-    public static MetadataDao getBusinessInfo() {
-        String query = "SELECT business_name, cnpj, phone, address FROM metadata";
+    public static MetadataDao getBusinessInfo(int idMetadata) {
+        String query = "SELECT business_name, cnpj, phone, address FROM metadata WHERE id_metadata = ?";
         PreparedStatement ps;
         ResultSet rs;
 
@@ -162,8 +162,8 @@ public class Management {
             MetadataDao businessInfo = new MetadataDao();
             Connection con = DBConnection.getConnection();
             ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, idMetadata);
             rs = ps.executeQuery();
-
 
             while (rs.next()) {
                 businessInfo.setBusinessName(rs.getString("business_name"));
@@ -187,7 +187,7 @@ public class Management {
     }
 
     public static void updateBusinessInfo(MetadataDao metadata) {
-        String query = "UPDATE metadata SET business_name = ?, cnpj = ?, phone = ?, address = ? WHERE id = ?";
+        String query = "UPDATE metadata SET business_name = ?, cnpj = ?, phone = ?, address = ? WHERE id_metadata = ?";
         PreparedStatement ps;
 
         try {
@@ -209,7 +209,7 @@ public class Management {
     }
 
     public static void setMetadata(int id) {
-        String query = "INSERT INTO metadata (id) VALUES(?)";
+        String query = "INSERT INTO metadata (id_metadata) VALUES(?)";
         PreparedStatement ps;
 
         try {
@@ -224,6 +224,25 @@ public class Management {
         } catch (SQLException ex) {
             ex.printStackTrace();
             LOGGER.severe("Could not set metadata");
+        }
+    }
+
+    public static void deleteMetadata(int idMetadata) {
+        String query = "DELETE FROM metadata WHERE id_metadata = ?";
+        PreparedStatement ps;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, idMetadata);
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            LOGGER.severe("Error trying to delete a table.");
+            ExceptionHandler.incrementGlobalExceptionsCount();
+            ex.printStackTrace();
         }
     }
 }
