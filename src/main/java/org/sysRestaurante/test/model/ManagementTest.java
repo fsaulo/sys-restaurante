@@ -44,8 +44,9 @@ class ManagementTest {
         MetadataDao info = createBusinessInfo();
         assertNotNull(info);
 
+        Management.setMetadata(info.getId());
         Management.updateBusinessInfo(info);
-        MetadataDao updatedInfo = Management.getBusinessInfo(id);
+        MetadataDao updatedInfo = Management.getBusinessInfo(info.getId());
 
         assertNotNull(updatedInfo);
         assertEquals(address, updatedInfo.getBusinessAddress());
