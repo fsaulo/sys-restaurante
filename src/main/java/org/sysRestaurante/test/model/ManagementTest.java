@@ -53,6 +53,8 @@ class ManagementTest {
         assertEquals(name, updatedInfo.getBusinessName());
         assertEquals(phone, updatedInfo.getBusinessPhone());
         assertEquals(cnpj, updatedInfo.getBusinessCNPJ());
+
+        Management.deleteMetadata(info.getId());
     }
 
     @Test
