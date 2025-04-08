@@ -40,7 +40,7 @@ public class MetadataDao {
     }
 
     public String getBusinessAddress() {
-        return businessAddress;
+        return this.businessAddress;
     }
 
     public void setBusinessAddress(String businessAddress) {
