@@ -3,6 +3,7 @@ package org.sysRestaurante.test.model;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.DBInitializer;
 
 import java.io.File;
@@ -10,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.*;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DBTest {
@@ -42,20 +44,26 @@ public class DBTest {
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement stmt = conn.createStatement()) {
 
-            ResultSet rsUsers = stmt.executeQuery(
+            ResultSet rsMetadata = stmt.executeQuery(
                     "SELECT name FROM sqlite_master WHERE type='table' AND name='metadata'"
             );
-            assertTrue(rsUsers.next(), "'metadata' table was not created.");
+            assertTrue(rsMetadata.next(), "'metadata' table was not created.");
 
-            ResultSet rsPosts = stmt.executeQuery(
+            ResultSet rsUsers = stmt.executeQuery(
                     "SELECT name FROM sqlite_master WHERE type='table' AND name='usuario'"
             );
-            assertTrue(rsPosts.next(), "'usuario' table was not created.");
+            assertTrue(rsUsers.next(), "'usuario' table was not created.");
 
             ResultSet rsAdminUser = stmt.executeQuery(
                     "SELECT * FROM usuario WHERE username='admin'"
             );
             assertTrue(rsAdminUser.next(), "Admin user not found in 'usuario' table.");
         }
+    }
+
+    @Test
+    public void shouldGetDBConnection() throws SQLException {
+        Connection conn = DBConnection.getConnection();
+        assertNotNull(conn, "Connection is null");
     }
 }
