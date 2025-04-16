@@ -11,6 +11,11 @@ public class DBConnection {
     private static final String DB_LOCAL_CONNECTION = "jdbc:sqlite:src/main/resources/external/sys_restaurante.db";
     private static int globalDBRequestsCount = 0;
 
+    static {
+        DBInitializer.initDatabase(DB_LOCAL_CONNECTION);
+        LOGGER.info("Database was initialized");
+    }
+
     public static Connection getConnection() throws SQLException {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -21,8 +26,7 @@ public class DBConnection {
             return con;
         } catch (ClassNotFoundException ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();
-            LOGGER.severe("Database driver not found");
-            ex.printStackTrace();
+            LOGGER.severe("Database driver not found: " + ex.getMessage());
         }
         return null;
     }
