@@ -1,6 +1,7 @@
 # Ignore binaries folder
 \out
 \target
+*.db
 
 # Ignore temporary files
 *.swp

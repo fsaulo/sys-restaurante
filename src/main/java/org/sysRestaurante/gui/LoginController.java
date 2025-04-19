@@ -122,7 +122,7 @@ public class LoginController implements DateFormatter {
         lastSessionLabel.setText(sessionMessage);
     }
 
-    public void onAuthenticationAccepted() {
+    private void onAuthenticationAccepted() {
         userDaoData = certs.getUserData(usernameField.getText());
         AppFactory.setUserDao(userDaoData);
         MainGUIController mainController = MainGUI.getMainController();
