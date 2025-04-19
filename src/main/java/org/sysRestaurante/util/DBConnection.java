@@ -8,7 +8,8 @@ import java.util.logging.Logger;
 public class DBConnection {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DBConnection.class.getName());
-    private static final String DB_LOCAL_CONNECTION = "jdbc:sqlite:src/main/resources/external/sys_restaurante.db";
+    private static final String DB_URL = "jdbc:sqlite:";
+    private static final String DB_LOCAL_CONNECTION = "src/main/resources/external/sys_restaurante.db";
     private static int globalDBRequestsCount = 0;
 
     static {
@@ -20,7 +21,8 @@ public class DBConnection {
         try {
             Class.forName("org.sqlite.JDBC");
             LOGGER.config("New request.");
-            Connection con = DriverManager.getConnection(DB_LOCAL_CONNECTION);
+            String dbFilePath = DB_URL + DB_LOCAL_CONNECTION;
+            Connection con = DriverManager.getConnection(dbFilePath);
             assert con != null;
             DBConnection.incrementGlobalDBRequestsCount();
             return con;
