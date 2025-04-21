@@ -26,13 +26,12 @@ public class Order {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Order.class.getName());
     public static final int CANCELED = 3;
 
-    public static OrderDao newOrder(int idCashier, double inCash, double byCard, int type, double discount,
+    public static OrderDao newOrder(int idUser, int idCashier, double inCash, double byCard, int type, double discount,
                                     double taxes, String note) {
         String query = "INSERT INTO pedido (id_usuario, id_caixa, data_pedido, observacao, " +
                 "valor_cartao, valor_avista, id_categoria_pedido, hora_pedido, descontos, status, taxas) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
-        int idUser = AppFactory.getUserDao().getIdUser();
         int idOrder;
         OrderDao orderDao = new OrderDao();
         PreparedStatement ps;
@@ -40,15 +39,17 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
+            LocalDate nowDate = LocalDate.now();
+            LocalTime nowTime = LocalTime.now();
             ps = Objects.requireNonNull(con).prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUser);
             ps.setInt(2, idCashier);
-            ps.setDate(3, Date.valueOf(LocalDate.now()));
+            ps.setDate(3, Date.valueOf(nowDate));
             ps.setString(4, note);
             ps.setDouble(5, byCard);
             ps.setDouble(6, inCash);
             ps.setInt(7, type);
-            ps.setTime(8, Time.valueOf(LocalTime.now()));
+            ps.setTime(8, Time.valueOf(nowTime));
             ps.setDouble(9, discount);
             ps.setInt(10, type);
             ps.setDouble(11, taxes);
@@ -65,10 +66,9 @@ public class Order {
             orderDao.setIdUser(idUser);
             orderDao.setNote(note);
             orderDao.setDetails(1);
-            orderDao.setOrderTime(LocalTime.now());
+            orderDao.setOrderTime(nowTime);
             orderDao.setDiscount(discount);
-            orderDao.setOrderDate(LocalDate.now());
-            orderDao.setOrderTime(LocalTime.now());
+            orderDao.setOrderDate(nowDate);
             orderDao.setTaxes(taxes);
 
             LOGGER.info("Sell was registered successfully.");
@@ -83,31 +83,57 @@ public class Order {
         return null;
     }
 
-    public void newComanda(int idTable, int idOrder, int idCashier, int idEmployee, int type) {
+    public static ComandaDao newComanda(int idTable, int idOrder, int idCashier, int idEmployee, int type) {
         PreparedStatement ps;
+        ResultSet rs;
         String query = "INSERT INTO comanda (id_caixa, data_abertura, id_mesa, id_categoria_pedido, hora_abertura, " +
                 "id_pedido, id_funcionario, is_aberto) VALUES (?,?,?,?,?,?,?,?)";
 
+        ComandaDao comandaDao = new ComandaDao();
+
         try {
             Connection con = DBConnection.getConnection();
+
+            LocalDate nowDate = LocalDate.now();
+            LocalTime nowTime = LocalTime.now();
+
             ps = Objects.requireNonNull(con).prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idCashier);
-            ps.setDate(2, Date.valueOf(LocalDate.now()));
+            ps.setDate(2, Date.valueOf(nowDate));
             ps.setInt(3, idTable);
             ps.setInt(4, type);
-            ps.setTime(5, Time.valueOf(LocalTime.now()));
+            ps.setTime(5, Time.valueOf(nowTime));
             ps.setInt(6, idOrder);
             ps.setInt(7, idEmployee);
             ps.setBoolean(8, true);
             ps.executeUpdate();
 
+            rs = ps.getGeneratedKeys();
+
+            while (rs.next()) {
+                int idComanda = rs.getInt(1);
+                comandaDao.setIdOrder(idComanda);
+            }
+
+            comandaDao.setIdCashier(idCashier);
+            comandaDao.setDateOpening(nowDate);
+            comandaDao.setTimeOpening(nowTime);
+            comandaDao.setIdTable(idTable);
+            comandaDao.setIdEmployee(idEmployee);
+            comandaDao.setIdOrder(idOrder);
+            comandaDao.setOpen(true);
+
             LOGGER.info("Comanda was registered successfully.");
             ps.close();
             con.close();
+
+            return comandaDao;
         } catch (SQLException ex) {
             NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
+
+        return null;
     }
 
     public static List<ComandaDao> getComandasByIdCashier(int idCashier) {

@@ -9,12 +9,16 @@ public class DBConnection {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DBConnection.class.getName());
     private static final String DB_URL = "jdbc:sqlite:";
-    private static final String DB_LOCAL_CONNECTION = "src/main/resources/external/sys_restaurante.db";
+    private static final String DB_LOCAL_CONNECTION_PRODUCTION = "src/main/resources/external/production.db";
+    private static final String DB_LOCAL_CONNECTION_DEV = "src/main/resources/external/devel.db";
+    private static final String DB_LOCAL_CONNECTION;
     private static int globalDBRequestsCount = 0;
 
     static {
+        boolean isProduction = Boolean.parseBoolean(System.getProperty("app.env.production", "true"));
+        DB_LOCAL_CONNECTION = isProduction ? DB_LOCAL_CONNECTION_PRODUCTION : DB_LOCAL_CONNECTION_DEV;
         DBInitializer.initDatabase(DB_LOCAL_CONNECTION);
-        LOGGER.info("Database was initialized");
+        LOGGER.info("Database was initialized (production = " + isProduction + ")");
     }
 
     public static Connection getConnection() throws SQLException {

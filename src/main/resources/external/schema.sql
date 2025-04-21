@@ -155,5 +155,18 @@ CREATE TABLE IF NOT EXISTS "usuario" (
 	FOREIGN KEY("id_funcionario") REFERENCES "funcionario"("id_funcionario")
 );
 COMMIT;
-INSERT INTO usuario (nome, senha, username, email, is_admin) VALUES ('fsaulo', 'vyVVzr278QsIiC2rdEAhVw==', 'fsaulo', 'admin@sys-restaurante.com', '1');
+INSERT INTO usuario (nome, senha, username, email, is_admin) VALUES ('admin', 'vyVVzr278QsIiC2rdEAhVw==', 'admin', 'admin@sys-restaurante.com', '1');
 INSERT INTO caixa (id_caixa, id_usuario, data_abertura, hora_abertura, balanco, balanco_inicial) VALUES ('1', '1', '1579402800000', '94526000', '0', '0');
+INSERT INTO categoria_pedido (id_categoria_pedido, descricao) VALUES ('1', 'Pedido no caixa');
+INSERT INTO categoria_pedido (id_categoria_pedido, descricao) VALUES ('2', 'Pedido em comanda');
+INSERT INTO categoria_pedido (id_categoria_pedido, descricao) VALUES ('3', 'Pedido avariado');
+INSERT INTO categoria_pedido (id_categoria_pedido, descricao) VALUES ('4', 'Retirada');
+INSERT INTO categoria_pedido (id_categoria_pedido, descricao) VALUES ('5', 'Doação');
+INSERT INTO categoria_pedido (id_categoria_pedido, descricao) VALUES ('6', 'Concluído');
+INSERT INTO categoria_pedido (id_categoria_pedido, descricao) VALUES ('7', 'Aguardando pagamento');
+INSERT INTO categoria_pedido (id_categoria_pedido, descricao) VALUES ('8', 'Aguardando preparo');
+INSERT INTO categoria_produto (id_categoria_produto, descricao) VALUES ('1', 'Bebida');
+INSERT INTO categoria_produto (id_categoria_produto, descricao) VALUES ('2', 'Almoço');
+INSERT INTO categoria_produto (id_categoria_produto, descricao) VALUES ('3', 'Tira-gosto');
+INSERT INTO categoria_produto (id_categoria_produto, descricao) VALUES ('4', 'Porção extra');
+INSERT INTO categoria_produto (id_categoria_produto, descricao) VALUES ('5', 'Sem categoria');

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class AppFactory {
     private static UserDao userDao;
     private static AppController appController;
+    private static AppSettings appSettings;
     private static DashboardController dashboardController;
     private static LoginController loginController;
     private static CashierDao cashierDao;
@@ -45,6 +46,7 @@ public class AppFactory {
         setSessionDao(null);
         setManageComandaController(null);
         setToolBarController(null);
+        setAppSettings(null);
     }
 
     public static MainGUI getMainGUI() {
@@ -189,6 +191,14 @@ public class AppFactory {
 
     public static void setAppController(AppController appController) {
         AppFactory.appController = appController;
+    }
+
+    public static void setAppSettings(AppSettings settings) {
+        AppFactory.appSettings = settings;
+    }
+
+    public static AppSettings getAppSettings() {
+        return AppFactory.appSettings;
     }
 
     public static void setComandaPOSController(ComandaPOSController comandaPOSController) {

@@ -1,9 +1,10 @@
 package org.sysRestaurante.test.model;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.KitchenOrderDao;
+import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
 
@@ -14,6 +15,23 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderTest {
+    public static int idCashier;
+    public static OrderDao orderDao;
+    public static ComandaDao comandaDao;
+
+    @BeforeAll
+    public static void shouldOpenCashierAndCreateOrder() {
+        Cashier cashier = new Cashier();
+        idCashier = cashier.open(1, 0, "");
+        assertNotEquals(-1, idCashier);
+
+        orderDao = Order.newOrder(1, idCashier, 0, 0, 0, 0, 0, "");
+        assertNotNull(orderDao);
+
+        comandaDao = Order.newComanda(1, orderDao.getIdOrder(), idCashier, 1, 1);
+        assertNotNull(comandaDao);
+    }
+
 
     @Test
     public void shouldUpdateKitchenOrderStatus() {
@@ -64,7 +82,6 @@ public class OrderTest {
 
     @Test
     public void shouldGetKitchenOrderByCashierId() {
-        int idCashier = 368;
         KitchenOrderDao.KitchenOrderStatus status = KitchenOrderDao.KitchenOrderStatus.WAITING;
         List<ComandaDao> comandaDaoList = Order.getComandasByIdCashier(idCashier);
 
