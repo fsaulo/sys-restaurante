@@ -40,15 +40,17 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
+            LocalDate nowDate = LocalDate.now();
+            LocalTime nowTime = LocalTime.now();
             ps = Objects.requireNonNull(con).prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idUser);
             ps.setInt(2, idCashier);
-            ps.setDate(3, Date.valueOf(LocalDate.now()));
+            ps.setDate(3, Date.valueOf(nowDate));
             ps.setString(4, note);
             ps.setDouble(5, byCard);
             ps.setDouble(6, inCash);
             ps.setInt(7, type);
-            ps.setTime(8, Time.valueOf(LocalTime.now()));
+            ps.setTime(8, Time.valueOf(nowTime));
             ps.setDouble(9, discount);
             ps.setInt(10, type);
             ps.setDouble(11, taxes);
@@ -65,10 +67,9 @@ public class Order {
             orderDao.setIdUser(idUser);
             orderDao.setNote(note);
             orderDao.setDetails(1);
-            orderDao.setOrderTime(LocalTime.now());
+            orderDao.setOrderTime(nowTime);
             orderDao.setDiscount(discount);
-            orderDao.setOrderDate(LocalDate.now());
-            orderDao.setOrderTime(LocalTime.now());
+            orderDao.setOrderDate(nowDate);
             orderDao.setTaxes(taxes);
 
             LOGGER.info("Sell was registered successfully.");
@@ -93,6 +94,10 @@ public class Order {
 
         try {
             Connection con = DBConnection.getConnection();
+
+            LocalDate nowDate = LocalDate.now();
+            LocalTime nowTime = LocalTime.now();
+
             ps = Objects.requireNonNull(con).prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idCashier);
             ps.setDate(2, Date.valueOf(nowDate));
