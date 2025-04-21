@@ -11,11 +11,10 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.*;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DBTest {
-    private static final String DB_FILE_NAME = "src/main/resources/external/test.db";
+    private static final String DB_FILE_NAME = "src/main/resources/external/temp.db";
     private static final String DB_URL = "jdbc:sqlite:" + DB_FILE_NAME;
 
     @BeforeEach
