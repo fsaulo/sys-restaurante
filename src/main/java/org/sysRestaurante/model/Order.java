@@ -774,8 +774,12 @@ public class Order {
                 String finalKitchenOrderDateString = rs.getString("data_conclusao");
 
                 DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-                LocalDateTime kitchenOrderDateTime = LocalDateTime.parse(kitchenOrderDateString, formatter);
-                LocalDateTime finalKitchenOrderDateTime = LocalDateTime.parse(finalKitchenOrderDateString, formatter);
+                LocalDateTime kitchenOrderDateTime = kitchenOrderDateTime = LocalDateTime.parse(kitchenOrderDateString, formatter);
+                LocalDateTime finalKitchenOrderDateTime = null;
+
+                if (finalKitchenOrderDateString != null) {
+                    finalKitchenOrderDateTime = LocalDateTime.parse(finalKitchenOrderDateString, formatter);
+                }
 
                 order.setKitchenOrderDateTime(kitchenOrderDateTime);
                 order.setIdKitchenOrder(rs.getInt("id_pedido_cozinha"));
