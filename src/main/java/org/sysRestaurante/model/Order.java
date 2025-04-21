@@ -83,31 +83,53 @@ public class Order {
         return null;
     }
 
-    public void newComanda(int idTable, int idOrder, int idCashier, int idEmployee, int type) {
+    public static ComandaDao newComanda(int idTable, int idOrder, int idCashier, int idEmployee, int type) {
         PreparedStatement ps;
+        ResultSet rs;
         String query = "INSERT INTO comanda (id_caixa, data_abertura, id_mesa, id_categoria_pedido, hora_abertura, " +
                 "id_pedido, id_funcionario, is_aberto) VALUES (?,?,?,?,?,?,?,?)";
+
+        ComandaDao comandaDao = new ComandaDao();
 
         try {
             Connection con = DBConnection.getConnection();
             ps = Objects.requireNonNull(con).prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, idCashier);
-            ps.setDate(2, Date.valueOf(LocalDate.now()));
+            ps.setDate(2, Date.valueOf(nowDate));
             ps.setInt(3, idTable);
             ps.setInt(4, type);
-            ps.setTime(5, Time.valueOf(LocalTime.now()));
+            ps.setTime(5, Time.valueOf(nowTime));
             ps.setInt(6, idOrder);
             ps.setInt(7, idEmployee);
             ps.setBoolean(8, true);
             ps.executeUpdate();
 
+            rs = ps.getGeneratedKeys();
+
+            while (rs.next()) {
+                int idComanda = rs.getInt(1);
+                comandaDao.setIdOrder(idComanda);
+            }
+
+            comandaDao.setIdCashier(idCashier);
+            comandaDao.setDateOpening(nowDate);
+            comandaDao.setTimeOpening(nowTime);
+            comandaDao.setIdTable(idTable);
+            comandaDao.setIdEmployee(idEmployee);
+            comandaDao.setIdOrder(idOrder);
+            comandaDao.setOpen(true);
+
             LOGGER.info("Comanda was registered successfully.");
             ps.close();
             con.close();
+
+            return comandaDao;
         } catch (SQLException ex) {
             NotificationHandler.errorDialog(ex);
             ex.printStackTrace();
         }
+
+        return null;
     }
 
     public static List<ComandaDao> getComandasByIdCashier(int idCashier) {
