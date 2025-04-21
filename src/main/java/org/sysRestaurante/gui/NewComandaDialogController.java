@@ -165,7 +165,7 @@ public class NewComandaDialogController {
 
         // FIXME: Needs exception handler.
         // Should check for errors before continuing.
-        cashier.newComanda(idTable, order.getIdOrder(), idCashier, idEmployee,2);
+        Order.newComanda(idTable, order.getIdOrder(), idCashier, idEmployee,2);
         Management.changeTableStatus(idTable, Management.UNAVAILABLE);
 
         // Toggle accepted signal. Useful when refreshing tiles based on opened tables.
