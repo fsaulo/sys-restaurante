@@ -25,7 +25,7 @@ public class OrderTest {
         idCashier = cashier.open(1, 0, "");
         assertNotEquals(-1, idCashier);
 
-        orderDao = Order.newOrder(idCashier, 0, 0, 0, 0, 0, "");
+        orderDao = Order.newOrder(1, idCashier, 0, 0, 0, 0, 0, "");
         assertNotNull(orderDao);
 
         comandaDao = Order.newComanda(1, orderDao.getIdOrder(), idCashier, 1, 1);

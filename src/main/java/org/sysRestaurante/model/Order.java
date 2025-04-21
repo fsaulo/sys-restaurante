@@ -26,13 +26,12 @@ public class Order {
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Order.class.getName());
     public static final int CANCELED = 3;
 
-    public static OrderDao newOrder(int idCashier, double inCash, double byCard, int type, double discount,
+    public static OrderDao newOrder(int idUser, int idCashier, double inCash, double byCard, int type, double discount,
                                     double taxes, String note) {
         String query = "INSERT INTO pedido (id_usuario, id_caixa, data_pedido, observacao, " +
                 "valor_cartao, valor_avista, id_categoria_pedido, hora_pedido, descontos, status, taxas) " +
                 "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
-        int idUser = AppFactory.getUserDao().getIdUser();
         int idOrder;
         OrderDao orderDao = new OrderDao();
         PreparedStatement ps;

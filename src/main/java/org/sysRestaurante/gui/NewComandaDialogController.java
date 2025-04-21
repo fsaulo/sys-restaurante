@@ -155,7 +155,7 @@ public class NewComandaDialogController {
 
         // FIXME: Needs exception handler.
         // User should be aware when an order placement wasn't successfully concluded.
-        order = Order.newOrder(idCashier, 0, 0, 2, 0,0, defaultMessage);
+        order = Order.newOrder(AppFactory.getCashierDao().getIdUser(), idCashier, 0, 0, 2, 0,0, defaultMessage);
 
         // FIXME: A bug occurs whenever we try to fetch the auto-generated keys in the prepared statement.
         // This bug populates the table that contains a list of selected products with garbage.
