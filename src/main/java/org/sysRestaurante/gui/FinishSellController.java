@@ -294,7 +294,9 @@ public class FinishSellController {
             } else {
                 Cashier.setRevenue(AppFactory.getCashierDao().getIdCashier(), payInCash, payByCard, 0);
 
-                orderDao = Order.newOrder(AppFactory.getCashierDao().getIdCashier(),
+                orderDao = Order.newOrder(
+                        AppFactory.getCashierDao().getIdUser(),
+                        AppFactory.getCashierDao().getIdCashier(),
                         payInCash,
                         payByCard,
                         1,

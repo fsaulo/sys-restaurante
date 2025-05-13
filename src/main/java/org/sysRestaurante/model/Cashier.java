@@ -24,12 +24,13 @@ public class Cashier {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Cashier.class.getName());
 
-    public void open(int userId, double initialAmount, String note) {
+    public int open(int userId, double initialAmount, String note) {
         String query = "INSERT INTO caixa (id_usuario, data_abertura, hora_abertura, balanco_inicial, is_aberto, " +
                 "observacao) VALUES (?,?,?,?,?,?)";
 
         Connection con;
         PreparedStatement ps;
+        int idCashier = -1;
 
         if (initialAmount < 0) initialAmount = 0.0;
 
@@ -53,7 +54,7 @@ public class Cashier {
             ResultSet keys = ps.getGeneratedKeys();
 
             while (keys.next()) {
-                int idCashier = keys.getInt(1);
+                idCashier = keys.getInt(1);
                 cashier.setIdCashier(idCashier);
             }
 
@@ -67,6 +68,8 @@ public class Cashier {
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
         }
+
+        return idCashier;
     }
 
     public static void close(int idCashier) {
