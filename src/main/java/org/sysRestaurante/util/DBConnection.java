@@ -15,7 +15,7 @@ public class DBConnection {
     private static int globalDBRequestsCount = 0;
 
     static {
-        boolean isProduction = Boolean.parseBoolean(System.getProperty("app.env.production", "true"));
+        boolean isProduction = Boolean.parseBoolean(System.getProperty("sys.production", "true"));
         DB_LOCAL_CONNECTION = isProduction ? DB_LOCAL_CONNECTION_PRODUCTION : DB_LOCAL_CONNECTION_DEV;
         DBInitializer.initDatabase(DB_LOCAL_CONNECTION);
         LOGGER.info("Database was initialized (production = " + isProduction + ")");

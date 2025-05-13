@@ -88,8 +88,10 @@ public class MainGUI extends Application {
         primaryStage.setWidth(500);
         final String JAVA_VERSION = System.getProperty("java.version");
         final String JAVAFX_VERSION = System.getProperties().get("javafx.runtime.version").toString();
+        final String isProduction = System.getProperty("sys.production");
         LOGGER.info("Java JDK Runtime Version: " + JAVA_VERSION);
         LOGGER.info("JavaFX Runtime Version: " + JAVAFX_VERSION);
+        LOGGER.info("Production ENV: " + isProduction);
         Encryption.setKey(KEY);
         startProgram(primaryStage);
     }

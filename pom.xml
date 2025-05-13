@@ -10,6 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sys.production>true</sys.production>
     </properties>
 
     <build>
@@ -32,6 +33,9 @@
                 <configuration>
                     <mainClass>org.sysRestaurante.gui.MainGUI</mainClass>
                     <executable>${java.home}/bin/java</executable>
+                    <options>
+                        <options>-Dsys.production=${sys.production}</options>
+                    </options>
                 </configuration>
             </plugin>
 

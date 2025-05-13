@@ -5,7 +5,7 @@ public class AppSettings {
     private final boolean isProduction;
 
     private AppSettings() {
-        this.isProduction = Boolean.parseBoolean(System.getProperty("app.env.production", "false"));
+        this.isProduction = Boolean.parseBoolean(System.getProperty("sys.production", "true"));
     }
 
     public static AppSettings getInstance() {
