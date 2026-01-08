@@ -9,8 +9,7 @@ class EscPos {
 
     public static final byte[] CODEPAGE_CP860 = { 0x1B, 0x74, 0x03 };
 
-    private static final Charset CHARSET = Charset.forName("CP86" +
-            "0");
+    private static final Charset CHARSET = Charset.forName("CP860");
 
     public static byte[] boldOn() {
         return new byte[]{ 0x1B, 0x45, 0x01 };
