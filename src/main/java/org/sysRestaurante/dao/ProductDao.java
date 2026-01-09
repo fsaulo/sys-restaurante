@@ -172,7 +172,22 @@ public class ProductDao {
     public static class CategoryDao {
 
         public enum Type {
-            DRINK(1), LUNCH(2), TASTE(3), EXTRA_PORTION(4), NONE(5);
+            DRINK(1), LUNCH(2) {
+                @Override
+                public String toString() {
+                    return "Almoço";
+                }
+            }, TASTE(3) {
+                @Override
+                public String toString() {
+                    return "Tira-gosto";
+                }
+            }, EXTRA_PORTION(4) {
+                @Override
+                public String toString() {
+                    return "Porção extra";
+                }
+            }, NONE(5);
 
             final private int value;
             Type(int value) {
@@ -190,6 +205,11 @@ public class ProductDao {
         public CategoryDao() {
             this.categoryDescription = "Sem categoria";
             this.idCategory = Type.NONE.getValue();
+        }
+
+        public CategoryDao(Type category) {
+            this.categoryDescription = category.toString();
+            this.idCategory = category.getValue();
         }
 
         public String getCategoryDescription() {
