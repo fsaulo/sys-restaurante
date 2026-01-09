@@ -24,8 +24,11 @@ import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
+import org.sysRestaurante.util.NotificationHandler;
 import org.sysRestaurante.util.PercentageField;
+import org.sysRestaurante.util.ThermalPrinter;
 
+import javax.print.PrintException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.Format;
@@ -56,6 +59,8 @@ public class FinishSellController {
     private VBox seeReceiptBox;
     @FXML
     private VBox saveReceipt;
+    @FXML
+    private VBox printReceipt;
     @FXML
     private VBox cancelButton;
     @FXML
@@ -208,18 +213,41 @@ public class FinishSellController {
         }
     }
 
+    @FXML
+    public void printReceipt() {
+        try {
+            buildReceiptContent();
+            Receipt receipt = new Receipt(AppFactory.getComandaDao(), AppFactory.getSelectedProducts());
+            ThermalPrinter printer = new ThermalPrinter("pos");
+
+            byte[] receiptBuilder = receipt.buildReceiptForPrint(AppFactory.getComandaDao(), AppFactory.getSelectedProducts());
+            printer.print(receiptBuilder);
+
+            NotificationHandler.showInfo("Recibo #" + AppFactory.getComandaDao().getIdComanda() + " impresso com sucesso!");
+            back();
+        } catch (PrintException | IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Informações de erro");
+            alert.setHeaderText("Não foi possível imprimir o recibo");
+            alert.setContentText("Impressora não encontrada.");
+            alert.initOwner(wrapperVBox.getScene().getWindow());
+            alert.showAndWait();
+        }
+    }
+
     public void buildReceiptContent() {
-        OrderDao orderDao = AppFactory.getOrderDao();
+        ComandaDao orderDao = (ComandaDao) AppFactory.getOrderDao();
         assert (orderDao != null);
         if (!(orderDao instanceof ComandaDao)) {
             orderDao.setIdOrder(Order.getLastOrderId() + 1);
         }
         order.setOrderDate(LocalDate.now());
         order.setOrderTime(LocalTime.now());
+        order.setOrderDateTime(LocalDateTime.now());
         order.setTotal(getSubtotal());
         order.setDiscount(percentageField1.getAmount() * getSubtotal());
         order.setTaxes(percentageField2.getAmount() * getSubtotal());
-        AppFactory.setOrderDao(order);
+        AppFactory.setComandaDao(orderDao);
     }
 
     public PopOver viewReceipt() {
