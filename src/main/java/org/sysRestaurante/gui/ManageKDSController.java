@@ -11,7 +11,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.KitchenOrderDao;
+import org.sysRestaurante.dao.OrderDao;
+import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.event.EventBus;
 import org.sysRestaurante.event.TicketStatusChangedEvent;
 import org.sysRestaurante.model.Cashier;
@@ -167,6 +170,17 @@ public class ManageKDSController {
         return new ArrayList<>(Objects.requireNonNull(Order.getKitchenTicketsByCashierId(AppFactory.getCashierDao().getIdCashier())));
     }
 
+    private void sendCancelledTicketToKitchen(KitchenOrderDao ticket) {
+        OrderDao order = Objects.requireNonNull(Order.getComandaByOrderId(ticket.getIdOrder()));
+        ticket.setCustomerName(order.getCustomerName());
+        ticket.setIdOrder(order.getIdOrder());
+        ticket.setIdComanda(((ComandaDao) order).getIdComanda());
+        ticket.setIdEmployee(((ComandaDao) order).getIdEmployee());
+        ticket.setIdTable(((ComandaDao) order).getIdTable());
+
+        AppController.printKitchenTicket(ticket, new ProductDao());
+    }
+
     public void buildAndAddTickets(KitchenOrderDao ticket) throws IOException {
         AppFactory.setKitchenOrderDao(ticket);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SceneNavigator.KITCHEN_TICKET_VIEW));
@@ -180,6 +194,7 @@ public class ManageKDSController {
             switch (ticketStatusChangedEvent.getTicketStatus()) {
                 case DELIVERED:
                 case CANCELLED:
+                    sendCancelledTicketToKitchen(ticket);
                     refreshTicketsTilePane();
                     break;
                 case RETURNED:
