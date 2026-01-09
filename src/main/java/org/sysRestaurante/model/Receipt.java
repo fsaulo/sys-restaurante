@@ -11,10 +11,7 @@ import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.dao.ComandaDao;
-import org.sysRestaurante.dao.OrderDao;
-import org.sysRestaurante.dao.ProductDao;
-import org.sysRestaurante.dao.UserDao;
+import org.sysRestaurante.dao.*;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.util.BRLFormat;
 import org.sysRestaurante.util.EscPos;
@@ -25,10 +22,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.sysRestaurante.gui.formatter.DateFormatter.DATE_FORMAT;
+import static org.sysRestaurante.gui.formatter.DateFormatter.TIME_SIMPLE_FMT;
 
 public class Receipt {
 
@@ -130,6 +130,7 @@ public class Receipt {
         out.write(EscPos.newLine());
 
         out.write(EscPos.alignCenter());
+        out.write(EscPos.newLine());
         out.write(EscPos.horizontalLine('-', 48));
         out.write((EscPos.newLine()));
         out.write(EscPos.text("ESSE RECIBO NÃO É CUPOM FISCAL"));
@@ -198,7 +199,7 @@ public class Receipt {
         );
 
         String funcDateStr = leftRight(
-                "Funcionário: " + strEmployeeName,
+                "Atendente: " + strEmployeeName,
                 DATE_FORMAT.format(order.getOrderDateTime()),
                 48
         );
@@ -217,6 +218,116 @@ public class Receipt {
 
         out.write(EscPos.feed(4));
         out.write(EscPos.CUT);
+        return out.toByteArray();
+    }
+
+    public byte[] buildKitchenTicketForPrint(
+        KitchenOrderDao kitchenTicket,
+        ProductDao item
+    ) throws IOException {
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        out.write(EscPos.INIT);
+        out.write(EscPos.CODEPAGE_CP860);
+
+        out.write(EscPos.alignCenter());
+        out.write(EscPos.FONT_DOUBLE);
+        out.write(EscPos.boldOn());
+
+        out.write(EscPos.boldOff());
+        out.write(EscPos.FONT_NORMAL);
+        out.write(EscPos.newLine());
+
+        out.write(EscPos.FONT_TRIPLE);
+        out.write(EscPos.text("MESA " + kitchenTicket.getIdTable()));
+        out.write(EscPos.newLine());
+
+        out.write(EscPos.FONT_DOUBLE);
+        out.write(EscPos.text("PEDIDO " + kitchenTicket.getIdKitchenOrder()));
+        out.write(EscPos.newLine());
+
+        out.write(EscPos.FONT_NORMAL);
+        out.write(EscPos.text(LocalDateTime.now().format(TIME_SIMPLE_FMT)));
+        out.write(EscPos.newLine());
+        out.write(EscPos.newLine());
+
+        if (kitchenTicket.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED)) {
+            out.write(EscPos.newLine());
+            out.write(EscPos.horizontalLine('=', 48));
+            out.write(EscPos.newLine());
+            out.write(EscPos.FONT_DOUBLE);
+            out.write(EscPos.text("PEDIDO CANCELADO"));
+            out.write(EscPos.FONT_NORMAL);
+            out.write(EscPos.newLine());
+            out.write(EscPos.horizontalLine('=', 48));
+            out.write(EscPos.newLine());
+            out.write(EscPos.feed(4));
+        } else {
+            out.write(EscPos.alignLeft());
+            out.write(EscPos.FONT_DOUBLE);
+            out.write(EscPos.newLine());
+            out.write(EscPos.text(item.getQuantity() + "x " + item.getDescription()));
+            out.write(EscPos.newLine());
+            out.write(EscPos.FONT_NORMAL);
+            out.write(EscPos.alignLeft());
+            out.write(EscPos.newLine());
+
+            String notes = kitchenTicket.getKitchenOrderDetails();
+            if (notes != null && !notes.isBlank()) {
+                out.write(EscPos.boldOn());
+                out.write(EscPos.text("OBS:"));
+                out.write(EscPos.boldOff());
+                out.write(EscPos.newLine());
+
+                out.write(EscPos.text(notes));
+                out.write(EscPos.newLine());
+            }
+
+            out.write(EscPos.horizontalLine('-', 48));
+            out.write(EscPos.newLine());
+
+            out.write(EscPos.alignCenter());
+            out.write(EscPos.text(item.getCategoryDescription()));
+            out.write(EscPos.newLine());
+            out.write(EscPos.alignLeft());
+
+            out.write(EscPos.horizontalLine('-', 48));
+            out.write(EscPos.newLine());
+        }
+
+
+        String clientName = kitchenTicket.getCustomerName();
+        if (clientName == null || clientName.isBlank()) {
+            clientName = "Não informado";
+        }
+
+        out.write(EscPos.newLine());
+        out.write(EscPos.alignLeft());
+        out.write(EscPos.text("Cliente: " + clientName));
+        out.write(EscPos.newLine());
+
+        String tableOrderStr = leftRight(
+                "Comanda: " + kitchenTicket.getIdComanda(),
+                "Pedido: " + kitchenTicket.getIdOrder(),
+                48
+        );
+
+        String funcNameStr = Personnel.getEmployeeNameById(kitchenTicket.getIdEmployee());
+        String funcDateStr = leftRight(
+                "Atendente: " + funcNameStr,
+                DATE_FORMAT.format(LocalDateTime.now()),
+                48
+        );
+
+        out.write(EscPos.text(tableOrderStr));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(funcDateStr));
+        out.write(EscPos.newLine());
+
+        out.write(EscPos.feed(4));
+        out.write(EscPos.CUT);
+
         return out.toByteArray();
     }
 
