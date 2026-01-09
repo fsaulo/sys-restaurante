@@ -3,9 +3,9 @@ package org.sysRestaurante.test.model;
 
 import org.junit.jupiter.api.Test;
 import org.sysRestaurante.dao.ComandaDao;
+import org.sysRestaurante.dao.KitchenOrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.model.Receipt;
-import org.sysRestaurante.util.KitchenTicketBuilder;
 import org.sysRestaurante.util.ThermalPrinter;
 
 import javax.print.PrintService;
@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +23,7 @@ class ThermalPrinterTest {
     @Test
     void shouldPrintNonFiscalReceipt() {
         try {
-            ThermalPrinter printer = new ThermalPrinter("pos");
+            ThermalPrinter printer = new ThermalPrinter("POS-80C_COZINHA");
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             for (PrintService ps : services) {
                 System.out.println(ps.getName());
@@ -70,25 +69,31 @@ class ThermalPrinterTest {
     }
 
     @Test
-    void shoudPrintKitchenTicket() {
+    void shouldPrintKitchenTicket() {
         try {
-            ThermalPrinter printer = new ThermalPrinter("pos");
-            List<String> items = List.of(
-                    "2x Moqueca de camarão",
-                    "1x Batata frita"
+            ThermalPrinter printer = new ThermalPrinter("POS-80C_COZINHA");
+
+            ProductDao product = new ProductDao();
+            product.setQuantity(1);
+            product.setDescription("Sopa de camarão");
+            product.setCategoryDao(new ProductDao.CategoryDao(ProductDao.CategoryDao.Type.TASTE));
+
+            Receipt receiptObj = new Receipt();
+            KitchenOrderDao ticket = new KitchenOrderDao();
+            ticket.setIdKitchenOrder(1);
+            ticket.setKitchenOrderDetails("Sem batata");
+            ticket.setIdComanda(99);
+            ticket.setIdTable(12);
+            ticket.setIdEmployee(1);
+            ticket.setIdOrder(345);
+
+
+            byte[] ticketBuilder = receiptObj.buildKitchenTicketForPrint(
+                    ticket,
+                    product
             );
 
-            byte[] ticket = KitchenTicketBuilder.build(
-                    "COZINHA",
-                    "1234",
-                    "12",
-                    items,
-                    "Sem pimentão",
-                    false
-            );
-
-            printer.print(ticket);
-
+            printer.print(ticketBuilder);
             assertTrue(true);
 
         } catch (Exception e) {
