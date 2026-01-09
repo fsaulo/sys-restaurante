@@ -215,24 +215,9 @@ public class FinishSellController {
 
     @FXML
     public void printReceipt() {
-        try {
-            buildReceiptContent();
-            Receipt receipt = new Receipt(AppFactory.getComandaDao(), AppFactory.getSelectedProducts());
-            ThermalPrinter printer = new ThermalPrinter("pos");
-
-            byte[] receiptBuilder = receipt.buildReceiptForPrint(AppFactory.getComandaDao(), AppFactory.getSelectedProducts());
-            printer.print(receiptBuilder);
-
-            NotificationHandler.showInfo("Recibo #" + AppFactory.getComandaDao().getIdComanda() + " impresso com sucesso!");
-            back();
-        } catch (PrintException | IOException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Informações de erro");
-            alert.setHeaderText("Não foi possível imprimir o recibo");
-            alert.setContentText("Impressora não encontrada.");
-            alert.initOwner(wrapperVBox.getScene().getWindow());
-            alert.showAndWait();
-        }
+        buildReceiptContent();
+        AppController.printPOSReceipt();
+        back();
     }
 
     public void buildReceiptContent() {

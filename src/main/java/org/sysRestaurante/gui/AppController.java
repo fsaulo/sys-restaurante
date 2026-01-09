@@ -12,6 +12,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.effect.ColorAdjust;
@@ -28,12 +29,19 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.applet.AppSettings;
+import org.sysRestaurante.dao.KitchenOrderDao;
+import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.dao.SessionDao;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Authentication;
+import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.util.NotificationHandler;
+import org.sysRestaurante.util.ThermalPrinter;
 
+import javax.print.PrintException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -301,5 +309,49 @@ public class AppController implements DateFormatter {
 
     public static void setSellConfirmed(boolean sell) {
         sellConfirmed = sell;
+    }
+
+    public static void printKitchenTicket(KitchenOrderDao ticket, ProductDao product) {
+        ThermalPrinter printer = AppSettings.getInstance().getKitchenPrinter();
+        Receipt receiptObj = new Receipt();
+
+        try {
+            byte[] ticketBuilder = receiptObj.buildKitchenTicketForPrint(
+                    ticket,
+                    product
+            );
+            printer.print(ticketBuilder);
+
+            if (!ticket.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED)) {
+                NotificationHandler.showInfo("Pedido enviado para cozinha");
+            }
+        } catch (IOException | PrintException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta do sistema");
+            alert.setHeaderText("Não foi imprimir o ticket da cozinha.");
+            alert.setContentText("Impressora não encontrada");
+            alert.initOwner(AppFactory.getMainController().getScene().getWindow());
+            alert.showAndWait();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void printPOSReceipt() {
+        ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
+        Receipt receipt = new Receipt(AppFactory.getComandaDao(), AppFactory.getSelectedProducts());
+
+        try {
+            byte[] receiptBuilder = receipt.buildReceiptForPrint(AppFactory.getComandaDao(), AppFactory.getSelectedProducts());
+            printer.print(receiptBuilder);
+
+            NotificationHandler.showInfo("Recibo #" + AppFactory.getComandaDao().getIdComanda() + " impresso com sucesso!");
+        } catch (PrintException | IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Informações de erro");
+            alert.setHeaderText("Não foi possível imprimir o recibo");
+            alert.setContentText("Impressora não encontrada.");
+            alert.initOwner(AppFactory.getMainController().getScene().getWindow());
+            alert.showAndWait();
+        }
     }
 }
