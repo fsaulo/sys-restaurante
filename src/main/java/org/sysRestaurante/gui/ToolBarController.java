@@ -89,7 +89,7 @@ public class ToolBarController extends AppFactory {
     public void initialize() {
         AppFactory.setToolBarController(this);
         UserDao user = null;
-        String adminAccessString = "SysRestaurante | Adminstração";
+        String adminAccessString = "SysRestaurante | Administração";
         String employeeAccessString = "SysRestaurante | Funcionário";
 
         try {
