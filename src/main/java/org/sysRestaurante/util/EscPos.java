@@ -2,7 +2,7 @@ package org.sysRestaurante.util;
 
 import java.nio.charset.Charset;
 
-class EscPos {
+public class EscPos {
 
     public static final byte[] INIT = { 0x1B, 0x40 };
     public static final byte[] CUT = { 0x1D, 0x56, 0x01 };
@@ -20,6 +20,15 @@ class EscPos {
 
     public static byte[] boldOff() {
         return new byte[]{ 0x1B, 0x45, 0x00 };
+        }
+
+    public static byte[] alignRight() {
+        return new byte[]{ 0x1B, 0x61, 0x02 };
+    }
+
+    public static byte[] horizontalLine(char ch, int columns) {
+        String line = String.valueOf(ch).repeat(columns);
+        return EscPos.text(line);
     }
 
     public static byte[] alignCenter() {
@@ -36,6 +45,14 @@ class EscPos {
 
     public static byte[] feed(int lines) {
         return new byte[] { 0x1B, 0x64, (byte) lines };
+    }
+
+    public static byte[] invertOn() {
+        return new byte[]{ 0x1D, 0x42, 0x01 };
+    }
+
+    public static byte[] invertOff() {
+        return new byte[]{ 0x1D, 0x42, 0x00 };
     }
 
     public static byte[] text(String text) {
