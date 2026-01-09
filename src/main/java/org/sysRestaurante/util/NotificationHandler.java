@@ -31,7 +31,7 @@ public class NotificationHandler {
         alert.setTitle("Erro do sistema");
         alert.setHeaderText("Eita! Ocorreu um erro gravíssimo!");
         alert.setContentText("Os dados da última operação foram perdidos, por favor, feche o sistema e abra novamente. "
-        + "Lamentamos o ocorrido. Se possível, encaminhe os logs de erros para o desenvolvedor.");
+        + "Lamentamos o ocorrido. Se possível, encaminhe os logs de erro para o desenvolvedor.");
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
