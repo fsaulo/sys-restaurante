@@ -25,7 +25,6 @@ import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.text.Format;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -590,7 +589,15 @@ public class POS {
 
                 if (idOrder > 0) {
                     Order.addProductToKitchenOrder(idOrder, product);
-                    NotificationHandler.showInfo("Pedido enviado para cozinha");
+
+                    KitchenOrderDao ticket = Objects.requireNonNull(Order.getKitchenOrderById(idOrder));
+                    ticket.setCustomerName(order.getCustomerName());
+                    ticket.setIdOrder(order.getIdOrder());
+                    ticket.setIdComanda(((ComandaDao) order).getIdComanda());
+                    ticket.setIdEmployee(((ComandaDao) order).getIdEmployee());
+                    ticket.setIdTable(((ComandaDao) order).getIdTable());
+
+                    AppController.printKitchenTicket(ticket, product);
                 } else {
                     NotificationHandler.showInfo("Não foi possível registrar o pedido na cozinha");
                 }
