@@ -11,18 +11,24 @@ import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.OrderDao;
 import org.sysRestaurante.dao.ProductDao;
 import org.sysRestaurante.dao.UserDao;
 import org.sysRestaurante.gui.formatter.CurrencyField;
+import org.sysRestaurante.util.BRLFormat;
+import org.sysRestaurante.util.EscPos;
 
 import javax.imageio.ImageIO;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
+import static org.sysRestaurante.gui.formatter.DateFormatter.DATE_FORMAT;
 
 public class Receipt {
 
@@ -33,14 +39,20 @@ public class Receipt {
     public final String strFuncName;
     public String strDate;
     public String strTime;
-    public String strCompanyName;
-    public String strCompanyAddress;
-    public String strCompanyTel;
-    public String strCompanyCNPJ;
+    public String strCompanyName = "Bar & Restaurante Frutos do Mar";;
+    public String strCompanyAddress1 = "Av. C, Orlinha do São Brás, 27";
+    public String strCompanyAddress2 = "Nossa Senhora do Socorro-SE";
+    public String strCompanyTel = "CONTATO: (79) 99983-2971";
+    public String strCompanyCNPJ = "CNPJ: 12.345.678/0001-00";
     public String strTaxes;
+    public String strEmployeeName = "";
     public ArrayList<ProductDao> productList;
     public static final String NON_THIN = "[^iIl1\\.,']";
     public int length;
+    static final int COL_ITEM  = 25;
+    static final int COL_QTD   = 5;
+    static final int COL_PRECO = 8;
+    static final int COL_TOTAL = 10;
 
     public Receipt(OrderDao order, ArrayList<ProductDao> productList) {
         UserDao func = AppFactory.getUserDao();
@@ -49,10 +61,6 @@ public class Receipt {
         double taxes = order.getTaxes();
         double total = subtotal - discount + taxes;
         this.productList = productList;
-        strCompanyName = center("NOME DA EMPRESA");
-        strCompanyAddress = center("Av. Brasil, 2113, Aracaju-SE");
-        strCompanyTel = center("CONTATO: (44) 91214-5566");
-        strCompanyCNPJ = center("CNPJ: 00.000.000/0001-00");
         strFuncName = func.getName();
         strDate = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(order.getOrderDate());
         strTime = DateTimeFormatter.ofPattern("HH:mm:ss").format(order.getOrderTime());
@@ -60,14 +68,16 @@ public class Receipt {
         strTotal = CurrencyField.getBRLCurrencyFormat().format(total);
         strTaxes = CurrencyField.getBRLCurrencyFormat().format(taxes);
         strDiscount = CurrencyField.getBRLCurrencyFormat().format(discount);
+        strEmployeeName = Personnel.getEmployeeNameById(((ComandaDao) order).getIdEmployee());
         buildReceipt();
     }
 
     public Receipt() {
-        strCompanyName = center("NOME DA EMPRESA");
-        strCompanyAddress = center("Av. Brasil, 2113, Aracaju-SE");
-        strCompanyTel = center("CONTATO: (44) 91214-5566");
-        strCompanyCNPJ = center("CNPJ: 00.000.000/0001-00");
+        strCompanyName = "NOME DA EMPRESA";
+        strCompanyAddress1 = "Av. Brasil, 2113";
+        strCompanyAddress2 = "Aracaju-SE";
+        strCompanyTel = "CONTATO: (44) 91214-5566";
+        strCompanyCNPJ = "CNPJ: 00.000.000/0001-00";
         strSubtotal = "R$ 0,00";
         strDiscount = "0%";
         strTotal = "R$ 0,00";
@@ -76,6 +86,138 @@ public class Receipt {
         strTime = "00:00:00";
         strTaxes = "";
         buildReceipt();
+    }
+
+    private static String padRight(String text, int width) {
+        if (text.length() >= width) {
+            return text.substring(0, width);
+        }
+        return text + " ".repeat(width - text.length());
+    }
+
+    private static String padLeft(String text, int width) {
+        if (text.length() >= width) {
+            return text.substring(0, width);
+        }
+        return " ".repeat(width - text.length()) + text;
+    }
+
+    public static String leftRight(String left, String right, int totalCols) {
+        int spaces = totalCols - left.length() - right.length();
+        if (spaces < 1) spaces = 1;
+        return left + " ".repeat(spaces) + right;
+    }
+
+    public byte[] buildReceiptForPrint(ComandaDao order, ArrayList<ProductDao> productList) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        out.write(EscPos.INIT);
+        out.write(EscPos.CODEPAGE_CP860);
+
+        out.write(EscPos.FONT_NORMAL);
+        out.write(EscPos.alignCenter());
+        out.write(EscPos.boldOn());
+        out.write(EscPos.text(strCompanyName));
+        out.write(EscPos.newLine());
+        out.write(EscPos.boldOff());
+
+        out.write(EscPos.text(strCompanyAddress1));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(strCompanyAddress2));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(strCompanyCNPJ));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(strCompanyTel));
+        out.write(EscPos.newLine());
+
+        out.write(EscPos.alignCenter());
+        out.write(EscPos.horizontalLine('-', 48));
+        out.write((EscPos.newLine()));
+        out.write(EscPos.text("ESSE RECIBO NÃO É CUPOM FISCAL"));
+        out.write(EscPos.newLine());
+        out.write(EscPos.horizontalLine('-', 48));
+        out.write(EscPos.newLine());
+
+        String header = padRight("Item", COL_ITEM) +
+                        padLeft("Qtd", COL_QTD) +
+                        padLeft("Preço", COL_PRECO) +
+                        padLeft("Total", COL_TOTAL);
+
+        out.write(EscPos.alignLeft());
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(header));
+        out.write(EscPos.horizontalLine('-', 48));
+
+        if (productList != null) {
+            for (ProductDao product : productList) {
+                String productStr = padRight(product.getDescription(), COL_ITEM) +
+                        padLeft(String.valueOf(product.getQuantity()), COL_QTD) +
+                        padLeft(BRLFormat.value(product.getSellPrice()), COL_PRECO) +
+                        padLeft(BRLFormat.value(product.getSellPrice() * product.getQuantity()), COL_TOTAL);
+                out.write(EscPos.text(productStr));
+                out.write(EscPos.newLine());
+            }
+        }
+
+        out.write(EscPos.newLine());
+
+        String subtotal = padRight("Subtotal", 38) +
+                padLeft(BRLFormat.value(order.getTotal()), 10);
+
+        String discount = padRight("Descontos aplicados", 38) +
+                padLeft(BRLFormat.value(order.getDiscount()), 10);
+
+        String service = padRight("Taxa de serviço", 38) +
+                padLeft(BRLFormat.value(order.getTaxes()), 10);
+
+        double totalValue = order.getTotal() - order.getDiscount() + order.getTaxes();
+        String total = padRight("Total", 12) +
+                padLeft("R$ " + BRLFormat.value(totalValue), 12);
+
+        out.write(EscPos.horizontalLine('=', 48));
+        out.write(EscPos.text(subtotal));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(service));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(discount));
+        out.write(EscPos.newLine());
+
+        out.write(EscPos.FONT_DOUBLE);
+        out.write(EscPos.newLine());
+        out.write(EscPos.boldOn());
+        out.write(EscPos.text(total));
+        out.write(EscPos.boldOff());
+        out.write(EscPos.FONT_NORMAL);
+        out.write(EscPos.newLine());
+        out.write(EscPos.horizontalLine('-', 48));
+        out.write(EscPos.newLine());
+
+        String tableOrderStr = leftRight(
+                "Mesa: " + order.getIdTable(),
+                "Pedido: #" + order.getIdOrder(),
+                48
+        );
+
+        String funcDateStr = leftRight(
+                "Funcionário: " + strEmployeeName,
+                DATE_FORMAT.format(order.getOrderDateTime()),
+                48
+        );
+
+        out.write(EscPos.text(tableOrderStr));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(funcDateStr));
+        out.write(EscPos.newLine());
+
+        out.write(EscPos.newLine());
+        out.write(EscPos.alignCenter());
+        out.write(EscPos.text("Obrigado pela preferência"));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text("Volte sempre!"));
+        out.write(EscPos.newLine());
+
+        out.write(EscPos.feed(4));
+        out.write(EscPos.CUT);
+        return out.toByteArray();
     }
 
     public String getReceipt() {
@@ -121,10 +263,10 @@ public class Receipt {
     private String getHeader() {
         String sep1 = "--------------------------------------------------";
         String msg1 = center("ESSE RECIBO NÃO É CUPOM FISCAL");
-        return strCompanyName + "\n" +
-                        strCompanyAddress + "\n" +
-                        strCompanyTel + "\n" +
-                        strCompanyCNPJ + "\n\n" +
+        return center(strCompanyName) + "\n" +
+                        center(strCompanyAddress1) + "\n" +
+                        center(strCompanyTel) + "\n" +
+                        center(strCompanyCNPJ) + "\n\n" +
                         sep1 + "\n" +
                         msg1 + "\n" +
                         sep1 + "\n\n";
@@ -243,18 +385,14 @@ public class Receipt {
 
         public ThinReceipt(OrderDao order, ArrayList<ProductDao> pdL) {
             this.productList = pdL;
-            strCompanyName = center("NOME DA EMPRESA");
-            strCompanyAddress = center("Av. Brasil, 2113, Aracaju-SE");
-            strCompanyTel = center("CONTATO: (44) 91214-5566");
-            strCompanyCNPJ = center("CNPJ: 00.000.000/0001-00");
             double subtotal = order.getTotal();
             double discount = order.getDiscount();
             double taxes = order.getTaxes();
             double total = subtotal - discount + taxes;
-            strCompanyName = center("NOME DA EMPRESA");
-            strCompanyAddress = center("Av. Brasil, 2113, Aracaju-SE");
-            strCompanyTel = center("CONTATO: (44) 91214-5566");
-            strCompanyCNPJ = center("CNPJ: 00.000.000/0001-00");
+            strCompanyName = "NOME DA EMPRESA";
+            strCompanyAddress1 = "Av. Brasil, 2113, Aracaju-SE";
+            strCompanyTel = "CONTATO: (44) 91214-5566";
+            strCompanyCNPJ = "CNPJ: 00.000.000/0001-00";
             strDate = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(order.getOrderDate());
             strTime = DateTimeFormatter.ofPattern("HH:mm:ss").format(order.getOrderTime());
             strSubtotal = CurrencyField.getBRLCurrencyFormat().format(subtotal);
@@ -277,10 +415,10 @@ public class Receipt {
         private String getHeader() {
             String sep1 = "----------------------------------";
             String msg1 = center("ESSE RECIBO NÃO É CUPOM FISCAL");
-            return strCompanyName + "\n" +
-                    strCompanyAddress + "\n" +
-                    strCompanyTel + "\n" +
-                    strCompanyCNPJ + "\n\n" +
+            return center(strCompanyName) + "\n" +
+                    center(strCompanyAddress1) + "\n" +
+                    center(strCompanyTel) + "\n" +
+                    center(strCompanyCNPJ) + "\n\n" +
                     sep1 + "\n" +
                     msg1 + "\n" +
                     sep1 + "\n\n";
@@ -323,8 +461,7 @@ public class Receipt {
                     "NOME FUNC. " + strFuncName + "\n" +
                     dateTime + "\n" +
                     sep2 + "\n\n" +
-                    msg1 + "\n" +
-                    msg2;
+                    msg1 + "\n";
         }
 
         public void buildReceipt() {
