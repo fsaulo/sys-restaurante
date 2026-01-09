@@ -174,7 +174,7 @@
                             </VBox>
                         </HBox>
                         <Separator layoutX="15.0" layoutY="502.0" prefWidth="200.0" />
-                        <Label layoutX="61.0" layoutY="510.0" text="Opçes de comandas">
+                        <Label layoutX="61.0" layoutY="510.0" text="Opções de comandas">
                             <font>
                                 <Font name="Carlito Bold" size="15.0" />
                             </font>
@@ -236,7 +236,7 @@
                             </VBox>
                         </HBox>
                         <Separator prefWidth="200.0" />
-                        <Label text="Opçes de registros">
+                        <Label text="Opções de registros">
                             <font>
                                 <Font name="Carlito Bold" size="15.0" />
                             </font>
