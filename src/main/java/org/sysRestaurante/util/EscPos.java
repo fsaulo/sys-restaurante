@@ -6,6 +6,9 @@ class EscPos {
 
     public static final byte[] INIT = { 0x1B, 0x40 };
     public static final byte[] CUT = { 0x1D, 0x56, 0x01 };
+    public static final byte[] FONT_NORMAL = { 0x1D, 0x21, 0x00 };
+    public static final byte[] FONT_DOUBLE = { 0x1D, 0x21, 0x11 };
+    public static final byte[] FONT_TRIPLE = { 0x1D, 0x21, 0x22 };
 
     public static final byte[] CODEPAGE_CP860 = { 0x1B, 0x74, 0x03 };
 
