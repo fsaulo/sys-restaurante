@@ -352,6 +352,7 @@ public class AppController implements DateFormatter {
             alert.setContentText("Impressora não encontrada.");
             alert.initOwner(AppFactory.getMainController().getScene().getWindow());
             alert.showAndWait();
+            throw new RuntimeException(e);
         }
     }
 }

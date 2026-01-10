@@ -24,6 +24,7 @@ import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
+import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 import org.sysRestaurante.util.PercentageField;
 import org.sysRestaurante.util.ThermalPrinter;
@@ -38,6 +39,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class FinishSellController {
 
@@ -118,6 +120,8 @@ public class FinishSellController {
     private PercentageField percentageField2;
     private final OrderDao order = AppFactory.getOrderDao();
     private static final String GREEN = "#4a8d2c";
+
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(FinishSellController.class.getName());
 
     @FXML
     public void initialize() {
@@ -215,9 +219,13 @@ public class FinishSellController {
 
     @FXML
     public void printReceipt() {
-        buildReceiptContent();
-        AppController.printPOSReceipt();
-        back();
+        try {
+            buildReceiptContent();
+            AppController.printPOSReceipt();
+            back();
+        } catch (RuntimeException e) {
+            LOGGER.warning("Impressora não encontrada. Recibo não será impresso.");
+        }
     }
 
     public void buildReceiptContent() {
