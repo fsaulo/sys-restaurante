@@ -24,6 +24,7 @@ import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
+import java.io.IOException;
 import java.text.Format;
 import java.util.*;
 import java.util.logging.Logger;
@@ -599,7 +600,7 @@ public class POS {
 
                     try {
                         AppController.printKitchenTicket(ticket, product);
-                    } catch (RuntimeException e) {
+                    } catch (IOException e) {
                         LOGGER.warning("Impressora nao encontrada. Ticket não será impresso.");
                     }
                 } else {

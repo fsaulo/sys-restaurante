@@ -23,9 +23,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.sysRestaurante.gui.formatter.DateFormatter.DATE_FORMAT;
 import static org.sysRestaurante.gui.formatter.DateFormatter.TIME_SIMPLE_FMT;
@@ -61,14 +61,19 @@ public class Receipt {
         double taxes = order.getTaxes();
         double total = subtotal - discount + taxes;
         this.productList = productList;
+
+        order.setOrderTime(LocalTime.now());
+        order.setOrderDate(LocalDate.now());
+        order.setOrderDateTime(LocalDateTime.now());
+
         strFuncName = func.getName();
         strDate = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(order.getOrderDate());
         strTime = DateTimeFormatter.ofPattern("HH:mm:ss").format(order.getOrderTime());
+        strEmployeeName = Personnel.getEmployeeNameById(((ComandaDao) order).getIdEmployee());
         strSubtotal = CurrencyField.getBRLCurrencyFormat().format(subtotal);
         strTotal = CurrencyField.getBRLCurrencyFormat().format(total);
         strTaxes = CurrencyField.getBRLCurrencyFormat().format(taxes);
         strDiscount = CurrencyField.getBRLCurrencyFormat().format(discount);
-        strEmployeeName = Personnel.getEmployeeNameById(((ComandaDao) order).getIdEmployee());
         buildReceipt();
     }
 
