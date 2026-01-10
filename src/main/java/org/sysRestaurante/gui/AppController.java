@@ -311,15 +311,12 @@ public class AppController implements DateFormatter {
         sellConfirmed = sell;
     }
 
-    public static void printKitchenTicket(KitchenOrderDao ticket, ProductDao product) {
+    public static void printKitchenTicket(KitchenOrderDao ticket, ProductDao product) throws IOException {
         ThermalPrinter printer = AppSettings.getInstance().getKitchenPrinter();
         Receipt receiptObj = new Receipt();
 
         try {
-            byte[] ticketBuilder = receiptObj.buildKitchenTicketForPrint(
-                    ticket,
-                    product
-            );
+            byte[] ticketBuilder = receiptObj.buildKitchenTicketForPrint(ticket, product);
             printer.print(ticketBuilder);
 
             if (!ticket.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED)) {
@@ -328,15 +325,15 @@ public class AppController implements DateFormatter {
         } catch (IOException | PrintException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Alerta do sistema");
-            alert.setHeaderText("Não foi imprimir o ticket da cozinha.");
+            alert.setHeaderText("Não foi possível imprimir o ticket da cozinha.");
             alert.setContentText("Impressora não encontrada");
             alert.initOwner(AppFactory.getMainController().getScene().getWindow());
             alert.showAndWait();
-            throw new RuntimeException(e);
+            throw new IOException(e);
         }
     }
 
-    public static void printPOSReceipt() {
+    public static void printPOSReceipt() throws IOException {
         ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
         Receipt receipt = new Receipt(AppFactory.getComandaDao(), AppFactory.getSelectedProducts());
 
@@ -352,7 +349,7 @@ public class AppController implements DateFormatter {
             alert.setContentText("Impressora não encontrada.");
             alert.initOwner(AppFactory.getMainController().getScene().getWindow());
             alert.showAndWait();
-            throw new RuntimeException(e);
+            throw new IOException(e);
         }
     }
 }

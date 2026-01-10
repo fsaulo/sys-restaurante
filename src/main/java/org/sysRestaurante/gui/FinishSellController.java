@@ -25,11 +25,8 @@ import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.util.LoggerHandler;
-import org.sysRestaurante.util.NotificationHandler;
 import org.sysRestaurante.util.PercentageField;
-import org.sysRestaurante.util.ThermalPrinter;
 
-import javax.print.PrintException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.Format;
@@ -219,11 +216,11 @@ public class FinishSellController {
 
     @FXML
     public void printReceipt() {
+        buildReceiptContent();
         try {
-            buildReceiptContent();
             AppController.printPOSReceipt();
             back();
-        } catch (RuntimeException e) {
+        } catch (IOException e) {
             LOGGER.warning("Impressora não encontrada. Recibo não será impresso.");
         }
     }
@@ -240,6 +237,7 @@ public class FinishSellController {
         order.setTotal(getSubtotal());
         order.setDiscount(percentageField1.getAmount() * getSubtotal());
         order.setTaxes(percentageField2.getAmount() * getSubtotal());
+        orderDao = (ComandaDao) order;
         AppFactory.setComandaDao(orderDao);
     }
 
@@ -329,7 +327,13 @@ public class FinishSellController {
                 AppFactory.getCashierController().updateCashierElements();
             }
 
-            AppController.setSellConfirmed(true);
+            try {
+                AppController.setSellConfirmed(true);
+                AppController.printPOSReceipt();
+            } catch (IOException e) {
+                LOGGER.warning("Não foi possível imprimir o recibo.");
+            }
+
             AppFactory.setOrderDao(null);
             wrapperVBox.getScene().getWindow().hide();
         }
