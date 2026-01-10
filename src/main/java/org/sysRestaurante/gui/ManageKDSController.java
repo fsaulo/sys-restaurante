@@ -178,7 +178,11 @@ public class ManageKDSController {
         ticket.setIdEmployee(((ComandaDao) order).getIdEmployee());
         ticket.setIdTable(((ComandaDao) order).getIdTable());
 
-        AppController.printKitchenTicket(ticket, new ProductDao());
+        try {
+            AppController.printKitchenTicket(ticket, new ProductDao());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void buildAndAddTickets(KitchenOrderDao ticket) throws IOException {
@@ -190,13 +194,13 @@ public class ManageKDSController {
         controller.setTableLabel("Mesa " + ticket.getIdTable());
 
         EventBus ticketEventBus = controller.getEventBus();
-        ticketEventBus.addEventHandler(TicketStatusChangedEvent.TICKET_STATUS_CHANGED_EVENT_EVENT_TYPE, ticketStatusChangedEvent -> {
+        ticketEventBus.addEventHandler(TicketStatusChangedEvent.TICKET_STATUS_CHANGED_EVENT_TYPE, ticketStatusChangedEvent -> {
+            refreshTicketsTilePane();
             switch (ticketStatusChangedEvent.getTicketStatus()) {
-                case DELIVERED:
                 case CANCELLED:
                     sendCancelledTicketToKitchen(ticket);
-                    refreshTicketsTilePane();
                     break;
+                case DELIVERED:
                 case RETURNED:
                 case COOKING:
                 case LATE:
