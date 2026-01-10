@@ -435,7 +435,7 @@ public class Receipt {
 
     public Node getReceiptAsNode() {
         Text rpp = new Text(getReceipt());
-        rpp.setFont(Font.font("Consolas", FontWeight.THIN, 13));
+        rpp.setFont(Font.font("Consolas", FontWeight.NORMAL, 13));
         TextFlow receipt = new TextFlow();
         receipt.getChildren().add(rpp);
         receipt.setTextAlignment(TextAlignment.JUSTIFY);
@@ -505,6 +505,11 @@ public class Receipt {
             double discount = order.getDiscount();
             double taxes = order.getTaxes();
             double total = subtotal - discount + taxes;
+
+            order.setOrderDateTime(LocalDateTime.now());
+            order.setOrderDate(LocalDate.now());
+            order.setOrderTime(LocalTime.now());
+
             strCompanyName = "NOME DA EMPRESA";
             strCompanyAddress1 = "Av. Brasil, 2113, Aracaju-SE";
             strCompanyTel = "CONTATO: (44) 91214-5566";
