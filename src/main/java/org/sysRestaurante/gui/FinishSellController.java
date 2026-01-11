@@ -195,7 +195,11 @@ public class FinishSellController {
 
     @FXML
     public void back() {
-        box1.getScene().getWindow().hide();
+        try {
+            box1.getScene().getWindow().hide();
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @FXML
