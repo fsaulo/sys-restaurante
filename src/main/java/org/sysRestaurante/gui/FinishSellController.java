@@ -230,10 +230,10 @@ public class FinishSellController {
     }
 
     public void buildReceiptContent() {
-        ComandaDao orderDao = (ComandaDao) AppFactory.getOrderDao();
+        Object orderDao = AppFactory.getOrderDao();
         assert (orderDao != null);
         if (!(orderDao instanceof ComandaDao)) {
-            orderDao.setIdOrder(Order.getLastOrderId() + 1);
+            ((OrderDao) orderDao).setIdOrder(Order.getLastOrderId() + 1);
         }
         order.setOrderDate(LocalDate.now());
         order.setOrderTime(LocalTime.now());
@@ -241,8 +241,13 @@ public class FinishSellController {
         order.setTotal(getSubtotal());
         order.setDiscount(percentageField1.getAmount() * getSubtotal());
         order.setTaxes(percentageField2.getAmount() * getSubtotal());
-        orderDao = (ComandaDao) order;
-        AppFactory.setComandaDao(orderDao);
+        orderDao = order;
+
+        if (orderDao instanceof ComandaDao) {
+            AppFactory.setComandaDao((ComandaDao) orderDao);
+        }
+
+        AppFactory.setOrderDao((OrderDao) orderDao);
     }
 
     public PopOver viewReceipt() {
@@ -303,7 +308,6 @@ public class FinishSellController {
                 int idTable = ((ComandaDao) orderDao).getIdTable();
 
                 Order.closeComanda(idComanda, payByCard + payInCash);
-                Order.addProductsToOrder(orderDao.getIdOrder(), items);
                 Order.updateOrderStatus(idComanda, 1);
                 Order.updateOrderAmount(idComanda, payInCash, payByCard, discount);
                 Order.setDiscounts(idOrder, discount);
