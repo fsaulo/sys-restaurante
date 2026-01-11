@@ -39,7 +39,7 @@ public class Receipt {
     public final String strFuncName;
     public String strDate;
     public String strTime;
-    public String strCompanyName = "Bar & Restaurante Frutos do Mar";;
+    public String strCompanyName = "Bar & Restaurante Frutos do Mar";
     public String strCompanyAddress1 = "Av. C, Orlinha do São Brás, 27";
     public String strCompanyAddress2 = "Nossa Senhora do Socorro-SE";
     public String strCompanyTel = "CONTATO: (79) 99983-2971";
@@ -69,7 +69,6 @@ public class Receipt {
         strFuncName = func.getName();
         strDate = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(order.getOrderDate());
         strTime = DateTimeFormatter.ofPattern("HH:mm:ss").format(order.getOrderTime());
-        strEmployeeName = Personnel.getEmployeeNameById(((ComandaDao) order).getIdEmployee());
         strSubtotal = CurrencyField.getBRLCurrencyFormat().format(subtotal);
         strTotal = CurrencyField.getBRLCurrencyFormat().format(total);
         strTaxes = CurrencyField.getBRLCurrencyFormat().format(taxes);
@@ -202,6 +201,12 @@ public class Receipt {
                 "Pedido: #" + order.getIdOrder(),
                 48
         );
+
+        if (order instanceof ComandaDao) {
+            strEmployeeName = Personnel.getEmployeeNameById((order).getIdEmployee());
+        } else {
+            strEmployeeName = AppFactory.getUserDao().getUsername();
+        }
 
         String funcDateStr = leftRight(
                 "Atendente: " + strEmployeeName,
