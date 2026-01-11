@@ -231,6 +231,63 @@ public class Receipt {
         return out.toByteArray();
     }
 
+    public byte[] buildSangriaForPrint(
+            CashierDao cashier,
+            ArrayList<ComandaDao> comandas
+    ) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+        out.write(EscPos.INIT);
+        out.write(EscPos.CODEPAGE_CP860);
+
+        out.write(EscPos.FONT_NORMAL);
+        out.write(EscPos.alignCenter());
+        out.write(EscPos.boldOn());
+        out.write(EscPos.text(strCompanyName));
+        out.write(EscPos.newLine());
+        out.write(EscPos.boldOff());
+
+        out.write(EscPos.text(strCompanyAddress1));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(strCompanyAddress2));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(strCompanyCNPJ));
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(strCompanyTel));
+        out.write(EscPos.newLine());
+        out.write(EscPos.newLine());
+
+        out.write(EscPos.text(leftRight(
+                "Comanda",
+                "Total",
+                48))
+        );
+
+        out.write(EscPos.newLine());
+        out.write(EscPos.horizontalLine('-', 48));
+        out.write(EscPos.newLine());
+
+        for (ComandaDao comanda : comandas) {
+            String descFinalPrice = leftRight(
+                TIME_SIMPLE_FMT.format(comanda.getTimeClosing()) +
+                        " Mesa " + comanda.getIdTable() + " " +
+                        "(Comanda " + comanda.getIdComanda() + " #" + comanda.getIdOrder() + ")",
+                BRLFormat.value(comanda.getTotal()),
+                48
+            );
+
+            out.write(EscPos.text(descFinalPrice));
+            out.write(EscPos.newLine());
+        }
+
+        out.write(EscPos.newLine());
+        out.write(EscPos.horizontalLine('-', 48));
+        out.write(EscPos.newLine());
+
+        System.out.println(out.toString());
+        return out.toByteArray();
+    }
+
     public byte[] buildKitchenTicketForPrint(
         KitchenOrderDao kitchenTicket,
         ProductDao item

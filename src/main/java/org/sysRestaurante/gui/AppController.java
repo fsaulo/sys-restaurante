@@ -33,6 +33,7 @@ import org.sysRestaurante.applet.AppSettings;
 import org.sysRestaurante.dao.*;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Authentication;
+import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
@@ -45,6 +46,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -330,6 +332,17 @@ public class AppController implements DateFormatter {
             alert.showAndWait();
             throw new IOException(e);
         }
+    }
+
+    public static void printSangriaReceipt() throws IOException {
+        ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
+
+        CashierDao cashier = AppFactory.getCashierDao();
+        ArrayList<ComandaDao> comandas = (ArrayList<ComandaDao>) Order.getComandasByIdCashier(cashier.getIdCashier());
+
+        Receipt receipt = new Receipt();
+        receipt.buildSangriaForPrint(cashier, comandas);
+
     }
 
     public static void printPOSReceipt() throws IOException {

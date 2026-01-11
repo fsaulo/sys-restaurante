@@ -2,15 +2,19 @@ package org.sysRestaurante.test.model;
 
 
 import org.junit.jupiter.api.Test;
+import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.dao.CashierDao;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.KitchenOrderDao;
 import org.sysRestaurante.dao.ProductDao;
+import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.util.ThermalPrinter;
 
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -99,5 +103,37 @@ class ThermalPrinterTest {
         } catch (Exception e) {
             fail("Falha ao imprimir cupom: " + e.getMessage());
         }
+    }
+
+    @Test
+    void shouldPrintSangriaReceipt() throws IOException {
+        CashierDao cashier = new CashierDao();
+        cashier.setByCard(100);
+        cashier.setInCash(999);
+        cashier.setIdCashier(1);
+        cashier.setDateOpening(LocalDate.now());
+        cashier.setTimeOpening(LocalTime.now());
+        cashier.setDateClosing(LocalDate.now());
+        cashier.setTimeClosing(LocalTime.now());
+        cashier.setRevenue(309);
+        cashier.setInitialAmount(10);
+        cashier.setWithdrawal(0);
+        cashier.setIdUser(1);
+
+        ComandaDao comanda = new ComandaDao();
+        comanda.setTotal(999);
+        comanda.setDateClosing(LocalDate.now());
+        comanda.setTimeClosing(LocalTime.now());
+        comanda.setIdEmployee(1);
+        comanda.setCustomerName("Cliente1");
+        comanda.setIdTable(13);
+        comanda.setIdComanda(4);
+        comanda.setIdOrder(3);
+
+        ArrayList<ComandaDao> comandas = new ArrayList<>();
+        comandas.add(comanda);
+
+        Receipt receipt = new Receipt();
+        receipt.buildSangriaForPrint(cashier, comandas);
     }
 }
