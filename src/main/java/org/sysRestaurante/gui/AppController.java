@@ -30,9 +30,7 @@ import javafx.util.Duration;
 
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.applet.AppSettings;
-import org.sysRestaurante.dao.KitchenOrderDao;
-import org.sysRestaurante.dao.ProductDao;
-import org.sysRestaurante.dao.SessionDao;
+import org.sysRestaurante.dao.*;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.model.Receipt;
@@ -43,6 +41,7 @@ import org.sysRestaurante.util.ThermalPrinter;
 
 import javax.print.PrintException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -335,13 +334,25 @@ public class AppController implements DateFormatter {
 
     public static void printPOSReceipt() throws IOException {
         ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
-        Receipt receipt = new Receipt(AppFactory.getComandaDao(), AppFactory.getSelectedProducts());
+        ComandaDao comanda = AppFactory.getComandaDao();
+        if (comanda == null) {
+            OrderDao orderDao = AppFactory.getOrderDao();
+            comanda = new ComandaDao();
+            comanda.setOrderDate(LocalDate.now());
+            comanda.setOrderTime(LocalTime.now());
+            comanda.setOrderDateTime(LocalDateTime.now());
+            comanda.setTotal(orderDao.getTotal());
+            comanda.setDiscount(orderDao.getDiscount());
+            comanda.setTaxes(orderDao.getTaxes());
+        }
+
+        Receipt receipt = new Receipt(comanda, AppFactory.getSelectedProducts());
 
         try {
-            byte[] receiptBuilder = receipt.buildReceiptForPrint(AppFactory.getComandaDao(), AppFactory.getSelectedProducts());
+            byte[] receiptBuilder = receipt.buildReceiptForPrint(comanda, AppFactory.getSelectedProducts());
             printer.print(receiptBuilder);
 
-            NotificationHandler.showInfo("Recibo #" + AppFactory.getComandaDao().getIdComanda() + " impresso com sucesso!");
+            NotificationHandler.showInfo("Recibo #" + comanda.getIdComanda() + " impresso com sucesso!");
         } catch (PrintException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Informações de erro");
