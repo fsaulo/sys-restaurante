@@ -3,10 +3,8 @@ package org.sysRestaurante.test.model;
 
 import org.junit.jupiter.api.Test;
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.dao.CashierDao;
-import org.sysRestaurante.dao.ComandaDao;
-import org.sysRestaurante.dao.KitchenOrderDao;
-import org.sysRestaurante.dao.ProductDao;
+import org.sysRestaurante.applet.AppSettings;
+import org.sysRestaurante.dao.*;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.util.ThermalPrinter;
@@ -106,7 +104,7 @@ class ThermalPrinterTest {
     }
 
     @Test
-    void shouldPrintSangriaReceipt() throws IOException {
+    void shouldPrintSangriaReceipt() {
         CashierDao cashier = new CashierDao();
         cashier.setByCard(100);
         cashier.setInCash(999);
@@ -133,7 +131,28 @@ class ThermalPrinterTest {
         ArrayList<ComandaDao> comandas = new ArrayList<>();
         comandas.add(comanda);
 
-        Receipt receipt = new Receipt();
-        receipt.buildSangriaForPrint(cashier, comandas);
+        UserDao user = new UserDao();
+        user.setAdmin(true);
+        user.setIdUser(1);
+        user.setUsername("admin");
+
+        OrderDao order = new OrderDao();
+        order.setTotal(455);
+        order.setOrderDate(LocalDate.now());
+        order.setOrderTime(LocalTime.now());
+        order.setIdOrder(9);
+
+        ArrayList<OrderDao> orders = new ArrayList<>();
+        orders.add(order);
+
+        try {
+            Receipt receipt = new Receipt();
+            ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
+
+            byte[] ticketBuilder = receipt.buildSangriaForPrint(cashier, user, orders, comandas);
+            printer.print(ticketBuilder);
+        } catch (Exception e) {
+            fail("Falha ao imprimir cupom: " + e.getMessage());
+        }
     }
 }
