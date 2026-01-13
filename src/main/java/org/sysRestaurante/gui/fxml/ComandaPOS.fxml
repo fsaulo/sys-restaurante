@@ -172,7 +172,7 @@
                    </ComboBox>
                <HBox spacing="5.0">
                   <children>
-                         <TextField fx:id="customerBox" prefHeight="35.0" prefWidth="249.0" promptText="Nome do cliente" styleClass="combo-box-view" />
+                         <TextField fx:id="customerBox" prefHeight="35.0" prefWidth="249.0" promptText="Nº de pessoas" styleClass="combo-box-view" />
                      <Button fx:id="addCustomerButton" mnemonicParsing="false" prefWidth="137.0" text="OK">
                         <font>
                            <Font size="16.0" />
