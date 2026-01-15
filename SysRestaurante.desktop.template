@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SysRestaurante
+Comment=Sistema de Gestão de Restaurante
+Exec=CAMINHO_PROJETO/iniciar-sistema.sh
+Path=CAMINHO_PROJETO/
+Icon=system-run
+Terminal=false
+Categories=Application;Development;

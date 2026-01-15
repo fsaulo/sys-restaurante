@@ -1,0 +1,44 @@
+name: Gerar Instalador Windows
+
+on:
+  push:
+    branches: [ "feature/my-branch", "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: 1. Baixar o código do projeto
+      uses: actions/checkout@v4
+
+    - name: 2. Configurar o Java 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: 3. Compilar com Maven (Gerar o JAR)
+      run: mvn clean package -DskipTests
+
+    - name: 4. Criar o Executável (.exe)
+      shell: powershell
+      run: |
+        jpackage --type exe `
+          --dest dist/ `
+          --name "SysRestaurante" `
+          --app-version "1.0.0" `
+          --input target/ `
+          --main-jar javafx-maven-setup-1.0-SNAPSHOT-jar-with-dependencies.jar `
+          --main-class org.sysRestaurante.gui.MainGUI `
+          --win-dir-chooser `
+          --win-shortcut `
+          --verbose
+
+    - name: 5. Salvar o instalador como resultado (Artifact)
+      uses: actions/upload-artifact@v4
+      with:
+        name: Instalador-Windows-SysRestaurante
+        path: dist/*.exe

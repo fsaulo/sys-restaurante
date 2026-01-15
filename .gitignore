@@ -2,7 +2,7 @@
 \out
 \target
 *.db
-
+\dist
 # Ignore temporary files
 *.swp
 *.un~
