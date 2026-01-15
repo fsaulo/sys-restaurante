@@ -32,20 +32,22 @@ jobs:
         $dir = (Get-ChildItem -Recurse -Directory -Filter "javafx-jmods-17.0.10").FullName
         echo "JMOD_PATH=$dir" >> $env:GITHUB_ENV
 
-    - name: 5. Criar Executável (.exe)
+- name: 5. Criar Executável (.exe)
       shell: powershell
       run: |
         jpackage --type exe `
           --dest dist/ `
           --name "SysRestaurante" `
+          --app-version "1.0.0" `
           --input target/ `
           --main-jar javafx-maven-setup-1.0-SNAPSHOT-jar-with-dependencies.jar `
           --main-class org.sysRestaurante.gui.MainGUI `
           --module-path "${{ env.JMOD_PATH }}" `
           --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.swing,javafx.media,javafx.web `
+          --runtime-image "$env:JAVA_HOME" `
           --win-dir-chooser `
-          --win-shortcut
-
+          --win-shortcut `
+          --verbose
     - name: 6. Upload do Instalador
       uses: actions/upload-artifact@v4
       with:
