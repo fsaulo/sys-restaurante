@@ -616,6 +616,7 @@ public class Order {
                     orderDao.setByCard(rs.getDouble("valor_cartao"));
                     orderDao.setNote(rs.getString("observacao"));
                     orderDao.setDetails(rs.getInt("id_categoria_pedido"));
+                    orderDao.setIdCategory(rs.getInt("id_categoria_pedido"));
                     orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
                     orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
                     orderDao.setStatus(rs.getInt("status"));

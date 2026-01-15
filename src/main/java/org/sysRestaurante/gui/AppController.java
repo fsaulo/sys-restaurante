@@ -313,6 +313,10 @@ public class AppController implements DateFormatter {
     }
 
     public static void printKitchenTicket(KitchenOrderDao ticket, ProductDao product) throws IOException {
+        if (!AppSettings.getInstance().isShouldPrintKitchenTicket()) {
+            return;
+        }
+
         ThermalPrinter printer = AppSettings.getInstance().getKitchenPrinter();
         Receipt receiptObj = new Receipt();
 
@@ -335,6 +339,10 @@ public class AppController implements DateFormatter {
     }
 
     public static void printSangriaReceipt() throws IOException {
+        if (!AppSettings.getInstance().isShouldPrintPOS()) {
+            return;
+        }
+
         ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
         CashierDao cashier = AppFactory.getCashierDao();
         UserDao userDao = AppFactory.getUserDao();
@@ -357,9 +365,13 @@ public class AppController implements DateFormatter {
     }
 
     public static void printPOSReceipt() throws IOException {
+        if (!AppSettings.getInstance().isShouldPrintPOS()) {
+            return;
+        }
+
         ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
         ComandaDao comanda = AppFactory.getComandaDao();
-        if (comanda == null) {
+        if (comanda == null || comanda.getIdComanda() == 0) {
             OrderDao orderDao = AppFactory.getOrderDao();
             comanda = new ComandaDao();
             comanda.setOrderDate(LocalDate.now());
@@ -368,7 +380,9 @@ public class AppController implements DateFormatter {
             comanda.setTotal(orderDao.getTotal());
             comanda.setDiscount(orderDao.getDiscount());
             comanda.setTaxes(orderDao.getTaxes());
+            comanda.setIdOrder(orderDao.getIdOrder());
         }
+        System.out.println(comanda.getTotal());
 
         Receipt receipt = new Receipt(comanda, AppFactory.getSelectedProducts());
 

@@ -336,6 +336,7 @@ public class FinishSellController {
             }
 
             try {
+                buildReceiptContent();
                 AppController.setSellConfirmed(true);
                 AppController.printPOSReceipt();
             } catch (IOException e) {

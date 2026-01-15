@@ -79,8 +79,13 @@ public class OrderDetailsController {
     private final OrderDao order = AppFactory.getOrderDao();
 
     public void initialize() {
+        List<ProductDao> products = Order.getItemsByOrderId(order.getIdOrder());
+        if (products != null) {
+            AppFactory.setSelectedProducts(new ArrayList<>(products));
+        }
+
         ObservableList<ProductDao> items = FXCollections
-                .observableArrayList(Order.getItemsByOrderId(order.getIdOrder()));
+                .observableArrayList(products);
         updateTables();
 
         selectedProductsTableView.setItems(items);
@@ -96,16 +101,25 @@ public class OrderDetailsController {
         cancelOrderButton.setOnAction(actionEvent -> onCancelOrder());
 
         receiptButton.setOnMouseClicked(event -> {
-            PopOver popOver = viewReceipt();
-            popOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_LEFT);
-            popOver.show(receiptButton);
+            try {
+                setOrderDetails();
+                AppController.printPOSReceipt();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
 
+        setOrderDetails();
+        setCanceledLabel();
+    }
 
+    private void setOrderDetails() {
         if (order.getDetails().equals("Pedido em comanda")) {
             ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
             String employee = Personnel.getEmployeeNameById(Objects.requireNonNull(comanda).getIdEmployee());
             String customer = Order.getCustomerName(order.getIdOrder());
+            AppFactory.setOrderDao(comanda);
+            AppFactory.setComandaDao(comanda);
             tableLabel.setText("MESA #" + comanda.getIdTable());
             codComandaLabel.setText(String.valueOf(comanda.getIdComanda()));
             employeeLabel.setText(employee);
@@ -126,8 +140,17 @@ public class OrderDetailsController {
             if (customer != null) {
                 customerLabel.setText(customer);
             }
+        } else {
+            ComandaDao comanda = new ComandaDao();
+            comanda.setIdOrder(order.getIdOrder());
+            comanda.setTotal(order.getTotal());
+            comanda.setTaxes(order.getTaxes());
+            comanda.setDiscount(order.getDiscount());
+            comanda.setIdCashier(order.getIdCategory());
+            comanda.setOrderDateTime(order.getOrderDateTime());
+            AppFactory.setOrderDao(order);
+            AppFactory.setComandaDao(comanda);
         }
-        setCanceledLabel();
     }
 
     private void setCanceledLabel() {
@@ -179,6 +202,7 @@ public class OrderDetailsController {
 
             if (order.getDetails().equals("Pedido em comanda")) {
                 ComandaDao comanda = Order.getComandaByOrderId(order.getIdOrder());
+                AppFactory.setComandaDao(comanda);
                 int idComanda = Objects.requireNonNull(comanda).getIdComanda();
                 int idTable = comanda.getIdTable();
                 Order.closeComanda(idComanda, total);

@@ -39,7 +39,7 @@ public class Receipt {
     public String strDate;
     public String strTime;
     public String strCompanyName = "Bar & Restaurante Frutos do Mar";
-    public String strCompanyAddress1 = "Av. C, Orlinha do São Brás, 27";
+    public String strCompanyAddress1 = "Orlinha do São Brás, 27";
     public String strCompanyAddress2 = "Nossa Senhora do Socorro-SE";
     public String strCompanyTel = "CONTATO: (79) 99983-2971";
     public String strCompanyCNPJ = "CNPJ: 12.345.678/0001-00";
@@ -262,8 +262,12 @@ public class Receipt {
 
             int count = 1;
             for (OrderDao order : orders) {
+                if (order.getIdCategory() == 2) {
+                    continue;
+                }
+
                 String descFinalPrice = leftRight(
-                        count + " " + TIME_SIMPLE_FMT.format(LocalDateTime.of(order.getOrderDate(), order.getOrderTime())) +
+                        padRight(String.valueOf(count), 4) + TIME_SIMPLE_FMT.format(LocalDateTime.of(order.getOrderDate(), order.getOrderTime())) +
                                 " Pedido " + order.getIdOrder(),
                         BRLFormat.value(order.getTotal()),
                         48
@@ -290,7 +294,7 @@ public class Receipt {
             int count = 1;
             for (ComandaDao comanda : comandas) {
                 String descFinalPrice = leftRight(
-                        count + " " + TIME_SIMPLE_FMT.format(comanda.getTimeClosing()) +
+                        padRight(String.valueOf(count), 4) + TIME_SIMPLE_FMT.format(comanda.getTimeClosing()) +
                                 " Mesa " + comanda.getIdTable() + " " +
                                 "(Comanda " + comanda.getIdComanda() + " #" + comanda.getIdOrder() + ")",
                         BRLFormat.value(comanda.getTotal()),
