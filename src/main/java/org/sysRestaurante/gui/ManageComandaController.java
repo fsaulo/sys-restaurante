@@ -167,7 +167,7 @@ public class ManageComandaController {
     public void updateInfo() {
         long averageTimeInMinutes = session.getAveragePermanencyInMinutes();
         NumberFormat format = CurrencyField.getBRLCurrencyFormat();
-        averageTime.setText(DateFormatter.translateTimeFromMinutes(averageTimeInMinutes));
+        averageTime.setText("-");
         busyTables.setText(String.valueOf(session.getBusyTablesCount()));
         availableTables.setText(String.valueOf(session.getAvailableTablesCount()));
         averageIncome.setText(format.format(averageIncome()));

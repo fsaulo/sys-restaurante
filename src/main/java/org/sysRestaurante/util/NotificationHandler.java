@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import org.controlsfx.control.Notifications;
 import org.sysRestaurante.applet.AppFactory;
@@ -21,8 +23,13 @@ public class NotificationHandler {
                 .title("Informações do Sistema")
                 .position(Pos.TOP_RIGHT)
                 .text(message)
-                .owner(AppFactory.getMainController().getScene().getWindow())
-                .hideAfter(Duration.seconds(3));
+                .hideAfter(Duration.seconds(5));
+
+        Window window = AppFactory.getMainController().getScene().getWindow();
+        if (!((Stage) window).isFullScreen()) {
+            notification.owner(window);
+        }
+
         notification.showInformation();
     }
 
@@ -31,7 +38,7 @@ public class NotificationHandler {
         alert.setTitle("Erro do sistema");
         alert.setHeaderText("Eita! Ocorreu um erro gravíssimo!");
         alert.setContentText("Os dados da última operação foram perdidos, por favor, feche o sistema e abra novamente. "
-        + "Lamentamos o ocorrido. Se possível, encaminhe os logs de erros para o desenvolvedor.");
+        + "Lamentamos o ocorrido. Se possível, encaminhe os logs de erro para o desenvolvedor.");
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);

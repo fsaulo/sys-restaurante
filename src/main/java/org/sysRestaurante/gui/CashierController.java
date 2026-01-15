@@ -360,7 +360,7 @@ public class CashierController {
 
     public void setFilterByDate() {
         int idCashier = AppFactory.getCashierDao().getIdCashier();
-        ObservableList<OrderDao> data = Order.getOrderByIdCashier(idCashier);
+        ObservableList<OrderDao> data = Order.getOrderByIdCashierFX(idCashier);
         assert data != null;
         FilteredList<OrderDao> filteredList = new FilteredList<>(data);
         datePicker.valueProperty().addListener((newValue) ->
@@ -378,7 +378,7 @@ public class CashierController {
 
     public void setFilterByCod(Number cod) {
         int idCashier = AppFactory.getCashierDao().getIdCashier();
-        ObservableList<OrderDao> data = Order.getOrderByIdCashier(idCashier);
+        ObservableList<OrderDao> data = Order.getOrderByIdCashierFX(idCashier);
         assert data != null;
         FilteredList<OrderDao> filteredList = new FilteredList<>(data);
         filteredList.setPredicate(orderDao -> {

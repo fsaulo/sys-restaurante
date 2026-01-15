@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 public interface DateFormatter {
     DateFormat CLOCK_FORMAT = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
     DateTimeFormatter TIME_DETAILS_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+    DateTimeFormatter TIME_SIMPLE_FMT = DateTimeFormatter.ofPattern("HH:mm");
     DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
     DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("dd-MM HH:mm:ss");
     DateTimeFormatter DETAILED_TIME = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss");

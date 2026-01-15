@@ -12,6 +12,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.effect.ColorAdjust;
@@ -28,16 +29,24 @@ import javafx.stage.Window;
 import javafx.util.Duration;
 
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.dao.SessionDao;
+import org.sysRestaurante.applet.AppSettings;
+import org.sysRestaurante.dao.*;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Authentication;
+import org.sysRestaurante.model.Order;
+import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
+import org.sysRestaurante.util.NotificationHandler;
+import org.sysRestaurante.util.ThermalPrinter;
 
+import javax.print.PrintException;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -301,5 +310,95 @@ public class AppController implements DateFormatter {
 
     public static void setSellConfirmed(boolean sell) {
         sellConfirmed = sell;
+    }
+
+    public static void printKitchenTicket(KitchenOrderDao ticket, ProductDao product) throws IOException {
+        if (!AppSettings.getInstance().isShouldPrintKitchenTicket()) {
+            return;
+        }
+
+        ThermalPrinter printer = AppSettings.getInstance().getKitchenPrinter();
+        Receipt receiptObj = new Receipt();
+
+        try {
+            byte[] ticketBuilder = receiptObj.buildKitchenTicketForPrint(ticket, product);
+            printer.print(ticketBuilder);
+
+            if (!ticket.getKitchenOrderStatus().equals(KitchenOrderDao.KitchenOrderStatus.CANCELLED)) {
+                NotificationHandler.showInfo("Pedido enviado para cozinha");
+            }
+        } catch (IOException | PrintException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta do sistema");
+            alert.setHeaderText("Não foi possível imprimir o ticket da cozinha.");
+            alert.setContentText("Impressora não encontrada");
+            alert.initOwner(AppFactory.getMainController().getScene().getWindow());
+            alert.showAndWait();
+            throw new IOException(e);
+        }
+    }
+
+    public static void printSangriaReceipt() throws IOException {
+        if (!AppSettings.getInstance().isShouldPrintPOS()) {
+            return;
+        }
+
+        ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
+        CashierDao cashier = AppFactory.getCashierDao();
+        UserDao userDao = AppFactory.getUserDao();
+        ArrayList<ComandaDao> comandas = (ArrayList<ComandaDao>) Order.getComandasByIdCashier(cashier.getIdCashier());
+        ArrayList<OrderDao> orders = Order.getOrderByIdCashier(cashier.getIdCashier());
+
+        try {
+            Receipt receipt = new Receipt();
+            byte[] sangriaBuilder = receipt.buildSangriaForPrint(cashier, userDao, orders, comandas);
+            printer.print(sangriaBuilder);
+        } catch (IOException | PrintException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta do sistema");
+            alert.setHeaderText("Não foi possível imprimir o comprovante de fechamento de caixa.");
+            alert.setContentText("Impressora não encontrada");
+            alert.initOwner(AppFactory.getMainController().getScene().getWindow());
+            alert.showAndWait();
+            throw new IOException(e);
+        }
+    }
+
+    public static void printPOSReceipt() throws IOException {
+        if (!AppSettings.getInstance().isShouldPrintPOS()) {
+            return;
+        }
+
+        ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
+        ComandaDao comanda = AppFactory.getComandaDao();
+        if (comanda == null || comanda.getIdComanda() == 0) {
+            OrderDao orderDao = AppFactory.getOrderDao();
+            comanda = new ComandaDao();
+            comanda.setOrderDate(LocalDate.now());
+            comanda.setOrderTime(LocalTime.now());
+            comanda.setOrderDateTime(LocalDateTime.now());
+            comanda.setTotal(orderDao.getTotal());
+            comanda.setDiscount(orderDao.getDiscount());
+            comanda.setTaxes(orderDao.getTaxes());
+            comanda.setIdOrder(orderDao.getIdOrder());
+        }
+        System.out.println(comanda.getTotal());
+
+        Receipt receipt = new Receipt(comanda, AppFactory.getSelectedProducts());
+
+        try {
+            byte[] receiptBuilder = receipt.buildReceiptForPrint(comanda, AppFactory.getSelectedProducts());
+            printer.print(receiptBuilder);
+
+            NotificationHandler.showInfo("Recibo #" + comanda.getIdComanda() + " impresso com sucesso!");
+        } catch (PrintException | IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Informações de erro");
+            alert.setHeaderText("Não foi possível imprimir o recibo");
+            alert.setContentText("Impressora não encontrada.");
+            alert.initOwner(AppFactory.getMainController().getScene().getWindow());
+            alert.showAndWait();
+            throw new IOException(e);
+        }
     }
 }

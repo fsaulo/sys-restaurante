@@ -24,6 +24,7 @@ import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
+import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.PercentageField;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class FinishSellController {
 
@@ -56,6 +58,8 @@ public class FinishSellController {
     private VBox seeReceiptBox;
     @FXML
     private VBox saveReceipt;
+    @FXML
+    private VBox printReceipt;
     @FXML
     private VBox cancelButton;
     @FXML
@@ -113,6 +117,8 @@ public class FinishSellController {
     private PercentageField percentageField2;
     private final OrderDao order = AppFactory.getOrderDao();
     private static final String GREEN = "#4a8d2c";
+
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(FinishSellController.class.getName());
 
     @FXML
     public void initialize() {
@@ -189,7 +195,11 @@ public class FinishSellController {
 
     @FXML
     public void back() {
-        box1.getScene().getWindow().hide();
+        try {
+            box1.getScene().getWindow().hide();
+        } catch (RuntimeException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @FXML
@@ -208,18 +218,36 @@ public class FinishSellController {
         }
     }
 
+    @FXML
+    public void printReceipt() {
+        buildReceiptContent();
+        try {
+            AppController.printPOSReceipt();
+            back();
+        } catch (IOException e) {
+            LOGGER.warning("Impressora não encontrada. Recibo não será impresso.");
+        }
+    }
+
     public void buildReceiptContent() {
-        OrderDao orderDao = AppFactory.getOrderDao();
+        Object orderDao = AppFactory.getOrderDao();
         assert (orderDao != null);
         if (!(orderDao instanceof ComandaDao)) {
-            orderDao.setIdOrder(Order.getLastOrderId() + 1);
+            ((OrderDao) orderDao).setIdOrder(Order.getLastOrderId() + 1);
         }
         order.setOrderDate(LocalDate.now());
         order.setOrderTime(LocalTime.now());
+        order.setOrderDateTime(LocalDateTime.now());
         order.setTotal(getSubtotal());
         order.setDiscount(percentageField1.getAmount() * getSubtotal());
         order.setTaxes(percentageField2.getAmount() * getSubtotal());
-        AppFactory.setOrderDao(order);
+        orderDao = order;
+
+        if (orderDao instanceof ComandaDao) {
+            AppFactory.setComandaDao((ComandaDao) orderDao);
+        }
+
+        AppFactory.setOrderDao((OrderDao) orderDao);
     }
 
     public PopOver viewReceipt() {
@@ -280,7 +308,6 @@ public class FinishSellController {
                 int idTable = ((ComandaDao) orderDao).getIdTable();
 
                 Order.closeComanda(idComanda, payByCard + payInCash);
-                Order.addProductsToOrder(orderDao.getIdOrder(), items);
                 Order.updateOrderStatus(idComanda, 1);
                 Order.updateOrderAmount(idComanda, payInCash, payByCard, discount);
                 Order.setDiscounts(idOrder, discount);
@@ -308,7 +335,14 @@ public class FinishSellController {
                 AppFactory.getCashierController().updateCashierElements();
             }
 
-            AppController.setSellConfirmed(true);
+            try {
+                buildReceiptContent();
+                AppController.setSellConfirmed(true);
+                AppController.printPOSReceipt();
+            } catch (IOException e) {
+                LOGGER.warning("Não foi possível imprimir o recibo.");
+            }
+
             AppFactory.setOrderDao(null);
             wrapperVBox.getScene().getWindow().hide();
         }

@@ -150,4 +150,12 @@ public class CashierDao {
     public void setOpenned(boolean openned) {
         isOpenned = openned;
     }
+
+    public void setDateTimeOpening(LocalDateTime dateTimeOpening) {
+        this.dateTimeOpening = dateTimeOpening;
+    }
+
+    public void setDateTimeClosing(LocalDateTime dateTimeClosing) {
+        this.dateTimeClosing = dateTimeClosing;
+    }
 }

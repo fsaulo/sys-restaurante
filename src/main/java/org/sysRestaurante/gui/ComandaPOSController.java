@@ -132,9 +132,11 @@ public class ComandaPOSController extends POS {
         codComandaLabel.setText(String.valueOf(comanda.getIdComanda()));
 		customerLabel.setText(parseCustomerName());
         changeTableButton.setStyle("-fx-cursor: hand;");
+        comanda.setCustomerName(parseCustomerName());
 
         addCustomerButton.setOnAction(e -> {
             Order.insertCustomerName(comanda.getIdOrder(), customerBox.getText());
+            comanda.setCustomerName(customerBox.getText());
             customerLabel.setText(customerBox.getText());
             customerBox.clear();
         });
@@ -142,6 +144,7 @@ public class ComandaPOSController extends POS {
         customerBox.setOnKeyPressed(e -> {
             if (e.getCode().equals(KeyCode.ENTER)) {
                 Order.insertCustomerName(comanda.getIdOrder(), customerBox.getText());
+                comanda.setCustomerName(customerBox.getText());
                 customerLabel.setText(customerBox.getText());
                 customerBox.clear();
             }
@@ -206,6 +209,7 @@ public class ComandaPOSController extends POS {
 
 	public String parseCustomerName() {
 		String customerName = Order.getCustomerName(comanda.getIdOrder());
+        comanda.setCustomerName(customerName);
 		String defaultName = "Não fornecido";
         return Objects.requireNonNullElse(customerName, defaultName);
 	}

@@ -246,7 +246,7 @@
             </styleClass>
         </Button>
         <Pane HBox.hgrow="ALWAYS"/>
-        <Button fx:id="receiptButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Recibo">
+        <Button fx:id="receiptButton" minWidth="100.0" mnemonicParsing="false" prefHeight="35.0" text="Imprimir recibo">
             <font>
                 <Font name="Carlito" size="16.0"/>
             </font>

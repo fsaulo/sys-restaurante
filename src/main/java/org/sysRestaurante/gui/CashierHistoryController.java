@@ -160,7 +160,7 @@ public class CashierHistoryController {
         ObservableList<OrderDao> orderDetails = null;
 
         try {
-            orderDetails = FXCollections.observableList(Objects.requireNonNull(Order.getOrderByIdCashier(cashier.getIdCashier())));
+            orderDetails = FXCollections.observableList(Objects.requireNonNull(Order.getOrderByIdCashierFX(cashier.getIdCashier())));
         } catch (Exception ignored) {
             ExceptionHandler.doNothing();
         }

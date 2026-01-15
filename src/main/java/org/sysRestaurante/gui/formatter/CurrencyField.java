@@ -34,9 +34,9 @@ public class CurrencyField extends TextField {
 
         focusedProperty().addListener(
                 (ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) ->
-                        Platform.runLater(() -> { int lenght = getText().length();
-                        selectRange(lenght, lenght);
-                        positionCaret(lenght);
+                        Platform.runLater(() -> { int length = getText().length();
+                        selectRange(length, length);
+                        positionCaret(length);
                         }));
 
         setOnKeyPressed(keyEvent -> {
@@ -104,6 +104,15 @@ public class CurrencyField extends TextField {
         brlCurrencyFormat.setCurrency(brl);
         brlCurrencyFormat.setMaximumFractionDigits(brl.getDefaultFractionDigits());
         return brlCurrencyFormat;
+    }
+
+    public static NumberFormat getBRLValueFormat() {
+        Locale ptBR = new Locale("pt", "BR");
+        NumberFormat format = NumberFormat.getNumberInstance(ptBR);
+        format.setMinimumFractionDigits(2);
+        format.setMaximumFractionDigits(2);
+        format.setGroupingUsed(false);
+        return format;
     }
 
     public void setOrientation(NodeOrientation orientation) {

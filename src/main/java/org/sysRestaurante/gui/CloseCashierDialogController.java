@@ -21,6 +21,7 @@ import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.model.Management;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -99,6 +100,13 @@ public class CloseCashierDialogController {
             vboxWrapper.getScene().getWindow().hide();
             AppFactory.setCashierDao(null);
             AppFactory.getCashierController().updateCashierElements();
+
+            try {
+                AppController.printSangriaReceipt();
+            } catch (IOException e) {
+                LOGGER.warning("Não foi possível imprimir o bilhete");
+            }
+
             LOGGER.info("Cashier was closed with no problems.");
         } else {
             LOGGER.warning("Cashier can't be closed due to orders that hasn't been closed.");
