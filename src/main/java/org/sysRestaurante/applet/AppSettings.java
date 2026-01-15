@@ -7,6 +7,24 @@ public class AppSettings {
     private final boolean isProduction;
     private String kitchenPrinterName = "POS-80C_COZINHA";
     private String posPrinterName = "POS-80C_CAIXA";
+    private boolean shouldPrintPOS = true;
+    private boolean shouldPrintKitchenTicket = true;
+
+    public boolean isShouldPrintKitchenTicket() {
+        return shouldPrintKitchenTicket;
+    }
+    public void setShouldPrintKitchenTicket(boolean shouldPrintKitchenTicket) {
+        this.shouldPrintKitchenTicket = shouldPrintKitchenTicket;
+    }
+
+
+    public boolean isShouldPrintPOS() {
+        return shouldPrintPOS;
+    }
+
+    public void setShouldPrintPOS(boolean shouldPrintPOS) {
+        this.shouldPrintPOS = shouldPrintPOS;
+    }
 
     private AppSettings() {
         this.isProduction = Boolean.parseBoolean(System.getProperty("sys.production", "true"));

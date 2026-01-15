@@ -2,7 +2,6 @@ package org.sysRestaurante.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.ComandaDao;
 import org.sysRestaurante.dao.KitchenOrderDao;
 import org.sysRestaurante.dao.OrderDao;
@@ -552,7 +551,7 @@ public class Order {
         }
     }
 
-    public static ObservableList<OrderDao> getOrderByIdCashier(int idCashier) {
+    public static ObservableList<OrderDao> getOrderByIdCashierFX(int idCashier) {
         String query = "SELECT * FROM pedido where id_caixa = ?";
         ObservableList<OrderDao> orderList = FXCollections.observableArrayList();
         OrderDao orderDao;
@@ -573,6 +572,51 @@ public class Order {
                     orderDao.setByCard(rs.getDouble("valor_cartao"));
                     orderDao.setNote(rs.getString("observacao"));
                     orderDao.setDetails(rs.getInt("id_categoria_pedido"));
+                    orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
+                    orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
+                    orderDao.setStatus(rs.getInt("status"));
+                    orderDao.setTotal(rs.getDouble("valor_avista") + rs.getDouble("valor_cartao"));
+                    orderDao.setTaxes(rs.getDouble("taxas"));
+                    orderDao.setDiscount(rs.getDouble("descontos"));
+                    orderList.add(orderDao);
+                } catch (NullPointerException ignored) {
+                    ExceptionHandler.doNothing();
+                }
+            }
+
+            ps.close();
+            rs.close();
+            con.close();
+            return orderList;
+        } catch (SQLException ex) {
+            NotificationHandler.errorDialog(ex);
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ArrayList<OrderDao> getOrderByIdCashier(int idCashier) {
+        String query = "SELECT * FROM pedido where id_caixa = ?";
+        ArrayList<OrderDao> orderList = new ArrayList<>();
+        OrderDao orderDao;
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            Connection con = DBConnection.getConnection();
+            ps = Objects.requireNonNull(con).prepareStatement(query);
+            ps.setInt(1, idCashier);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                try {
+                    orderDao = new OrderDao();
+                    orderDao.setIdOrder(rs.getInt("id_pedido"));
+                    orderDao.setInCash(rs.getDouble("valor_avista"));
+                    orderDao.setByCard(rs.getDouble("valor_cartao"));
+                    orderDao.setNote(rs.getString("observacao"));
+                    orderDao.setDetails(rs.getInt("id_categoria_pedido"));
+                    orderDao.setIdCategory(rs.getInt("id_categoria_pedido"));
                     orderDao.setOrderDate(rs.getDate("data_pedido").toLocalDate());
                     orderDao.setOrderTime(rs.getTime("hora_pedido").toLocalTime());
                     orderDao.setStatus(rs.getInt("status"));

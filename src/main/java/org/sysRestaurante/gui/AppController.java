@@ -313,6 +313,10 @@ public class AppController implements DateFormatter {
     }
 
     public static void printKitchenTicket(KitchenOrderDao ticket, ProductDao product) throws IOException {
+        if (!AppSettings.getInstance().isShouldPrintKitchenTicket()) {
+            return;
+        }
+
         ThermalPrinter printer = AppSettings.getInstance().getKitchenPrinter();
         Receipt receiptObj = new Receipt();
 
@@ -335,20 +339,39 @@ public class AppController implements DateFormatter {
     }
 
     public static void printSangriaReceipt() throws IOException {
+        if (!AppSettings.getInstance().isShouldPrintPOS()) {
+            return;
+        }
+
         ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
-
         CashierDao cashier = AppFactory.getCashierDao();
+        UserDao userDao = AppFactory.getUserDao();
         ArrayList<ComandaDao> comandas = (ArrayList<ComandaDao>) Order.getComandasByIdCashier(cashier.getIdCashier());
+        ArrayList<OrderDao> orders = Order.getOrderByIdCashier(cashier.getIdCashier());
 
-        Receipt receipt = new Receipt();
-        receipt.buildSangriaForPrint(cashier, comandas);
-
+        try {
+            Receipt receipt = new Receipt();
+            byte[] sangriaBuilder = receipt.buildSangriaForPrint(cashier, userDao, orders, comandas);
+            printer.print(sangriaBuilder);
+        } catch (IOException | PrintException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Alerta do sistema");
+            alert.setHeaderText("Não foi possível imprimir o comprovante de fechamento de caixa.");
+            alert.setContentText("Impressora não encontrada");
+            alert.initOwner(AppFactory.getMainController().getScene().getWindow());
+            alert.showAndWait();
+            throw new IOException(e);
+        }
     }
 
     public static void printPOSReceipt() throws IOException {
+        if (!AppSettings.getInstance().isShouldPrintPOS()) {
+            return;
+        }
+
         ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
         ComandaDao comanda = AppFactory.getComandaDao();
-        if (comanda == null) {
+        if (comanda == null || comanda.getIdComanda() == 0) {
             OrderDao orderDao = AppFactory.getOrderDao();
             comanda = new ComandaDao();
             comanda.setOrderDate(LocalDate.now());
@@ -357,7 +380,9 @@ public class AppController implements DateFormatter {
             comanda.setTotal(orderDao.getTotal());
             comanda.setDiscount(orderDao.getDiscount());
             comanda.setTaxes(orderDao.getTaxes());
+            comanda.setIdOrder(orderDao.getIdOrder());
         }
+        System.out.println(comanda.getTotal());
 
         Receipt receipt = new Receipt(comanda, AppFactory.getSelectedProducts());
 

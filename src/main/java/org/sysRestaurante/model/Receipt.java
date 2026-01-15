@@ -27,8 +27,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static org.sysRestaurante.gui.formatter.DateFormatter.DATE_FORMAT;
-import static org.sysRestaurante.gui.formatter.DateFormatter.TIME_SIMPLE_FMT;
+import static org.sysRestaurante.gui.formatter.DateFormatter.*;
 
 public class Receipt {
 
@@ -40,7 +39,7 @@ public class Receipt {
     public String strDate;
     public String strTime;
     public String strCompanyName = "Bar & Restaurante Frutos do Mar";
-    public String strCompanyAddress1 = "Av. C, Orlinha do São Brás, 27";
+    public String strCompanyAddress1 = "Orlinha do São Brás, 27";
     public String strCompanyAddress2 = "Nossa Senhora do Socorro-SE";
     public String strCompanyTel = "CONTATO: (79) 99983-2971";
     public String strCompanyCNPJ = "CNPJ: 12.345.678/0001-00";
@@ -233,58 +232,135 @@ public class Receipt {
 
     public byte[] buildSangriaForPrint(
             CashierDao cashier,
+            UserDao user,
+            ArrayList<OrderDao> orders,
             ArrayList<ComandaDao> comandas
     ) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         out.write(EscPos.INIT);
         out.write(EscPos.CODEPAGE_CP860);
-
         out.write(EscPos.FONT_NORMAL);
-        out.write(EscPos.alignCenter());
-        out.write(EscPos.boldOn());
-        out.write(EscPos.text(strCompanyName));
-        out.write(EscPos.newLine());
-        out.write(EscPos.boldOff());
 
-        out.write(EscPos.text(strCompanyAddress1));
         out.write(EscPos.newLine());
-        out.write(EscPos.text(strCompanyAddress2));
-        out.write(EscPos.newLine());
-        out.write(EscPos.text(strCompanyCNPJ));
-        out.write(EscPos.newLine());
-        out.write(EscPos.text(strCompanyTel));
+        out.write(EscPos.alignLeft());
+        LocalDateTime dateTimeOpening = LocalDateTime.of(cashier.getDateOpening(), cashier.getTimeOpening());
+        out.write(EscPos.text("Caixa #" + cashier.getIdCashier() + " aberto em " + DATE_FORMAT.format(dateTimeOpening)));
         out.write(EscPos.newLine());
         out.write(EscPos.newLine());
 
-        out.write(EscPos.text(leftRight(
-                "Comanda",
-                "Total",
-                48))
-        );
-
-        out.write(EscPos.newLine());
-        out.write(EscPos.horizontalLine('-', 48));
-        out.write(EscPos.newLine());
-
-        for (ComandaDao comanda : comandas) {
-            String descFinalPrice = leftRight(
-                TIME_SIMPLE_FMT.format(comanda.getTimeClosing()) +
-                        " Mesa " + comanda.getIdTable() + " " +
-                        "(Comanda " + comanda.getIdComanda() + " #" + comanda.getIdOrder() + ")",
-                BRLFormat.value(comanda.getTotal()),
-                48
+        if (orders != null) {
+            out.write(EscPos.text(leftRight(
+                    "Pedidos no caixa",
+                    "Total",
+                    48))
             );
 
-            out.write(EscPos.text(descFinalPrice));
             out.write(EscPos.newLine());
+            out.write(EscPos.horizontalLine('-', 48));
+            out.write(EscPos.newLine());
+
+            int count = 1;
+            for (OrderDao order : orders) {
+                if (order.getIdCategory() == 2) {
+                    continue;
+                }
+
+                String descFinalPrice = leftRight(
+                        padRight(String.valueOf(count), 4) + TIME_SIMPLE_FMT.format(LocalDateTime.of(order.getOrderDate(), order.getOrderTime())) +
+                                " Pedido " + order.getIdOrder(),
+                        BRLFormat.value(order.getTotal()),
+                        48
+                );
+
+                count++;
+                out.write(EscPos.text(descFinalPrice));
+                out.write(EscPos.newLine());
+            }
+        }
+
+        if (comandas != null) {
+            out.write(EscPos.newLine());
+            out.write(EscPos.text(leftRight(
+                    "Comandas",
+                    "Total",
+                    48))
+            );
+
+            out.write(EscPos.newLine());
+            out.write(EscPos.horizontalLine('-', 48));
+            out.write(EscPos.newLine());
+
+            int count = 1;
+            for (ComandaDao comanda : comandas) {
+                String descFinalPrice = leftRight(
+                        padRight(String.valueOf(count), 4) + TIME_SIMPLE_FMT.format(comanda.getTimeClosing()) +
+                                " Mesa " + comanda.getIdTable() + " " +
+                                "(Comanda " + comanda.getIdComanda() + " #" + comanda.getIdOrder() + ")",
+                        BRLFormat.value(comanda.getTotal()),
+                        48
+                );
+
+                count++;
+                out.write(EscPos.text(descFinalPrice));
+                out.write(EscPos.newLine());
+            }
         }
 
         out.write(EscPos.newLine());
         out.write(EscPos.horizontalLine('-', 48));
         out.write(EscPos.newLine());
 
-        System.out.println(out.toString());
+        out.write(EscPos.text(leftRight(
+                "Dinheiro",
+                BRLFormat.value(cashier.getInCash()),
+                48
+        )));
+
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(leftRight(
+                "Cartão (débito/crédito)",
+                BRLFormat.value(cashier.getByCard()),
+                48
+        )));
+
+        out.write(EscPos.newLine());
+        out.write(EscPos.text(leftRight(
+                "Retiradas",
+                BRLFormat.value(cashier.getWithdrawal()),
+                48
+        )));
+
+        out.write(EscPos.newLine());
+        out.write(EscPos.FONT_DOUBLE);
+        out.write(EscPos.newLine());
+        out.write(EscPos.boldOn());
+        out.write(EscPos.text(leftRight(
+                "Total",
+                "R$ " + BRLFormat.value(cashier.getRevenue()),
+                24
+        )));
+
+        out.write(EscPos.newLine());
+        out.write(EscPos.boldOff());
+        out.write(EscPos.FONT_NORMAL);
+
+        out.write(EscPos.horizontalLine('-', 48));
+        out.write(EscPos.newLine());
+
+        String adminStr = user.isAdmin() ? "(Administrador)" : "";
+        String funcDateStr = leftRight(
+                user.getUsername() + " " + adminStr,
+                DATE_FORMAT.format(LocalDateTime.now()),
+                48
+        );
+
+        out.write(EscPos.text(funcDateStr));
+        out.write(EscPos.newLine());
+
+        out.write(EscPos.feed(4));
+        out.write(EscPos.CUT);
+
         return out.toByteArray();
     }
 
