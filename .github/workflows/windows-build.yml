@@ -23,12 +23,12 @@ jobs:
       run: mvn clean install
 
     - name: 4. Baixar JMODS do JavaFX 17
-      # Aqui baixamos e organizamos a pasta para que o jpackage não se perca
       run: |
         Invoke-WebRequest -Uri https://download2.gluonhq.com/openjfx/17.0.10/openjfx-17.0.10_windows-x64_bin-jmods.zip -OutFile javafx-jmods.zip
         Expand-Archive javafx-jmods.zip -DestinationPath .
-        # Renomeia a pasta complexa para apenas 'jmods'
-        Move-Item -Path "openjfx-17.0.10_windows-x64_bin-jmods/javafx-jmods-17.0.10" -Destination "jmods"
+        # Garante a criação da pasta destino e move os arquivos usando busca dinâmica
+        New-Item -ItemType Directory -Force -Path "jmods"
+        Move-Item -Path "**/javafx-jmods-17.0.10/*" -Destination "jmods/"
 
     - name: 5. Criar o Executável (.exe) com jpackage
       run: |
