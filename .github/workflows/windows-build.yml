@@ -32,7 +32,7 @@ jobs:
         echo "JMOD_PATH=$fullPath" >> $env:GITHUB_ENV
         echo "Pasta JMOD encontrada em: $fullPath"
 
-    - name: 5. Criar o Executável (.exe) com Runtime Completa
+    - name: 5. Criar o Executável (.exe)
       shell: powershell
       run: |
         jpackage --type exe `
@@ -44,7 +44,6 @@ jobs:
           --main-class org.sysRestaurante.gui.MainGUI `
           --module-path "${{ env.JMOD_PATH }}" `
           --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.swing,javafx.media,javafx.web `
-          --runtime-image "$env:JAVA_HOME" `
           --win-dir-chooser `
           --win-shortcut `
           --verbose
