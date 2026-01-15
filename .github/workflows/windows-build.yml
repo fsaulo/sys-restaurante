@@ -3,6 +3,7 @@ name: Gerar Instalador Windows
 on:
   push:
     branches: [ "feature/my-branch", "main" ]
+  workflow_dispatch: # Isso permite que você rode manualmente pelo site do GitHub!
 
 jobs:
   build-windows:
@@ -22,23 +23,29 @@ jobs:
     - name: 3. Compilar com Maven (Gerar o JAR)
       run: mvn clean install
 
-    - name: 4. Baixar JMODS do JavaFX 17
+    - name: 4. Baixar e Extrair JMODS do JavaFX 17
+      shell: powershell
       run: |
+        # Download
         Invoke-WebRequest -Uri https://download2.gluonhq.com/openjfx/17.0.10/openjfx-17.0.10_windows-x64_bin-jmods.zip -OutFile javafx-jmods.zip
+        # Extrair
         Expand-Archive javafx-jmods.zip -DestinationPath .
-        # Garante a criação da pasta destino e move os arquivos usando busca dinâmica
-        New-Item -ItemType Directory -Force -Path "jmods"
-        Move-Item -Path "**/javafx-jmods-17.0.10/*" -Destination "jmods/"
+        # Verificar o conteúdo para o log (ajuda a debugar se falhar)
+        ls -Recurse openjfx-17.0.10_windows-x64_bin-jmods
 
     - name: 5. Criar o Executável (.exe) com jpackage
+      shell: powershell
       run: |
+        # Definimos o caminho exato onde os jmods foram parar após a extração padrão
+        $JMOD_PATH = "openjfx-17.0.10_windows-x64_bin-jmods\javafx-jmods-17.0.10"
+        
         jpackage --type exe `
           --dest dist/ `
           --name "SysRestaurante" `
           --input target/ `
           --main-jar javafx-maven-setup-1.0-SNAPSHOT-jar-with-dependencies.jar `
           --main-class org.sysRestaurante.gui.MainGUI `
-          --module-path jmods `
+          --module-path $JMOD_PATH `
           --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.swing `
           --win-dir-chooser `
           --win-shortcut
