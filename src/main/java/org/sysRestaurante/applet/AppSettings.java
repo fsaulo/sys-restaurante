@@ -8,7 +8,7 @@ public class AppSettings {
     private String kitchenPrinterName = "POS-80C_COZINHA";
     private String posPrinterName = "POS-80C_COZINHA";
     private boolean shouldPrintPOS = true;
-    private boolean shouldPrintKitchenTicket = false;
+    private boolean shouldPrintKitchenTicket = true;
 
     public boolean isShouldPrintKitchenTicket() {
         return shouldPrintKitchenTicket;
