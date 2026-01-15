@@ -1,67 +1,84 @@
 package org.sysRestaurante.util;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.logging.Logger;
 
-public class DBInitializer {
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DBInitializer.class.getName());
-    private static final String SCHEMA_FILE = "src/main/resources/external/schema.sql";
-    private static final String DB_URL = "jdbc:sqlite:";
+public final class DBInitializer {
+
+    private static final Logger LOGGER =
+            LoggerHandler.getGenericConsoleHandler(DBInitializer.class.getName());
+
+    private static final String SCHEMA_RESOURCE = "/external/schema.sql";
+    private static final String JDBC_PREFIX = "jdbc:sqlite:";
 
     public static void initDatabase(String dbFilePath) {
         if (isDBInitialized(dbFilePath)) {
             return;
         }
 
-        String database = DB_URL + dbFilePath;
-        try (Connection conn = DriverManager.getConnection(database)) {
-            if (conn == null) {
-                return;
+        String jdbcUrl = JDBC_PREFIX + dbFilePath;
+
+        try (Connection conn = DriverManager.getConnection(jdbcUrl);
+             Statement stmt = conn.createStatement()) {
+
+            conn.setAutoCommit(false);
+            stmt.execute("PRAGMA foreign_keys = ON");
+
+            for (String sql : loadSchemaStatements()) {
+                if (!sql.isBlank()) {
+                    stmt.execute(sql);
+                }
             }
 
-            String sql = readSchemaFile();
-            Statement stmt = conn.createStatement();
-            stmt.executeUpdate("PRAGMA foreign_keys = ON;");
-            stmt.executeUpdate(sql);
+            conn.commit();
+            LOGGER.info("Database initialized using schema: " + SCHEMA_RESOURCE);
 
-            LOGGER.info("Database created using file: " + SCHEMA_FILE);
-        } catch (SQLException | IOException e) {
-            LOGGER.severe("Error initializing database: " + e.getMessage());
+        } catch (Exception e) {
+            LOGGER.severe("Failed to initialize database: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
     private static boolean isDBInitialized(String dbFilePath) {
-        File dbFile = new File(dbFilePath);
-        if (!dbFile.exists()) {
+        String jdbcUrl = JDBC_PREFIX + dbFilePath;
+
+        try (Connection conn = DriverManager.getConnection(jdbcUrl);
+             PreparedStatement ps = conn.prepareStatement(
+                     "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?")) {
+
+            ps.setString(1, "metadata");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+            LOGGER.warning("Database not initialized yet: " + e.getMessage());
             return false;
         }
-
-        String database = DB_URL + dbFilePath;
-        try (Connection conn = DriverManager.getConnection(database)) {
-            String query = "SELECT name FROM sqlite_master WHERE type='table' AND name='metadata'";
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            return rs.next();
-        } catch (SQLException e) {
-            LOGGER.severe("Error during database initialization" + e.getMessage());
-        }
-
-        return false;
     }
 
-    private static String readSchemaFile() throws IOException {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(SCHEMA_FILE))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-                sb.append("\n");
+    private static String[] loadSchemaStatements() throws Exception {
+        try (InputStream in = DBInitializer.class.getResourceAsStream(SCHEMA_RESOURCE)) {
+            if (in == null) {
+                throw new IllegalStateException("Schema resource not found: " + SCHEMA_RESOURCE);
             }
+
+            StringBuilder sb = new StringBuilder();
+            try (BufferedReader br =
+                         new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line).append('\n');
+                }
+            }
+
+            return sb.toString().split(";");
         }
-        return sb.toString();
     }
 }

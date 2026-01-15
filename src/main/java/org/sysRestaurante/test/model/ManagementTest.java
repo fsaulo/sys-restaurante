@@ -1,5 +1,3 @@
-package org.sysRestaurante.test.model;
-
 import org.junit.jupiter.api.Test;
 import org.sysRestaurante.dao.MetadataDao;
 import org.sysRestaurante.model.Management;
