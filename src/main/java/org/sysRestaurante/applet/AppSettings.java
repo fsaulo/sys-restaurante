@@ -6,7 +6,7 @@ public class AppSettings {
     private static final AppSettings instance = new AppSettings();
     private final boolean isProduction;
     private String kitchenPrinterName = "POS-80C_COZINHA";
-    private String posPrinterName = "POS-80C_COZINHA";
+    private String posPrinterName = "POS-80C_CAIXA";
     private boolean shouldPrintPOS = true;
     private boolean shouldPrintKitchenTicket = true;
 
