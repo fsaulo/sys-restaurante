@@ -221,12 +221,14 @@ public class FinishSellController {
     @FXML
     public void printReceipt() {
         buildReceiptContent();
-        try {
-            AppController.printPOSReceipt();
-            back();
-        } catch (IOException e) {
-            LOGGER.warning("Impressora não encontrada. Recibo não será impresso.");
-        }
+        Platform.runLater(() -> {
+            try {
+                AppController.printPOSReceipt();
+            } catch (IOException e) {
+                LOGGER.warning("Impressora não foi encontrada. O recibo não será impresso");
+            }
+        });
+        back();
     }
 
     public void buildReceiptContent() {
@@ -335,13 +337,15 @@ public class FinishSellController {
                 AppFactory.getCashierController().updateCashierElements();
             }
 
-            try {
-                buildReceiptContent();
-                AppController.setSellConfirmed(true);
-                AppController.printPOSReceipt();
-            } catch (IOException e) {
-                LOGGER.warning("Não foi possível imprimir o recibo.");
-            }
+            buildReceiptContent();
+            AppController.setSellConfirmed(true);
+            Platform.runLater(() -> {
+                try {
+                    AppController.printPOSReceipt();
+                } catch (IOException e) {
+                    LOGGER.warning("Impressora não foi encontrada. O recibo não será impresso");
+                }
+            });
 
             AppFactory.setOrderDao(null);
             wrapperVBox.getScene().getWindow().hide();

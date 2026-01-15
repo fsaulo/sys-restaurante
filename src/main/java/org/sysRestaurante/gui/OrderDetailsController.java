@@ -1,5 +1,6 @@
 package org.sysRestaurante.gui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,6 +28,7 @@ import org.sysRestaurante.model.Management;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Personnel;
 import org.sysRestaurante.util.ExceptionHandler;
+import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.io.IOException;
@@ -35,6 +37,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked")
 public class OrderDetailsController {
@@ -77,6 +80,7 @@ public class OrderDetailsController {
     private Button receiptButton;
 
     private final OrderDao order = AppFactory.getOrderDao();
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(OrderDetailsController.class.getName());
 
     public void initialize() {
         List<ProductDao> products = Order.getItemsByOrderId(order.getIdOrder());
@@ -101,12 +105,14 @@ public class OrderDetailsController {
         cancelOrderButton.setOnAction(actionEvent -> onCancelOrder());
 
         receiptButton.setOnMouseClicked(event -> {
-            try {
-                setOrderDetails();
-                AppController.printPOSReceipt();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            setOrderDetails();
+            Platform.runLater(() -> {
+                try {
+                    AppController.printPOSReceipt();
+                } catch (IOException e) {
+                    LOGGER.warning("Impressora não foi encontrada. O recibo não será impresso");
+                }
+            });
         });
 
         setOrderDetails();

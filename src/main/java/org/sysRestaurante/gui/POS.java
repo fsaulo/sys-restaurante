@@ -598,11 +598,13 @@ public class POS {
                     ticket.setIdEmployee(((ComandaDao) order).getIdEmployee());
                     ticket.setIdTable(((ComandaDao) order).getIdTable());
 
-                    try {
-                        AppController.printKitchenTicket(ticket, product);
-                    } catch (IOException e) {
-                        LOGGER.warning("Impressora nao encontrada. Ticket não será impresso.");
-                    }
+                    Platform.runLater(() -> {
+                        try {
+                            AppController.printKitchenTicket(ticket, product);
+                        } catch (IOException e) {
+                            LOGGER.warning("Impressora nao encontrada. Ticket não será impresso.");
+                        }
+                    });
                 } else {
                     NotificationHandler.showInfo("Não foi possível registrar o pedido na cozinha");
                 }

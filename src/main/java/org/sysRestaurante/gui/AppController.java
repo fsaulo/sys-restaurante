@@ -61,6 +61,8 @@ public class AppController implements DateFormatter {
     @FXML
     private BorderPane borderPaneHolder;
 
+    private Window owner;
+
     public void initialize() throws IOException {
         startChronometer();
         SessionDao session = new SessionDao();
