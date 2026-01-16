@@ -25,6 +25,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.Duration;
 
@@ -266,6 +267,7 @@ public class AppController implements DateFormatter {
             stage.setScene(scene);
             stage.setTitle("SysRestaurante: Finalizando pedido");
             stage.setResizable(false);
+            stage.initStyle(StageStyle.UTILITY);
             stage.showAndWait();
 
         } catch (IOException e1) {
@@ -293,6 +295,7 @@ public class AppController implements DateFormatter {
             stage.setScene(scene);
             stage.setTitle("SysRestaurante: Finalizando pedido");
             stage.setResizable(false);
+            stage.initStyle(StageStyle.UTILITY);
             stage.showAndWait();
 
         } catch (IOException e1) {
@@ -382,7 +385,6 @@ public class AppController implements DateFormatter {
             comanda.setTaxes(orderDao.getTaxes());
             comanda.setIdOrder(orderDao.getIdOrder());
         }
-        System.out.println(comanda.getTotal());
 
         Receipt receipt = new Receipt(comanda, AppFactory.getSelectedProducts());
 

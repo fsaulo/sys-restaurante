@@ -101,11 +101,13 @@ public class CloseCashierDialogController {
             AppFactory.setCashierDao(null);
             AppFactory.getCashierController().updateCashierElements();
 
-            try {
-                AppController.printSangriaReceipt();
-            } catch (IOException e) {
-                LOGGER.warning("Não foi possível imprimir o bilhete");
-            }
+            Platform.runLater(() -> {
+                try {
+                    AppController.printSangriaReceipt();
+                } catch (IOException e) {
+                    LOGGER.warning("Impressora não encontrada. O recibo não será impresso");
+                }
+            });
 
             LOGGER.info("Cashier was closed with no problems.");
         } else {

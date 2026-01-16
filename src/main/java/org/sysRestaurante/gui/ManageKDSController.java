@@ -1,5 +1,6 @@
 package org.sysRestaurante.gui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,10 +21,12 @@ import org.sysRestaurante.event.TicketStatusChangedEvent;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.util.ExceptionHandler;
+import org.sysRestaurante.util.LoggerHandler;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class ManageKDSController {
 
@@ -54,6 +57,7 @@ public class ManageKDSController {
 
     private ObservableList<KitchenOrderDao> kitchenTickets = FXCollections.observableArrayList();
     private final ObservableList<KitchenOrderDao.KitchenOrderStatus> statusFilter = FXCollections.observableArrayList();
+    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(ManageKDSController.class.getName());
 
     public void initialize() {
         AppFactory.setManageKDSController(this);
@@ -178,11 +182,14 @@ public class ManageKDSController {
         ticket.setIdEmployee(((ComandaDao) order).getIdEmployee());
         ticket.setIdTable(((ComandaDao) order).getIdTable());
 
-        try {
-            AppController.printKitchenTicket(ticket, new ProductDao());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            try {
+                AppController.printKitchenTicket(ticket, new ProductDao());
+            } catch (IOException e) {
+                LOGGER.warning("Impressora não foi encontrada. O recibo não será impresso");
+            }
+        });
+
     }
 
     public void buildAndAddTickets(KitchenOrderDao ticket) throws IOException {

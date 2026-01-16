@@ -48,9 +48,9 @@ public class MainGUI extends Application {
             stage.setScene(createScene(loadMainPane()));
             stage.setMinHeight(390);
             stage.setMinWidth(450);
-            stage.centerOnScreen();
             LOGGER.info("Program started with " + ExceptionHandler.getGlobalExceptionsCount() + " errors.");
             stage.show();
+            stage.centerOnScreen();
         } catch (IOException | IllegalStateException exception) {
             LOGGER.severe("Exception triggered by startProgram()");
             NotificationHandler.errorDialog(exception);

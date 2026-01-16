@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.UserDao;
@@ -19,7 +20,6 @@ import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.Date;
@@ -29,8 +29,8 @@ import java.util.logging.Logger;
 public class LoginController implements DateFormatter {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(LoginController.class.getName());
-    private static final String SIGNATURE_IMAGE = "src/main/resources/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
-    private static final String LOGINTEXT_IMAGE = "src/main/resources/images/login-text.png";
+    private static final String SIGNATURE_IMAGE = "/images/a1c7cfbbf306ef586600fcf2da1d5acd.png";
+    private static final String LOGINTEXT_IMAGE = "/images/login-text.png";
     private final Authentication certs = new Authentication();
     private static UserDao userDaoData;
 
@@ -97,12 +97,20 @@ public class LoginController implements DateFormatter {
         clock.play();
     }
 
+    private Image loadImage(String resourcePath) {
+        var url = getClass().getResource(resourcePath);
+        if (url == null) {
+            throw new IllegalStateException("Image resource not found: " + resourcePath);
+        }
+        return new Image(url.toExternalForm());
+    }
+
     public void setSignatureImage() throws FileNotFoundException {
-        signatureImage.setImage(new Image(new FileInputStream(SIGNATURE_IMAGE)));
+        signatureImage.setImage(loadImage(SIGNATURE_IMAGE));
     }
 
     public void setLoginTextImage() throws  FileNotFoundException {
-        loginTextImage.setImage(new Image(new FileInputStream(LOGINTEXT_IMAGE)));
+        loginTextImage.setImage(loadImage(LOGINTEXT_IMAGE));
     }
 
     public void storeLastSessionDuration() {
@@ -128,6 +136,9 @@ public class LoginController implements DateFormatter {
         MainGUIController mainController = MainGUI.getMainController();
         mainController.setMainPanePadding(0, 0, 0, 0);
         SceneNavigator.loadScene(SceneNavigator.APPLICATION_STAGE);
+        Stage stage = (Stage) AppFactory.getMainController().getScene().getWindow();
+        stage.setFullScreenExitHint("");
+        Platform.runLater(() -> stage.setFullScreen(true));
     }
 
     @FXML

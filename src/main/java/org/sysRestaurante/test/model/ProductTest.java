@@ -1,5 +1,3 @@
-package org.sysRestaurante.test.model;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.sysRestaurante.dao.ProductDao;

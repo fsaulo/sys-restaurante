@@ -1,5 +1,3 @@
-package org.sysRestaurante.test.dao;
-
 import org.junit.jupiter.api.Test;
 import org.sysRestaurante.dao.ProductDao;
 

@@ -1,47 +1,72 @@
 package org.sysRestaurante.util;
 
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
-public class DBConnection {
+public final class DBConnection {
 
-    private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(DBConnection.class.getName());
-    private static final String DB_URL = "jdbc:sqlite:";
-    private static final String DB_LOCAL_CONNECTION_PRODUCTION = "src/main/resources/external/production.db";
-    private static final String DB_LOCAL_CONNECTION_DEV = "src/main/resources/external/devel.db";
-    private static final String DB_LOCAL_CONNECTION;
+    private static final Logger LOGGER =
+            LoggerHandler.getGenericConsoleHandler(DBConnection.class.getName());
+
+    private static final String JDBC_PREFIX = "jdbc:sqlite:";
+
+    private static final boolean IS_PRODUCTION =
+            Boolean.parseBoolean(System.getProperty("sys.production", "true"));
+
+    private static final String DB_RESOURCE =
+            IS_PRODUCTION ? "/external/production.db" : "/external/devel.db";
+
+    private static final Path DB_PATH =
+            Paths.get(System.getProperty("user.home"),
+                    ".sysRestaurante",
+                    IS_PRODUCTION ? "production.db" : "devel.db");
+
     private static int globalDBRequestsCount = 0;
 
     static {
-        boolean isProduction = Boolean.parseBoolean(System.getProperty("sys.production", "true"));
-        DB_LOCAL_CONNECTION = isProduction ? DB_LOCAL_CONNECTION_PRODUCTION : DB_LOCAL_CONNECTION_DEV;
-        DBInitializer.initDatabase(DB_LOCAL_CONNECTION);
-        LOGGER.info("Database was initialized (production = " + isProduction + ")");
+        try {
+            initializeDatabase();
+            LOGGER.info("Database ready at: " + DB_PATH);
+        } catch (Exception e) {
+            LOGGER.severe("Failed to initialize database: " + e.getMessage());
+            throw new ExceptionInInitializerError(e);
+        }
+    }
+
+    private static void initializeDatabase() throws Exception {
+        if (Files.exists(DB_PATH)) {
+            return;
+        }
+
+        Files.createDirectories(DB_PATH.getParent());
+
+        try (InputStream in = DBConnection.class.getResourceAsStream(DB_RESOURCE)) {
+            if (in == null) {
+                throw new IllegalStateException("Database resource not found: " + DB_RESOURCE);
+            }
+            Files.copy(in, DB_PATH);
+        }
+
+        DBInitializer.initDatabase(DB_PATH.toString());
     }
 
     public static Connection getConnection() throws SQLException {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            LOGGER.config("New request.");
-            String dbFilePath = DB_URL + DB_LOCAL_CONNECTION;
-            Connection con = DriverManager.getConnection(dbFilePath);
-            assert con != null;
-            DBConnection.incrementGlobalDBRequestsCount();
-            return con;
-        } catch (ClassNotFoundException ex) {
-            ExceptionHandler.incrementGlobalExceptionsCount();
-            LOGGER.severe("Database driver not found: " + ex.getMessage());
-        }
-        return null;
+        LOGGER.config("New DB request");
+        incrementGlobalDBRequestsCount();
+        return DriverManager.getConnection(JDBC_PREFIX + DB_PATH.toAbsolutePath());
     }
 
     public static int getGlobalDBRequestsCount() {
-        return DBConnection.globalDBRequestsCount;
+        return globalDBRequestsCount;
     }
 
-    public static void incrementGlobalDBRequestsCount() {
-        DBConnection.globalDBRequestsCount += 1;
+    private static void incrementGlobalDBRequestsCount() {
+        globalDBRequestsCount++;
     }
 }
