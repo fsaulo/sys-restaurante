@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.dao.UserDao;
@@ -19,7 +20,6 @@ import org.sysRestaurante.model.Authentication;
 import org.sysRestaurante.util.ExceptionHandler;
 import org.sysRestaurante.util.LoggerHandler;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 import java.util.Date;
@@ -136,6 +136,9 @@ public class LoginController implements DateFormatter {
         MainGUIController mainController = MainGUI.getMainController();
         mainController.setMainPanePadding(0, 0, 0, 0);
         SceneNavigator.loadScene(SceneNavigator.APPLICATION_STAGE);
+        Stage stage = (Stage) AppFactory.getMainController().getScene().getWindow();
+        stage.setFullScreenExitHint("");
+        Platform.runLater(() -> stage.setFullScreen(true));
     }
 
     @FXML
