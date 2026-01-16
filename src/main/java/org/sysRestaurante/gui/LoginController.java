@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -25,6 +26,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 
 public class LoginController implements DateFormatter {
 
@@ -52,8 +54,22 @@ public class LoginController implements DateFormatter {
     private ImageView signatureImage;
     @FXML
     private ImageView loginTextImage;
+    @FXML
+    private CheckBox rememberMe;
+
+    private static final String KEY_LOGIN = "saved_login";
+    private static final String KEY_REMEMBER = "remember_me";
+    private final Preferences prefs =
+            Preferences.userNodeForPackage(LoginController.class);
 
     public void initialize() {
+        rememberMe = new CheckBox();
+        boolean remember = prefs.getBoolean(KEY_REMEMBER, false);
+        rememberMe.setSelected(remember);
+        if (remember) {
+            usernameField.setText(prefs.get(KEY_LOGIN, ""));
+        }
+
         AppFactory.setLoginController(this);
         loginPane.setMinHeight(250);
         loginPane.setMinWidth(440);
@@ -75,9 +91,6 @@ public class LoginController implements DateFormatter {
             LOGGER.severe("Invalid path to image files");
             e.printStackTrace();
         }
-
-        usernameField.setText("admin");
-        passwordField.setText("123");
 
         Platform.runLater(() -> loginPane.requestFocus());
 
@@ -123,11 +136,23 @@ public class LoginController implements DateFormatter {
     }
 
     private void onAuthenticationAccepted() {
+        if (rememberMe.isSelected()) {
+            prefs.put(KEY_LOGIN, usernameField.getText());
+            prefs.putBoolean(KEY_REMEMBER, true);
+        } else {
+            clearSavedLogin();
+        }
+
         userDaoData = certs.getUserData(usernameField.getText());
         AppFactory.setUserDao(userDaoData);
         MainGUIController mainController = MainGUI.getMainController();
         mainController.setMainPanePadding(0, 0, 0, 0);
         SceneNavigator.loadScene(SceneNavigator.APPLICATION_STAGE);
+    }
+
+    private void clearSavedLogin() {
+        prefs.remove(KEY_LOGIN);
+        prefs.putBoolean(KEY_REMEMBER, false);
     }
 
     @FXML
