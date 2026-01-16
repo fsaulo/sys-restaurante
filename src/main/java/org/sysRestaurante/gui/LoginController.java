@@ -63,7 +63,6 @@ public class LoginController implements DateFormatter {
             Preferences.userNodeForPackage(LoginController.class);
 
     public void initialize() {
-        rememberMe = new CheckBox();
         boolean remember = prefs.getBoolean(KEY_REMEMBER, false);
         rememberMe.setSelected(remember);
         if (remember) {
@@ -71,7 +70,7 @@ public class LoginController implements DateFormatter {
         }
 
         AppFactory.setLoginController(this);
-        loginPane.setMinHeight(250);
+        loginPane.setMinHeight(280);
         loginPane.setMinWidth(440);
         statusAccessLabel.setText("");
         startClock();
