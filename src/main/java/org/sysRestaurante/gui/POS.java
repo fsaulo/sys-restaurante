@@ -305,6 +305,7 @@ public class POS {
                 alert.setTitle("Alerta do sistema");
                 alert.setHeaderText("Atenção!");
                 alert.setContentText("Não é possível encerrar o pedido pois nenhum item foi adicionado a lista");
+                alert.initOwner(wrapperBox.getScene().getWindow());
                 alert.showAndWait();
             } else {
                 AppController.showPaymentDialog(AppFactory.getPos().getPOSWindow(), wrapperBox);
@@ -321,6 +322,7 @@ public class POS {
                 alert.setTitle("Alerta do sistema");
                 alert.setHeaderText("Atenção!");
                 alert.setContentText("Não é possível encerrar o pedido pois nenhum item foi adicionado a lista");
+                alert.initOwner(wrapperBox.getScene().getWindow());
                 alert.showAndWait();
             } else {
                 AppFactory.setOrderDao(new OrderDao());
