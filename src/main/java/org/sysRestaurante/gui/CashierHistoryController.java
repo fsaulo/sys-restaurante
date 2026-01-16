@@ -198,8 +198,8 @@ public class CashierHistoryController {
             optionDeleteOrder.setDisable(true);
             contextMenu.getItems().addAll(optionDetailsOrder, optionSeeReceipt, separator, optionDeleteOrder);
 
-            row.setOnMouseClicked(e1 -> {
-                if (e1.getButton().equals(MouseButton.PRIMARY) && e1.getClickCount() == 2) {
+            row.setOnMouseClicked(e -> {
+                if (e.getClickCount() == 2 && !row.isEmpty()) {
                     AppFactory.setOrderDao(row.getItem());
                     AppController.showDialog(SceneNavigator.ORDER_DETAILS_DIALOG, true);
                 }
