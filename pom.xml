@@ -30,7 +30,26 @@
                                     <mainClass>org.sysRestaurante.applet.Main</mainClass>
                                 </transformer>
                             </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.sysRestaurante.applet.Main</mainClass>
+                                </transformer>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>
@@ -89,6 +108,10 @@
                 <directory>${basedir}/src/main/java/resources</directory>
                 <targetPath>${basedir}/target/classes/org/sysRestaurante/gui/icons</targetPath>
                 <filtering>false</filtering>
+            </resource>
+
+            <resource>
+                <directory>${basedir}/src/main/java/resources</directory>
             </resource>
         </resources>
     </build>
