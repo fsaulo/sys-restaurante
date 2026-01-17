@@ -19,9 +19,6 @@ public final class DBConnection {
     private static final boolean IS_PRODUCTION =
             Boolean.parseBoolean(System.getProperty("sys.production", "true"));
 
-    private static final String DB_RESOURCE =
-            IS_PRODUCTION ? "/external/production.db" : "/external/devel.db";
-
     private static final Path DB_PATH =
             Paths.get(System.getProperty("user.home"),
                     ".sysRestaurante",
@@ -32,35 +29,20 @@ public final class DBConnection {
     static {
         try {
             initializeDatabase();
-            LOGGER.info("Database ready at: " + DB_PATH);
         } catch (Exception e) {
-            LOGGER.severe("Failed to initialize database: " + e.getMessage());
             throw new ExceptionInInitializerError(e);
         }
     }
 
     private static void initializeDatabase() throws Exception {
-        if (Files.exists(DB_PATH)) {
-            return;
-        }
-
         Files.createDirectories(DB_PATH.getParent());
-
-        try (InputStream in = DBConnection.class.getResourceAsStream(DB_RESOURCE)) {
-            if (in == null) {
-                throw new IllegalStateException("Database resource not found: " + DB_RESOURCE);
-            }
-            Files.copy(in, DB_PATH);
-        }
-
-        DBInitializer.initDatabase(DB_PATH.toString());
+        DBInitializer.initDatabase(DB_PATH);
     }
 
     public static Connection getConnection() throws SQLException {
         LOGGER.config("New DB request");
         incrementGlobalDBRequestsCount();
-        return DriverManager.getConnection(JDBC_PREFIX + DB_PATH.toAbsolutePath());
-    }
+        return DriverManager.getConnection(JDBC_PREFIX + DB_PATH.toAbsolutePath());    }
 
     public static int getGlobalDBRequestsCount() {
         return globalDBRequestsCount;

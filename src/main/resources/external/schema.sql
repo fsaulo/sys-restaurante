@@ -1,4 +1,3 @@
-BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS "caixa" (
 	"id_caixa"	INTEGER NOT NULL UNIQUE,
 	"id_usuario"	INTEGER,
@@ -154,7 +153,7 @@ CREATE TABLE IF NOT EXISTS "usuario" (
 	PRIMARY KEY("id_usuario" AUTOINCREMENT),
 	FOREIGN KEY("id_funcionario") REFERENCES "funcionario"("id_funcionario")
 );
-COMMIT;
+
 INSERT INTO usuario (nome, senha, username, email, is_admin) VALUES ('admin', 'vyVVzr278QsIiC2rdEAhVw==', 'admin', 'admin@sys-restaurante.com', '1');
 INSERT INTO caixa (id_caixa, id_usuario, data_abertura, hora_abertura, balanco, balanco_inicial) VALUES ('1', '1', '1579402800000', '94526000', '0', '0');
 INSERT INTO categoria_pedido (id_categoria_pedido, descricao) VALUES ('1', 'Pedido no caixa');

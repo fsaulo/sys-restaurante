@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.sysRestaurante.applet.AppFactory;
+import org.sysRestaurante.model.Personnel;
 import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.Encryption;
 import org.sysRestaurante.util.ExceptionHandler;
@@ -14,6 +15,7 @@ import org.sysRestaurante.util.LoggerHandler;
 import org.sysRestaurante.util.NotificationHandler;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 public class MainGUI extends Application {
@@ -82,7 +84,7 @@ public class MainGUI extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws SQLException {
         AppFactory.setMainGUI(this);
         primaryStage.setHeight(450);
         primaryStage.setWidth(500);
