@@ -17,3 +17,5 @@
 .idea
 
 # Ignore project files
+identifier.sqlite
+javafx-maven-setup.iml
