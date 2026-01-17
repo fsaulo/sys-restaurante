@@ -7,9 +7,6 @@
   <build>
     <resources>
       <resource>
-        <directory>${basedir}/src/main/resources</directory>
-      </resource>
-      <resource>
         <targetPath>${basedir}/target/classes/org/sysRestaurante/gui/fxml</targetPath>
         <directory>${basedir}/src/main/java/org/sysRestaurante/gui/fxml</directory>
       </resource>
@@ -25,8 +22,30 @@
         <targetPath>${basedir}/target/classes/org/sysRestaurante/gui/icons</targetPath>
         <directory>${basedir}/src/main/java/resources</directory>
       </resource>
+      <resource>
+        <directory>${basedir}/src/main/resources</directory>
+      </resource>
     </resources>
     <plugins>
+      <plugin>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.6.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer>
+                  <mainClass>org.sysRestaurante.applet.Main</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.6.1</version>
