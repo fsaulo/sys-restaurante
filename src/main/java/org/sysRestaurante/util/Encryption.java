@@ -44,7 +44,7 @@ public class Encryption {
         } catch (Exception ex) {
             ExceptionHandler.incrementGlobalExceptionsCount();
             ex.printStackTrace();
-            LOGGER.severe("Error while ecrypting " + ex);
+            LOGGER.severe("Error while encrypting " + ex);
         }
         return null;
     }
