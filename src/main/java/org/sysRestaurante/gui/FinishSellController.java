@@ -220,10 +220,13 @@ public class FinishSellController {
 
     @FXML
     public void printReceipt() {
+        final OrderDao orderSnapshot = AppFactory.getOrderDao();
+        final ArrayList<ProductDao> itemsSnapshot = AppFactory.getSelectedProducts();
+
         buildReceiptContent();
         Platform.runLater(() -> {
             try {
-                AppController.printPOSReceipt();
+                AppController.printPOSReceipt(orderSnapshot, itemsSnapshot);
             } catch (IOException e) {
                 LOGGER.warning("Impressora não foi encontrada. O recibo não será impresso");
             }
@@ -276,7 +279,7 @@ public class FinishSellController {
     }
 
     public void confirm() {
-        ArrayList<ProductDao> items = AppFactory.getSelectedProducts();
+        final ArrayList<ProductDao> items = AppFactory.getSelectedProducts();
 
         double discount = this.percentageField1.getAmount() * getSubtotal();
         double taxes = this.percentageField2.getAmount() * getSubtotal();
@@ -339,9 +342,12 @@ public class FinishSellController {
 
             buildReceiptContent();
             AppController.setSellConfirmed(true);
+
+            final OrderDao orderSnapshot = orderDao;
+            final ArrayList<ProductDao> itemsSnapshot = new ArrayList<>(items);
             Platform.runLater(() -> {
                 try {
-                    AppController.printPOSReceipt();
+                    AppController.printPOSReceipt(orderSnapshot, itemsSnapshot);
                 } catch (IOException e) {
                     LOGGER.warning("Impressora não foi encontrada. O recibo não será impresso");
                 }

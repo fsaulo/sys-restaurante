@@ -54,7 +54,7 @@
                     </VBox>
                <VBox>
                   <children>
-                          <Button mnemonicParsing="false" onAction="#loginRequested" prefHeight="60.0" prefWidth="160.0" style="-fx-cursor: hand;" text="Entrar" textOverrun="WORD_ELLIPSIS" wrapText="true">
+                          <Button mnemonicParsing="false" onAction="#loginRequested" prefHeight="60.0" prefWidth="160.0" style="-fx-cursor: hand;" defaultButton="true" text="Entrar" textOverrun="WORD_ELLIPSIS" wrapText="true">
                               <font>
                                   <Font name="Carlito Bold" size="20.0" />
                               </font>

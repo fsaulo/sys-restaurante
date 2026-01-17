@@ -34,6 +34,7 @@ import org.sysRestaurante.applet.AppSettings;
 import org.sysRestaurante.dao.*;
 import org.sysRestaurante.gui.formatter.DateFormatter;
 import org.sysRestaurante.model.Authentication;
+import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.model.Order;
 import org.sysRestaurante.model.Receipt;
 import org.sysRestaurante.util.ExceptionHandler;
@@ -336,25 +337,22 @@ public class AppController implements DateFormatter {
             alert.setHeaderText("Não foi possível imprimir o ticket da cozinha.");
             alert.setContentText("Impressora não encontrada");
             alert.initOwner(AppFactory.getMainController().getScene().getWindow());
+            alert.initModality(Modality.WINDOW_MODAL);
             alert.showAndWait();
             throw new IOException(e);
         }
     }
 
-    public static void printSangriaReceipt() throws IOException {
+    public static void printSangriaReceipt(CashierDao cashier, UserDao user, ArrayList<ComandaDao> comandas, ArrayList<OrderDao> orders) throws IOException {
         if (!AppSettings.getInstance().isShouldPrintPOS()) {
             return;
         }
 
         ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
-        CashierDao cashier = AppFactory.getCashierDao();
-        UserDao userDao = AppFactory.getUserDao();
-        ArrayList<ComandaDao> comandas = (ArrayList<ComandaDao>) Order.getComandasByIdCashier(cashier.getIdCashier());
-        ArrayList<OrderDao> orders = Order.getOrderByIdCashier(cashier.getIdCashier());
 
         try {
             Receipt receipt = new Receipt();
-            byte[] sangriaBuilder = receipt.buildSangriaForPrint(cashier, userDao, orders, comandas);
+            byte[] sangriaBuilder = receipt.buildSangriaForPrint(cashier, user, orders, comandas);
             printer.print(sangriaBuilder);
         } catch (IOException | PrintException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -362,43 +360,32 @@ public class AppController implements DateFormatter {
             alert.setHeaderText("Não foi possível imprimir o comprovante de fechamento de caixa.");
             alert.setContentText("Impressora não encontrada");
             alert.initOwner(AppFactory.getMainController().getScene().getWindow());
+            alert.initModality(Modality.WINDOW_MODAL);
             alert.showAndWait();
             throw new IOException(e);
         }
     }
 
-    public static void printPOSReceipt() throws IOException {
+    public static void printPOSReceipt(OrderDao order, ArrayList<ProductDao> items) throws IOException {
         if (!AppSettings.getInstance().isShouldPrintPOS()) {
             return;
         }
 
         ThermalPrinter printer = AppSettings.getInstance().getPOSPrinter();
-        ComandaDao comanda = AppFactory.getComandaDao();
-        if (comanda == null || comanda.getIdComanda() == 0) {
-            OrderDao orderDao = AppFactory.getOrderDao();
-            comanda = new ComandaDao();
-            comanda.setOrderDate(LocalDate.now());
-            comanda.setOrderTime(LocalTime.now());
-            comanda.setOrderDateTime(LocalDateTime.now());
-            comanda.setTotal(orderDao.getTotal());
-            comanda.setDiscount(orderDao.getDiscount());
-            comanda.setTaxes(orderDao.getTaxes());
-            comanda.setIdOrder(orderDao.getIdOrder());
-        }
-
-        Receipt receipt = new Receipt(comanda, AppFactory.getSelectedProducts());
+        Receipt receipt = new Receipt(order, items);
 
         try {
-            byte[] receiptBuilder = receipt.buildReceiptForPrint(comanda, AppFactory.getSelectedProducts());
+            byte[] receiptBuilder = receipt.buildReceiptForPrint(order, items);
             printer.print(receiptBuilder);
 
-            NotificationHandler.showInfo("Recibo #" + comanda.getIdComanda() + " impresso com sucesso!");
+            NotificationHandler.showInfo("Recibo #" + order.getIdOrder() + " impresso com sucesso!");
         } catch (PrintException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Informações de erro");
             alert.setHeaderText("Não foi possível imprimir o recibo");
             alert.setContentText("Impressora não encontrada.");
             alert.initOwner(AppFactory.getMainController().getScene().getWindow());
+            alert.initModality(Modality.WINDOW_MODAL);
             alert.showAndWait();
             throw new IOException(e);
         }

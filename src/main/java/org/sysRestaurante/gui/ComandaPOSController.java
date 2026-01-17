@@ -220,6 +220,7 @@ public class ComandaPOSController extends POS {
         try {
             EmployeeDao employee = employeeComboBox.selectionModelProperty().get().getSelectedItem();
             idEmployee = employee.getIdEmployee();
+            comanda.setIdEmployee(idEmployee);
         } catch (NullPointerException ex) {
             idEmployee = -1;
         }

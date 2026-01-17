@@ -69,6 +69,7 @@ public class Order {
             orderDao.setDiscount(discount);
             orderDao.setOrderDate(nowDate);
             orderDao.setTaxes(taxes);
+            orderDao.setTotal(inCash + byCard);
 
             LOGGER.info("Sell was registered successfully.");
             ps.close();
