@@ -1,6 +1,3 @@
-package org.sysRestaurante.test.model;
-
-
 import org.junit.jupiter.api.Test;
 import org.sysRestaurante.applet.AppFactory;
 import org.sysRestaurante.applet.AppSettings;
