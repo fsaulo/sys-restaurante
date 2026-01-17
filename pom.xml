@@ -111,7 +111,7 @@
             </resource>
 
             <resource>
-                <directory>${basedir}/src/main/java/resources</directory>
+                <directory>${basedir}/src/main/resources</directory>
             </resource>
         </resources>
     </build>

@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.*;
 import java.util.logging.Logger;
 
@@ -15,7 +17,7 @@ public final class DBInitializer {
     private static final String SCHEMA_RESOURCE = "/external/schema.sql";
     private static final String JDBC_PREFIX = "jdbc:sqlite:";
 
-    public static void initDatabase(String dbFilePath) {
+    public static void initDatabase(Path dbFilePath) {
         if (isDBInitialized(dbFilePath)) {
             return;
         }
@@ -29,22 +31,25 @@ public final class DBInitializer {
             stmt.execute("PRAGMA foreign_keys = ON");
 
             for (String sql : loadSchemaStatements()) {
-                if (!sql.isBlank()) {
-                    stmt.execute(sql);
+                String trimmed = sql.trim();
+                if (!trimmed.isEmpty()) {
+                    stmt.execute(trimmed);
                 }
             }
 
             conn.commit();
-            LOGGER.info("Database initialized using schema: " + SCHEMA_RESOURCE);
-
         } catch (Exception e) {
-            LOGGER.severe("Failed to initialize database: " + e.getMessage());
+            LOGGER.severe("Failed to initialize database: " + dbFilePath + " " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
-    private static boolean isDBInitialized(String dbFilePath) {
-        String jdbcUrl = JDBC_PREFIX + dbFilePath;
+    private static boolean isDBInitialized(Path dbFilePath) {
+        if (!Files.exists(dbFilePath)) {
+            return false;
+        }
+
+        String jdbcUrl = JDBC_PREFIX + dbFilePath.toAbsolutePath();
 
         try (Connection conn = DriverManager.getConnection(jdbcUrl);
              PreparedStatement ps = conn.prepareStatement(

@@ -20,7 +20,7 @@ public class Personnel {
 
     private static final Logger LOGGER = LoggerHandler.getGenericConsoleHandler(Personnel.class.getName());
 
-    public void insert(String nome, String pass, String username, String email) throws SQLException {
+    public static void insert(String nome, String pass, String username, String email) throws SQLException {
         PreparedStatement ps = null;
         Connection con = null;
         String query = "INSERT INTO usuario (nome, senha, username, email, is_admin) VALUES (?, ?, ?, ?, ?)";
@@ -33,9 +33,10 @@ public class Personnel {
             ps.setString(2, password);
             ps.setString(3, username);
             ps.setString(4, email);
-            ps.setBoolean(5, false);
+            ps.setBoolean(5, true);
             ps.executeUpdate();
 
+            LOGGER.info("Usuário resgitrado com sucesso: " + password);
         } catch (SQLException ex) {
             LOGGER.severe("User couldn't be registered.");
             ExceptionHandler.incrementGlobalExceptionsCount();

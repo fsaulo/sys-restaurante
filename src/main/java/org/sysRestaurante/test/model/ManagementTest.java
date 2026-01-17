@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 import org.sysRestaurante.dao.MetadataDao;
 import org.sysRestaurante.model.Management;
+import org.sysRestaurante.model.Personnel;
 
 import static org.junit.jupiter.api.Assertions.*;
 

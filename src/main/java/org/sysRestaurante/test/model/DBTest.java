@@ -5,6 +5,8 @@ import org.sysRestaurante.util.DBConnection;
 import org.sysRestaurante.util.DBInitializer;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.*;
@@ -12,12 +14,14 @@ import java.sql.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DBTest {
-    private static final String DB_FILE_NAME = "src/main/resources/external/temp.db";
-    private static final String DB_URL = "jdbc:sqlite:" + DB_FILE_NAME;
+    private static final Path DB_PATH =
+            Paths.get(System.getProperty("user.home"),
+                    ".sysRestaurante", "devel.db");
+    private static final String DB_URL = "jdbc:sqlite:" + DB_PATH.toAbsolutePath();
 
     @BeforeEach
     public void setup() {
-        File dbFile = new File(DB_FILE_NAME);
+        File dbFile = new File(DB_PATH.toAbsolutePath().toUri());
         if (dbFile.exists()) {
             assertTrue(dbFile.delete(), "Failed to delete existing DB file before test.");
         }
@@ -25,7 +29,7 @@ public class DBTest {
 
     @AfterEach
     public void cleanup() {
-        File dbFile = new File(DB_FILE_NAME);
+        File dbFile = new File(DB_PATH.toUri());
         if (dbFile.exists()) {
             assertTrue(dbFile.delete(), "Failed to delete DB file after test.");
         }
@@ -33,9 +37,10 @@ public class DBTest {
 
     @Test
     public void shouldCreateDBwithTables() throws SQLException {
-        DBInitializer.initDatabase(DB_FILE_NAME);
 
-        File dbFile = new File(DB_FILE_NAME);
+        DBInitializer.initDatabase(DB_PATH.toAbsolutePath());
+
+        File dbFile = new File(DB_PATH.toUri());
         assertTrue(dbFile.exists(), "Database file was not created.");
 
         try (Connection conn = DriverManager.getConnection(DB_URL);

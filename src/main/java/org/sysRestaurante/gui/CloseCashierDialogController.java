@@ -11,9 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import org.sysRestaurante.applet.AppFactory;
-import org.sysRestaurante.dao.CashierDao;
-import org.sysRestaurante.dao.ComandaDao;
-import org.sysRestaurante.dao.TableDao;
+import org.sysRestaurante.dao.*;
 import org.sysRestaurante.model.Cashier;
 import org.sysRestaurante.gui.formatter.CurrencyField;
 import org.sysRestaurante.gui.formatter.DateFormatter;
@@ -25,7 +23,9 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked")
@@ -98,16 +98,21 @@ public class CloseCashierDialogController {
         if (isCloseble()) {
             Cashier.close(cashierDao.getIdCashier());
             vboxWrapper.getScene().getWindow().hide();
-            AppFactory.setCashierDao(null);
-            AppFactory.getCashierController().updateCashierElements();
 
+            final CashierDao cashierSnapshot = cashierDao;
+            final UserDao userSnapshot = AppFactory.getUserDao();
+            ArrayList<ComandaDao> comandasSnapshot = new ArrayList<>(Objects.requireNonNull(Order.getComandasByIdCashier(cashierSnapshot.getIdCashier())));
+            ArrayList<OrderDao> ordersSnapshot = new ArrayList<>(Objects.requireNonNull(Order.getOrderByIdCashier(cashierSnapshot.getIdCashier())));
             Platform.runLater(() -> {
                 try {
-                    AppController.printSangriaReceipt();
+                    AppController.printSangriaReceipt(cashierDao, userSnapshot, comandasSnapshot, ordersSnapshot);
                 } catch (IOException e) {
                     LOGGER.warning("Impressora não encontrada. O recibo não será impresso");
                 }
             });
+
+            AppFactory.setCashierDao(null);
+            AppFactory.getCashierController().updateCashierElements();
 
             LOGGER.info("Cashier was closed with no problems.");
         } else {

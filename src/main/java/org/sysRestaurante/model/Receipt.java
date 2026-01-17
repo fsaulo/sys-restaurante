@@ -111,11 +111,10 @@ public class Receipt {
         return left + " ".repeat(spaces) + right;
     }
 
-    public byte[] buildReceiptForPrint(ComandaDao order, ArrayList<ProductDao> productList) throws IOException {
+    public byte[] buildReceiptForPrint(OrderDao order, ArrayList<ProductDao> productList) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         out.write(EscPos.INIT);
         out.write(EscPos.CODEPAGE_CP860);
-
         out.write(EscPos.FONT_NORMAL);
         out.write(EscPos.alignCenter());
         out.write(EscPos.boldOn());
@@ -195,14 +194,16 @@ public class Receipt {
         out.write(EscPos.horizontalLine('-', 48));
         out.write(EscPos.newLine());
 
-        String tableOrderStr = leftRight(
-                "Mesa: " + order.getIdTable(),
-                "Pedido: #" + order.getIdOrder(),
-                48
-        );
+
 
         if (order instanceof ComandaDao) {
-            strEmployeeName = Personnel.getEmployeeNameById((order).getIdEmployee());
+            strEmployeeName = Personnel.getEmployeeNameById(((ComandaDao)(order)).getIdEmployee());
+            String tableOrderStr = leftRight(
+                    "Mesa: " + ((ComandaDao) order).getIdTable(),
+                    "Pedido: #" + order.getIdOrder(),
+                    48
+            );
+            out.write(EscPos.text(tableOrderStr));
         } else {
             strEmployeeName = AppFactory.getUserDao().getUsername();
         }
@@ -213,7 +214,6 @@ public class Receipt {
                 48
         );
 
-        out.write(EscPos.text(tableOrderStr));
         out.write(EscPos.newLine());
         out.write(EscPos.text(funcDateStr));
         out.write(EscPos.newLine());

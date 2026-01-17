@@ -106,9 +106,12 @@ public class OrderDetailsController {
 
         receiptButton.setOnMouseClicked(event -> {
             setOrderDetails();
+
+            final OrderDao orderSnapshot = order;
+            final ArrayList<ProductDao> itemsSnapshot = products != null ? new ArrayList<>(products) : new ArrayList<>();
             Platform.runLater(() -> {
                 try {
-                    AppController.printPOSReceipt();
+                    AppController.printPOSReceipt(orderSnapshot, itemsSnapshot);
                 } catch (IOException e) {
                     LOGGER.warning("Impressora não foi encontrada. O recibo não será impresso");
                 }
